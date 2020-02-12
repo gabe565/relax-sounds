@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import Fuse from 'fuse.js';
+
 import Sound from './Sound.vue';
 
 export default {
@@ -37,18 +39,30 @@ export default {
 
   data: () => ({
     filter: '',
+    fuse: null,
   }),
+
+  created() {
+    this.fuse = new Fuse(this.sounds, {
+      shouldSort: true,
+      threshold: 0.3,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: [
+        'name',
+      ],
+    });
+  },
 
   computed: {
     filteredSounds() {
       if (this.sounds) {
-        let result = this.sounds;
         if (this.filter) {
-          result = result.filter(
-            (sound) => sound.name.toLowerCase().includes(this.filter.toLowerCase()),
-          );
+          return this.fuse.search(this.filter);
         }
-        return result.sort(
+        return this.sounds.sort( // eslint-disable-line
           (left, right) => left.name.localeCompare(right.name),
         );
       }
