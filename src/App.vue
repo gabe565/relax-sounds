@@ -39,6 +39,9 @@ export default {
 
   created() {
     this.$vuetify.theme.dark = true;
+    this.sounds = this.sounds.sort(
+      (left, right) => left.name.localeCompare(right.name),
+    );
   },
 
   data: () => ({

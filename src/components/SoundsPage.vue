@@ -62,9 +62,7 @@ export default {
         if (this.filter) {
           return this.fuse.search(this.filter);
         }
-        return this.sounds.sort( // eslint-disable-line
-          (left, right) => left.name.localeCompare(right.name),
-        );
+        return this.sounds;
       }
       return [];
     },
