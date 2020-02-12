@@ -15,7 +15,7 @@
       <SoundsPage :sounds="sounds"/>
     </v-content>
 
-    <v-footer fixed color="primary">
+    <v-footer app color="primary">
       <v-container class="text-center">
         <v-btn color="secondary">
           <v-icon left>mdi-cast</v-icon> Cast
