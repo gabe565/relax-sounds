@@ -1,28 +1,48 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-toolbar-title>Relax Sounds</v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-app-bar>
+
+    <v-content>
+      <SoundsPage :sounds="sounds"/>
+    </v-content>
+
+    <v-footer fixed color="primary">
+      <v-container class="text-center">
+        <v-btn color="secondary">
+          <v-icon left>mdi-cast</v-icon> Cast
+        </v-btn>
+      </v-container>
+    </v-footer>
+
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import sounds from './assets/sounds.json';
+import SoundsPage from './components/SoundsPage.vue';
 
 export default {
   name: 'App',
+
   components: {
-    HelloWorld,
+    SoundsPage,
   },
+
+  created() {
+    this.$vuetify.theme.dark = true;
+  },
+
+  data: () => ({
+    sounds,
+  }),
 };
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
