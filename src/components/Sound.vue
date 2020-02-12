@@ -1,5 +1,11 @@
 <template>
-  <v-card @click.stop="playPause" :light="this.sound.playing" raised outlined>
+  <v-card @click.stop="playPause"
+          :light="this.sound.playing"
+          raised
+          outlined
+          :loading="loading"
+          :ripple="false"
+  >
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="headline">
@@ -21,6 +27,10 @@ export default {
       type: Object,
     },
   },
+
+  data: () => ({
+    loading: false,
+  }),
 
   created() {
     if (!this.sound.player) {
@@ -44,8 +54,10 @@ export default {
       }
     },
     load() {
-      this.sound.playing = true;
+      this.loading = true;
       this.sound.player.once('load', () => {
+        this.sound.playing = true;
+        this.loading = false;
         this.play();
       });
       this.sound.player.load();
