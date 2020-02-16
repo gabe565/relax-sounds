@@ -1,18 +1,27 @@
 <template>
-  <v-card @click.stop="playPause"
-          :light="this.sound.playing"
-          raised
+  <v-card raised
           outlined
-          :loading="loading"
-          :ripple="false"
   >
-    <v-list-item>
-      <v-list-item-content>
-        <v-list-item-title class="headline">
+    <v-progress-linear
+      v-model="volumePercentage"
+      absolute
+      height="100%"
+      color="secondary"
+      v-if="sound.state !== 'stopped'"
+    />
+    <v-row align="center" justify="center" dense>
+      <v-col class="grow">
+        <v-card-title class="headline">
+          <v-icon class="pr-2">{{ sound.icon }}</v-icon>
           {{ sound.name }}
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
+        </v-card-title>
+      </v-col>
+      <v-col class="shrink pr-4">
+        <v-btn @click.stop="playPause" elevation="0" outlined :loading="loading">
+          <v-icon>{{ icon }}</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -31,6 +40,26 @@ export default {
   data: () => ({
     loading: false,
   }),
+
+  computed: {
+    volume() {
+      return this.sound.volume;
+    },
+    state() {
+      return this.sound.state;
+    },
+    volumePercentage: {
+      get() {
+        return this.sound.volume * 100;
+      },
+      set(newValue) {
+        this.sound.volume = newValue / 100;
+      },
+    },
+    icon() {
+      return this.sound.state === 'playing' ? 'mdi-stop' : 'mdi-play';
+    },
+  },
 
   created() {
     if (!this.sound.player) {
@@ -56,28 +85,57 @@ export default {
     load() {
       this.loading = true;
       this.sound.player.once('load', () => {
-        this.sound.playing = true;
+        this.sound.state = 'playing';
         this.loading = false;
         this.play();
       });
       this.sound.player.load();
     },
-    play() {
-      this.sound.playing = true;
+    play(fade = 500) {
+      this.sound.state = 'playing';
       this.sound.player.play();
-      this.sound.player.fade(0, 1, 1000);
+      if (fade) {
+        this.sound.player.fade(0, this.sound.volume, fade);
+      }
+      this.$emit('play');
     },
     stop() {
-      this.sound.playing = false;
+      this.sound.state = 'stopped';
       this.sound.player.once('fade', async () => {
         this.sound.player.stop();
       });
       this.sound.player.fade(this.sound.player.volume(), 0, 500);
+    },
+    pause() {
+      this.sound.player.pause();
+    },
+  },
+
+  watch: {
+    volume(newValue) {
+      this.sound.player.volume(newValue);
     },
   },
 };
 </script>
 
 <style scoped>
-
+  .v-card {
+    overflow: hidden;
+  }
+  .v-progress-linear {
+    z-index: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .row {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .v-btn {
+    pointer-events: all;
+  }
 </style>

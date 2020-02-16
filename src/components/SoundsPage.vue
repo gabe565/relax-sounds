@@ -1,15 +1,23 @@
 <template>
   <v-container>
 
-    <v-text-field
-      v-model="filter"
-      label="Filter"
-      prepend-inner-icon="mdi-magnify"
-      clearable
-      autofocus
-    />
+    <v-row>
+      <v-col class="grow">
+        <v-text-field
+          v-model="filter.word"
+          label="Filter"
+          prepend-inner-icon="mdi-magnify"
+          clearable
+          autofocus
+        >
+        </v-text-field>
+      </v-col>
+      <v-col class="shrink">
+        <v-switch v-model="filter.playing" label="Playing"/>
+      </v-col>
+    </v-row>
 
-    <v-layout row wrap>
+    <v-row>
       <v-col
         cols="12"
         sm="6"
@@ -17,9 +25,9 @@
         v-for="sound of filteredSounds"
         :key="sound.id"
       >
-        <Sound :sound="sound"/>
+        <Sound :sound="sound" @play="playPaused"/>
       </v-col>
-    </v-layout>
+    </v-row>
   </v-container>
 </template>
 
@@ -38,7 +46,10 @@ export default {
   },
 
   data: () => ({
-    filter: '',
+    filter: {
+      word: '',
+      playing: false,
+    },
     fuse: null,
   }),
 
@@ -52,6 +63,7 @@ export default {
       minMatchCharLength: 1,
       keys: [
         'name',
+        'tags',
       ],
     });
   },
@@ -59,20 +71,37 @@ export default {
   computed: {
     filteredSounds() {
       if (this.sounds) {
-        if (this.filter) {
-          return this.fuse.search(this.filter);
+        let result;
+        if (this.filter.word) {
+          result = this.fuse.search(this.filter.word);
+        } else {
+          result = this.sounds;
         }
-        return this.sounds;
+        if (this.filter.playing) {
+          result = result.filter((e) => e.state !== 'stopped');
+        }
+        return result;
       }
       return [];
     },
   },
 
+  methods: {
+    playPaused() {
+      this.sounds.forEach((sound) => {
+        if (sound.state === 'paused') {
+          sound.state = 'playing';
+          sound.player.play();
+        }
+      });
+    },
+  },
+
   beforeDestroy() {
-    this.filter = '';
+    this.filter.word = '';
     this.sounds.forEach((e) => {
       e.player.unload();
-      e.playing = false;
+      e.state = 'stopped';
     });
   },
 };
