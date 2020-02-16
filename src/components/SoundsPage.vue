@@ -25,7 +25,7 @@
         v-for="sound of filteredSounds"
         :key="sound.id"
       >
-        <Sound :sound="sound" @play="playPaused"/>
+        <Sound :sound="sound"/>
       </v-col>
     </v-row>
   </v-container>
@@ -39,11 +39,6 @@ import Sound from './Sound.vue';
 export default {
   name: 'SoundsPage',
   components: { Sound },
-  props: {
-    sounds: {
-      type: Array,
-    },
-  },
 
   data: () => ({
     filter: {
@@ -54,7 +49,7 @@ export default {
   }),
 
   created() {
-    this.fuse = new Fuse(this.sounds, {
+    this.fuse = new Fuse(this.$store.state.sounds, {
       shouldSort: true,
       threshold: 0.3,
       location: 0,
@@ -70,12 +65,12 @@ export default {
 
   computed: {
     filteredSounds() {
-      if (this.sounds) {
+      if (this.$store.state.sounds) {
         let result;
         if (this.filter.word) {
           result = this.fuse.search(this.filter.word);
         } else {
-          result = this.sounds;
+          result = this.$store.state.sounds;
         }
         if (this.filter.playing) {
           result = result.filter((e) => e.state !== 'stopped');
@@ -84,25 +79,6 @@ export default {
       }
       return [];
     },
-  },
-
-  methods: {
-    playPaused() {
-      this.sounds.forEach((sound) => {
-        if (sound.state === 'paused') {
-          sound.state = 'playing';
-          sound.player.play();
-        }
-      });
-    },
-  },
-
-  beforeDestroy() {
-    this.filter.word = '';
-    this.sounds.forEach((e) => {
-      e.player.unload();
-      e.state = 'stopped';
-    });
   },
 };
 </script>
