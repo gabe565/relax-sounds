@@ -5,6 +5,7 @@
       app
       color="primary"
       dark
+      hide-on-scroll
     >
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>Relax Sounds</v-toolbar-title>
@@ -14,14 +15,6 @@
     <v-content>
       <SoundsPage :sounds="sounds"/>
     </v-content>
-
-    <v-footer app color="primary">
-      <v-container class="text-center">
-        <v-btn color="secondary">
-          <v-icon left>mdi-cast</v-icon> Cast
-        </v-btn>
-      </v-container>
-    </v-footer>
 
   </v-app>
 </template>
