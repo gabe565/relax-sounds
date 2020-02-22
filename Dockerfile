@@ -2,7 +2,8 @@ FROM node:12-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json .npmrc ./
+ARG FONTAWESOME_NPM_AUTH_TOKEN
 RUN set -x \
     && apk add --no-cache --virtual .build-deps \
         g++ \

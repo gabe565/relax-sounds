@@ -3,6 +3,9 @@ version: '2.4'
 services:
   app:
     image: gabe565/relax-sounds
-    build: .
+    build:
+      args:
+        FONTAWESOME_NPM_AUTH_TOKEN: $FONTAWESOME_NPM_AUTH_TOKEN
+      context: .
     ports:
       - 80:80
