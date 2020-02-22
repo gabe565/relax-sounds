@@ -1,0 +1,8 @@
+version: '2.4'
+
+services:
+  app:
+    image: gabe565/relax-sounds
+    build: .
+    ports:
+      - 80:80
