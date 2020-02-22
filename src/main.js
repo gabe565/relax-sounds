@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import App from './App.vue';
 import './registerServiceWorker';
 import vuetify from './plugins/vuetify';
-import storeData from './store';
+import storeData from './store/main';
 
 Vue.config.productionTip = false;
 

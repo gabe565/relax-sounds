@@ -1,28 +1,9 @@
-import { Howl } from 'howler';
-import defaultSounds from './assets/sounds.json';
-
-const sounds = defaultSounds.map((sound) => ({
-  ...sound,
-  state: 'stopped',
-  volume: 1,
-  loading: false,
-  player: new Howl({
-    src: [`/audio/${sound.id}.ogg`],
-    loop: true,
-    preload: false,
-    volume: 0,
-  }),
-})).sort(
-  (left, right) => left.name.localeCompare(right.name),
-);
+import sounds from '../sounds';
 
 export default {
+  namespaced: true,
   state: {
     sounds,
-    filter: {
-      word: '',
-      playing: false,
-    },
   },
 
   getters: {
@@ -54,7 +35,7 @@ export default {
       sound.player.once('load', () => {
         sound.state = 'playing';
         sound.loading = false;
-        this.commit('play', { id, fade });
+        this.commit('sounds/play', { id, fade });
       });
       sound.player.load();
     },
@@ -87,15 +68,15 @@ export default {
     playPause(state, { id }) {
       const sound = state.sounds.find((e) => e.id === id);
       if (sound.player.playing()) {
-        this.commit('stop', { id });
+        this.commit('sounds/stop', { id });
       } else if (sound.player.state() === 'loaded') {
-        this.commit('play', { id });
+        this.commit('sounds/play', { id });
       } else {
-        this.commit('load', { id });
+        this.commit('sounds/load', { id });
       }
     },
     playPauseAll(state) {
-      const newState = this.getters.state === 'playing' ? 'paused' : 'playing';
+      const newState = this.getters['sounds/state'] === 'playing' ? 'paused' : 'playing';
       state.sounds.filter(
         (sound) => sound.state !== 'stopped',
       ).forEach((sound) => {

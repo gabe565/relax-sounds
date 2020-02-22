@@ -9,43 +9,49 @@
     >
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>Relax Sounds</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon @click="playPauseAll" :disabled="audioState === 'stopped'">
-        <v-icon>{{ audioState === 'playing' ? 'mdi-pause-circle' : 'mdi-play-circle' }}</v-icon>
-      </v-btn>
+      <v-spacer/>
+
+      <GlobalPlayPause/>
     </v-app-bar>
 
     <v-content>
-      <SoundsPage/>
+      <v-container>
+
+        <Filters/>
+
+        <v-row>
+          <v-col
+            cols="12"
+            sm="6"
+            md="4"
+            v-for="sound of $store.getters['filters/sounds']"
+            :key="sound.id"
+          >
+            <Sound :sound="sound"/>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-content>
 
   </v-app>
 </template>
 
 <script>
-import SoundsPage from './components/SoundsPage.vue';
+import GlobalPlayPause from './components/GlobalPlayPause.vue';
+import Filters from './components/Filters.vue';
+import Sound from './components/Sound.vue';
 
 export default {
   name: 'App',
 
   components: {
-    SoundsPage,
+    Sound,
+    Filters,
+    GlobalPlayPause,
   },
 
   created() {
     this.$vuetify.theme.dark = true;
-  },
-
-  methods: {
-    playPauseAll() {
-      this.$store.commit('playPauseAll');
-    },
-  },
-
-  computed: {
-    audioState() {
-      return this.$store.getters.state;
-    },
   },
 };
 </script>
