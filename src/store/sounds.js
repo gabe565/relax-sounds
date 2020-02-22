@@ -20,12 +20,6 @@ export default {
       }
       return 'stopped';
     },
-    icon(state) {
-      return (id) => {
-        const sound = state.sounds.find((e) => e.id === id);
-        return sound.state === 'playing' ? 'mdi-stop' : 'mdi-play';
-      };
-    },
   },
 
   mutations: {

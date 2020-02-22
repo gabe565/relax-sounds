@@ -4,7 +4,7 @@
       <v-text-field
         v-model="word"
         label="Filter"
-        prepend-inner-icon="mdi-magnify"
+        prepend-inner-icon="fa-search v-icon--dense"
         clearable
         autofocus
       >
