@@ -4,11 +4,11 @@
       <v-text-field
         v-model="word"
         label="Filter"
-        prepend-inner-icon="fa-search v-icon--dense"
+        prepend-inner-icon="fal fa-search v-icon--dense"
         clearable
+        clear-icon="fal fa-times v-icon--dense"
         autofocus
-      >
-      </v-text-field>
+      />
     </v-col>
     <v-col class="shrink">
       <v-switch v-model="playing" label="Playing"/>

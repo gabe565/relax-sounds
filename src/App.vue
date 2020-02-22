@@ -7,7 +7,9 @@
       dark
       hide-on-scroll
     >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon>
+        <v-icon>fal fa-bars</v-icon>
+      </v-app-bar-nav-icon>
       <v-toolbar-title>Relax Sounds</v-toolbar-title>
       <v-spacer/>
 
