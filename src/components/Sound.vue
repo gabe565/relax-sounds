@@ -12,13 +12,17 @@
     <v-row align="center" justify="center" dense>
       <v-col class="grow">
         <v-card-title class="headline">
-          <v-icon class="pr-2">{{ sound.icon }}</v-icon>
+          <span class="pr-2">
+            <v-icon aria-hidden="true">{{ iconStyle }} {{ sound.icon }} fa-fw no-transition</v-icon>
+          </span>
           {{ sound.name }}
         </v-card-title>
       </v-col>
       <v-col class="shrink pr-4">
-        <v-btn @click.stop="playPause" elevation="0" outlined :loading="sound.loading">
-          <v-icon>{{ icon }}</v-icon>
+        <v-btn @click.stop="playPause" elevation="0" outlined>
+          <v-icon :dense="true">
+            fas fa-fw {{ icon }}
+          </v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -44,8 +48,19 @@ export default {
         this.$store.commit('sounds/volume', { id: this.sound.id, value: newValue / 100 });
       },
     },
+
+    iconStyle() {
+      return this.sound.state === 'stopped' ? 'fal' : 'fas';
+    },
+
     icon() {
-      return this.sound.state === 'playing' ? 'mdi-stop' : 'mdi-play';
+      if (this.sound.loading) {
+        return 'fa-spinner-third fa-spin-2x';
+      }
+      if (this.sound.state === 'playing') {
+        return 'fa-stop';
+      }
+      return 'fa-play';
     },
   },
 
@@ -75,5 +90,8 @@ export default {
   }
   .v-btn {
     pointer-events: all;
+  }
+  .no-transition {
+    transition: none;
   }
 </style>

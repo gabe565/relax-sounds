@@ -1,276 +1,276 @@
 [
   {
-    "icon": "mdi-wave",
+    "icon": "fa-water",
     "id": 1,
     "name": "River",
     "tags": []
   },
   {
-    "icon": "mdi-waves",
+    "icon": "fa-water",
     "id": 2,
     "name": "Ocean",
     "tags": []
   },
   {
-    "icon": "mdi-music-note",
+    "icon": "fa-flute",
     "id": 3,
     "name": "Flute",
     "tags": []
   },
   {
-    "icon": "mdi-weather-pouring",
+    "icon": "fa-raindrops",
     "id": 4,
     "name": "Rain",
     "tags": []
   },
   {
-    "icon": "mdi-weather-windy",
+    "icon": "fa-wind",
     "id": 5,
     "name": "Winds",
     "tags": []
   },
   {
-    "icon": "mdi-music-box",
+    "icon": "fa-music",
     "id": 6,
     "name": "Music Box",
     "tags": []
   },
   {
-    "icon": "mdi-music-clef-treble",
+    "icon": "fa-music",
     "id": 7,
     "name": "Lounge",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-crow",
     "id": 8,
     "name": "Birds",
     "tags": []
   },
   {
-    "icon": "mdi-piano",
+    "icon": "fa-piano",
     "id": 9,
     "name": "Piano",
     "tags": []
   },
   {
-    "icon": "mdi-music-note",
+    "icon": "fa-violin",
     "id": 10,
     "name": "Orchestral",
     "tags": []
   },
   {
-    "icon": "mdi-water",
+    "icon": "fa-water-lower",
     "id": 11,
     "name": "Waterfall",
     "tags": []
   },
   {
-    "icon": "mdi-weather-lightning",
+    "icon": "fa-thunderstorm",
     "id": 12,
     "name": "Thunder",
     "tags": []
   },
   {
-    "icon": "mdi-music-note-sixteenth",
+    "icon": "fa-music-alt",
     "id": 13,
     "name": "Zen",
     "tags": []
   },
   {
-    "icon": "mdi-campfire",
+    "icon": "fa-campfire",
     "id": 14,
     "name": "Campfire",
     "tags": []
   },
   {
-    "icon": "mdi-music",
+    "icon": "fa-violin",
     "id": 15,
     "name": "Melody",
     "tags": []
   },
   {
-    "icon": "weather-night",
+    "icon": "fa-moon",
     "id": 16,
     "name": "Night",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 17,
     "name": "Brown Noise",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 18,
     "name": "Pink Noise",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 19,
     "name": "White Noise",
     "tags": []
   },
   {
-    "icon": "mdi-heart",
+    "icon": "fa-heart",
     "id": 20,
     "name": "Heartbeat",
     "tags": []
   },
   {
-    "icon": "mdi-account",
+    "icon": "fa-planet-moon",
     "id": 21,
     "name": "Astral",
     "tags": []
   },
   {
-    "icon": "mdi-fountain",
+    "icon": "fa-sprinkler",
     "id": 22,
     "name": "Fountain",
     "tags": []
   },
   {
-    "icon": "mdi-train",
+    "icon": "fa-train",
     "id": 23,
     "name": "Train",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-drum",
     "id": 24,
     "name": "Tribal",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-snake",
     "id": 25,
     "name": "India",
     "tags": []
   },
   {
-    "icon": "mdi-car-wash",
+    "icon": "fa-city",
     "id": 26,
     "name": "Urban Rain",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-mountain",
     "id": 27,
     "name": "Cavern",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-wind",
     "id": 28,
     "name": "Wind Chimes",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 29,
     "name": "Binaural 5Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 30,
     "name": "Binaural 4Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 31,
     "name": "Binaural 25Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 32,
     "name": "Binaural 20Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 33,
     "name": "Binaural 10Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 34,
     "name": "Binaural 8Hz",
     "tags": []
   },
   {
-    "icon": "mdi-sail-boat",
+    "icon": "fa-ship",
     "id": 35,
     "name": "Sailing",
     "tags": []
   },
   {
-    "icon": "mdi-yin-yang",
+    "icon": "fa-yin-yang",
     "id": 36,
     "name": "Voices",
     "tags": []
   },
   {
-    "icon": "mdi-eye",
+    "icon": "fa-eye",
     "id": 37,
     "name": "Watching",
     "tags": []
   },
   {
-    "icon": "mdi-violin",
+    "icon": "fa-violin",
     "id": 38,
     "name": "Bass Music",
     "tags": []
   },
   {
-    "icon": "mdi-snowflake",
+    "icon": "fa-snowflake",
     "id": 39,
     "name": "Cold Rattle",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-dove",
     "id": 40,
     "name": "Chirp",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-drum",
     "id": 41,
     "name": "Drum",
     "tags": []
   },
   {
-    "icon": "mdi-weather-lightning",
+    "icon": "fa-hurricane",
     "id": 42,
     "name": "Storm",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-flute",
     "id": 43,
     "name": "Flute Alt",
     "tags": []
   },
   {
-    "icon": "account-group",
+    "icon": "fa-users",
     "id": 44,
     "name": "Choir",
     "tags": []
   },
   {
-    "icon": "mdi-weather-sunny",
+    "icon": "fa-sun",
     "id": 45,
     "name": "Sunny Day",
     "tags": []
   },
   {
-    "icon": "mdi-guitar",
+    "icon": "fa-guitar",
     "id": 46,
     "name": "Guitar",
     "tags": [
@@ -278,241 +278,243 @@
     ]
   },
   {
-    "icon": "",
+    "icon": "fa-theater-masks",
     "id": 47,
     "name": "Dramatic",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-triangle-music",
     "id": 48,
     "name": "Butterfly",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-swords",
     "id": 49,
     "name": "Medieval",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-globe-americas",
     "id": 50,
     "name": "Earth Drama",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-guitar",
     "id": 51,
     "name": "Dreams",
     "tags": []
   },
   {
-    "icon": "mdi-weather-windy",
+    "icon": "fa-wind",
     "id": 52,
     "name": "Wind Surge",
     "tags": []
   },
   {
-    "icon": "mdi-pine-tree",
+    "icon": "fa-trees",
     "id": 53,
     "name": "Forest",
     "tags": []
   },
   {
-    "icon": "mdi-playlist-music",
+    "icon": "fa-piano",
     "id": 54,
     "name": "Abstract",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-flower-tulip",
     "id": 55,
     "name": "Spring",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-kiwi-bird",
     "id": 56,
     "name": "Toskana",
     "tags": []
   },
   {
-    "icon": "mdi-city",
+    "icon": "fa-music",
     "id": 57,
     "name": "City",
     "tags": []
   },
   {
-    "icon": "mdi-sprinkler",
+    "icon": "fa-sprinkler",
     "id": 58,
     "name": "Sprinkler",
     "tags": []
   },
   {
-    "icon": "mdi-waves",
+    "icon": "fa-water-rise",
     "id": 59,
     "name": "Slow Waves",
     "tags": []
   },
   {
-    "icon": "mdi-weather-partly-rainy",
+    "icon": "fa-cloud-drizzle",
     "id": 60,
     "name": "Light Rain",
     "tags": []
   },
   {
-    "icon": "mdi-weather-pouring",
+    "icon": "fa-cloud-showers-heavy",
     "id": 61,
     "name": "Heavy Rain",
     "tags": []
   },
   {
-    "icon": "mdi-weather-rainy",
+    "icon": "fa-cloud-sun-rain",
     "id": 62,
     "name": "Rainy Day",
     "tags": []
   },
   {
-    "icon": "mdi-fish",
+    "icon": "fa-fish",
     "id": 63,
     "name": "Underwater",
     "tags": []
   },
   {
-    "icon": "mdi-jellyfish",
+    "icon": "fa-fish",
     "id": 64,
     "name": "Immersed",
     "tags": []
   },
   {
-    "icon": "mdi-weather-sunny",
+    "icon": "fa-house-day",
     "id": 65,
     "name": "Afternoon",
     "tags": []
   },
   {
-    "icon": "mdi-weather-pouring",
+    "icon": "fa-cloud-showers",
     "id": 66,
     "name": "Rainstorm",
     "tags": []
   },
   {
-    "icon": "mdi-tree",
+    "icon": "fa-trees",
     "id": 67,
     "name": "Forest Rain",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-whale",
     "id": 68,
     "name": "Whales",
     "tags": []
   },
   {
-    "icon": "mdi-beach",
+    "icon": "fa-umbrella-beach",
     "id": 69,
     "name": "Seaside",
     "tags": []
   },
   {
-    "icon": "weather-snowy-heavy",
+    "icon": "fa-snowflakes",
     "id": 70,
     "name": "Icy Snow",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-whale",
     "id": 71,
     "name": "Whales Alt",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-duck",
     "id": 72,
     "name": "Seagulls",
-    "tags": []
+    "tags": [
+      "bird"
+    ]
   },
   {
-    "icon": "mdi-weather-pouring",
+    "icon": "fa-raindrops",
     "id": 73,
     "name": "Rain On Roof",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-flute",
     "id": 74,
     "name": "Duduk",
     "tags": []
   },
   {
-    "icon": "mdi-basketball",
+    "icon": "fa-child",
     "id": 75,
     "name": "Playground",
     "tags": []
   },
   {
-    "icon": "mdi-owl",
+    "icon": "fa-house-night",
     "id": 76,
     "name": "Owls",
     "tags": []
   },
   {
-    "icon": "mdi-account-music",
+    "icon": "fa-female",
     "id": 77,
     "name": "Humming",
     "tags": []
   },
   {
-    "icon": "mdi-clock",
+    "icon": "fa-clock",
     "id": 78,
     "name": "Grandfather Clock",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-frog",
     "id": 79,
     "name": "Frogs",
     "tags": []
   },
   {
-    "icon": "mdi-tumble-dryer",
+    "icon": "fa-dryer-alt",
     "id": 80,
     "name": "Dryer",
     "tags": []
   },
   {
-    "icon": "mdi-cat",
+    "icon": "fa-cat",
     "id": 81,
     "name": "Cat Purring",
     "tags": []
   },
   {
-    "icon": "mdi-weather-fog",
+    "icon": "fa-fog",
     "id": 82,
     "name": "Bali Mist",
     "tags": []
   },
   {
-    "icon": "mdi-weather-lightning-rainy",
+    "icon": "fa-thunderstorm",
     "id": 83,
     "name": "Thunderstorm",
     "tags": []
   },
   {
-    "icon": "mdi-city",
+    "icon": "fa-city",
     "id": 84,
     "name": "City Ambience",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-drum",
     "id": 85,
     "name": "Indian Drums",
     "tags": []
   },
   {
-    "icon": "mdi-piano",
+    "icon": "fa-piano",
     "id": 86,
     "name": "Pachelbel Canon",
     "tags": [
@@ -520,37 +522,39 @@
     ]
   },
   {
-    "icon": "",
+    "icon": "fa-clouds-moon",
     "id": 87,
     "name": "Wolf",
     "tags": []
   },
   {
-    "icon": "mdi-ferry",
+    "icon": "fa-ship",
     "id": 88,
     "name": "Fog Horn",
     "tags": []
   },
   {
-    "icon": "mdi-robot-vacuum",
+    "icon": "fa-vacuum",
     "id": 89,
     "name": "Vacuum",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-duck",
     "id": 90,
     "name": "Loon",
-    "tags": []
+    "tags": [
+      "bird"
+    ]
   },
   {
-    "icon": "mdi-keyboard",
+    "icon": "fa-piano-keyboard",
     "id": 91,
     "name": "Keyboard",
     "tags": []
   },
   {
-    "icon": "mdi-account-group",
+    "icon": "fa-head-side",
     "id": 92,
     "name": "Monk Chant",
     "tags": [
@@ -558,43 +562,43 @@
     ]
   },
   {
-    "icon": "mdi-fan",
+    "icon": "fa-fan-table",
     "id": 93,
     "name": "Oscillating Fan",
     "tags": []
   },
   {
-    "icon": "mdi-baby",
+    "icon": "fa-baby",
     "id": 94,
     "name": "Womb",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-wine-glass-alt",
     "id": 95,
     "name": "Singing Bowl",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-globe",
     "id": 96,
     "name": "Jupiter",
     "tags": []
   },
   {
-    "icon": "mdi-bug",
+    "icon": "fa-bug",
     "id": 97,
     "name": "Cicadas",
     "tags": []
   },
   {
-    "icon": "mdi-weather-windy",
+    "icon": "fa-trees",
     "id": 98,
     "name": "Wind In Trees",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-frog",
     "id": 99,
     "name": "Peepers",
     "tags": [
@@ -602,61 +606,61 @@
     ]
   },
   {
-    "icon": "mdi-leaf",
+    "icon": "fa-leaf-oak",
     "id": 100,
     "name": "Rustling Leaves",
     "tags": []
   },
   {
-    "icon": "mdi-account-group",
+    "icon": "fa-users",
     "id": 101,
     "name": "Crowd",
     "tags": []
   },
   {
-    "icon": "mdi-weather-pouring",
+    "icon": "fa-campground",
     "id": 102,
     "name": "Rain On Tent",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 103,
     "name": "Isochronic 25Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 104,
     "name": "Isochronic 4Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 105,
     "name": "Isochronic 5Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 106,
     "name": "Isochronic 8Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 107,
     "name": "Isochronic 10Hz",
     "tags": []
   },
   {
-    "icon": "mdi-current-ac",
+    "icon": "fa-waveform-path",
     "id": 108,
     "name": "Isochronic 20Hz",
     "tags": []
   },
   {
-    "icon": "mdi-piano",
+    "icon": "fa-piano",
     "id": 110,
     "name": "Brahms Lullaby",
     "tags": [
@@ -664,49 +668,53 @@
     ]
   },
   {
-    "icon": "mdi-waves",
+    "icon": "fa-water",
     "id": 111,
     "name": "Lapping Water",
     "tags": []
   },
   {
-    "icon": "mdi-train",
+    "icon": "fa-train",
     "id": 112,
     "name": "Distant Train",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-music",
     "id": 113,
     "name": "Eternity",
-    "tags": []
+    "tags": [
+      "music"
+    ]
   },
   {
-    "icon": "",
+    "icon": "fa-triangle-music",
     "id": 114,
     "name": "Magic Chimes",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-hotdog",
     "id": 115,
     "name": "Carnival",
-    "tags": []
+    "tags": [
+      "music"
+    ]
   },
   {
-    "icon": "mdi-truck",
+    "icon": "fa-truck-pickup",
     "id": 116,
     "name": "Truck Engine",
     "tags": []
   },
   {
-    "icon": "mdi-hair-dryer",
+    "icon": "fa-wind",
     "id": 117,
     "name": "Hair Dryer",
     "tags": []
   },
   {
-    "icon": "mdi-guitar",
+    "icon": "fa-guitar",
     "id": 118,
     "name": "Sweet Hour Prayer",
     "tags": [
@@ -714,31 +722,33 @@
     ]
   },
   {
-    "icon": "mdi-account-music",
+    "icon": "fa-flute",
     "id": 119,
     "name": "Ancestral",
-    "tags": []
+    "tags": [
+      "music"
+    ]
   },
   {
-    "icon": "mdi-fire",
+    "icon": "fa-fire-alt",
     "id": 120,
     "name": "Fire Crackles",
     "tags": []
   },
   {
-    "icon": "mdi-road-variant",
+    "icon": "fa-road",
     "id": 121,
     "name": "Highway",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-users",
     "id": 123,
     "name": "Om",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-icicles",
     "id": 124,
     "name": "Harmony",
     "tags": [
@@ -746,7 +756,7 @@
     ]
   },
   {
-    "icon": "mdi-bowl",
+    "icon": "fa-soup",
     "id": 125,
     "name": "Tibetan Bowls",
     "tags": [
@@ -754,7 +764,7 @@
     ]
   },
   {
-    "icon": "mdi-music",
+    "icon": "fa-piano",
     "id": 126,
     "name": "Joy",
     "tags": [
@@ -762,75 +772,85 @@
     ]
   },
   {
-    "icon": "mdi-nature",
+    "icon": "fa-flower",
     "id": 127,
     "name": "Meadow",
-    "tags": []
+    "tags": [
+      "music"
+    ]
   },
   {
-    "icon": "mdi-diamond-stone",
+    "icon": "fa-gem",
     "id": 128,
     "name": "Crystal Peaks",
     "tags": []
   },
   {
-    "icon": "mdi-cloud",
+    "icon": "fa-clouds",
     "id": 129,
     "name": "Clouds",
     "tags": []
   },
   {
-    "icon": "mdi-image-filter-hdr",
+    "icon": "fa-mountain",
     "id": 130,
     "name": "Mountain Air",
-    "tags": []
+    "tags": [
+      "music"
+    ]
   },
   {
-    "icon": "mdi-waves",
+    "icon": "fa-water",
     "id": 131,
     "name": "Water Trance",
     "tags": []
   },
   {
-    "icon": "mdi-weather-night",
+    "icon": "fa-moon-stars",
     "id": 132,
     "name": "Moonlight",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-sparkles",
     "id": 133,
     "name": "Fireflies",
     "tags": []
   },
   {
-    "icon": "mdi-space-station",
+    "icon": "fa-solar-system",
     "id": 134,
     "name": "Space",
     "tags": []
   },
   {
-    "icon": "mdi-waves",
+    "icon": "fa-water",
     "id": 135,
     "name": "Healing Ocean",
-    "tags": []
+    "tags": [
+      "music"
+    ]
   },
   {
-    "icon": "",
+    "icon": "fa-music",
     "id": 136,
     "name": "Elements",
-    "tags": []
+    "tags": [
+      "music"
+    ]
   },
   {
-    "icon": "mdi-image-filter-hdr",
+    "icon": "fa-mountains",
     "id": 137,
     "name": "Northern Cliffs",
     "tags": []
   },
   {
-    "icon": "",
+    "icon": "fa-piano",
     "id": 138,
     "name": "Gentleness",
-    "tags": []
+    "tags": [
+      "music"
+    ]
   }
 ]

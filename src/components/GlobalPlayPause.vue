@@ -1,6 +1,6 @@
 <template>
   <v-btn icon @click="playPauseAll" :disabled="audioState === 'stopped'">
-    <v-icon>{{ audioState === 'playing' ? 'mdi-pause-circle' : 'mdi-play-circle' }}</v-icon>
+    <v-icon>fal {{ audioState === 'playing' ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
   </v-btn>
 </template>
 
