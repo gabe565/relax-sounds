@@ -1,33 +1,37 @@
 <template>
   <v-app>
 
-    <v-app-bar
-      app
-      color="primary"
-      dark
-      hide-on-scroll
-    >
-      <v-app-bar-nav-icon>
-        <v-icon>fal fa-bars</v-icon>
-      </v-app-bar-nav-icon>
+    <v-app-bar app color="primary" dark hide-on-scroll>
+      <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
       <v-toolbar-title>Relax Sounds</v-toolbar-title>
       <v-spacer/>
-
       <GlobalPlayPause/>
     </v-app-bar>
+
+
+    <v-navigation-drawer v-model="drawerOpen" absolute bottom temporary>
+      <v-list nav>
+        <v-list-item-group>
+          <v-list-item link @click="prefetch">
+            <v-list-item-avatar>
+              <v-icon>fal fa-download</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>
+              Preload All
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
 
     <UpdateSnackbar/>
 
     <v-content>
       <v-container>
-
         <Filters/>
-
         <v-row>
           <v-col
-            cols="12"
-            sm="6"
-            md="4"
+            cols="12" sm="6" md="4"
             v-for="sound of $store.getters['filters/sounds']"
             :key="sound.id"
           >
@@ -50,13 +54,29 @@ export default {
   name: 'App',
 
   components: {
+    GlobalPlayPause,
+    UpdateSnackbar,
     Sound,
     Filters,
-    GlobalPlayPause,
   },
+
+  data: () => ({
+    drawerOpen: false,
+  }),
 
   created() {
     this.$vuetify.theme.dark = true;
+  },
+
+  methods: {
+    toggleDrawer() {
+      this.drawerOpen = !this.drawerOpen;
+    },
+
+    prefetch() {
+      this.toggleDrawer();
+      this.$store.dispatch('sounds/prefetch');
+    },
   },
 };
 </script>

@@ -12,9 +12,9 @@
     <v-row align="center" justify="center" dense>
       <v-col class="grow">
         <v-card-title class="headline">
-          <span class="pr-2">
-            <v-icon aria-hidden="true">{{ iconStyle }} {{ sound.icon }} fa-fw no-transition</v-icon>
-          </span>
+          <v-icon aria-hidden="true" class="mr-4">
+            {{ iconStyle }} {{ sound.icon }} fa-fw no-transition
+          </v-icon>
           {{ sound.name }}
         </v-card-title>
       </v-col>

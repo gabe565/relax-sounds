@@ -23,13 +23,15 @@ export default {
   },
 
   mutations: {
-    load(state, { id, fade = 500 }) {
+    load(state, { id, fade = 500, play = true }) {
       const sound = state.sounds.find((e) => e.id === id);
       sound.loading = true;
       sound.player.once('load', () => {
-        sound.state = 'playing';
         sound.loading = false;
-        this.commit('sounds/play', { id, fade });
+        if (play) {
+          sound.state = 'playing';
+          this.commit('sounds/play', { id, fade });
+        }
       });
       sound.player.load();
     },
@@ -80,6 +82,14 @@ export default {
         } else if (newState === 'playing') {
           sound.player.play();
         }
+      });
+    },
+  },
+
+  actions: {
+    prefetch({ commit, state }) {
+      state.sounds.forEach((sound) => {
+        commit('load', { id: sound.id, play: false });
       });
     },
   },
