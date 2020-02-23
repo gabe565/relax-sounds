@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import sounds from '../sounds';
 
 export default {
@@ -23,74 +25,76 @@ export default {
   },
 
   mutations: {
-    load(state, { id, fade = 500, play = true }) {
-      const sound = state.sounds.find((e) => e.id === id);
-      sound.loading = true;
-      sound.player.once('load', () => {
-        sound.loading = false;
-        if (play) {
-          sound.state = 'playing';
-          this.commit('sounds/play', { id, fade });
-        }
-      });
-      sound.player.load();
-    },
-    play(state, { id, fade = 500 }) {
-      const sound = state.sounds.find((e) => e.id === id);
+    play(state, { sound, fade = 500 }) {
       sound.state = 'playing';
       sound.player.play();
       if (fade) {
         sound.player.fade(0, sound.volume, fade);
       }
     },
-    pause(state, { id }) {
-      const sound = state.sounds.find((e) => e.id === id);
+    pause(state, { sound }) {
       sound.state = 'paused';
       sound.player.pause();
     },
-    stop(state, { id }) {
-      const sound = state.sounds.find((e) => e.id === id);
+    stop(state, { sound }) {
       sound.state = 'stopped';
       sound.player.once('fade', async () => {
         sound.player.stop();
       });
       sound.player.fade(sound.player.volume(), 0, 500);
     },
-    volume(state, { id, value }) {
-      const sound = state.sounds.find((e) => e.id === id);
+    volume(state, { sound, value }) {
       sound.player.volume(value);
       sound.volume = value;
     },
-    playPause(state, { id }) {
-      const sound = state.sounds.find((e) => e.id === id);
+  },
+
+  actions: {
+    async load(_, { sound }) {
+      if (sound.player.state() === 'unloaded') {
+        sound.loading = true;
+        return new Promise((resolve, reject) => {
+          sound.player.once('load', () => {
+            sound.loading = false;
+            resolve();
+          });
+          sound.player.once('loaderror', () => {
+            sound.loading = false;
+            reject();
+          });
+          sound.player.load();
+        });
+      }
+      return true;
+    },
+    playPause({ commit }, { sound }) {
       if (sound.player.playing()) {
-        this.commit('sounds/stop', { id });
+        commit('stop', { sound });
       } else if (sound.player.state() === 'loaded') {
-        this.commit('sounds/play', { id });
+        commit('play', { sound });
       } else {
-        this.commit('sounds/load', { id });
+        commit('load', { sound });
       }
     },
-    playPauseAll(state) {
+    playPauseAll({ commit, state }) {
       const newState = this.getters['sounds/state'] === 'playing' ? 'paused' : 'playing';
       state.sounds.filter(
         (sound) => sound.state !== 'stopped',
       ).forEach((sound) => {
         sound.state = newState;
         if (newState === 'paused') {
-          sound.player.pause();
-        } else if (newState === 'playing') {
-          sound.player.play();
+          commit('pause', { sound });
+        } else {
+          commit('play', { sound });
         }
       });
     },
-  },
-
-  actions: {
-    prefetch({ commit, state }) {
-      state.sounds.forEach((sound) => {
-        commit('load', { id: sound.id, play: false });
-      });
+    async prefetch({ state }) {
+      return Promise.all(state.sounds.map(async (sound) => {
+        sound.loading = true;
+        await axios.get(sound.src);
+        sound.loading = false;
+      }));
     },
   },
 };

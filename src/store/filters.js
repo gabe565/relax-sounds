@@ -41,12 +41,4 @@ export default {
       return [];
     },
   },
-  mutations: {
-    byWord({ filters }, word) {
-      filters.word = word;
-    },
-    byPlaying({ filters }) {
-      filters.playing = !filters.playing;
-    },
-  },
 };

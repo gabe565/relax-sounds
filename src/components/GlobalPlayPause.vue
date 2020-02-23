@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'GlobalPlayPause',
 
-  methods: mapMutations('sounds', [
+  methods: mapActions('sounds', [
     'playPauseAll',
   ]),
 

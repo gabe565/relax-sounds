@@ -45,7 +45,7 @@ export default {
         return this.sound.volume * 100;
       },
       set(newValue) {
-        this.$store.commit('sounds/volume', { id: this.sound.id, value: newValue / 100 });
+        this.$store.commit('sounds/volume', { sound: this.sound, value: newValue / 100 });
       },
     },
 
@@ -66,7 +66,8 @@ export default {
 
   methods: {
     async playPause() {
-      this.$store.commit('sounds/playPause', { id: this.sound.id });
+      await this.$store.dispatch('sounds/load', { sound: this.sound });
+      this.$store.dispatch('sounds/playPause', { sound: this.sound });
     },
   },
 };
