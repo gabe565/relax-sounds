@@ -63,6 +63,6 @@ export default {
 
 <style>
   .fa-spin-2x {
-    animation: fa-spin 1s infinite linear;
+    animation: fa-spin 750ms infinite linear;
   }
 </style>
