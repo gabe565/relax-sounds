@@ -7,6 +7,11 @@ module.exports = {
   },
   pwa: {
     name: 'Relax Sounds',
+    workboxOptions: {
+      swSrc: './src/service-worker.js',
+      swDest: 'service-worker.js',
+    },
+    workboxPluginMode: 'InjectManifest',
   },
   transpileDependencies: [
     'vuetify',

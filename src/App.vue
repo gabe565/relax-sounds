@@ -16,6 +16,8 @@
       <GlobalPlayPause/>
     </v-app-bar>
 
+    <UpdateSnackbar/>
+
     <v-content>
       <v-container>
 
@@ -40,6 +42,7 @@
 
 <script>
 import GlobalPlayPause from './components/GlobalPlayPause.vue';
+import UpdateSnackbar from './components/UpdateSnackbar.vue';
 import Filters from './components/Filters.vue';
 import Sound from './components/Sound.vue';
 
