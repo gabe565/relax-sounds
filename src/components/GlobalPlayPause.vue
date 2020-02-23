@@ -1,24 +1,22 @@
 <template>
-  <v-btn icon @click="playPauseAll" :disabled="audioState === 'stopped'">
-    <v-icon>fal {{ audioState === 'playing' ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
+  <v-btn icon @click="playPauseAll" :disabled="state === 'stopped'">
+    <v-icon>fal {{ state === 'playing' ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
   </v-btn>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
   name: 'GlobalPlayPause',
 
-  methods: {
-    playPauseAll() {
-      this.$store.commit('sounds/playPauseAll');
-    },
-  },
+  methods: mapMutations('sounds', [
+    'playPauseAll',
+  ]),
 
-  computed: {
-    audioState() {
-      return this.$store.getters['sounds/state'];
-    },
-  },
+  computed: mapGetters('sounds', [
+    'state',
+  ]),
 };
 </script>
 
