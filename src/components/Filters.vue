@@ -2,7 +2,7 @@
   <v-row>
     <v-col class="grow">
       <v-text-field
-        v-model="word"
+        v-model="filters.word"
         label="Filter"
         prepend-inner-icon="fal fa-search v-icon--dense"
         clearable
@@ -10,48 +10,20 @@
       />
     </v-col>
     <v-col class="shrink">
-      <v-switch v-model="playing" label="Playing"/>
+      <v-switch v-model="filters.playing" label="Playing"/>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'Filters',
 
-  computed: {
-    filteredSounds() {
-      if (this.$store.state.sounds.sounds) {
-        let result;
-        if (this.filter.word) {
-          result = this.fuse.search(this.filter.word);
-        } else {
-          result = this.$store.state.sounds.sounds;
-        }
-        if (this.filter.playing) {
-          result = result.filter((e) => e.state !== 'stopped');
-        }
-        return result;
-      }
-      return [];
-    },
-    word: {
-      get() {
-        return this.$store.getters['filters/word'];
-      },
-      set(value) {
-        this.$store.commit('filters/byWord', value);
-      },
-    },
-    playing: {
-      get() {
-        return this.$store.getters['filters/playing'];
-      },
-      set() {
-        this.$store.commit('filters/byPlaying');
-      },
-    },
-  },
+  computed: mapState('filters', [
+    'filters',
+  ]),
 };
 </script>
 
