@@ -20,7 +20,7 @@
       </v-col>
       <v-col class="shrink pr-4">
         <v-btn @click.stop="playPause" elevation="0" outlined>
-          <v-icon :dense="true">
+          <v-icon dense>
             fas fa-fw {{ icon }}
           </v-icon>
         </v-btn>

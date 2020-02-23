@@ -32,7 +32,7 @@
         <v-row>
           <v-col
             cols="12" sm="6" md="4"
-            v-for="sound of $store.getters['filters/sounds']"
+            v-for="sound of filteredSounds"
             :key="sound.id"
           >
             <Sound :sound="sound"/>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import GlobalPlayPause from './components/GlobalPlayPause.vue';
 import UpdateSnackbar from './components/UpdateSnackbar.vue';
 import Filters from './components/Filters.vue';
@@ -62,6 +63,10 @@ export default {
 
   data: () => ({
     drawerOpen: false,
+  }),
+
+  computed: mapGetters('filters', {
+    filteredSounds: 'sounds',
   }),
 
   created() {
