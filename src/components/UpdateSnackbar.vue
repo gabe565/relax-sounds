@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-model="show" :timeout="timeout" bottom left class="pr-4">
+    <v-snackbar v-model="show" :timeout="timeout" bottom left class="pa-4">
       New version available!
       <v-spacer/>
       <v-btn icon @click.native="refreshApp">
