@@ -9,7 +9,7 @@
     </v-app-bar>
 
 
-    <v-navigation-drawer v-model="drawerOpen" absolute bottom temporary>
+    <v-navigation-drawer v-model="drawerOpen" absolute temporary>
       <v-list nav>
         <v-list-item-group>
           <v-list-item link @click="prefetch">
