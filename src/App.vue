@@ -1,18 +1,7 @@
 <template>
   <v-app>
 
-    <v-app-bar app color="accent" dark hide-on-scroll>
-      <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
-      <v-toolbar-title>
-        <v-icon class="mr-2">fas fa-bed-alt</v-icon>
-        Relax Sounds
-      </v-toolbar-title>
-      <v-spacer/>
-      <GlobalPlayPause/>
-    </v-app-bar>
-
-
-    <v-navigation-drawer v-model="drawerOpen" absolute temporary>
+    <v-navigation-drawer app bottom temporary v-model="drawerOpen">
       <v-list nav>
         <v-list-item-group>
           <v-list-item link @click="prefetch">
@@ -26,6 +15,16 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+
+    <v-app-bar app dark collapse-on-scroll color="accent">
+      <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
+      <v-toolbar-title>
+        <v-icon class="mr-2">fas fa-bed-alt</v-icon>
+        Relax Sounds
+      </v-toolbar-title>
+      <v-spacer/>
+      <GlobalPlayPause/>
+    </v-app-bar>
 
     <UpdateSnackbar/>
 
