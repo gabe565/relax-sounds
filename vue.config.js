@@ -7,11 +7,16 @@ module.exports = {
   },
   pwa: {
     name: 'Relax Sounds',
+    themeColor: '#673AB7',
+    msTileColor: '#673AB7',
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black',
+
+    workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       swSrc: './src/service-worker.js',
       swDest: 'service-worker.js',
     },
-    workboxPluginMode: 'InjectManifest',
   },
   transpileDependencies: [
     'vuetify',

@@ -1,9 +1,12 @@
 <template>
   <v-app>
 
-    <v-app-bar app color="primary" dark hide-on-scroll>
+    <v-app-bar app color="accent" dark hide-on-scroll>
       <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
-      <v-toolbar-title>Relax Sounds</v-toolbar-title>
+      <v-toolbar-title>
+        <v-icon class="mr-2">fas fa-bed-alt</v-icon>
+        Relax Sounds
+      </v-toolbar-title>
       <v-spacer/>
       <GlobalPlayPause/>
     </v-app-bar>
@@ -68,10 +71,6 @@ export default {
   computed: mapGetters('filters', {
     filteredSounds: 'sounds',
   }),
-
-  created() {
-    this.$vuetify.theme.dark = true;
-  },
 
   methods: {
     toggleDrawer() {

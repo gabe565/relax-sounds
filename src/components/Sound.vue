@@ -1,5 +1,5 @@
 <template>
-  <v-card raised
+  <v-card flat
           outlined
   >
     <v-progress-linear
@@ -12,7 +12,7 @@
     <v-row align="center" justify="center" dense>
       <v-col class="grow">
         <v-card-title class="headline">
-          <v-icon aria-hidden="true" class="mr-4">
+          <v-icon aria-hidden="true" class="mr-4" :color="iconColor">
             {{ iconStyle }} {{ sound.icon }} fa-fw no-transition
           </v-icon>
           {{ sound.name }}
@@ -51,6 +51,10 @@ export default {
 
     iconStyle() {
       return this.sound.state === 'stopped' ? 'fal' : 'fas';
+    },
+
+    iconColor() {
+      return this.sound.state !== 'stopped' ? 'primary' : '';
     },
 
     icon() {
