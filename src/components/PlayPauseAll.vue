@@ -8,14 +8,14 @@
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: 'GlobalPlayPause',
-
-  methods: mapActions('sounds', [
-    'playPauseAll',
-  ]),
+  name: 'PlayPauseAll',
 
   computed: mapGetters('sounds', [
     'state',
+  ]),
+
+  methods: mapActions('sounds', [
+    'playPauseAll',
   ]),
 };
 </script>

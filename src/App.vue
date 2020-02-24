@@ -16,14 +16,15 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app dark collapse-on-scroll color="accent">
+    <v-app-bar app dark hide-on-scroll color="accent">
       <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
       <v-toolbar-title>
         <v-icon class="mr-2">fas fa-bed-alt</v-icon>
         Relax Sounds
       </v-toolbar-title>
       <v-spacer/>
-      <GlobalPlayPause/>
+      <PlayPauseAll/>
+      <StopAll/>
     </v-app-bar>
 
     <UpdateSnackbar/>
@@ -48,7 +49,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import GlobalPlayPause from './components/GlobalPlayPause.vue';
+import PlayPauseAll from './components/PlayPauseAll.vue';
+import StopAll from './components/StopAll.vue';
 import UpdateSnackbar from './components/UpdateSnackbar.vue';
 import Filters from './components/Filters.vue';
 import Sound from './components/Sound.vue';
@@ -57,7 +59,8 @@ export default {
   name: 'App',
 
   components: {
-    GlobalPlayPause,
+    StopAll,
+    PlayPauseAll,
     UpdateSnackbar,
     Sound,
     Filters,

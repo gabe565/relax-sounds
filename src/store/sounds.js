@@ -89,6 +89,13 @@ export default {
         }
       });
     },
+    stopAll({ commit, state }) {
+      state.sounds.filter(
+        (sound) => sound.state !== 'stopped',
+      ).forEach((sound) => {
+        commit('stop', { sound });
+      });
+    },
     async prefetch({ state }) {
       return Promise.all(state.sounds.map(async (sound) => {
         sound.loading = true;
