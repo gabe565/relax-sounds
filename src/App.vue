@@ -6,7 +6,7 @@
         <v-list-item-group>
           <v-list-item link @click="prefetch">
             <v-list-item-avatar>
-              <v-icon>fal fa-download</v-icon>
+              <v-icon aria-hidden="true">fal fa-download</v-icon>
             </v-list-item-avatar>
             <v-list-item-title>
               Preload All
@@ -19,7 +19,7 @@
     <v-app-bar app dark hide-on-scroll color="accent">
       <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
       <v-toolbar-title>
-        <v-icon class="mr-2">fas fa-bed-alt</v-icon>
+        <v-icon aria-hidden="true" class="mr-2">fas fa-bed-alt</v-icon>
         Relax Sounds
       </v-toolbar-title>
       <v-spacer/>
