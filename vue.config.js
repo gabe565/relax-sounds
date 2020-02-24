@@ -5,6 +5,7 @@ module.exports = {
       return args;
     });
   },
+  publicPath: './',
   pwa: {
     name: 'Relax Sounds',
     themeColor: '#673AB7',
