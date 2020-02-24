@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js';
 
-import sounds from '../sounds';
+import sounds from '../../sounds';
 
 const fuse = new Fuse(sounds, {
   shouldSort: true,

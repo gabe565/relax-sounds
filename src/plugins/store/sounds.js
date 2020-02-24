@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import sounds from '../sounds';
+import sounds from '../../sounds';
 
 export default {
   namespaced: true,
