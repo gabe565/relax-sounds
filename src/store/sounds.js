@@ -85,7 +85,7 @@ export default {
         if (newState === 'paused') {
           commit('pause', { sound });
         } else {
-          commit('play', { sound });
+          commit('play', { sound, fade: false });
         }
       });
     },
