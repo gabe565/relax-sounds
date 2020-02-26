@@ -3,7 +3,7 @@ import { Howl } from 'howler';
 import defaultSounds from './assets/sounds.json';
 
 export default defaultSounds.map((sound) => {
-  const src = `./audio/${sound.id}.ogg`;
+  const src = `/audio/${sound.id}.ogg`;
   return {
     ...sound,
     state: 'stopped',
