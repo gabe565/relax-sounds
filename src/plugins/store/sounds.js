@@ -22,6 +22,7 @@ export default {
       }
       return 'stopped';
     },
+    soundById: (state) => (id) => state.sounds.find((sound) => sound.id === id),
   },
 
   mutations: {

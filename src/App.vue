@@ -24,6 +24,8 @@
       </v-toolbar-title>
 
       <v-spacer/>
+
+      <SavePlaylist/>
       <PlayPauseAll/>
       <StopAll/>
 
@@ -47,6 +49,7 @@
 </template>
 
 <script>
+import SavePlaylist from './components/SavePlaylist.vue';
 import PlayPauseAll from './components/PlayPauseAll.vue';
 import StopAll from './components/StopAll.vue';
 import UpdateSnackbar from './components/UpdateSnackbar.vue';
@@ -55,6 +58,7 @@ export default {
   name: 'App',
 
   components: {
+    SavePlaylist,
     StopAll,
     PlayPauseAll,
     UpdateSnackbar,
