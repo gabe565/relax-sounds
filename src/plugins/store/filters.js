@@ -1,6 +1,7 @@
 import Fuse from 'fuse.js';
-
 import sounds from '../../sounds';
+
+const PER_PAGE = 48;
 
 const fuse = new Fuse(sounds, {
   shouldSort: true,
@@ -18,27 +19,32 @@ const fuse = new Fuse(sounds, {
 export default {
   namespaced: true,
   state: {
-    fuse,
     filters: {
       word: '',
       playing: false,
+      page: 1,
     },
   },
   getters: {
-    sounds(state, _, rootState) {
-      if (rootState.sounds.sounds) {
-        let result;
-        if (state.filters.word) {
-          result = state.fuse.search(state.filters.word);
-        } else {
-          result = rootState.sounds.sounds;
-        }
-        if (state.filters.playing) {
-          result = result.filter((e) => e.state !== 'stopped');
-        }
-        return result;
+    filteredSounds(state, _, rootState) {
+      let result;
+      if (state.filters.word) {
+        result = fuse.search(state.filters.word);
+      } else {
+        result = rootState.sounds.sounds;
       }
-      return [];
+      if (state.filters.playing) {
+        result = result.filter((e) => e.state !== 'stopped');
+      }
+      return result;
+    },
+    sounds(state, getters) {
+      const result = getters.filteredSounds;
+      const offset = PER_PAGE * (state.filters.page - 1);
+      return result.slice(offset, offset + PER_PAGE);
+    },
+    pages(_, getters) {
+      return Math.ceil(getters.filteredSounds.length / PER_PAGE);
     },
   },
 };

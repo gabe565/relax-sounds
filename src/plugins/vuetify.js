@@ -14,6 +14,8 @@ export default new Vuetify({
       clear: 'fal fa-times',
       close: 'fal fa-times',
       menu: 'fal fa-bars',
+      next: 'fal fa-angle-right',
+      prev: 'fal fa-angle-left',
     },
   },
   theme: {
