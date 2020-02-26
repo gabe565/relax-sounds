@@ -36,12 +36,18 @@ export default {
       sound.state = 'paused';
       sound.player.pause();
     },
-    stop(state, { sound }) {
+    stop(state, { sound, fade = 500 }) {
       sound.state = 'stopped';
-      sound.player.once('fade', async () => {
+      if (fade) {
+        sound.player.once('fade', async () => {
+          sound.player.stop();
+          sound.player.unload();
+        });
+        sound.player.fade(sound.player.volume(), 0, 500);
+      } else {
         sound.player.stop();
-      });
-      sound.player.fade(sound.player.volume(), 0, 500);
+        sound.player.unload();
+      }
     },
     volume(state, { sound, value }) {
       sound.player.volume(value);
@@ -67,13 +73,14 @@ export default {
       }
       return true;
     },
-    playPause({ commit }, { sound }) {
+    async playStop({ commit, dispatch }, { sound, fade = 500 }) {
       if (sound.player.playing()) {
-        commit('stop', { sound });
-      } else if (sound.player.state() === 'loaded') {
-        commit('play', { sound });
+        commit('stop', { sound, fade });
       } else {
-        commit('load', { sound });
+        if (sound.player.state() === 'unloaded') {
+          await dispatch('load', { sound });
+        }
+        commit('play', { sound, fade });
       }
     },
     playPauseAll({ commit, state }) {
@@ -89,11 +96,11 @@ export default {
         }
       });
     },
-    stopAll({ commit, state }) {
+    stopAll({ commit, state }, { fade = 500 }) {
       state.sounds.filter(
         (sound) => sound.state !== 'stopped',
       ).forEach((sound) => {
-        commit('stop', { sound });
+        commit('stop', { sound, fade });
       });
     },
     async prefetch({ state }) {
