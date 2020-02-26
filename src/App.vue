@@ -22,38 +22,34 @@
         <v-icon aria-hidden="true" class="mr-2">fas fa-bed-alt</v-icon>
         Relax Sounds
       </v-toolbar-title>
+
       <v-spacer/>
       <PlayPauseAll/>
       <StopAll/>
+
+      <template v-slot:extension>
+        <v-tabs centered>
+          <v-tab v-for="route in routes" :key="route.path" :to="route.path" exact>
+            <v-icon class="pr-2">fas {{ route.meta.icon }} fa-fw</v-icon>
+            {{ route.name }}
+          </v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
 
     <UpdateSnackbar/>
 
     <v-content>
-      <v-container>
-        <Filters/>
-        <v-row>
-          <v-col
-            cols="12" sm="6" md="4"
-            v-for="sound of filteredSounds"
-            :key="sound.id"
-          >
-            <Sound :sound="sound"/>
-          </v-col>
-        </v-row>
-      </v-container>
+      <router-view/>
     </v-content>
 
   </v-app>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import PlayPauseAll from './components/PlayPauseAll.vue';
 import StopAll from './components/StopAll.vue';
 import UpdateSnackbar from './components/UpdateSnackbar.vue';
-import Filters from './components/Filters.vue';
-import Sound from './components/Sound.vue';
 
 export default {
   name: 'App',
@@ -62,17 +58,17 @@ export default {
     StopAll,
     PlayPauseAll,
     UpdateSnackbar,
-    Sound,
-    Filters,
   },
 
   data: () => ({
     drawerOpen: false,
   }),
 
-  computed: mapGetters('filters', {
-    filteredSounds: 'sounds',
-  }),
+  computed: {
+    routes() {
+      return this.$router.options.routes.filter((route) => !!route.name);
+    },
+  },
 
   methods: {
     toggleDrawer() {
