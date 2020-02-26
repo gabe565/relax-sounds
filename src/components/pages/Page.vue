@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row class="py-5">
+    <v-row class="pa-5">
       <h1 class="display-2">
         {{ title }}
       </h1>
