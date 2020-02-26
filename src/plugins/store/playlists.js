@@ -20,6 +20,10 @@ export default {
       state.playlists.splice(index, 1);
       saveState(state);
     },
+    play(state, { playlist }) {
+      playlist.new = false;
+      saveState(state);
+    },
   },
 
   actions: {
@@ -35,6 +39,7 @@ export default {
         playlist: {
           name,
           sounds,
+          new: true,
         },
       });
     },
@@ -47,6 +52,7 @@ export default {
     },
 
     async play({ commit, dispatch, rootGetters }, { playlist }) {
+      commit('play', { playlist });
       dispatch('sounds/stopAll', { fade: 0 }, { root: true });
       await Promise.all(playlist.sounds.map(async (savedSound) => {
         const sound = rootGetters['sounds/soundById'](savedSound.id);

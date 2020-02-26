@@ -1,6 +1,8 @@
 <template>
   <v-card flat
           outlined
+          :color="playlist.new ? 'deep-purple' : ''"
+          transition="fade-transition"
   >
     <v-row align="center" justify="center" dense>
       <v-col class="grow">
@@ -9,7 +11,14 @@
         </v-card-title>
       </v-col>
       <v-col class="shrink">
-        <v-btn @click.stop="dialog = true" elevation="0" outlined>
+        <v-btn @click.stop="shareDialog = true" elevation="0" outlined>
+          <v-icon dense>
+            fas fa-fw fa-share
+          </v-icon>
+        </v-btn>
+      </v-col>
+      <v-col class="shrink">
+        <v-btn @click.stop="deleteDialog = true" elevation="0" outlined>
           <v-icon dense>
             fas fa-fw fa-trash
           </v-icon>
@@ -24,7 +33,23 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="dialog" max-width="500">
+    <v-dialog v-model="shareDialog" max-width="500">
+      <v-card>
+        <v-card-title class="headline">Share Playlist</v-card-title>
+        <v-card-text>
+          <v-text-field :value="shareUrl"/>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn text @click="shareDialog = false">
+            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="deleteDialog" max-width="500">
       <v-card>
         <v-card-title class="headline">Delete Playlist?</v-card-title>
         <v-card-text>
@@ -32,7 +57,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
-          <v-btn text @click="dialog = false">
+          <v-btn text @click="deleteDialog = false">
             <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
             Cancel
           </v-btn>
@@ -47,6 +72,8 @@
 </template>
 
 <script>
+import { encode } from '../snippets/shareUrl';
+
 export default {
   name: 'Playlist',
 
@@ -57,8 +84,16 @@ export default {
   },
 
   data: () => ({
-    dialog: false,
+    deleteDialog: false,
+    shareDialog: false,
   }),
+
+  computed: {
+    shareUrl() {
+      const { name, sounds } = encode(this.playlist);
+      return `${window.location.origin}/import/${name}/${sounds}`;
+    },
+  },
 
   methods: {
     async play() {
@@ -74,6 +109,7 @@ export default {
 <style scoped>
   .v-card {
     overflow: hidden;
+    transition: background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
   .v-progress-linear {
     z-index: 0;
