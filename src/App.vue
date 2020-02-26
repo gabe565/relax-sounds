@@ -16,7 +16,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app dark hide-on-scroll color="accent">
+    <v-app-bar app dark hide-on-scroll color="accent" flat>
       <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
       <v-toolbar-title>
         <v-icon aria-hidden="true" class="mr-2">fas fa-bed-alt</v-icon>
@@ -89,8 +89,36 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+  .theme--light {
+    &.v-pagination {
+      .v-pagination__navigation, .v-pagination__item {
+        border: thin solid rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+  .theme--dark {
+    &.v-application {
+      background: #150b29;
+    }
+    &.v-card {
+      background: transparent;
+    }
+    &.v-pagination {
+      .v-pagination__navigation, .v-pagination__item {
+        border: thin solid rgba(255, 255, 255, 0.12);
+        background: transparent;
+      }
+    }
+  }
+
   .fa-spin-2x {
     animation: fa-spin 750ms infinite linear;
+  }
+
+  .v-pagination__navigation, .v-pagination__item {
+    box-shadow: none;
+    outline: none;
+    transition: 0.2s cubic-bezier(0, 0.5, 0.2, 1);
   }
 </style>
