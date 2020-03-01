@@ -6,7 +6,7 @@
       v-model="volumePercentage"
       absolute
       height="100%"
-      color="secondary"
+      color="deep-purple darken-2"
       v-if="sound.state !== 'stopped'"
     />
     <v-row align="center" justify="center" dense>
