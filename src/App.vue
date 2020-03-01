@@ -111,7 +111,11 @@ export default {
     &.v-pagination {
       .v-pagination__navigation, .v-pagination__item {
         border: thin solid rgba(255, 255, 255, 0.12);
-        background: transparent;
+        background: transparent !important;
+
+        &.v-pagination__item--active {
+          background: rgba(255, 255, 255, 0.08) !important;
+        }
       }
     }
   }

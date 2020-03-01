@@ -1,0 +1,23 @@
+{
+  "water": {
+    "name": "Water"
+  },
+  "nature": {
+    "name": "Nature"
+  },
+  "city": {
+    "name": "City"
+  },
+  "music": {
+    "name": "Music"
+  },
+  "animal": {
+    "name": "Animal"
+  },
+  "white noise": {
+    "name": "White Noise"
+  },
+  "brain wave": {
+    "name": "Brain Wave"
+  }
+}

@@ -1,6 +1,6 @@
 import { Howl } from 'howler';
 
-import defaultSounds from './assets/sounds.json';
+import defaultSounds from './data/sounds.json';
 
 export default defaultSounds.map((sound) => {
   const src = `/audio/${sound.id}.ogg`;
