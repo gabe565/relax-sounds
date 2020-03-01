@@ -52,6 +52,12 @@ export default {
     ...mapState('filters', ['filters']),
     ...mapGetters('filters', ['pages']),
   },
+
+  watch: {
+    pages() {
+      this.filters.page = 1;
+    },
+  },
 };
 </script>
 
