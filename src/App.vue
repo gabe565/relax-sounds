@@ -97,12 +97,16 @@ export default {
       }
     }
   }
+
   .theme--dark {
     &.v-application {
       background: #150b29;
-    }
-    &.v-card {
-      background: transparent;
+
+      & > .v-application--wrap {
+        .v-card {
+          background: transparent;
+        }
+      }
     }
     &.v-pagination {
       .v-pagination__navigation, .v-pagination__item {
