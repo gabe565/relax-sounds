@@ -8,6 +8,11 @@
       >
         <Playlist :playlist="playlist"/>
       </v-col>
+      <v-col v-if="playlists.length === 0">
+        <v-alert outlined color="warning" icon="fal fa-info-circle">
+          No Playlists Saved Yet!
+        </v-alert>
+      </v-col>
     </v-row>
   </Page>
 </template>
