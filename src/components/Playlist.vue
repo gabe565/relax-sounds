@@ -1,7 +1,7 @@
 <template>
   <v-card flat
           outlined
-          :color="playlist.new ? 'deep-purple' : ''"
+          :color="playlist.new ? 'deep-purple darken-2' : ''"
           transition="fade-transition"
   >
     <v-row align="center" justify="center" dense>
