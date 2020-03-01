@@ -95,6 +95,9 @@ export default {
       .v-pagination__navigation, .v-pagination__item {
         border: thin solid rgba(0, 0, 0, 0.12);
       }
+      .v-pagination__item--active {
+        color: rgba(0, 0, 0, 0.87);
+      }
     }
   }
 
@@ -112,10 +115,14 @@ export default {
       .v-pagination__navigation, .v-pagination__item {
         border: thin solid rgba(255, 255, 255, 0.12);
         background: transparent !important;
+      }
+    }
+  }
 
-        &.v-pagination__item--active {
-          background: rgba(255, 255, 255, 0.08) !important;
-        }
+  .v-application {
+    .v-pagination {
+      .v-pagination__item--active {
+        background-color: rgba(255, 255, 255, 0.08) !important;
       }
     }
   }
