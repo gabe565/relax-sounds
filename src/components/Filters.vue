@@ -7,7 +7,6 @@
           label="Filter"
           prepend-inner-icon="fal fa-search v-icon--dense"
           clearable
-          autofocus
           single-line
         />
       </v-col>
