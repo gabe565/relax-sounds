@@ -1,6 +1,6 @@
 <template>
   <v-btn icon @click="prompting = !prompting" :disabled="state === 'stopped'">
-    <v-icon>fal fa-plus-circle</v-icon>
+    <v-icon>fas fa-plus-circle</v-icon>
     <v-dialog v-model="prompting" max-width="500">
       <v-card>
         <v-card-title class="headline">Playlist Name</v-card-title>

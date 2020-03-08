@@ -1,6 +1,6 @@
 <template>
   <v-btn icon @click="stopAll" :disabled="state === 'stopped'">
-    <v-icon>fal fa-stop-circle</v-icon>
+    <v-icon>fas fa-stop-circle</v-icon>
   </v-btn>
 </template>
 

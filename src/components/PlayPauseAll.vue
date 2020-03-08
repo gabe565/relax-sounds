@@ -1,6 +1,6 @@
 <template>
   <v-btn icon @click="playPauseAll" :disabled="state === 'stopped'">
-    <v-icon>fal {{ state === 'playing' ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
+    <v-icon>fas {{ state === 'playing' ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
   </v-btn>
 </template>
 

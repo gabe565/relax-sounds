@@ -6,7 +6,7 @@
         <v-list-item-group>
           <v-list-item link @click="prefetch">
             <v-list-item-avatar>
-              <v-icon aria-hidden="true">fal fa-download</v-icon>
+              <v-icon aria-hidden="true">fas fa-download</v-icon>
             </v-list-item-avatar>
             <v-list-item-title>
               Preload All
@@ -46,7 +46,6 @@
         <router-view/>
       </keep-alive>
     </v-content>
-
   </v-app>
 </template>
 
