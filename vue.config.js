@@ -15,7 +15,9 @@ module.exports = {
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       swSrc: './src/service-worker.js',
-      swDest: 'service-worker.js',
+      exclude: [
+        'audio/',
+      ],
     },
   },
   transpileDependencies: [
