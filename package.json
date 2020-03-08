@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-pro": "^5.12.1",
-    "axios": "^0.19.2",
     "base64-url": "^2.3.3",
     "core-js": "^3.6.4",
     "fuse.js": "^3.4.6",

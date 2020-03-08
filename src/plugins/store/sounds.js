@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import sounds from '../../sounds';
 
 export default {
@@ -105,9 +103,10 @@ export default {
       });
     },
     async prefetch({ state }) {
-      return Promise.all(state.sounds.map(async (sound) => {
+      const cache = await window.caches.open('audio-cache');
+      await Promise.all(state.sounds.map(async (sound) => {
         sound.loading = true;
-        await axios.get(sound.src);
+        await cache.add(sound.src);
         sound.loading = false;
       }));
     },
