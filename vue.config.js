@@ -16,7 +16,11 @@ module.exports = {
     workboxOptions: {
       swSrc: './src/service-worker.js',
       exclude: [
-        'audio/',
+        /^audio\//,
+        /\.map$/,
+        /img\/icons\//,
+        /favicon\.ico$/,
+        /^manifest.*\.js?$/,
       ],
     },
   },
