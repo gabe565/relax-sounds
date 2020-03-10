@@ -1088,5 +1088,14 @@
     "tags": [
       "music"
     ]
+  },
+  {
+    "icon": "fa-starship",
+    "id": 139,
+    "name": "USS Enterprise",
+    "tags": [
+      "sci-fi",
+      "star trek"
+    ]
   }
 ]
