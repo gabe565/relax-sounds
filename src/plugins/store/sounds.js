@@ -79,6 +79,9 @@ export default {
         if (sound.player.state() === 'unloaded') {
           await dispatch('load', { sound });
         }
+        if (sound.state === 'paused') {
+          fade = false;
+        }
         commit('play', { sound, fade });
       }
     },
