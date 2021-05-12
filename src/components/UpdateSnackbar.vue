@@ -23,7 +23,7 @@ export default {
     refreshing: false,
     registration: null,
     show: false,
-    timeout: 0,
+    timeout: -1,
   }),
 
   created() {

@@ -41,11 +41,11 @@
 
     <UpdateSnackbar/>
 
-    <v-content>
+    <v-main>
       <keep-alive>
         <router-view/>
       </keep-alive>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 

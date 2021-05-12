@@ -29,7 +29,7 @@ export default {
     filteredSounds(state, _, rootState) {
       let result;
       if (state.filters.word) {
-        result = fuse.search(state.filters.word);
+        result = fuse.search(state.filters.word).map((e) => e.item);
       } else {
         result = rootState.sounds.sounds;
       }

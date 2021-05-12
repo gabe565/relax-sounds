@@ -1,4 +1,3 @@
-
 const defaultState = {
   playlists: [],
 };
