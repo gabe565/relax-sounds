@@ -11,21 +11,21 @@
         </v-card-title>
       </v-col>
       <v-col class="shrink">
-        <v-btn @click.stop="shareDialog = true" elevation="0" outlined>
+        <v-btn @click.stop="shareDialog = true" elevation="0" icon>
           <v-icon dense>
             fas fa-fw fa-share
           </v-icon>
         </v-btn>
       </v-col>
       <v-col class="shrink">
-        <v-btn @click.stop="deleteDialog = true" elevation="0" outlined>
+        <v-btn @click.stop="deleteDialog = true" elevation="0" icon>
           <v-icon dense>
             fas fa-fw fa-trash
           </v-icon>
         </v-btn>
       </v-col>
       <v-col class="shrink pr-4">
-        <v-btn @click.stop="play" elevation="0" outlined>
+        <v-btn @click.stop="play" elevation="0" icon>
           <v-icon dense>
             fas fa-fw fa-play
           </v-icon>

@@ -19,7 +19,7 @@
         </v-card-title>
       </v-col>
       <v-col class="shrink pr-4">
-        <v-btn @click.stop="playStop" elevation="0" outlined>
+        <v-btn @click.stop="playStop" elevation="0" icon>
           <v-icon dense>
             fas fa-fw {{ icon }}
           </v-icon>
