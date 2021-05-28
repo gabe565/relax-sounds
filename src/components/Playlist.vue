@@ -93,11 +93,15 @@ export default {
       const { name, sounds } = encode(this.playlist);
       return `${window.location.origin}/import/${name}/${sounds}`;
     },
+    downloadUrl() {
+      const { sounds } = encode(this.playlist);
+      return `${window.location.origin}/mix/${sounds}`;
+    },
   },
 
   methods: {
-    async play() {
-      await this.$store.dispatch('playlists/play', { playlist: this.playlist });
+    play() {
+      this.$store.dispatch('playlists/play', { playlist: this.playlist });
     },
     remove() {
       this.$store.commit('playlists/remove', { playlist: this.playlist });
