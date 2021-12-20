@@ -10,11 +10,11 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'PlayPauseAll',
 
-  computed: mapGetters('sounds', [
+  computed: mapGetters('player', [
     'state',
   ]),
 
-  methods: mapActions('sounds', [
+  methods: mapActions('player', [
     'playPauseAll',
   ]),
 };

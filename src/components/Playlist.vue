@@ -18,6 +18,13 @@
         </v-btn>
       </v-col>
       <v-col class="shrink">
+        <v-btn @click.stop="downloadDialog = true" elevation="0" icon>
+          <v-icon dense>
+            fas fa-fw fa-download
+          </v-icon>
+        </v-btn>
+      </v-col>
+      <v-col class="shrink">
         <v-btn @click.stop="deleteDialog = true" elevation="0" icon>
           <v-icon dense>
             fas fa-fw fa-trash
@@ -49,6 +56,22 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model="downloadDialog" max-width="500">
+      <v-card>
+        <v-card-title class="headline">Download Playlist</v-card-title>
+        <v-card-text>
+          <v-btn :href="downloadUrl" target="_blank">Stream</v-btn>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn text @click="downloadDialog = false">
+            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="deleteDialog" max-width="500">
       <v-card>
         <v-card-title class="headline">Delete Playlist?</v-card-title>
@@ -72,7 +95,7 @@
 </template>
 
 <script>
-import { encode } from '../snippets/shareUrl';
+import { encode } from '../util/shareUrl';
 
 export default {
   name: 'Playlist',
@@ -86,6 +109,7 @@ export default {
   data: () => ({
     deleteDialog: false,
     shareDialog: false,
+    downloadDialog: false,
   }),
 
   computed: {

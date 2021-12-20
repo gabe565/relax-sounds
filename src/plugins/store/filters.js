@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js';
-import sounds from '../../sounds';
+import { sounds } from '../../util/sounds';
 
 const PER_PAGE = 48;
 
@@ -31,10 +31,10 @@ export default {
       if (state.filters.word) {
         result = fuse.search(state.filters.word).map((e) => e.item);
       } else {
-        result = rootState.sounds.sounds;
+        result = rootState.player.sounds;
       }
       if (state.filters.playing) {
-        result = result.filter((e) => e.state !== 'stopped');
+        result = result.filter((e) => !e.isStopped);
       }
       return result;
     },

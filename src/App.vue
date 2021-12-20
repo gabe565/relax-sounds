@@ -25,6 +25,7 @@
 
       <v-spacer/>
 
+      <google-cast-launcher class="v-btn v-btn--icon theme--dark v-size--default"/>
       <SavePlaylist/>
       <PlayPauseAll/>
       <StopAll/>
@@ -54,6 +55,7 @@ import SavePlaylist from './components/SavePlaylist.vue';
 import PlayPauseAll from './components/PlayPauseAll.vue';
 import StopAll from './components/StopAll.vue';
 import UpdateSnackbar from './components/UpdateSnackbar.vue';
+import { prefetch } from './util/sounds';
 
 export default {
   name: 'App',
@@ -82,7 +84,7 @@ export default {
 
     prefetch() {
       this.toggleDrawer();
-      this.$store.dispatch('sounds/prefetch');
+      prefetch();
     },
   },
 };

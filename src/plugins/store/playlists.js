@@ -1,3 +1,5 @@
+import { castPlaylist, getCastSession } from '../../util/googleCast';
+
 const defaultState = {
   playlists: [],
 };
@@ -45,20 +47,30 @@ export default {
 
     load({ dispatch, rootGetters }, { playlist }) {
       return Promise.all(playlist.sounds.map((savedSound) => {
-        const sound = rootGetters['sounds/soundById'](savedSound.id);
-        return dispatch('sounds/load', { sound }, { root: true });
+        const sound = rootGetters['player/soundById'](savedSound.id);
+        return dispatch('player/load', { sound }, { root: true });
       }));
     },
 
     async play({ commit, dispatch, rootGetters }, { playlist }) {
       commit('play', { playlist });
-      dispatch('sounds/stopAll', { fade: 0 }, { root: true });
-      await Promise.all(playlist.sounds.map(async (savedSound) => {
-        const sound = rootGetters['sounds/soundById'](savedSound.id);
-        commit('sounds/volume', { sound, value: savedSound.volume }, { root: true });
-        const fade = rootGetters['sounds/state'] === 'stopped' ? 500 : false;
-        return dispatch('sounds/playStop', { sound, fade }, { root: true });
-      }));
+      dispatch('player/stopAll', { fade: 0 }, { root: true });
+      const castSession = getCastSession();
+      if (castSession) {
+        try {
+          const result = await castPlaylist(castSession, playlist);
+          console.log(result);
+        } catch (error) {
+          console.log(`Error code: ${error}`);
+        }
+      } else {
+        await Promise.all(playlist.sounds.map(async (savedSound) => {
+          const sound = rootGetters['player/soundById'](savedSound.id);
+          sound.volume = savedSound.volume;
+          const fade = rootGetters['player/state'] === 'stopped' ? 500 : false;
+          return dispatch('player/playStop', { sound, fade }, { root: true });
+        }));
+      }
     },
   },
 };

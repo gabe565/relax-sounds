@@ -36,7 +36,7 @@ export default {
     name: '',
   }),
 
-  computed: mapGetters('sounds', [
+  computed: mapGetters('player', [
     'state',
   ]),
 

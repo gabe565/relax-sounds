@@ -1,4 +1,4 @@
-FROM node:12-alpine AS builder
+    FROM node:12-alpine AS builder
 
 WORKDIR /app
 RUN apk add --no-cache g++ make python3

@@ -7,7 +7,7 @@
       absolute
       height="100%"
       color="deep-purple darken-2"
-      v-if="sound.state !== 'stopped'"
+      v-if="!sound.isStopped"
     />
     <v-row align="center" justify="center" dense>
       <v-col class="grow">
@@ -45,23 +45,24 @@ export default {
         return this.sound.volume * 100;
       },
       set(newValue) {
-        this.$store.commit('sounds/volume', { sound: this.sound, value: newValue / 100 });
+        // eslint-disable-next-line vue/no-mutating-props
+        this.sound.volume = newValue / 100;
       },
     },
 
     iconStyle() {
-      return this.sound.state === 'stopped' ? 'fal' : 'fas';
+      return this.sound.isStopped ? 'fal' : 'fas';
     },
 
     iconColor() {
-      return this.sound.state !== 'stopped' ? 'primary' : '';
+      return this.sound.isStopped ? '' : 'primary';
     },
 
     icon() {
-      if (this.sound.loading) {
+      if (this.sound.isLoading) {
         return 'fa-spinner-third fa-spin-2x';
       }
-      if (this.sound.state === 'playing') {
+      if (this.sound.isPlaying) {
         return 'fa-stop';
       }
       return 'fa-play';
@@ -70,7 +71,7 @@ export default {
 
   methods: {
     async playStop() {
-      return this.$store.dispatch('sounds/playStop', { sound: this.sound });
+      return this.$store.dispatch('player/playStop', { sound: this.sound });
     },
   },
 };

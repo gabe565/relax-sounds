@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from './store/main';
-import { decode } from '../snippets/shareUrl';
+import { decode } from '../util/shareUrl';
 import SoundsPage from '../components/pages/SoundsPage.vue';
 import PlaylistsPage from '../components/pages/PlaylistsPage.vue';
 import NotFoundPage from '../components/pages/NotFoundPage.vue';
