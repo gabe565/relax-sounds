@@ -26,13 +26,13 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	defer s.Close()
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			// Invalid file ID returns 400
-			http.Error(res, http.StatusText(400), 400)
+			// Invalid file ID returns 404
+			http.Error(res, http.StatusText(404), 404)
 			return
 		} else {
 			// Other errors return 500
 			http.Error(res, http.StatusText(500), 500)
-			return
+			panic(err)
 		}
 	}
 
