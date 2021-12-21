@@ -1,3 +1,5 @@
+//go:generate npm run build
+
 package main
 
 import (
