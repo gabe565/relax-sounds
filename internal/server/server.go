@@ -5,6 +5,7 @@ import (
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"io/fs"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -16,7 +17,7 @@ type Server struct {
 
 const Public = "dist"
 
-func Setup() *chi.Mux {
+func Setup(rootFs fs.FS) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
@@ -31,11 +32,11 @@ func Setup() *chi.Mux {
 	})
 
 	// Static Files
-	fs := http.FileServer(http.Dir(Public))
+	fileserver := http.FileServer(http.FS(rootFs))
 	router.Get("/*", func(res http.ResponseWriter, req *http.Request) {
 		requestPath := filepath.Join(Public, filepath.Clean("/"+req.URL.Path))
 		if _, err := os.Stat(requestPath); !os.IsNotExist(err) {
-			fs.ServeHTTP(res, req)
+			fileserver.ServeHTTP(res, req)
 		} else {
 			router.NotFoundHandler().ServeHTTP(res, req)
 		}
