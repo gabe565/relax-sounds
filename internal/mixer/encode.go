@@ -2,11 +2,28 @@ package mixer
 
 import (
 	"context"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"github.com/faiface/beep"
 	"io"
 )
+
+type header struct {
+	RiffMark      [4]byte
+	FileSize      int32
+	WaveMark      [4]byte
+	FmtMark       [4]byte
+	FormatSize    int32
+	FormatType    int16
+	NumChans      int16
+	SampleRate    int32
+	ByteRate      int32
+	BytesPerFrame int16
+	BitsPerSample int16
+	DataMark      [4]byte
+	DataSize      int32
+}
 
 // Encode writes all audio streamed from s to w in WAVE format.
 //
@@ -30,6 +47,25 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 		encode = format.EncodeSigned
 	default:
 		return fmt.Errorf("encode: invalid precision: %d", format.Precision)
+	}
+
+	h := header{
+		RiffMark:      [4]byte{'R', 'I', 'F', 'F'},
+		FileSize:      -1, // finalization
+		WaveMark:      [4]byte{'W', 'A', 'V', 'E'},
+		FmtMark:       [4]byte{'f', 'm', 't', ' '},
+		FormatSize:    16,
+		FormatType:    1,
+		NumChans:      int16(format.NumChannels),
+		SampleRate:    int32(format.SampleRate),
+		ByteRate:      int32(int(format.SampleRate) * format.NumChannels * format.Precision),
+		BytesPerFrame: int16(format.NumChannels * format.Precision),
+		BitsPerSample: int16(format.Precision) * 8,
+		DataMark:      [4]byte{'d', 'a', 't', 'a'},
+		DataSize:      -1, // finalization
+	}
+	if err := binary.Write(w, binary.LittleEndian, &h); err != nil {
+		return err
 	}
 
 loop:
