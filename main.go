@@ -3,6 +3,7 @@
 package main
 
 import (
+	"flag"
 	"github.com/gabe565/relax-sounds/internal/server"
 	"log"
 	"net/http"
@@ -13,11 +14,15 @@ type StreamMixer struct {
 }
 
 func main() {
+	var err error
+
+	address := flag.String("address", ":3000", "Override listen address.")
+	flag.Parse()
+
 	router := server.Setup()
 
-	addr := "0.0.0.0:3000"
-	log.Println("Listening on " + addr)
-	err := http.ListenAndServe(addr, router)
+	log.Println("Listening on " + *address)
+	err = http.ListenAndServe(*address, router)
 	if err != nil {
 		log.Fatalln(err)
 	}
