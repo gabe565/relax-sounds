@@ -4,9 +4,7 @@ import (
 	"errors"
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"github.com/gabe565/relax-sounds/internal/stream"
-	"github.com/juju/ratelimit"
 	"github.com/viert/go-lame"
-	"io"
 	"net/http"
 	"os"
 	"syscall"
@@ -36,12 +34,8 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	// Create pipe for rate limiter
-	pr, pw := io.Pipe()
-	defer pw.Close()
-
 	// Encode wav to mp3
-	encoder := lame.NewEncoder(pw)
+	encoder := lame.NewEncoder(res)
 	defer encoder.Close()
 	if err = encoder.SetQuality(9); err != nil {
 		panic(err)
@@ -50,30 +44,12 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	copyCh := make(chan error)
-	go func() {
-		// Rate limit to 1Mbps
-		bucket := ratelimit.NewBucketWithRate(125*1024, 125*1024)
-
-		// Copy from the rate limiter to output
-		_, err = io.Copy(res, ratelimit.Reader(pr, bucket))
-		copyCh <- err
-	}()
-
 	// Encode to wav in a Goroutine
 	err = Encode(ctx, encoder, s.Mix(), s.Formats[0])
 	if err != nil {
-		panic(err)
-	}
-
-	_ = pw.Close()
-
-	// Catch copy errors
-	if err = <-copyCh; err != nil {
 		// Ignore broken pipe errors instead of using a context-aware reader
 		if !errors.Is(err, syscall.EPIPE) {
 			panic(err)
 		}
-
 	}
 }
