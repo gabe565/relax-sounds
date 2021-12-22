@@ -5,8 +5,10 @@ import (
 	"github.com/faiface/beep/effects"
 	"github.com/faiface/beep/vorbis"
 	"github.com/gabe565/relax-sounds/internal/playlist"
+	"golang.org/x/sync/errgroup"
 	"os"
 	"path/filepath"
+	"sync"
 )
 
 type Stream struct {
@@ -22,8 +24,8 @@ func (stream *Stream) Close() error {
 	return nil
 }
 
-func (stream *Stream) Add(entry playlist.Entry) error {
-	audiopath := filepath.Join("public/audio", filepath.Clean("/"+entry.Key+".ogg"))
+func (stream *Stream) Add(entry playlist.Entry, mu *sync.Mutex) error {
+	audiopath := filepath.Join("dist/audio", filepath.Clean("/"+entry.Key+".ogg"))
 	infile, err := os.Open(audiopath)
 	if err != nil {
 		return err
@@ -40,6 +42,9 @@ func (stream *Stream) Add(entry playlist.Entry) error {
 		Volume:   entry.Volume,
 		Silent:   false,
 	}
+
+	mu.Lock()
+	defer mu.Unlock()
 	stream.closers = append(stream.closers, streamer)
 	stream.streamers = append(stream.streamers, volumeStreamer)
 	stream.Formats = append(stream.Formats, format)
@@ -56,10 +61,17 @@ func New(plist playlist.Playlist) (stream Stream, err error) {
 		streamers: make([]beep.Streamer, 0, len(plist)),
 		Formats:   make([]beep.Format, 0, len(plist)),
 	}
+
+	var mu sync.Mutex
+	group := errgroup.Group{}
+
 	for _, entry := range plist {
-		if err = s.Add(entry); err != nil {
-			return s, err
-		}
+		entry := entry
+		group.Go(func() error {
+			return s.Add(entry, &mu)
+		})
 	}
-	return s, nil
+
+	err = group.Wait()
+	return s, err
 }
