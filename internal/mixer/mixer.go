@@ -4,11 +4,22 @@ import (
 	"errors"
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"github.com/gabe565/relax-sounds/internal/stream"
+	flag "github.com/spf13/pflag"
 	"github.com/viert/go-lame"
 	"net/http"
 	"os"
 	"syscall"
 )
+
+var (
+	quality int
+	bitrate int
+)
+
+func init() {
+	flag.IntVar(&quality, "quality", 9, "LAME output quality")
+	flag.IntVar(&bitrate, "bitrate", 160, "LAME output bitrate")
+}
 
 func Mix(res http.ResponseWriter, req *http.Request) {
 	var err error
@@ -37,10 +48,10 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	// Encode wav to mp3
 	encoder := lame.NewEncoder(res)
 	defer encoder.Close()
-	if err = encoder.SetQuality(9); err != nil {
+	if err = encoder.SetQuality(quality); err != nil {
 		panic(err)
 	}
-	if err = encoder.SetBrate(160); err != nil {
+	if err = encoder.SetBrate(bitrate); err != nil {
 		panic(err)
 	}
 

@@ -4,8 +4,8 @@ package main
 
 import (
 	"embed"
-	"flag"
 	"github.com/gabe565/relax-sounds/internal/server"
+	flag "github.com/spf13/pflag"
 	"io/fs"
 	"log"
 	"net/http"
