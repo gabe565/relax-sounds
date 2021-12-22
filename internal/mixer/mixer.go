@@ -45,7 +45,7 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// Encode to wav in a Goroutine
-	err = Encode(ctx, encoder, s.Mix(), s.Formats[0])
+	err = Encode(ctx, encoder, s.Mix(), s.Formats[0], false)
 	if err != nil {
 		// Ignore broken pipe errors instead of using a context-aware reader
 		if !errors.Is(err, syscall.EPIPE) {

@@ -28,7 +28,7 @@ type header struct {
 // Encode writes all audio streamed from s to w in WAVE format.
 //
 // Format precision must be 1 or 2 bytes.
-func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Format) (err error) {
+func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Format, includeHeader bool) (err error) {
 	if format.NumChannels <= 0 {
 		return errors.New("encode: invalid number of channels (less than 1)")
 	}
@@ -49,23 +49,25 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 		return fmt.Errorf("encode: invalid precision: %d", format.Precision)
 	}
 
-	h := header{
-		RiffMark:      [4]byte{'R', 'I', 'F', 'F'},
-		FileSize:      -1, // finalization
-		WaveMark:      [4]byte{'W', 'A', 'V', 'E'},
-		FmtMark:       [4]byte{'f', 'm', 't', ' '},
-		FormatSize:    16,
-		FormatType:    1,
-		NumChans:      int16(format.NumChannels),
-		SampleRate:    int32(format.SampleRate),
-		ByteRate:      int32(int(format.SampleRate) * format.NumChannels * format.Precision),
-		BytesPerFrame: int16(format.NumChannels * format.Precision),
-		BitsPerSample: int16(format.Precision) * 8,
-		DataMark:      [4]byte{'d', 'a', 't', 'a'},
-		DataSize:      -1, // finalization
-	}
-	if err := binary.Write(w, binary.LittleEndian, &h); err != nil {
-		return err
+	if includeHeader {
+		h := header{
+			RiffMark:      [4]byte{'R', 'I', 'F', 'F'},
+			FileSize:      -1, // finalization
+			WaveMark:      [4]byte{'W', 'A', 'V', 'E'},
+			FmtMark:       [4]byte{'f', 'm', 't', ' '},
+			FormatSize:    16,
+			FormatType:    1,
+			NumChans:      int16(format.NumChannels),
+			SampleRate:    int32(format.SampleRate),
+			ByteRate:      int32(int(format.SampleRate) * format.NumChannels * format.Precision),
+			BytesPerFrame: int16(format.NumChannels * format.Precision),
+			BitsPerSample: int16(format.Precision) * 8,
+			DataMark:      [4]byte{'d', 'a', 't', 'a'},
+			DataSize:      -1, // finalization
+		}
+		if err := binary.Write(w, binary.LittleEndian, &h); err != nil {
+			return err
+		}
 	}
 
 loop:
