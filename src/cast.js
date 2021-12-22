@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 const initializeCastApi = () => {
   const { cast, chrome } = window;
-  console.log('SETUP');
 
   cast.framework.CastContext.getInstance().setOptions({
     receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
@@ -27,8 +27,3 @@ window['__onGCastApiAvailable'] = (isAvailable) => {
     initializeCastApi();
   }
 };
-
-// const castSdk = document.createElement('script');
-// castSdk.async = true;
-// castSdk.src = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1';
-// document.body.appendChild(castSdk);
