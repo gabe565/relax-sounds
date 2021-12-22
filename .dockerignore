@@ -1,7 +1,9 @@
 .DS_Store
 .dockerignore
 .git
+.idea
 /dist
 Dockerfile
 README.md
 node_modules
+vendor

@@ -1,6 +1,23 @@
-    FROM node:12-alpine AS builder
+ARG GO_VERSION=1.17
+ARG NODE_VERSION=14
 
+FROM golang:$GO_VERSION-alpine as go-builder
 WORKDIR /app
+
+RUN apk add --no-cache gcc g++ lame-dev
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+RUN mkdir dist \
+    && touch dist/test \
+    && go build -ldflags="-w -s"
+
+
+FROM node:$NODE_VERSION-alpine AS node-builder
+WORKDIR /app
+
 RUN apk add --no-cache g++ make python3
 
 COPY package.json package-lock.json .npmrc ./
@@ -10,10 +27,10 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# Final Image
-FROM nginx:stable-alpine
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-CMD ["nginx", "-g", "daemon off;"]
+FROM alpine
+WORKDIR /app
+RUN apk add --no-cache lame
+COPY --from=go-builder /app/relax-sounds ./
+COPY --from=node-builder /app/dist dist/
+CMD ["./relax-sounds", "--static=dist"]
