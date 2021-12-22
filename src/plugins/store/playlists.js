@@ -29,7 +29,7 @@ export default {
 
   actions: {
     savePlaying({ commit, rootState }, { name }) {
-      const sounds = rootState.sounds.sounds
+      const sounds = rootState.player.sounds
         .filter((sound) => sound.state === 'playing')
         .map((sound) => ({
           id: sound.id,
