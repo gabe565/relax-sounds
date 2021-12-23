@@ -118,8 +118,8 @@ export default {
       return `${window.location.origin}/import/${name}/${sounds}`;
     },
     downloadUrl() {
-      const { sounds } = encode(this.playlist);
-      return `${window.location.origin}/mix/${sounds}`;
+      const { name, sounds } = encode(this.playlist);
+      return `${window.location.origin}/mix/${name}/${sounds}`;
     },
   },
 

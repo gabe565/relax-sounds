@@ -24,7 +24,7 @@ func (stream *Stream) Close() error {
 	return nil
 }
 
-func (stream *Stream) Add(entry playlist.Entry, mu *sync.Mutex) error {
+func (stream *Stream) Add(entry playlist.Track, mu *sync.Mutex) error {
 	audiopath := filepath.Join("dist/audio", filepath.Clean("/"+entry.Key+".ogg"))
 	infile, err := os.Open(audiopath)
 	if err != nil {
@@ -57,15 +57,15 @@ func (stream *Stream) Mix() beep.Streamer {
 
 func New(plist playlist.Playlist) (stream Stream, err error) {
 	s := Stream{
-		closers:   make([]beep.StreamSeekCloser, 0, len(plist)),
-		streamers: make([]beep.Streamer, 0, len(plist)),
-		Formats:   make([]beep.Format, 0, len(plist)),
+		closers:   make([]beep.StreamSeekCloser, 0, len(plist.Tracks)),
+		streamers: make([]beep.Streamer, 0, len(plist.Tracks)),
+		Formats:   make([]beep.Format, 0, len(plist.Tracks)),
 	}
 
 	var mu sync.Mutex
 	group := errgroup.Group{}
 
-	for _, entry := range plist {
+	for _, entry := range plist.Tracks {
 		entry := entry
 		group.Go(func() error {
 			return s.Add(entry, &mu)

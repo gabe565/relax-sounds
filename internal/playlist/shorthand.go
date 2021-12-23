@@ -7,14 +7,14 @@ import (
 
 var ErrInvalidShorthand = errors.New("invalid shorthand")
 
-type ShorthandEntry [2]interface{}
+type ShorthandTrack [2]interface{}
 
-type Shorthand []ShorthandEntry
+type PlaylistShorthand []ShorthandTrack
 
-func (shorthand Shorthand) ToPlaylist() (Playlist, error) {
-	playlist := make(Playlist, 0, len(shorthand))
+func (shorthand PlaylistShorthand) ToPlaylist() (Playlist, error) {
+	playlist := Playlist{}
 	for _, value := range shorthand {
-		playlist = append(playlist, Entry{
+		playlist.Add(Track{
 			Key:    fmt.Sprintf("%v", value[0]),
 			Volume: value[1].(float64) - 1,
 		})

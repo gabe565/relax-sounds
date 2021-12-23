@@ -1,20 +1,27 @@
 package playlist
 
-type Entry struct {
+type Track struct {
 	Key    string
 	Volume float64
 }
 
-func (entry Entry) ToShorthand() ShorthandEntry {
-	return ShorthandEntry{entry.Key, entry.Volume}
+func (entry Track) ToShorthand() ShorthandTrack {
+	return ShorthandTrack{entry.Key, entry.Volume}
 }
 
-type Playlist []Entry
+type Playlist struct {
+	Name string
+	Tracks []Track
+}
 
-func (playlist Playlist) ToShorthand() Shorthand {
-	shorthand := make(Shorthand, 0, len(playlist))
-	for _, entry := range playlist {
-		shorthand = append(shorthand, entry.ToShorthand())
+func (playlist Playlist) ToShorthand() PlaylistShorthand {
+	shorthand := PlaylistShorthand{}
+	for _, track := range playlist.Tracks {
+		shorthand = append(shorthand, track.ToShorthand())
 	}
 	return shorthand
+}
+
+func (playlist *Playlist) Add(tracks ...Track) {
+	playlist.Tracks = append(playlist.Tracks, tracks...)
 }

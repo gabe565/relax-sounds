@@ -18,7 +18,7 @@ func DecoderMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		var entries Shorthand
+		var entries PlaylistShorthand
 		if err = json.Unmarshal(data, &entries); err != nil {
 			http.Error(res, http.StatusText(400), 400)
 			return
@@ -29,6 +29,7 @@ func DecoderMiddleware(next http.Handler) http.Handler {
 			http.Error(res, http.StatusText(400), 400)
 			return
 		}
+		playlist.Name = chi.URLParam(req, "name")
 
 		ctx := context.WithValue(req.Context(), "playlist", playlist)
 
