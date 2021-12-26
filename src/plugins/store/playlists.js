@@ -23,8 +23,10 @@ export default {
       saveState(state);
     },
     play(state, { playlist }) {
-      playlist.new = false;
-      saveState(state);
+      if (playlist.new) {
+        playlist.new = false;
+        saveState(state);
+      }
     },
   },
 
