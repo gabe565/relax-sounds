@@ -10,7 +10,6 @@ func (entry Track) ToShorthand() ShorthandTrack {
 }
 
 type Playlist struct {
-	Name string
 	Tracks []Track
 }
 

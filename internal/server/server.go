@@ -43,7 +43,7 @@ func Setup(rootFs fs.FS) *chi.Mux {
 	})
 
 	// Mixer
-	router.With(playlist.DecoderMiddleware).Get("/mix/{name}/{enc}", mixer.Mix)
+	router.With(playlist.DecoderMiddleware).Get("/mix/{enc}", mixer.Mix)
 
 	return router
 }
