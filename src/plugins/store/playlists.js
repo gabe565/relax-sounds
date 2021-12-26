@@ -29,9 +29,8 @@ export default {
   },
 
   actions: {
-    savePlaying({ commit, rootState }, { name }) {
-      const sounds = rootState.player.sounds
-        .filter((sound) => sound.state === SoundState.PLAYING)
+    savePlaying({ commit, rootGetters }, { name }) {
+      const sounds = rootGetters['player/soundsPlaying']
         .map((sound) => ({
           id: sound.id,
           volume: sound.volume,

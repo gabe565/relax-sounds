@@ -7,8 +7,11 @@ export default {
   },
 
   getters: {
-    playing(state) {
+    soundsPlaying(state) {
       return state.sounds.filter((sound) => sound.isPlaying);
+    },
+    soundsNotStopped(state) {
+      return state.sounds.filter((sound) => !sound.isStopped);
     },
     state(state) {
       const states = new Set(state.sounds.map((sound) => sound.state));
@@ -52,11 +55,9 @@ export default {
         commit('play', { sound, fade });
       }
     },
-    playPauseAll({ commit, state }) {
+    playPauseAll({ commit, getters, state }) {
       const newState = this.getters['player/state'] === SoundState.PLAYING ? SoundState.PAUSED : SoundState.PLAYING;
-      state.sounds.filter(
-        (sound) => !sound.isStopped,
-      ).forEach((sound) => {
+      getters.soundsNotStopped.forEach((sound) => {
         sound.state = newState;
         if (newState === SoundState.PAUSED) {
           commit('pause', { sound });
@@ -65,10 +66,8 @@ export default {
         }
       });
     },
-    stopAll({ commit, state }, { fade = 250 }) {
-      state.sounds.filter(
-        (sound) => !sound.isStopped,
-      ).forEach((sound) => {
+    stopAll({ commit, getters, state }, { fade = 250 }) {
+      getters.soundsNotStopped.forEach((sound) => {
         commit('stop', { sound, fade });
       });
     },
