@@ -67,7 +67,7 @@ export default {
         await Promise.all(playlist.sounds.map(async (savedSound) => {
           const sound = rootGetters['player/soundById'](savedSound.id);
           sound.volume = savedSound.volume;
-          const fade = rootGetters['player/state'] === 'stopped' ? 500 : false;
+          const fade = rootGetters['player/state'] === 'stopped' ? 250 : false;
           return dispatch('player/playStop', { sound, fade }, { root: true });
         }));
       }

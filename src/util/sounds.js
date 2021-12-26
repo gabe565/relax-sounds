@@ -38,7 +38,7 @@ class Sound {
     return true;
   }
 
-  play(local = true, fade = 500) {
+  play(local = true, fade = 250) {
     this.state = 'playing';
     if (local) {
       this.howl.play();
@@ -57,7 +57,7 @@ class Sound {
     }
   }
 
-  stop(local = true, fade = 500) {
+  stop(local = true, fade = 250) {
     this.state = 'stopped';
     if (local) {
       if (fade) {

@@ -24,13 +24,13 @@ export default {
   },
 
   mutations: {
-    play(state, { sound, fade = 500 }) {
+    play(state, { sound, fade = 250 }) {
       sound.play(true, fade);
     },
     pause(state, { sound }) {
       sound.pause(true);
     },
-    stop(state, { sound, fade = 500 }) {
+    stop(state, { sound, fade = 250 }) {
       sound.stop(true, fade);
     },
     volume(state, { sound, value }) {
@@ -39,7 +39,7 @@ export default {
   },
 
   actions: {
-    async playStop({ commit }, { sound, fade = 500 }) {
+    async playStop({ commit }, { sound, fade = 250 }) {
       if (sound.howl.playing()) {
         commit('stop', { sound, fade });
       } else {
@@ -65,7 +65,7 @@ export default {
         }
       });
     },
-    stopAll({ commit, state }, { fade = 500 }) {
+    stopAll({ commit, state }, { fade = 250 }) {
       state.sounds.filter(
         (sound) => !sound.isStopped,
       ).forEach((sound) => {
