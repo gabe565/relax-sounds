@@ -1,4 +1,5 @@
 import { castPlaylist, getCastSession } from '../../util/googleCast';
+import { SoundState } from '../../util/sounds';
 
 const defaultState = {
   playlists: [],
@@ -30,7 +31,7 @@ export default {
   actions: {
     savePlaying({ commit, rootState }, { name }) {
       const sounds = rootState.player.sounds
-        .filter((sound) => sound.state === 'playing')
+        .filter((sound) => sound.state === SoundState.PLAYING)
         .map((sound) => ({
           id: sound.id,
           volume: sound.volume,

@@ -2,10 +2,17 @@ import { Howl } from 'howler';
 
 import soundConfig from '../data/sounds.json';
 
+export const SoundState = {
+  PLAYING: 'playing',
+  PAUSED: 'paused',
+  STOPPED: 'stopped',
+  UNLOADED: 'unloaded',
+};
+
 class Sound {
   constructor(obj) {
     Object.assign(this, obj);
-    this.state = 'stopped';
+    this.state = SoundState.STOPPED;
     this._volume = 1;
     this.isLoading = false;
     this.howl = new Howl({
@@ -39,7 +46,7 @@ class Sound {
   }
 
   play(local = true, fade = 250) {
-    this.state = 'playing';
+    this.state = SoundState.PLAYING;
     if (local) {
       this.howl.play();
       if (fade) {
@@ -51,14 +58,14 @@ class Sound {
   }
 
   pause(local = true) {
-    this.state = 'paused';
+    this.state = SoundState.PAUSED;
     if (local) {
       this.howl.pause();
     }
   }
 
   stop(local = true, fade = 250) {
-    this.state = 'stopped';
+    this.state = SoundState.STOPPED;
     if (local) {
       if (fade) {
         this.howl.once('fade', async () => {
@@ -83,19 +90,19 @@ class Sound {
   }
 
   get isPlaying() {
-    return this.state === 'playing';
+    return this.state === SoundState.PLAYING;
   }
 
   get isStopped() {
-    return this.state === 'stopped';
+    return this.state === SoundState.STOPPED;
   }
 
   get isPaused() {
-    return this.state === 'paused';
+    return this.state === SoundState.PAUSED;
   }
 
   get isUnloaded() {
-    return this.howl.state() === 'unloaded';
+    return this.howl.state() === SoundState.UNLOADED;
   }
 }
 

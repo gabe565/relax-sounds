@@ -1,4 +1,4 @@
-import { sounds } from '../../util/sounds';
+import { sounds, SoundState } from '../../util/sounds';
 
 export default {
   namespaced: true,
@@ -12,13 +12,13 @@ export default {
     },
     state(state) {
       const states = new Set(state.sounds.map((sound) => sound.state));
-      if (states.has('playing')) {
-        return 'playing';
+      if (states.has(SoundState.PLAYING)) {
+        return SoundState.PLAYING;
       }
-      if (states.has('paused')) {
-        return 'paused';
+      if (states.has(SoundState.PAUSED)) {
+        return SoundState.PAUSED;
       }
-      return 'stopped';
+      return SoundState.STOPPED;
     },
     soundById: (state) => (id) => state.sounds.find((sound) => sound.id === id),
   },
@@ -40,7 +40,7 @@ export default {
 
   actions: {
     async playStop({ commit }, { sound, fade = 250 }) {
-      if (sound.howl.playing()) {
+      if (sound.state === SoundState.PLAYING) {
         commit('stop', { sound, fade });
       } else {
         if (sound.isUnloaded) {
@@ -53,12 +53,12 @@ export default {
       }
     },
     playPauseAll({ commit, state }) {
-      const newState = this.getters['player/state'] === 'playing' ? 'paused' : 'playing';
+      const newState = this.getters['player/state'] === SoundState.PLAYING ? SoundState.PAUSED : SoundState.PLAYING;
       state.sounds.filter(
         (sound) => !sound.isStopped,
       ).forEach((sound) => {
         sound.state = newState;
-        if (newState === 'paused') {
+        if (newState === SoundState.PAUSED) {
           commit('pause', { sound });
         } else {
           commit('play', { sound, fade: false });
