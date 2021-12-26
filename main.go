@@ -3,17 +3,12 @@
 package main
 
 import (
-	"embed"
 	"github.com/gabe565/relax-sounds/internal/server"
 	flag "github.com/spf13/pflag"
-	"io/fs"
 	"log"
 	"net/http"
 	"os"
 )
-
-//go:embed dist
-var dist embed.FS
 
 func main() {
 	var err error
@@ -22,15 +17,7 @@ func main() {
 	staticDir := flag.String("static", "", "Override static asset directory. Useful for development. If left empty, embedded assets are used.")
 	flag.Parse()
 
-	var contentFs fs.FS
-	if *staticDir != "" {
-		contentFs = os.DirFS(*staticDir)
-	} else {
-		contentFs, err = fs.Sub(dist, "dist")
-		if err != nil {
-			panic(err)
-		}
-	}
+	contentFs := os.DirFS(*staticDir)
 	router := server.Setup(contentFs)
 
 	log.Println("Listening on " + *address)

@@ -10,9 +10,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN mkdir dist \
-    && touch dist/test \
-    && go build -ldflags="-w -s"
+RUN go build -ldflags="-w -s"
 
 
 FROM node:$NODE_VERSION-alpine AS node-builder
