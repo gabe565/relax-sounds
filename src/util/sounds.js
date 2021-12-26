@@ -68,7 +68,7 @@ class Sound {
     this.state = SoundState.STOPPED;
     if (local) {
       if (fade) {
-        this.howl.once('fade', async () => {
+        this.howl.once('fade', () => {
           this.howl.stop();
           this.howl.unload();
         });
