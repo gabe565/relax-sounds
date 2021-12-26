@@ -1,6 +1,6 @@
 import { Howl } from 'howler';
 
-import soundConfig from '../data/sounds.json';
+import staticSoundConfig from '../data/sounds.json';
 
 export const SoundState = {
   PLAYING: 'playing',
@@ -106,13 +106,13 @@ class Sound {
   }
 }
 
-export const sounds = soundConfig.map((sound) => new Sound(sound)).sort(
+export const soundConfig = staticSoundConfig.map((sound) => new Sound(sound)).sort(
   (left, right) => left.name.localeCompare(right.name),
 );
 
 export async function prefetch() {
   const cache = await window.caches.open('audio-cache');
-  await Promise.all(sounds.map(async (sound) => {
+  await Promise.all(soundConfig.map(async (sound) => {
     sound.isLoading = true;
     await cache.add(sound.src);
     sound.isLoading = false;

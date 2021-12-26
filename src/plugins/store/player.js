@@ -1,9 +1,9 @@
-import { sounds, SoundState } from '../../util/sounds';
+import { soundConfig, SoundState } from '../../util/sounds';
 
 export default {
   namespaced: true,
   state: {
-    sounds,
+    sounds: soundConfig,
   },
 
   getters: {

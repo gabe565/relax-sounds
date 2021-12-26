@@ -1,9 +1,9 @@
 import Fuse from 'fuse.js';
-import { sounds } from '../../util/sounds';
+import { soundConfig } from '../../util/sounds';
 
 const PER_PAGE = 48;
 
-const fuse = new Fuse(sounds, {
+const fuse = new Fuse(soundConfig, {
   shouldSort: true,
   threshold: 0.3,
   location: 0,
