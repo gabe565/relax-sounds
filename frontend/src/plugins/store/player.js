@@ -133,15 +133,17 @@ export default {
 
       remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
-        ({ value }) => {
+        async ({ value }) => {
+          let shouldPlay;
           if (getters.state !== SoundState.STOPPED) {
             dispatch('pauseAll');
-            setTimeout(async () => {
-              await dispatch('playPauseAll');
-              dispatch('updateCast');
-            }, 0);
+            shouldPlay = true;
           }
           commit('castConnectedChanged', { value });
+          if (shouldPlay) {
+            await dispatch('playPauseAll');
+            dispatch('updateCast');
+          }
         },
       );
 
