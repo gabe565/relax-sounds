@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	quality int
+	quality float64
 	bitrate int
 )
 
 func init() {
-	flag.IntVar(&quality, "quality", 9, "LAME output quality")
+	flag.Float64Var(&quality, "quality", 2, "LAME VBR quality")
 	flag.IntVar(&bitrate, "bitrate", 160, "LAME output bitrate")
 }
 
@@ -48,10 +48,10 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	// Encode wav to mp3
 	encoder := lame.NewEncoder(res)
 	defer encoder.Close()
-	if err = encoder.SetQuality(quality); err != nil {
+	if err = encoder.SetVBR(lame.VBRDefault); err != nil {
 		panic(err)
 	}
-	if err = encoder.SetBrate(bitrate); err != nil {
+	if err = encoder.SetVBRQuality(quality); err != nil {
 		panic(err)
 	}
 
