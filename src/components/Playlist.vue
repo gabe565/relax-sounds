@@ -10,17 +10,17 @@
           {{ playlist.name }}
         </v-card-title>
       </v-col>
-      <v-col class="shrink">
-        <v-btn @click.stop="shareDialog = true" elevation="0" icon>
+      <v-col class="shrink" v-if="DEBUG_ENABLED">
+        <v-btn @click.stop="debugDialog = true" elevation="0" icon>
           <v-icon dense>
-            fas fa-fw fa-share
+            fas fa-fw fa-bug
           </v-icon>
         </v-btn>
       </v-col>
       <v-col class="shrink">
-        <v-btn @click.stop="downloadDialog = true" elevation="0" icon>
+        <v-btn @click.stop="shareDialog = true" elevation="0" icon>
           <v-icon dense>
-            fas fa-fw fa-download
+            fas fa-fw fa-share
           </v-icon>
         </v-btn>
       </v-col>
@@ -40,6 +40,22 @@
       </v-col>
     </v-row>
 
+    <v-dialog v-model="debugDialog" max-width="500">
+      <v-card>
+        <v-card-title class="headline">Debug</v-card-title>
+        <v-card-text>
+          <v-btn :href="downloadUrl" target="_blank">Mix URL</v-btn>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn text @click="debugDialog = false">
+            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="shareDialog" max-width="500">
       <v-card>
         <v-card-title class="headline">Share Playlist</v-card-title>
@@ -49,22 +65,6 @@
         <v-card-actions>
           <v-spacer/>
           <v-btn text @click="shareDialog = false">
-            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
-            Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="downloadDialog" max-width="500">
-      <v-card>
-        <v-card-title class="headline">Download Playlist</v-card-title>
-        <v-card-text>
-          <v-btn :href="downloadUrl" target="_blank">Stream</v-btn>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer/>
-          <v-btn text @click="downloadDialog = false">
             <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
             Close
           </v-btn>
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { encode } from '../util/shareUrl';
+import { encode, encodeSounds } from '../util/shareUrl';
 
 export default {
   name: 'Playlist',
@@ -109,8 +109,12 @@ export default {
   data: () => ({
     deleteDialog: false,
     shareDialog: false,
-    downloadDialog: false,
+    debugDialog: false,
   }),
+
+  created() {
+    this.DEBUG_ENABLED = process.env.NODE_ENV === 'development';
+  },
 
   computed: {
     shareUrl() {
@@ -118,8 +122,8 @@ export default {
       return `${window.location.origin}/import/${name}/${sounds}`;
     },
     downloadUrl() {
-      const { name, sounds } = encode(this.playlist);
-      return `${window.location.origin}/mix/${name}/${sounds}`;
+      const sounds = encodeSounds(this.playlist.sounds);
+      return `${window.location.origin}/mix/${sounds}`;
     },
   },
 
