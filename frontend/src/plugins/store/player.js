@@ -154,7 +154,7 @@ export default {
             // If currently not playing, start to play.
             // This occurs if starting to play from local, but this check is
             // required if the state is changed remotely.
-            await dispatch('playPauseAll');
+            await dispatch('playPauseAll', { local: true });
           }
         },
       );
