@@ -2,8 +2,8 @@
 .dockerignore
 .git
 .idea
-/dist
 Dockerfile
-README.md
-node_modules
+frontend/dist
+frontend/README.md
+frontend/node_modules
 vendor

@@ -5,25 +5,12 @@ import (
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	flag "github.com/spf13/pflag"
 	"net/http"
 	"os"
 	"path/filepath"
 )
 
-type Server struct {
-	mux *chi.Mux
-}
-
-const Public = "dist"
-
-var staticDir string
-
-func init() {
-	flag.StringVar(&staticDir, "static", "dist", "Override static asset directory. Useful for development.")
-}
-
-func Setup() *chi.Mux {
+func Setup(staticDir string) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
@@ -34,13 +21,13 @@ func Setup() *chi.Mux {
 
 	// Serve index as 404
 	router.NotFound(func(res http.ResponseWriter, req *http.Request) {
-		http.ServeFile(res, req, Public+"/index.html")
+		http.ServeFile(res, req, staticDir+"/index.html")
 	})
 
 	// Static Files
 	fileserver := http.FileServer(http.Dir(staticDir))
 	router.Get("/*", func(res http.ResponseWriter, req *http.Request) {
-		requestPath := filepath.Join(Public, filepath.Clean("/"+req.URL.Path))
+		requestPath := filepath.Join(staticDir, filepath.Clean("/"+req.URL.Path))
 		if _, err := os.Stat(requestPath); !os.IsNotExist(err) {
 			fileserver.ServeHTTP(res, req)
 		} else {
@@ -49,7 +36,7 @@ func Setup() *chi.Mux {
 	})
 
 	// Mixer
-	router.With(playlist.DecoderMiddleware).Get("/mix/{enc}", mixer.Mix)
+	router.With(playlist.DecoderMiddleware(staticDir)).Get("/mix/{enc}", mixer.Mix)
 
 	return router
 }

@@ -7,7 +7,6 @@ import (
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"golang.org/x/sync/errgroup"
 	"os"
-	"path/filepath"
 	"sync"
 )
 
@@ -25,8 +24,7 @@ func (stream *Stream) Close() error {
 }
 
 func (stream *Stream) Add(entry playlist.Track, mu *sync.Mutex) error {
-	audiopath := filepath.Join("dist/audio", filepath.Clean("/"+entry.Key+".ogg"))
-	infile, err := os.Open(audiopath)
+	infile, err := os.Open(entry.Path)
 	if err != nil {
 		return err
 	}

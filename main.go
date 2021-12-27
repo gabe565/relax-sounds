@@ -1,3 +1,5 @@
+//go:generate -command npm npm --prefix frontend
+//go:generate npm install
 //go:generate npm run build
 
 package main
@@ -17,6 +19,7 @@ func main() {
 	var err error
 
 	address := flag.String("address", ":3000", "Override listen address.")
+	staticDir := flag.String("static", "dist", "Override static asset directory. Useful for development.")
 	flag.Parse()
 
 	flag.CommandLine.VisitAll(func(f *flag.Flag) {
@@ -31,7 +34,7 @@ func main() {
 		}
 	})
 
-	router := server.Setup()
+	router := server.Setup(*staticDir)
 
 	log.Println("Listening on " + *address)
 	err = http.ListenAndServe(*address, router)

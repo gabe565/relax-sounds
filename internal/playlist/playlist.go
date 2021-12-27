@@ -2,6 +2,7 @@ package playlist
 
 type Track struct {
 	Key    string
+	Path   string
 	Volume float64
 }
 
