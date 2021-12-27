@@ -8,6 +8,10 @@ import (
 	"net/http"
 )
 
+type ContextKey string
+
+const RequestKey = ContextKey("playlist")
+
 func DecoderMiddleware(staticDir string) func(handler http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -31,7 +35,7 @@ func DecoderMiddleware(staticDir string) func(handler http.Handler) http.Handler
 				return
 			}
 
-			ctx := context.WithValue(req.Context(), "playlist", playlist)
+			ctx := context.WithValue(req.Context(), RequestKey, playlist)
 
 			next.ServeHTTP(res, req.WithContext(ctx))
 		})

@@ -32,8 +32,10 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "audio/mp3")
 
 	// Set up stream
-	s, err := stream.New(ctx.Value("playlist").(playlist.Playlist))
-	defer s.Close()
+	s, err := stream.New(ctx.Value(playlist.RequestKey).(playlist.Playlist))
+	defer func(s *stream.Stream) {
+		_ = s.Close()
+	}(&s)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
 			// Invalid file ID returns 404
