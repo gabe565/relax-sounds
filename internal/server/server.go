@@ -5,7 +5,7 @@ import (
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"io/fs"
+	flag "github.com/spf13/pflag"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -17,7 +17,13 @@ type Server struct {
 
 const Public = "dist"
 
-func Setup(rootFs fs.FS) *chi.Mux {
+var staticDir string
+
+func init() {
+	flag.StringVar(&staticDir, "static", "dist", "Override static asset directory. Useful for development.")
+}
+
+func Setup() *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
@@ -32,7 +38,7 @@ func Setup(rootFs fs.FS) *chi.Mux {
 	})
 
 	// Static Files
-	fileserver := http.FileServer(http.FS(rootFs))
+	fileserver := http.FileServer(http.Dir(staticDir))
 	router.Get("/*", func(res http.ResponseWriter, req *http.Request) {
 		requestPath := filepath.Join(Public, filepath.Clean("/"+req.URL.Path))
 		if _, err := os.Stat(requestPath); !os.IsNotExist(err) {

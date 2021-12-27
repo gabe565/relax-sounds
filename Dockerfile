@@ -31,4 +31,6 @@ WORKDIR /app
 RUN apk add --no-cache lame
 COPY --from=go-builder /app/relax-sounds ./
 COPY --from=node-builder /app/dist dist/
-CMD ["./relax-sounds", "--static=dist"]
+
+ENV RELAX_SOUNDS_ADDRESS ":80"
+CMD ["./relax-sounds"]
