@@ -1,18 +1,27 @@
-import { encode } from './shareUrl';
-
 export function getCastSession() {
   return window.cast.framework.CastContext.getInstance().getCurrentSession();
 }
 
-export function castPlaylist(castSession, playlist) {
-  const { sounds } = encode(playlist);
-  const url = `${window.location.origin}/mix/${playlist.name}/${sounds}`;
-  const mediaInfo = new window.chrome.cast.media.MediaInfo(url, 'music');
-
-  mediaInfo.metadata = new window.chrome.cast.media.MusicTrackMediaMetadata();
-  mediaInfo.metadata.title = playlist.name;
-  mediaInfo.metadata.artist = 'Relax Sounds';
-
-  const request = new window.chrome.cast.media.LoadRequest(mediaInfo);
-  return castSession.loadMedia(request);
+export function formatError(error) {
+  const { chrome } = window;
+  switch (error.code) {
+    case chrome.cast.ErrorCode.API_NOT_INITIALIZED:
+      return `The API is not initialized. ${error.description || ''}`;
+    case chrome.cast.ErrorCode.CANCEL:
+      return `The operation was canceled by the user. ${error.description || ''}`;
+    case chrome.cast.ErrorCode.CHANNEL_ERROR:
+      return `A channel to the receiver is not available. ${error.description || ''}`;
+    case chrome.cast.ErrorCode.EXTENSION_MISSING:
+      return `The Cast extension is not available. ${error.description || ''}`;
+    case chrome.cast.ErrorCode.INVALID_PARAMETER:
+      return `The parameters to the operation were not valid. ${error.description || ''}`;
+    case chrome.cast.ErrorCode.RECEIVER_UNAVAILABLE:
+      return `No receiver was compatible with the session request. ${error.description || ''}`;
+    case chrome.cast.ErrorCode.SESSION_ERROR:
+      return `A session could not be created, or a session was invalid. ${error.description || ''}`;
+    case chrome.cast.ErrorCode.TIMEOUT:
+      return `The operation timed out. ${error.description || ''}`;
+    default:
+      return error;
+  }
 }

@@ -47,6 +47,7 @@ export default {
       set(newValue) {
         // eslint-disable-next-line vue/no-mutating-props
         this.sound.volume = newValue / 100;
+        this.$store.dispatch('player/updateCast');
       },
     },
 

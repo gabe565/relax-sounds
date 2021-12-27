@@ -1,8 +1,8 @@
-import { castPlaylist, getCastSession } from '../../util/googleCast';
 import { SoundState } from '../../util/sounds';
 
 const defaultState = {
   playlists: [],
+  currentName: null,
 };
 
 const saveState = (state) => localStorage.setItem('playlists', JSON.stringify(state));
@@ -15,6 +15,7 @@ export default {
   mutations: {
     add(state, { playlist }) {
       state.playlists.push(playlist);
+      state.currentName = playlist.name;
       saveState(state);
     },
     remove(state, { playlist }) {
@@ -23,10 +24,14 @@ export default {
       saveState(state);
     },
     play(state, { playlist }) {
+      state.currentName = playlist.name;
       if (playlist.new) {
         playlist.new = false;
         saveState(state);
       }
+    },
+    disableCurrent(state) {
+      state.currentName = null;
     },
   },
 
@@ -55,24 +60,17 @@ export default {
     },
 
     async play({ commit, dispatch, rootGetters }, { playlist }) {
-      commit('play', { playlist });
-      dispatch('player/stopAll', { fade: 0 }, { root: true });
-      const castSession = getCastSession();
-      if (castSession) {
-        try {
-          const result = await castPlaylist(castSession, playlist);
-          console.log(result);
-        } catch (error) {
-          console.log(`Error code: ${error}`);
-        }
-      } else {
-        await Promise.all(playlist.sounds.map(async (savedSound) => {
-          const sound = rootGetters['player/soundById'](savedSound.id);
-          sound.volume = savedSound.volume;
-          const fade = rootGetters['player/state'] === 'stopped' ? 250 : false;
-          return dispatch('player/playStop', { sound, fade }, { root: true });
-        }));
+      if (rootGetters['player/state'] !== SoundState.STOPPED) {
+        dispatch('player/stopAll', { fade: 0 }, { root: true });
       }
+      await Promise.all(playlist.sounds.map((savedSound) => {
+        const sound = rootGetters['player/soundById'](savedSound.id);
+        sound.volume = savedSound.volume;
+        const fade = rootGetters['player/state'] === SoundState.STOPPED ? 500 : false;
+        return dispatch('player/playStop', { sound, fade, updateCast: false }, { root: true });
+      }));
+      commit('play', { playlist });
+      await dispatch('player/updateCast', null, { root: true });
     },
   },
 };
