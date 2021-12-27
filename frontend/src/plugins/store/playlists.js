@@ -61,13 +61,13 @@ export default {
 
     async play({ commit, dispatch, rootGetters }, { playlist }) {
       if (rootGetters['player/state'] !== SoundState.STOPPED) {
-        dispatch('player/stopAll', { fade: 0 }, { root: true });
+        dispatch('player/stopAll', { fade: 0, local: true }, { root: true });
       }
       await Promise.all(playlist.sounds.map((savedSound) => {
         const sound = rootGetters['player/soundById'](savedSound.id);
         sound.volume = savedSound.volume;
         const fade = rootGetters['player/state'] === SoundState.STOPPED ? 500 : false;
-        return dispatch('player/playStop', { sound, fade, updateCast: false }, { root: true });
+        return dispatch('player/playStop', { sound, fade, local: true }, { root: true });
       }));
       commit('play', { playlist });
       await dispatch('player/updateCast', null, { root: true });

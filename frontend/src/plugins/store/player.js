@@ -63,7 +63,9 @@ export default {
   },
 
   actions: {
-    async playStop({ state, commit, dispatch }, { sound, fade = 250, local = false }) {
+    async playStop({
+      state, commit, dispatch, rootState,
+    }, { sound, fade = 250, local = false }) {
       if (sound.state === SoundState.PLAYING) {
         commit('stop', { sound, fade });
       } else {
@@ -75,7 +77,9 @@ export default {
         }
         commit('play', { sound, fade });
       }
-      commit('playlists/disableCurrent', null, { root: true });
+      if (rootState.playlists.currentName) {
+        commit('playlists/disableCurrent', null, { root: true });
+      }
       if (!local) dispatch('updateCast');
     },
     pauseAll({ commit, getters, state }, { local = false } = {}) {
@@ -104,14 +108,16 @@ export default {
         state.remotePlayerController.playOrPause();
       }
     },
-    stopAll({ commit, getters, state }, { fade = 250 }) {
+    stopAll({ commit, getters, state }, { fade = 250, local = false }) {
       getters.soundsNotStopped.forEach((sound) => {
         commit('stop', { sound, fade });
       });
       if (state.remotePlayerController) {
         state.remotePlayerController.stop();
       }
-      commit('playlists/disableCurrent', null, { root: true });
+      if (!local && state.remotePlayerController) {
+        commit('playlists/disableCurrent', null, { root: true });
+      }
     },
     initializeCastApi({ commit, dispatch, getters }) {
       const { cast, chrome } = window;
