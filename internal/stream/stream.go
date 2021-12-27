@@ -29,22 +29,26 @@ func (stream *Stream) Add(entry playlist.Track, mu *sync.Mutex) error {
 		return err
 	}
 
-	streamer, format, err := vorbis.Decode(infile)
+	streamCloser, format, err := vorbis.Decode(infile)
 	if err != nil {
 		return err
 	}
 
-	volumeStreamer := &effects.Volume{
-		Streamer: beep.Loop(-1, streamer),
+	streamer := beep.Loop(-1, streamCloser)
+	streamer = &effects.Volume{
+		Streamer: streamer,
 		Base:     4,
 		Volume:   entry.Volume,
-		Silent:   false,
+	}
+	if format.NumChannels < 2 {
+		// Fix mono streams playing at 2x speed
+		streamer = beep.ResampleRatio(3, 0.5, streamer)
 	}
 
 	mu.Lock()
 	defer mu.Unlock()
-	stream.closers = append(stream.closers, streamer)
-	stream.streamers = append(stream.streamers, volumeStreamer)
+	stream.closers = append(stream.closers, streamCloser)
+	stream.streamers = append(stream.streamers, streamer)
 	stream.Formats = append(stream.Formats, format)
 	return nil
 }

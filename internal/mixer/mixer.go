@@ -2,6 +2,7 @@ package mixer
 
 import (
 	"errors"
+	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	flag "github.com/spf13/pflag"
@@ -56,7 +57,11 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// Encode to wav in a Goroutine
-	err = Encode(ctx, encoder, s.Mix(), s.Formats[0], false)
+	err = Encode(ctx, encoder, s.Mix(), beep.Format{
+		SampleRate:  44100,
+		NumChannels: 2,
+		Precision:   2,
+	}, false)
 	if err != nil {
 		// Ignore broken pipe errors instead of using a context-aware reader
 		if !errors.Is(err, syscall.EPIPE) {
