@@ -80,13 +80,13 @@ export default {
       if (rootState.playlists.currentName) {
         commit('playlists/disableCurrent', null, { root: true });
       }
-      if (!local) dispatch('updateCast');
+      if (!local && state.castConnected) dispatch('updateCast');
     },
     pauseAll({ commit, getters, state }, { local = false } = {}) {
       getters.soundsPlaying.forEach((sound) => {
         commit('pause', { sound });
       });
-      if (!local && state.remotePlayerController) {
+      if (!local && state.castConnected) {
         state.remotePlayerController.playOrPause();
       }
     },
@@ -104,7 +104,7 @@ export default {
             commit('play', { sound, fade: false });
           }
         }));
-      if (!local && state.remotePlayerController) {
+      if (!local && state.castConnected) {
         state.remotePlayerController.playOrPause();
       }
     },
@@ -115,7 +115,7 @@ export default {
       if (state.remotePlayerController) {
         state.remotePlayerController.stop();
       }
-      if (!local && state.remotePlayerController) {
+      if (!local && state.castConnected) {
         commit('playlists/disableCurrent', null, { root: true });
       }
     },
