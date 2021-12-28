@@ -89,6 +89,19 @@ export default {
     drawerOpen: false,
   }),
 
+  beforeMount() {
+    // check for browser support
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
+      // set to preferred scheme
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      this.$vuetify.theme.isDark = mediaQuery.matches;
+      // react to changes
+      mediaQuery.addEventListener('change', (e) => {
+        this.$vuetify.theme.isDark = e.matches;
+      });
+    }
+  },
+
   computed: {
     routes() {
       return this.$router.options.routes.filter((route) => !!route.name);

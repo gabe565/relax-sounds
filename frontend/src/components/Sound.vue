@@ -1,13 +1,14 @@
 <template>
   <v-card flat
           outlined
+          :dark="showProgress"
   >
     <v-progress-linear
       v-model="volumePercentage"
       absolute
       height="100%"
       color="deep-purple darken-2"
-      v-if="!sound.isStopped"
+      v-if="showProgress"
     />
     <v-row align="center" justify="center" dense>
       <v-col class="grow">
@@ -67,6 +68,10 @@ export default {
         return 'fa-stop';
       }
       return 'fa-play';
+    },
+
+    showProgress() {
+      return !this.sound.isStopped;
     },
   },
 
