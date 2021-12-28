@@ -4,7 +4,7 @@
       <v-col class="grow pb-0">
         <v-text-field
           v-model="filters.word"
-          label="Filter"
+          label="Search"
           prepend-inner-icon="fal fa-search v-icon--dense"
           clearable
           single-line
