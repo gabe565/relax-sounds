@@ -28,6 +28,11 @@
     </v-row>
     <v-row>
       <v-col>
+        <v-divider/>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
         <v-pagination v-model="filters.page" :length="pages"/>
       </v-col>
     </v-row>
