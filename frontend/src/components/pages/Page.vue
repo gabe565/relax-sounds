@@ -14,9 +14,7 @@ export default {
   name: 'Page',
 
   props: {
-    titleOverride: {
-      type: Number,
-    },
+    titleOverride: String,
   },
 
   data: () => ({
