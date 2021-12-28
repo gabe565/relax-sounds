@@ -27,11 +27,15 @@
       </v-chip-group>
     </v-row>
     <v-row>
-      <v-pagination v-model="filters.page" :length="pages"/>
+      <v-col>
+        <v-pagination v-model="filters.page" :length="pages"/>
+      </v-col>
     </v-row>
     <slot/>
     <v-row>
-      <v-pagination v-model="filters.page" :length="pages"/>
+      <v-col>
+        <v-pagination v-model="filters.page" :length="pages"/>
+      </v-col>
     </v-row>
   </div>
 </template>
