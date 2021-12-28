@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Page from './Page.vue';
+import Page from '../layouts/Page.vue';
 
 export default {
   name: 'NotFoundPage',

@@ -16,9 +16,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Page from './Page.vue';
-import Sound from '../Sound.vue';
-import Filters from '../Filters.vue';
+import Page from '../layouts/Page.vue';
+import Sound from '../components/Sound.vue';
+import Filters from '../components/Filters.vue';
 
 export default {
   name: 'Sounds',

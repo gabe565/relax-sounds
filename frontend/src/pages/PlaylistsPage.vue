@@ -32,8 +32,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import Playlist from '../Playlist.vue';
-import Page from './Page.vue';
+import Playlist from '../components/Playlist.vue';
+import Page from '../layouts/Page.vue';
 
 export default {
   name: 'Playlists',
