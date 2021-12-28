@@ -30,7 +30,7 @@
       <PlayPauseAll/>
       <StopAll/>
 
-      <template v-slot:extension>
+      <template #extension v-if="$vuetify.breakpoint.mdAndUp">
         <v-tabs centered>
           <v-tab v-for="route in routes" :key="route.path" :to="route.path" exact>
             <v-icon class="pr-2">fas {{ route.meta.icon }} fa-fw</v-icon>
@@ -46,7 +46,25 @@
       <keep-alive>
         <router-view/>
       </keep-alive>
+      <v-spacer :style="{ height: $vuetify.breakpoint.smAndDown ? '56px' : '28px' }"/>
     </v-main>
+
+    <v-bottom-navigation
+      fixed
+      v-if="$vuetify.breakpoint.smAndDown"
+      background-color="accent"
+      color="primary"
+    >
+      <v-btn
+        v-for="route in routes"
+        :key="route.path"
+        :to="route.path"
+        :value="route.name"
+      >
+        <span>{{ route.name }}</span>
+        <v-icon>fas {{ route.meta.icon }} fa-fw</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </v-app>
 </template>
 
