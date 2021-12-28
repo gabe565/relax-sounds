@@ -4,8 +4,8 @@
       <v-row>
         <v-col
           cols="12" md="6" lg="4"
-          v-for="sound of sounds"
-          :key="sound.id"
+          v-for="(sound, key) of sounds"
+          :key="key"
         >
           <Sound :sound="sound"/>
         </v-col>

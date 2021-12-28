@@ -3,8 +3,8 @@
     <v-row>
       <v-col
         cols="12" lg="6"
-        v-for="playlist of playlists"
-        :key="playlist.name"
+        v-for="(playlist, key) of playlists"
+        :key="key"
       >
         <Playlist :playlist="playlist"/>
       </v-col>
