@@ -46,10 +46,16 @@ export default {
       this.name = '';
     },
     save() {
-      this.$store.dispatch('playlists/savePlaying', { name: this.name });
+      let params;
+      try {
+        this.$store.dispatch('playlists/savePlaying', { name: this.name });
+        params = { alert: { type: 'info', text: `Playlist "${this.name}" saved successfully.` } };
+        this.name = '';
+      } catch (error) {
+        params = { alert: { type: 'error', text: 'Failed to save playlist. Please try again later.' } };
+      }
       this.showDialog = false;
-      this.name = '';
-      this.$router.push({ name: 'Playlists' });
+      return this.$router.push({ name: 'Playlists', params });
     },
   },
 };
