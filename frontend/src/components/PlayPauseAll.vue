@@ -1,7 +1,20 @@
 <template>
-  <v-btn icon @click="playPauseAll" :disabled="state === 'stopped'">
-    <v-icon>fas {{ state === 'playing' ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
-  </v-btn>
+  <v-tooltip bottom>
+    <template #activator="{ on, attrs }">
+      <v-btn
+        v-bind="attrs"
+        v-on="on"
+        @click="playPauseAll"
+        :disabled="state === 'stopped'"
+        icon
+      >
+        <v-icon>fas {{ state === 'playing' ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
+      </v-btn>
+    </template>
+    <span>
+      {{ state === 'playing' ? 'Pause' : 'Play' }}
+    </span>
+  </v-tooltip>
 </template>
 
 <script>

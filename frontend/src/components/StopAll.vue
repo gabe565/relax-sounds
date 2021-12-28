@@ -1,7 +1,18 @@
 <template>
-  <v-btn icon @click="stopAll" :disabled="state === 'stopped'">
-    <v-icon>fas fa-stop-circle</v-icon>
-  </v-btn>
+  <v-tooltip bottom>
+    <template #activator="{ on, attrs }">
+      <v-btn
+        v-bind="attrs"
+        v-on="on"
+        @click="stopAll"
+        :disabled="state === 'stopped'"
+        icon
+      >
+        <v-icon>fas fa-stop-circle</v-icon>
+      </v-btn>
+    </template>
+    <span>Stop All</span>
+  </v-tooltip>
 </template>
 
 <script>
