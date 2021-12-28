@@ -91,6 +91,10 @@ export default {
 </script>
 
 <style lang="scss">
+  html {
+    --disconnected-color: #fff;
+  }
+
   .theme--light {
     &.v-pagination {
       .v-pagination__navigation, .v-pagination__item {
