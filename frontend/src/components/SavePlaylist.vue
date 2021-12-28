@@ -1,7 +1,7 @@
 <template>
-  <v-btn icon @click="prompting = !prompting" :disabled="state === 'stopped'">
+  <v-btn icon @click="showDialog = !showDialog" :disabled="state === 'stopped'">
     <v-icon>fas fa-plus-circle</v-icon>
-    <v-dialog v-model="prompting" max-width="500">
+    <v-dialog v-model="showDialog" max-width="500">
       <v-card>
         <v-card-title class="headline">Playlist Name</v-card-title>
         <v-card-text>
@@ -32,7 +32,7 @@ export default {
   name: 'SavePlaylist',
 
   data: () => ({
-    prompting: false,
+    showDialog: false,
     name: '',
   }),
 
@@ -42,12 +42,12 @@ export default {
 
   methods: {
     cancel() {
-      this.prompting = false;
+      this.showDialog = false;
       this.name = '';
     },
     save() {
       this.$store.dispatch('playlists/savePlaying', { name: this.name });
-      this.prompting = false;
+      this.showDialog = false;
       this.name = '';
       this.$router.push({ name: 'Playlists' });
     },
