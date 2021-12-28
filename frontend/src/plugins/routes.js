@@ -23,6 +23,7 @@ export default new VueRouter({
       path: '/playlists',
       name: 'Playlists',
       component: PlaylistsPage,
+      props: true,
       meta: {
         icon: 'fa-list-music',
       },
@@ -30,9 +31,19 @@ export default new VueRouter({
     {
       path: '/import/:name/:songs',
       redirect: ({ params }) => {
-        const playlist = { ...decode(params), new: true };
-        store.commit('playlists/add', { playlist });
-        return { name: 'Playlists' };
+        let redirectParams;
+        try {
+          const playlist = { ...decode(params), new: true };
+          store.commit('playlists/add', { playlist });
+        } catch (error) {
+          redirectParams = {
+            alert: {
+              type: 'error',
+              text: 'Could not import playlist. Please try again later.',
+            },
+          };
+        }
+        return { name: 'Playlists', params: redirectParams };
       },
     },
     {

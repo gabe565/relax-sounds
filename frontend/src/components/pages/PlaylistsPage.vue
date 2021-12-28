@@ -1,5 +1,18 @@
 <template>
   <Page>
+    <v-row v-if="showAlert">
+      <v-col>
+        <v-alert
+          dismissible
+          prominent
+          text
+          :type="alert.type"
+          v-model="showAlert"
+        >
+          {{ alert.text }}
+        </v-alert>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col
         cols="12" lg="6"
@@ -25,6 +38,15 @@ import Page from './Page.vue';
 export default {
   name: 'Playlists',
   components: { Page, Playlist },
+  props: {
+    alert: Object,
+  },
+  data: () => ({
+    showAlert: false,
+  }),
+  created() {
+    if (this.alert) this.showAlert = true;
+  },
   computed: mapState('playlists', [
     'playlists',
   ]),
