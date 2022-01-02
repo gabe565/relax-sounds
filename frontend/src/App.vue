@@ -54,6 +54,7 @@
       v-if="$vuetify.breakpoint.smAndDown"
       background-color="accent"
       color="primary"
+      dark
     >
       <v-btn
         v-for="route in routes"
