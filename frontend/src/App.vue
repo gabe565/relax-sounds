@@ -55,6 +55,7 @@
       background-color="accent"
       color="primary"
       dark
+      shift
     >
       <v-btn
         v-for="route in routes"
