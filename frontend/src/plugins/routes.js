@@ -16,7 +16,7 @@ export default new VueRouter({
       name: 'Sounds',
       component: SoundsPage,
       meta: {
-        icon: 'fa-speaker',
+        icon: 'fa-volume',
       },
     },
     {
