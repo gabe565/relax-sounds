@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import store from './store/main';
+import store from '../plugins/store/main';
 import { decode } from '../util/shareUrl';
 import SoundsPage from '../pages/SoundsPage.vue';
 import PlaylistsPage from '../pages/PlaylistsPage.vue';
