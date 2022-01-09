@@ -29,7 +29,3 @@ export default {
   computed: mapGetters('filters', ['sounds']),
 };
 </script>
-
-<style scoped>
-
-</style>

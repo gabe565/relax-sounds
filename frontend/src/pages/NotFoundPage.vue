@@ -13,7 +13,3 @@ export default {
   components: { Page },
 };
 </script>
-
-<style scoped>
-
-</style>
