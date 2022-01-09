@@ -2,9 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '../plugins/store/main';
 import { decode } from '../util/shareUrl';
-import SoundsPage from '../pages/SoundsPage.vue';
-import PlaylistsPage from '../pages/PlaylistsPage.vue';
-import NotFoundPage from '../pages/NotFoundPage.vue';
+import Sounds from '../pages/Sounds.vue';
+import Playlists from '../pages/Playlists.vue';
+import NotFound from '../pages/NotFound.vue';
 
 Vue.use(VueRouter);
 
@@ -14,7 +14,7 @@ export default new VueRouter({
     {
       path: '/sounds',
       name: 'Sounds',
-      component: SoundsPage,
+      component: Sounds,
       meta: {
         icon: 'fa-volume',
         showInNav: true,
@@ -23,7 +23,7 @@ export default new VueRouter({
     {
       path: '/playlists',
       name: 'Playlists',
-      component: PlaylistsPage,
+      component: Playlists,
       props: true,
       meta: {
         icon: 'fa-list-music',
@@ -55,7 +55,7 @@ export default new VueRouter({
     {
       path: '*',
       name: '404 Not Found',
-      component: NotFoundPage,
+      component: NotFound,
     },
   ],
 });
