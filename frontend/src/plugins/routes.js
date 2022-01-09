@@ -17,6 +17,7 @@ export default new VueRouter({
       component: SoundsPage,
       meta: {
         icon: 'fa-volume',
+        showInNav: true,
       },
     },
     {
@@ -26,6 +27,7 @@ export default new VueRouter({
       props: true,
       meta: {
         icon: 'fa-list-music',
+        showInNav: true,
       },
     },
     {
@@ -52,6 +54,7 @@ export default new VueRouter({
     },
     {
       path: '*',
+      name: '404 Not Found',
       component: NotFoundPage,
     },
   ],

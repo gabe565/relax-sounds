@@ -106,7 +106,7 @@ export default {
 
   computed: {
     routes() {
-      return this.$router.options.routes.filter((route) => !!route.name);
+      return this.$router.options.routes.filter((route) => route.meta?.showInNav);
     },
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <Page title-override="404 - File Not Found"/>
+  <Page/>
 </template>
 
 <script>
