@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip bottom>
+  <v-tooltip bottom :key="state">
     <template #activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
