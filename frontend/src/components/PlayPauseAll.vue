@@ -1,18 +1,18 @@
 <template>
-  <v-tooltip bottom :key="state">
+  <v-tooltip bottom :key="isPlaying">
     <template #activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
         v-on="on"
         @click="playPauseAll"
-        :disabled="state === 'stopped'"
+        :disabled="isStopped"
         icon
       >
-        <v-icon>fas {{ state === 'playing' ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
+        <v-icon>fas {{ isPlaying ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
       </v-btn>
     </template>
     <span>
-      {{ state === 'playing' ? 'Pause' : 'Play' }}
+      {{ isPlaying ? 'Pause' : 'Play' }}
     </span>
   </v-tooltip>
 </template>
@@ -24,7 +24,7 @@ export default {
   name: 'PlayPauseAll',
 
   computed: mapGetters('player', [
-    'state',
+    'isPlaying', 'isStopped',
   ]),
 
   methods: mapActions('player', [

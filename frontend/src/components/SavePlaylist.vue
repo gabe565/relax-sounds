@@ -5,7 +5,7 @@
         v-bind="attrs"
         v-on="on"
         @click="showDialog = !showDialog"
-        :disabled="state === 'stopped'"
+        :disabled="isStopped"
         icon
       >
         <v-icon>fas fa-plus-circle</v-icon>
@@ -48,7 +48,7 @@ export default {
   }),
 
   computed: mapGetters('player', [
-    'state',
+    'isStopped',
   ]),
 
   methods: {

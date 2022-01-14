@@ -28,6 +28,15 @@ export default {
       }
       return SoundState.STOPPED;
     },
+    isPlaying(_, getters) {
+      return getters.state === SoundState.PLAYING;
+    },
+    isPaused(_, getters) {
+      return getters.state === SoundState.PAUSED;
+    },
+    isStopped(_, getters) {
+      return getters.state === SoundState.STOPPED;
+    },
     soundById(state) {
       return (id) => state.sounds.find((sound) => sound.id === id);
     },
@@ -164,7 +173,7 @@ export default {
       remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
         async ({ value }) => {
-          if (value && getters.state === SoundState.STOPPED) {
+          if (value && getters.isStopped) {
             const encoded = value.contentId.match(/\/mix\/(.+?)$/)[1];
             const sounds = decodeSounds(encoded);
             await Promise.all(sounds.map((savedSound) => {
@@ -182,7 +191,7 @@ export default {
       );
     },
     async updateCast({ getters, rootState, state }) {
-      if (getters.state === SoundState.PLAYING) {
+      if (getters.isPlaying) {
         const castSession = getCastSession();
         if (castSession) {
           const { chrome } = window;

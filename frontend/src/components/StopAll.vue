@@ -5,7 +5,7 @@
         v-bind="attrs"
         v-on="on"
         @click="stopAll"
-        :disabled="state === 'stopped'"
+        :disabled="isStopped"
         icon
       >
         <v-icon>fas fa-stop-circle</v-icon>
@@ -22,7 +22,7 @@ export default {
   name: 'StopAll',
 
   computed: mapGetters('player', [
-    'state',
+    'isStopped',
   ]),
 
   methods: mapActions('player', [
