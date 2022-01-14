@@ -8,12 +8,12 @@
         :disabled="isStopped"
         icon
       >
-        <v-icon>fas {{ isPlaying ? 'fa-pause-circle' : 'fa-play-circle' }}</v-icon>
+        <v-icon v-if="isPlaying">fas fa-pause-circle</v-icon>
+        <v-icon v-else>fas fa-play-circle</v-icon>
       </v-btn>
     </template>
-    <span>
-      {{ isPlaying ? 'Pause' : 'Play' }}
-    </span>
+    <span v-if="isPlaying">Pause</span>
+    <span v-else>Play</span>
   </v-tooltip>
 </template>
 
