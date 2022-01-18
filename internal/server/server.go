@@ -14,7 +14,7 @@ func Setup(staticDir string) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
-	router.Use(middleware.Heartbeat("/health"))
+	router.Use(middleware.Heartbeat("/api/health"))
 	router.Use(middleware.Logger)
 	router.Use(middleware.Compress(5, "text/html", "text/css", "application/javascript", "application/json", "font/woff2"))
 	router.Use(middleware.Recoverer)
