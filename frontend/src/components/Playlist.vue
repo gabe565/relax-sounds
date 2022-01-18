@@ -1,6 +1,5 @@
 <template>
-  <v-card flat
-          outlined
+  <v-card flat outlined :dark="playlist.new"
           :color="playlist.new ? 'deep-purple darken-2' : ''"
           transition="fade-transition"
   >
