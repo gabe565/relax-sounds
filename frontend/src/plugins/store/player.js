@@ -178,7 +178,7 @@ export default {
         cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
         async ({ value }) => {
           if (value && getters.isStopped) {
-            const encoded = value.contentId.match(/\/mix\/(.+?)$/)[1];
+            const encoded = value.contentId.match(/\/api\/mix\/(.+?)$/)[1];
             const sounds = decodeSounds(encoded);
             await Promise.all(sounds.map((savedSound) => {
               const sound = getters.soundById(savedSound.id);
@@ -199,7 +199,7 @@ export default {
         const castSession = getCastSession();
         if (castSession) {
           const { chrome } = window;
-          const url = `${window.location.origin}/mix/${getters.encodedSounds}`;
+          const url = `${window.location.origin}/api/mix/${getters.encodedSounds}`;
 
           const mediaInfo = new chrome.cast.media.MediaInfo(url, 'music');
           mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();

@@ -122,7 +122,7 @@ export default {
     },
     downloadUrl() {
       const sounds = encodeSounds(this.playlist.sounds);
-      return `${window.location.origin}/mix/${sounds}`;
+      return `${window.location.origin}/api/mix/${sounds}`;
     },
   },
 
