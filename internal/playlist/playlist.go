@@ -1,8 +1,13 @@
 package playlist
 
+import (
+	"fmt"
+	"io/fs"
+	"path/filepath"
+)
+
 type Track struct {
 	Key    string
-	Path   string
 	Volume float64
 }
 
@@ -10,7 +15,12 @@ func (entry Track) ToShorthand() ShorthandTrack {
 	return ShorthandTrack{entry.Key, entry.Volume}
 }
 
+func (entry Track) Path() string {
+	return filepath.Clean(fmt.Sprintf("audio/%s.ogg", entry.Key))
+}
+
 type Playlist struct {
+	Dir    fs.FS
 	Tracks []Track
 }
 

@@ -16,14 +16,24 @@
     </v-row>
     <v-row class="pb-5">
       <v-chip-group v-model="filters.word">
-        <v-chip v-for="(tag, key) in tags" :key="key"
-                :value="key"
-                outlined
-                active-class="deep-orange"
-                class="ma-2"
-        >
-          {{ tag.name }}
-        </v-chip>
+        <template v-if="loading">
+          <v-skeleton-loader
+            type="chip"
+            v-for="i in 5"
+            :key="i"
+            class="ma-2"
+          />
+        </template>
+        <template v-else>
+          <v-chip v-for="(tag, key) in tags" :key="key"
+                  :value="key"
+                  outlined
+                  active-class="deep-orange"
+                  class="ma-2"
+          >
+            {{ tag.name }}
+          </v-chip>
+        </template>
       </v-chip-group>
     </v-row>
     <v-row>
@@ -46,20 +56,28 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-import tags from '../data/tags.json';
+import { mapState, mapGetters, mapActions } from 'vuex';
+import { getTags } from '../data/tags';
 
 export default {
   name: 'Filters',
 
   data: () => ({
-    tags,
+    tags: null,
+    loading: true,
   }),
+
+  async created() {
+    this.tags = await getTags();
+    this.loading = false;
+  },
 
   computed: {
     ...mapState('filters', ['filters']),
     ...mapGetters('filters', ['pages']),
   },
+
+  methods: mapActions('filters', ['initSounds']),
 
   watch: {
     pages() {

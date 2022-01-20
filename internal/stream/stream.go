@@ -6,7 +6,7 @@ import (
 	"github.com/faiface/beep/vorbis"
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"golang.org/x/sync/errgroup"
-	"os"
+	"io/fs"
 	"sync"
 )
 
@@ -23,8 +23,8 @@ func (stream *Stream) Close() error {
 	return nil
 }
 
-func (stream *Stream) Add(entry playlist.Track, mu *sync.Mutex) error {
-	infile, err := os.Open(entry.Path)
+func (stream *Stream) Add(dataDir fs.FS, entry playlist.Track, mu *sync.Mutex) error {
+	infile, err := dataDir.Open(entry.Path())
 	if err != nil {
 		return err
 	}
@@ -70,7 +70,7 @@ func New(plist playlist.Playlist) (stream Stream, err error) {
 	for _, entry := range plist.Tracks {
 		entry := entry
 		group.Go(func() error {
-			return s.Add(entry, &mu)
+			return s.Add(plist.Dir, entry, &mu)
 		})
 	}
 

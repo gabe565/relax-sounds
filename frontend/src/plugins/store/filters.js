@@ -1,9 +1,8 @@
 import Fuse from 'fuse.js';
-import { soundConfig } from '../../util/sounds';
 
 const PER_PAGE = 48;
 
-const fuse = new Fuse(soundConfig, {
+export const fuse = new Fuse([], {
   shouldSort: true,
   threshold: 0.3,
   location: 0,
@@ -44,7 +43,12 @@ export default {
       return result.slice(offset, offset + PER_PAGE);
     },
     pages(_, getters) {
-      return Math.ceil(getters.filteredSounds.length / PER_PAGE);
+      return Math.max(Math.ceil(getters.filteredSounds.length / PER_PAGE), 1);
+    },
+  },
+  actions: {
+    initSounds(_, conf) {
+      fuse.setCollection(conf);
     },
   },
 };

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-pro": "^6.0.0-beta3",
+    "axios": "^0.24.0",
     "base64-url": "^2.3.3",
     "core-js": "^3.13.0",
     "fuse.js": "^6.4.6",

@@ -75,7 +75,7 @@ import SavePlaylist from './components/SavePlaylist.vue';
 import PlayPauseAll from './components/PlayPauseAll.vue';
 import StopAll from './components/StopAll.vue';
 import UpdateSnackbar from './components/UpdateSnackbar.vue';
-import { prefetch } from './util/sounds';
+import { prefetch } from './data/sounds';
 
 export default {
   name: 'App',
@@ -173,5 +173,11 @@ export default {
     box-shadow: none;
     outline: none;
     transition: 0.2s cubic-bezier(0, 0.5, 0.2, 1);
+  }
+
+  .theme--dark {
+    &.v-skeleton-loader.transparent > div {
+      background: transparent !important;
+    }
   }
 </style>

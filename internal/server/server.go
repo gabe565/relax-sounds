@@ -5,12 +5,13 @@ import (
 	"github.com/gabe565/relax-sounds/internal/playlist"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"io/fs"
 	"net/http"
 	"os"
-	"path/filepath"
+	"strings"
 )
 
-func Setup(staticDir string) *chi.Mux {
+func Setup(staticFs, dataFs fs.FS) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
@@ -19,24 +20,33 @@ func Setup(staticDir string) *chi.Mux {
 	router.Use(middleware.Compress(5, "text/html", "text/css", "application/javascript", "application/json", "font/woff2"))
 	router.Use(middleware.Recoverer)
 
+	// Static Files
+	staticserv := http.FileServer(http.FS(staticFs))
+	router.Get("/*", fsPwaHandler(router, staticFs, staticserv))
+
 	// Serve index as 404
 	router.NotFound(func(res http.ResponseWriter, req *http.Request) {
-		http.ServeFile(res, req, staticDir+"/index.html")
+		req.URL.Path = "/"
+		staticserv.ServeHTTP(res, req)
 	})
 
-	// Static Files
-	fileserver := http.FileServer(http.Dir(staticDir))
-	router.Get("/*", func(res http.ResponseWriter, req *http.Request) {
-		requestPath := filepath.Join(staticDir, filepath.Clean("/"+req.URL.Path))
-		if _, err := os.Stat(requestPath); !os.IsNotExist(err) {
-			fileserver.ServeHTTP(res, req)
+	// Data
+	dataserv := http.FileServer(http.FS(dataFs))
+	router.With(StripPrefix("/data")).Get("/data/*", fsPwaHandler(router, dataFs, dataserv))
+
+	// Mixer
+	router.With(playlist.DecoderMiddleware(dataFs)).Get("/mix/{enc}", mixer.Mix)
+
+	return router
+}
+
+func fsPwaHandler(router *chi.Mux, filesystem fs.FS, h http.Handler) func(http.ResponseWriter, *http.Request) {
+	return func(res http.ResponseWriter, req *http.Request) {
+		stripped := strings.TrimLeft(req.URL.Path, string(os.PathSeparator))
+		if _, err := fs.Stat(filesystem, stripped); !os.IsNotExist(err) {
+			h.ServeHTTP(res, req)
 		} else {
 			router.NotFoundHandler().ServeHTTP(res, req)
 		}
-	})
-
-	// Mixer
-	router.With(playlist.DecoderMiddleware(staticDir)).Get("/mix/{enc}", mixer.Mix)
-
-	return router
+	}
 }

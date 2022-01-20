@@ -2,8 +2,10 @@
 .dockerignore
 .git
 .idea
+data
 Dockerfile
 frontend/dist
 frontend/README.md
 frontend/node_modules
+relax-sounds
 vendor

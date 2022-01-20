@@ -4,6 +4,17 @@ module.exports = {
       args[0].title = 'Relax Sounds';
       return args;
     });
+    config.module
+      .rule('data')
+      .test(/data\/.+\.json$/)
+      .type('javascript/auto')
+      .use('file-loader')
+      .loader('file-loader')
+      .options({
+        name: '[path][name].[ext]',
+        context: 'src',
+      })
+      .end();
   },
   pwa: {
     name: 'Relax Sounds',
@@ -16,7 +27,8 @@ module.exports = {
     workboxOptions: {
       swSrc: './src/service-worker.js',
       exclude: [
-        /^audio\//,
+        /^data\/.*\.json$/,
+        /^data\/audio\//,
         /\.map$/,
         /img\/icons\//,
         /favicon\.ico$/,

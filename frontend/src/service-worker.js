@@ -24,8 +24,22 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 // workbox.precaching.suppressWarnings(); // Only used with Vue CLI 3 and Workbox v3.
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
+// Navigation route
+workbox.routing.registerNavigationRoute(
+  workbox.precaching.getCacheKeyForURL('index.html')
+);
+
+// Config file cache
 workbox.routing.registerRoute(
-  /\/audio\//,
+  /\/data\/.*\.json$/,
+  new workbox.strategies.NetworkFirst({
+    cacheName: 'data-cache',
+  }),
+);
+
+// Audio file cache
+workbox.routing.registerRoute(
+  /\/data\/audio\//,
   new workbox.strategies.CacheFirst({
     cacheName: 'audio-cache',
   }),

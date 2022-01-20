@@ -1,11 +1,12 @@
-import { soundConfig, SoundState } from '../../util/sounds';
+import { SoundState } from '../../util/sounds';
+import { getSounds } from '../../data/sounds';
 import { formatError, getCastSession } from '../../util/googleCast';
 import { decodeSounds, encodeSounds } from '../../util/shareUrl';
 
 export default {
   namespaced: true,
   state: {
-    sounds: soundConfig,
+    sounds: [],
     remotePlayer: null,
     remotePlayerController: null,
     castConnected: false,
@@ -68,6 +69,9 @@ export default {
     },
     castConnectedChanged(state, { value }) {
       state.castConnected = value;
+    },
+    initSounds(state, value) {
+      state.sounds = value;
     },
   },
 
@@ -219,6 +223,13 @@ export default {
         }
       } else {
         state.remotePlayerController.stop();
+      }
+    },
+    async initSounds({ commit, dispatch, state }) {
+      if (!state.sounds.length) {
+        const conf = await getSounds();
+        commit('initSounds', conf);
+        dispatch('filters/initSounds', conf, { root: true });
       }
     },
   },

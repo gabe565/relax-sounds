@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Playlist from '../components/Playlist.vue';
 import Page from '../layouts/Page.vue';
 
@@ -44,11 +44,13 @@ export default {
   data: () => ({
     showAlert: false,
   }),
-  created() {
+  async created() {
     if (this.alert) this.showAlert = true;
+    await this.initSounds();
   },
   computed: mapState('playlists', [
     'playlists',
   ]),
+  methods: mapActions('player', ['initSounds']),
 };
 </script>

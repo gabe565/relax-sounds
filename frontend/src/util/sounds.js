@@ -1,7 +1,5 @@
 import { Howl } from 'howler';
 
-import staticSoundConfig from '../data/sounds.json';
-
 export const SoundState = {
   PLAYING: 'playing',
   PAUSED: 'paused',
@@ -9,7 +7,7 @@ export const SoundState = {
   UNLOADED: 'unloaded',
 };
 
-class Sound {
+export class Sound {
   constructor(obj) {
     Object.assign(this, obj);
     this.state = SoundState.STOPPED;
@@ -24,7 +22,7 @@ class Sound {
   }
 
   get src() {
-    return `${process.env.BASE_URL}audio/${this.id}.ogg`;
+    return `${process.env.BASE_URL}data/audio/${this.id}.ogg`;
   }
 
   load() {
@@ -104,17 +102,4 @@ class Sound {
   get isUnloaded() {
     return this.howl.state() === SoundState.UNLOADED;
   }
-}
-
-export const soundConfig = staticSoundConfig.map((sound) => new Sound(sound)).sort(
-  (left, right) => left.name.localeCompare(right.name),
-);
-
-export async function prefetch() {
-  const cache = await window.caches.open('audio-cache');
-  await Promise.all(soundConfig.map(async (sound) => {
-    sound.isLoading = true;
-    await cache.add(sound.src);
-    sound.isLoading = false;
-  }));
 }
