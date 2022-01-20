@@ -6,9 +6,9 @@ export function encodeSounds(sounds) {
   ));
 }
 
-export function encode(playlist) {
-  const name = encodeURIComponent(playlist.name).replace(/%20/g, '+');
-  const sounds = encodeSounds(playlist.sounds);
+export function encode(preset) {
+  const name = encodeURIComponent(preset.name).replace(/%20/g, '+');
+  const sounds = encodeSounds(preset.sounds);
   return { name, sounds };
 }
 

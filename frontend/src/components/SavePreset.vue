@@ -11,7 +11,7 @@
         <v-icon>fas fa-plus-circle</v-icon>
         <v-dialog v-model="showDialog" max-width="500">
           <v-card>
-            <v-card-title class="headline">Playlist Name</v-card-title>
+            <v-card-title class="headline">Preset Name</v-card-title>
             <v-card-text>
               <v-form @submit.prevent="save">
                 <v-text-field required autofocus label="Name" v-model="name"/>
@@ -25,14 +25,14 @@
               </v-btn>
               <v-btn color="green" text @click="save">
                 <v-icon aria-hidden="true">fal fa-save fa-fw</v-icon>
-                Save Playlist
+                Save Preset
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-btn>
     </template>
-    <span>Save Playlist</span>
+    <span>Save Preset</span>
   </v-tooltip>
 </template>
 
@@ -40,7 +40,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'SavePlaylist',
+  name: 'SavePreset',
 
   data: () => ({
     showDialog: false,
@@ -59,14 +59,14 @@ export default {
     save() {
       let params;
       try {
-        this.$store.dispatch('playlists/savePlaying', { name: this.name });
-        params = { alert: { type: 'info', text: `Playlist "${this.name}" saved successfully.` } };
+        this.$store.dispatch('presets/savePlaying', { name: this.name });
+        params = { alert: { type: 'info', text: `Preset "${this.name}" saved successfully.` } };
         this.name = '';
       } catch (error) {
-        params = { alert: { type: 'error', text: 'Failed to save playlist. Please try again later.' } };
+        params = { alert: { type: 'error', text: 'Failed to save preset. Please try again later.' } };
       }
       this.showDialog = false;
-      return this.$router.push({ name: 'Playlists', params });
+      return this.$router.push({ name: 'Presets', params });
     },
   },
 };

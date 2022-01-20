@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/gabe565/relax-sounds/internal/mixer"
-	"github.com/gabe565/relax-sounds/internal/playlist"
+	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"io/fs"
@@ -35,7 +35,7 @@ func Setup(staticFs, dataFs fs.FS) *chi.Mux {
 	router.With(StripPrefix("/data")).Get("/data/*", fsPwaHandler(router, dataFs, dataserv))
 
 	// Mixer
-	router.With(playlist.DecoderMiddleware(dataFs)).Get("/api/mix/{enc}", mixer.Mix)
+	router.With(preset.DecoderMiddleware(dataFs)).Get("/api/mix/{enc}", mixer.Mix)
 
 	return router
 }

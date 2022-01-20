@@ -3,7 +3,7 @@ package mixer
 import (
 	"errors"
 	"github.com/faiface/beep"
-	"github.com/gabe565/relax-sounds/internal/playlist"
+	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	flag "github.com/spf13/pflag"
 	"github.com/viert/go-lame"
@@ -32,7 +32,7 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "audio/mp3")
 
 	// Set up stream
-	s, err := stream.New(ctx.Value(playlist.RequestKey).(playlist.Playlist))
+	s, err := stream.New(ctx.Value(preset.RequestKey).(preset.Preset))
 	defer func(s *stream.Stream) {
 		_ = s.Close()
 	}(&s)

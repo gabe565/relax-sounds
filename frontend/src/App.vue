@@ -26,7 +26,7 @@
       <v-spacer/>
 
       <google-cast-launcher class="v-btn v-btn--icon theme--dark v-size--default"/>
-      <SavePlaylist/>
+      <SavePreset/>
       <PlayPauseAll/>
       <StopAll/>
 
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import SavePlaylist from './components/SavePlaylist.vue';
+import SavePreset from './components/SavePreset.vue';
 import PlayPauseAll from './components/PlayPauseAll.vue';
 import StopAll from './components/StopAll.vue';
 import UpdateSnackbar from './components/UpdateSnackbar.vue';
@@ -81,7 +81,7 @@ export default {
   name: 'App',
 
   components: {
-    SavePlaylist,
+    SavePreset,
     StopAll,
     PlayPauseAll,
     UpdateSnackbar,

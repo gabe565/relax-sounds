@@ -4,7 +4,7 @@ import (
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/effects"
 	"github.com/faiface/beep/vorbis"
-	"github.com/gabe565/relax-sounds/internal/playlist"
+	"github.com/gabe565/relax-sounds/internal/preset"
 	"golang.org/x/sync/errgroup"
 	"io/fs"
 	"sync"
@@ -23,7 +23,7 @@ func (stream *Stream) Close() error {
 	return nil
 }
 
-func (stream *Stream) Add(dataDir fs.FS, entry playlist.Track, mu *sync.Mutex) error {
+func (stream *Stream) Add(dataDir fs.FS, entry preset.Track, mu *sync.Mutex) error {
 	infile, err := dataDir.Open(entry.Path())
 	if err != nil {
 		return err
@@ -57,20 +57,20 @@ func (stream *Stream) Mix() beep.Streamer {
 	return beep.Mix(stream.streamers...)
 }
 
-func New(plist playlist.Playlist) (stream Stream, err error) {
+func New(p preset.Preset) (stream Stream, err error) {
 	s := Stream{
-		closers:   make([]beep.StreamSeekCloser, 0, len(plist.Tracks)),
-		streamers: make([]beep.Streamer, 0, len(plist.Tracks)),
-		Formats:   make([]beep.Format, 0, len(plist.Tracks)),
+		closers:   make([]beep.StreamSeekCloser, 0, len(p.Tracks)),
+		streamers: make([]beep.Streamer, 0, len(p.Tracks)),
+		Formats:   make([]beep.Format, 0, len(p.Tracks)),
 	}
 
 	var mu sync.Mutex
 	group := errgroup.Group{}
 
-	for _, entry := range plist.Tracks {
+	for _, entry := range p.Tracks {
 		entry := entry
 		group.Go(func() error {
-			return s.Add(plist.Dir, entry, &mu)
+			return s.Add(p.Dir, entry, &mu)
 		})
 	}
 

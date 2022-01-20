@@ -1,12 +1,12 @@
 <template>
-  <v-card flat outlined :dark="playlist.new"
-          :color="playlist.new ? 'deep-purple darken-2' : ''"
+  <v-card flat outlined :dark="preset.new"
+          :color="preset.new ? 'deep-purple darken-2' : ''"
           transition="fade-transition"
   >
     <v-row align="center" justify="center" dense>
       <v-col class="grow">
         <v-card-title class="headline">
-          {{ playlist.name }}
+          {{ preset.name }}
         </v-card-title>
       </v-col>
       <v-col class="shrink" v-if="DEBUG_ENABLED">
@@ -57,7 +57,7 @@
 
     <v-dialog v-model="shareDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline">Share Playlist</v-card-title>
+        <v-card-title class="headline">Share Preset</v-card-title>
         <v-card-text>
           <v-text-field :value="shareUrl"/>
         </v-card-text>
@@ -73,9 +73,9 @@
 
     <v-dialog v-model="deleteDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline">Delete Playlist?</v-card-title>
+        <v-card-title class="headline">Delete Preset?</v-card-title>
         <v-card-text>
-          Are you sure you want to delete "{{ playlist.name }}"?
+          Are you sure you want to delete "{{ preset.name }}"?
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
@@ -97,10 +97,10 @@
 import { encode, encodeSounds } from '../util/shareUrl';
 
 export default {
-  name: 'Playlist',
+  name: 'Preset',
 
   props: {
-    playlist: {
+    preset: {
       type: Object,
     },
   },
@@ -117,21 +117,21 @@ export default {
 
   computed: {
     shareUrl() {
-      const { name, sounds } = encode(this.playlist);
+      const { name, sounds } = encode(this.preset);
       return `${window.location.origin}/import/${name}/${sounds}`;
     },
     downloadUrl() {
-      const sounds = encodeSounds(this.playlist.sounds);
+      const sounds = encodeSounds(this.preset.sounds);
       return `${window.location.origin}/api/mix/${sounds}`;
     },
   },
 
   methods: {
     play() {
-      this.$store.dispatch('playlists/play', { playlist: this.playlist });
+      this.$store.dispatch('presets/play', { preset: this.preset });
     },
     remove() {
-      this.$store.commit('playlists/remove', { playlist: this.playlist });
+      this.$store.commit('presets/remove', { preset: this.preset });
     },
   },
 };

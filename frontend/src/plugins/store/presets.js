@@ -1,32 +1,47 @@
 import { SoundState } from '../../util/sounds';
 
-const defaultState = {
-  playlists: [],
-  currentName: null,
-};
+const saveState = ({ presets }) => localStorage.setItem('presets', JSON.stringify(presets));
 
-const saveState = (state) => localStorage.setItem('playlists', JSON.stringify(state));
-const loadState = () => JSON.parse(localStorage.getItem('playlists'));
+const loadState = () => {
+  const presets = JSON.parse(localStorage.getItem('presets'));
+  if (presets) {
+    return presets;
+  }
+
+  // Playlist to preset migration
+  const playlists = JSON.parse(localStorage.getItem('playlists'));
+  if (playlists) {
+    const newState = playlists.playlists;
+    localStorage.setItem('presets', JSON.stringify(newState));
+    localStorage.removeItem('playlists');
+    return newState;
+  }
+
+  return [];
+};
 
 export default {
   namespaced: true,
-  state: loadState() || defaultState,
+  state: {
+    presets: loadState(),
+    currentName: null,
+  },
 
   mutations: {
-    add(state, { playlist }) {
-      state.playlists.push(playlist);
-      state.currentName = playlist.name;
+    add(state, { preset }) {
+      state.presets.push(preset);
+      state.currentName = preset.name;
       saveState(state);
     },
-    remove(state, { playlist }) {
-      const index = state.playlists.indexOf(playlist);
-      state.playlists.splice(index, 1);
+    remove(state, { preset }) {
+      const index = state.presets.indexOf(preset);
+      state.presets.splice(index, 1);
       saveState(state);
     },
-    play(state, { playlist }) {
-      state.currentName = playlist.name;
-      if (playlist.new) {
-        playlist.new = false;
+    play(state, { preset }) {
+      state.currentName = preset.name;
+      if (preset.new) {
+        preset.new = false;
         saveState(state);
       }
     },
@@ -44,7 +59,7 @@ export default {
         }));
 
       commit('add', {
-        playlist: {
+        preset: {
           name,
           sounds,
           new: true,
@@ -52,24 +67,24 @@ export default {
       });
     },
 
-    load({ dispatch, rootGetters }, { playlist }) {
-      return Promise.all(playlist.sounds.map((savedSound) => {
+    load({ dispatch, rootGetters }, { preset }) {
+      return Promise.all(preset.sounds.map((savedSound) => {
         const sound = rootGetters['player/soundById'](savedSound.id);
         return dispatch('player/load', { sound }, { root: true });
       }));
     },
 
-    async play({ commit, dispatch, rootGetters }, { playlist }) {
+    async play({ commit, dispatch, rootGetters }, { preset }) {
       if (rootGetters['player/state'] !== SoundState.STOPPED) {
         dispatch('player/stopAll', { fade: 0, local: true }, { root: true });
       }
-      await Promise.all(playlist.sounds.map((savedSound) => {
+      await Promise.all(preset.sounds.map((savedSound) => {
         const sound = rootGetters['player/soundById'](savedSound.id);
         sound.volume = savedSound.volume;
         const fade = rootGetters['player/state'] === SoundState.STOPPED ? 500 : false;
         return dispatch('player/playStop', { sound, fade, local: true }, { root: true });
       }));
-      commit('play', { playlist });
+      commit('play', { preset });
       await dispatch('player/updateCast', null, { root: true });
     },
   },

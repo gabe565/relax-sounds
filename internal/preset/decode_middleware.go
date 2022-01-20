@@ -1,4 +1,4 @@
-package playlist
+package preset
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 
 type ContextKey string
 
-const RequestKey = ContextKey("playlist")
+const RequestKey = ContextKey("preset")
 
 func DecoderMiddleware(dataFs fs.FS) func(handler http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
@@ -24,19 +24,19 @@ func DecoderMiddleware(dataFs fs.FS) func(handler http.Handler) http.Handler {
 				return
 			}
 
-			var entries PlaylistShorthand
+			var entries PresetShorthand
 			if err = json.Unmarshal(data, &entries); err != nil {
 				http.Error(res, http.StatusText(400), 400)
 				return
 			}
 
-			playlist, err := entries.ToPlaylist(dataFs)
+			preset, err := entries.ToPreset(dataFs)
 			if err != nil {
 				http.Error(res, http.StatusText(400), 400)
 				return
 			}
 
-			ctx := context.WithValue(req.Context(), RequestKey, playlist)
+			ctx := context.WithValue(req.Context(), RequestKey, preset)
 
 			next.ServeHTTP(res, req.WithContext(ctx))
 		})

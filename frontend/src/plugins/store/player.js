@@ -90,8 +90,8 @@ export default {
         }
         commit('play', { sound, fade });
       }
-      if (rootState.playlists.currentName) {
-        commit('playlists/disableCurrent', null, { root: true });
+      if (rootState.presets.currentName) {
+        commit('presets/disableCurrent', null, { root: true });
       }
       if (!local && state.castConnected) dispatch('updateCast');
     },
@@ -129,7 +129,7 @@ export default {
         state.remotePlayerController.stop();
       }
       if (!local && state.castConnected) {
-        commit('playlists/disableCurrent', null, { root: true });
+        commit('presets/disableCurrent', null, { root: true });
       }
     },
     initializeCastApi({ commit, dispatch, getters }) {
@@ -203,8 +203,8 @@ export default {
 
           const mediaInfo = new chrome.cast.media.MediaInfo(url, 'music');
           mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
-          if (rootState.playlists.currentName) {
-            mediaInfo.metadata.title = rootState.playlists.currentName;
+          if (rootState.presets.currentName) {
+            mediaInfo.metadata.title = rootState.presets.currentName;
           } else {
             mediaInfo.metadata.title = getters.soundsPlaying
               .map((sound) => sound.name)

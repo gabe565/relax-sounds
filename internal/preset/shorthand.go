@@ -1,4 +1,4 @@
-package playlist
+package preset
 
 import (
 	"errors"
@@ -10,10 +10,10 @@ var ErrInvalidShorthand = errors.New("invalid shorthand")
 
 type ShorthandTrack [2]interface{}
 
-type PlaylistShorthand []ShorthandTrack
+type PresetShorthand []ShorthandTrack
 
-func (shorthand PlaylistShorthand) ToPlaylist(dataDir fs.FS) (Playlist, error) {
-	playlist := Playlist{
+func (shorthand PresetShorthand) ToPreset(dataDir fs.FS) (Preset, error) {
+	preset := Preset{
 		Dir: dataDir,
 	}
 	for _, value := range shorthand {
@@ -21,7 +21,7 @@ func (shorthand PlaylistShorthand) ToPlaylist(dataDir fs.FS) (Playlist, error) {
 			Key:    fmt.Sprintf("%v", value[0]),
 			Volume: value[1].(float64) - 1,
 		}
-		playlist.Add(track)
+		preset.Add(track)
 	}
-	return playlist, nil
+	return preset, nil
 }
