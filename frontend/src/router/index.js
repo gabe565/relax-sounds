@@ -8,7 +8,7 @@ import NotFound from '../pages/NotFound.vue';
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+const router = new VueRouter({
   mode: 'history',
   routes: [
     {
@@ -60,3 +60,13 @@ export default new VueRouter({
     },
   ],
 });
+
+const defaultTitle = document.title;
+router.afterEach(async (to) => {
+  // Use next tick to handle router history correctly
+  // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
+  await Vue.nextTick();
+  document.title = to.name ? `${to.name} - ${defaultTitle}` : defaultTitle;
+});
+
+export default router;
