@@ -17,7 +17,7 @@
     </v-navigation-drawer>
 
     <v-app-bar app dark hide-on-scroll color="accent" flat>
-      <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
+      <v-app-bar-nav-icon @click.stop="toggleDrawer" aria-label="Toggle Drawer"/>
       <v-toolbar-title>
         <v-icon aria-hidden="true" class="mr-2">fas fa-bed-alt</v-icon>
         Relax Sounds

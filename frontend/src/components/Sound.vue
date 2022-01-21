@@ -22,8 +22,12 @@
         </v-card-title>
       </v-col>
       <v-col class="shrink pr-4">
-        <v-btn @click.stop="playStop" elevation="0" icon>
-          <v-icon dense>
+        <v-btn
+          elevation="0" icon
+          @click.stop="playStop"
+          :aria-label="sound.isPlaying ? 'Stop' : 'Play'"
+        >
+          <v-icon dense aria-hidden="true">
             fas fa-fw {{ icon }}
           </v-icon>
         </v-btn>

@@ -7,8 +7,9 @@
         @click="showDialog = !showDialog"
         :disabled="isStopped"
         icon
+        aria-label="Save Preset"
       >
-        <v-icon>fas fa-plus-circle</v-icon>
+        <v-icon aria-hidden="true">fas fa-plus-circle</v-icon>
         <v-dialog v-model="showDialog" max-width="500">
           <v-card>
             <v-card-title class="headline">Preset Name</v-card-title>

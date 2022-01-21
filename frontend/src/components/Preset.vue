@@ -11,29 +11,29 @@
           </v-card-title>
         </v-col>
         <v-col class="shrink" v-if="DEBUG_ENABLED">
-          <v-btn @click.stop="debugDialog = true" elevation="0" icon>
-            <v-icon dense>
+          <v-btn @click.stop="debugDialog = true" elevation="0" icon aria-label="Debug">
+            <v-icon dense aria-hidden="true">
               fas fa-fw fa-bug
             </v-icon>
           </v-btn>
         </v-col>
         <v-col class="shrink">
-          <v-btn @click.stop="shareDialog = true" elevation="0" icon>
-            <v-icon dense>
+          <v-btn @click.stop="shareDialog = true" elevation="0" icon aria-label="Share">
+            <v-icon dense aria-hidden="true">
               fas fa-fw fa-share
             </v-icon>
           </v-btn>
         </v-col>
         <v-col class="shrink">
-          <v-btn @click.stop="deleteDialog = true" elevation="0" icon>
-            <v-icon dense>
+          <v-btn @click.stop="deleteDialog = true" elevation="0" icon aria-label="Delete">
+            <v-icon dense aria-hidden="true">
               fas fa-fw fa-trash
             </v-icon>
           </v-btn>
         </v-col>
         <v-col class="shrink pr-4">
-          <v-btn @click.stop="play" elevation="0" icon>
-            <v-icon dense>
+          <v-btn @click.stop="play" elevation="0" icon aria-label="Play">
+            <v-icon dense aria-hidden="true">
               fas fa-fw fa-play
             </v-icon>
           </v-btn>
