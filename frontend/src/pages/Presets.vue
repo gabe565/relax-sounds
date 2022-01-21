@@ -1,18 +1,5 @@
 <template>
-  <Page>
-    <v-row v-if="showAlert">
-      <v-col>
-        <v-alert
-          dismissible
-          prominent
-          text
-          :type="alert.type"
-          v-model="showAlert"
-        >
-          {{ alert.text }}
-        </v-alert>
-      </v-col>
-    </v-row>
+  <Page :alert="alert">
     <v-row>
       <v-col
         cols="12" lg="6"
@@ -22,7 +9,7 @@
         <Preset :preset="preset"/>
       </v-col>
       <v-col v-if="presets.length === 0">
-        <v-alert outlined color="warning" icon="fal fa-info-circle">
+        <v-alert prominent text color="info" icon="fal fa-info-circle">
           No Presets Saved Yet!
         </v-alert>
       </v-col>
@@ -41,11 +28,7 @@ export default {
   props: {
     alert: Object,
   },
-  data: () => ({
-    showAlert: false,
-  }),
   async created() {
-    if (this.alert) this.showAlert = true;
     await this.initSounds();
   },
   computed: mapState('presets', [

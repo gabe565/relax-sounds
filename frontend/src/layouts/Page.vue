@@ -6,6 +6,20 @@
       </h1>
     </v-row>
 
+    <v-row v-if="showAlert">
+      <v-col>
+        <v-alert
+          dismissible
+          prominent
+          text
+          :type="alert.type"
+          v-model="showAlert"
+        >
+          {{ alert.text }}
+        </v-alert>
+      </v-col>
+    </v-row>
+
     <slot/>
 
   </v-container>
@@ -14,5 +28,14 @@
 <script>
 export default {
   name: 'Page',
+  props: {
+    alert: Object,
+  },
+  data: () => ({
+    showAlert: false,
+  }),
+  async created() {
+    if (this.alert) this.showAlert = true;
+  },
 };
 </script>

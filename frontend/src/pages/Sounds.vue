@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page :alert="alert">
     <Filters>
       <v-row>
         <template v-if="loading">
@@ -39,6 +39,9 @@ import Filters from '../components/Filters.vue';
 export default {
   name: 'Sounds',
   components: { Filters, Page, Sound },
+  props: {
+    alert: Object,
+  },
   data: () => ({
     loading: true,
     error: null,
