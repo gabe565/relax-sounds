@@ -3,13 +3,15 @@
           outlined
           :dark="showProgress"
   >
-    <v-progress-linear
-      v-model="volumePercentage"
-      absolute
-      height="100%"
-      color="deep-purple darken-2"
-      v-if="showProgress"
-    />
+    <v-fade-transition>
+      <v-progress-linear
+        v-model="volumePercentage"
+        absolute
+        height="100%"
+        color="deep-purple darken-2"
+        v-if="showProgress"
+      />
+    </v-fade-transition>
     <v-row align="center" justify="center" dense>
       <v-col class="grow">
         <v-card-title class="headline">

@@ -6,19 +6,21 @@
       </h1>
     </v-row>
 
-    <v-row v-if="showAlert">
-      <v-col>
-        <v-alert
-          dismissible
-          prominent
-          text
-          :type="alert.type"
-          v-model="showAlert"
-        >
-          {{ alert.text }}
-        </v-alert>
-      </v-col>
-    </v-row>
+    <v-fade-transition>
+      <v-row v-if="showAlert">
+        <v-col>
+          <v-alert
+            dismissible
+            prominent
+            text
+            :type="alert.type"
+            v-model="showAlert"
+          >
+            {{ alert.text }}
+          </v-alert>
+        </v-col>
+      </v-row>
+    </v-fade-transition>
 
     <slot/>
 
