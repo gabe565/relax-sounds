@@ -4,9 +4,9 @@
             :color="preset.new ? 'deep-purple darken-2' : ''"
             transition="fade-transition"
     >
-      <v-row align="center" justify="center" dense>
-        <v-col class="grow">
-          <v-card-title class="headline">
+      <v-row align="center" dense>
+        <v-col class="overflow-hidden">
+          <v-card-title class="headline d-block text-truncate">
             {{ preset.name }}
           </v-card-title>
         </v-col>
