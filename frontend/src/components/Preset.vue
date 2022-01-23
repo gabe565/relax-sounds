@@ -138,28 +138,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  .v-card {
-    overflow: hidden;
-    transition: background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  .v-progress-linear {
-    z-index: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
-  }
-  .row {
-    position: relative;
-    z-index: 1;
-    pointer-events: none;
-  }
-  .v-btn {
-    pointer-events: all;
-  }
-  .no-transition {
-    transition: none;
-  }
-</style>
