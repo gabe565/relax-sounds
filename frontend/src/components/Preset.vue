@@ -10,96 +10,30 @@
             {{ preset.name }}
           </v-card-title>
         </v-col>
-        <v-col class="shrink" v-if="DEBUG_ENABLED">
-          <v-btn @click.stop="debugDialog = true" elevation="0" icon aria-label="Debug">
-            <v-icon dense aria-hidden="true">
-              fas fa-fw fa-bug
-            </v-icon>
-          </v-btn>
-        </v-col>
-        <v-col class="shrink">
-          <v-btn @click.stop="shareDialog = true" elevation="0" icon aria-label="Share">
-            <v-icon dense aria-hidden="true">
-              fas fa-fw fa-share
-            </v-icon>
-          </v-btn>
-        </v-col>
-        <v-col class="shrink">
-          <v-btn @click.stop="deleteDialog = true" elevation="0" icon aria-label="Delete">
-            <v-icon dense aria-hidden="true">
-              fas fa-fw fa-trash
-            </v-icon>
-          </v-btn>
-        </v-col>
-        <v-col class="shrink pr-4">
-          <v-btn @click.stop="play" elevation="0" icon aria-label="Play">
-            <v-icon dense aria-hidden="true">
-              fas fa-fw fa-play
-            </v-icon>
-          </v-btn>
-        </v-col>
+        <debug-button :preset="preset" v-if="DEBUG_ENABLED"/>
+        <share-button :preset="preset"/>
+        <delete-button :preset="preset"/>
+        <play-button :preset="preset"/>
       </v-row>
-
-      <v-dialog v-model="debugDialog" max-width="500">
-        <v-card>
-          <v-card-title class="headline">Debug</v-card-title>
-          <v-card-text>
-            <v-btn :href="downloadUrl" target="_blank">Mix URL</v-btn>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer/>
-            <v-btn text @click="debugDialog = false">
-              <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog v-model="shareDialog" max-width="500">
-        <v-card>
-          <v-card-title class="headline">Share Preset</v-card-title>
-          <v-card-text>
-            <v-text-field :value="shareUrl"/>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer/>
-            <v-btn text @click="shareDialog = false">
-              <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog v-model="deleteDialog" max-width="500">
-        <v-card>
-          <v-card-title class="headline">Delete Preset?</v-card-title>
-          <v-card-text>
-            Are you sure you want to delete "{{ preset.name }}"?
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer/>
-            <v-btn text @click="deleteDialog = false">
-              <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
-              Cancel
-            </v-btn>
-            <v-btn color="red" text @click="remove">
-              <v-icon aria-hidden="true">fal fa-trash fa-fw</v-icon>
-              Confirm
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-card>
   </v-fade-transition>
 </template>
 
 <script>
-import { encode, encodeSounds } from '../util/shareUrl';
+import ShareButton from './PresetButtons/ShareButton.vue';
+import DeleteButton from './PresetButtons/DeleteButton.vue';
+import DebugButton from './PresetButtons/DebugButton.vue';
+import PlayButton from './PresetButtons/PlayButton.vue';
 
 export default {
   name: 'Preset',
+
+  components: {
+    PlayButton,
+    DebugButton,
+    DeleteButton,
+    ShareButton,
+  },
 
   props: {
     preset: {
@@ -109,32 +43,11 @@ export default {
 
   data: () => ({
     deleteDialog: false,
-    shareDialog: false,
     debugDialog: false,
   }),
 
   created() {
     this.DEBUG_ENABLED = process.env.NODE_ENV === 'development';
-  },
-
-  computed: {
-    shareUrl() {
-      const { name, sounds } = encode(this.preset);
-      return `${window.location.origin}/import/${name}/${sounds}`;
-    },
-    downloadUrl() {
-      const sounds = encodeSounds(this.preset.sounds);
-      return `${window.location.origin}/api/mix/${sounds}`;
-    },
-  },
-
-  methods: {
-    play() {
-      this.$store.dispatch('presets/play', { preset: this.preset });
-    },
-    remove() {
-      this.$store.commit('presets/remove', { preset: this.preset });
-    },
   },
 };
 </script>
