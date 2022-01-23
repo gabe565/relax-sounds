@@ -23,9 +23,19 @@
             <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
             Close
           </v-btn>
+          <v-btn text @click="copy">
+            <v-icon aria-hidden="true">fal fa-copy fa-fw</v-icon>
+            Copy
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar
+      v-model="showSnackbar" timeout="5000"
+      bottom class="pb-14 pb-md-0"
+    >
+      Copied to clipboard.
+    </v-snackbar>
   </v-col>
 </template>
 
@@ -45,6 +55,7 @@ export default {
 
   data: () => ({
     show: false,
+    showSnackbar: false,
   }),
 
   computed: {
@@ -71,6 +82,14 @@ export default {
       await wait(0);
       e.select();
       e.scrollLeft = 0;
+    },
+    async copy() {
+      await navigator.clipboard.writeText(this.shareUrl);
+      if (this.showSnackbar) {
+        this.showSnackbar = false;
+        await this.$nextTick();
+      }
+      this.showSnackbar = true;
     },
   },
 };
