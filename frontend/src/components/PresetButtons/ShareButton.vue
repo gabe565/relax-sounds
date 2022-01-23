@@ -10,7 +10,12 @@
       <v-card>
         <v-card-title class="headline">Share Preset</v-card-title>
         <v-card-text>
-          <v-text-field :value="shareUrl"/>
+          <v-text-field
+            readonly
+            :value="shareUrl"
+            @focus="select($event.target)"
+            @click="select($event.target)"
+          />
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
@@ -26,6 +31,7 @@
 
 <script>
 import { encode } from '../../util/shareUrl';
+import { wait } from '../../util/helpers';
 
 export default {
   name: 'ShareButton',
@@ -57,6 +63,14 @@ export default {
     },
     show(val) {
       this.$emit('input', val);
+    },
+  },
+
+  methods: {
+    async select(e) {
+      await wait(0);
+      e.select();
+      e.scrollLeft = 0;
     },
   },
 };
