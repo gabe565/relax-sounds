@@ -16,11 +16,11 @@
           <v-spacer/>
           <v-btn text @click="show = false">
             <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
-            Cancel
+            Close
           </v-btn>
           <v-btn color="red" text @click="remove">
             <v-icon aria-hidden="true">fal fa-trash fa-fw</v-icon>
-            Confirm
+            Delete
           </v-btn>
         </v-card-actions>
       </v-card>
