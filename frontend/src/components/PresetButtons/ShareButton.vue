@@ -27,6 +27,10 @@
             <v-icon aria-hidden="true">fal fa-copy fa-fw</v-icon>
             Copy
           </v-btn>
+          <v-btn text @click="share" v-if="canShare">
+            <v-icon aria-hidden="true">fal fa-share-alt fa-fw</v-icon>
+            Share
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -63,6 +67,16 @@ export default {
       const { name, sounds } = encode(this.preset);
       return `${window.location.origin}/import/${name}/${sounds}`;
     },
+    shareData() {
+      return {
+        title: 'Relax Sounds',
+        text: `Import my Relax Sounds preset called "${this.preset.name}"`,
+        url: this.shareUrl,
+      };
+    },
+    canShare() {
+      return navigator.canShare && navigator.canShare(this.shareData);
+    },
   },
 
   watch: {
@@ -90,6 +104,9 @@ export default {
         await this.$nextTick();
       }
       this.showSnackbar = true;
+    },
+    async share() {
+      await navigator.share(this.shareData);
     },
   },
 };
