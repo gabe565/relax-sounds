@@ -2,7 +2,7 @@
   <v-col class="shrink">
     <v-btn @click.stop="show = true" elevation="0" icon aria-label="Share">
       <v-icon dense aria-hidden="true">
-        fas fa-fw fa-share
+        fas fa-fw fa-share-alt
       </v-icon>
     </v-btn>
 
