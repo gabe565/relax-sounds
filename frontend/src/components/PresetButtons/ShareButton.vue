@@ -6,9 +6,9 @@
       </v-icon>
     </v-btn>
 
-    <v-dialog v-model="show" max-width="500">
+    <v-dialog v-model="show" width="400">
       <v-card>
-        <v-card-title class="headline">Share Preset</v-card-title>
+        <v-card-title class="headline">Share</v-card-title>
         <v-card-text>
           <v-text-field
             readonly

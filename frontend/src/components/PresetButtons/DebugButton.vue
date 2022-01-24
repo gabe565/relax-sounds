@@ -6,7 +6,7 @@
       </v-icon>
     </v-btn>
 
-    <v-dialog v-model="show" max-width="500">
+    <v-dialog v-model="show" max-width="400">
       <v-card>
         <v-card-title class="headline">Debug</v-card-title>
         <v-card-text>

@@ -6,11 +6,11 @@
       </v-icon>
     </v-btn>
 
-    <v-dialog v-model="show" max-width="500">
+    <v-dialog v-model="show" width="400">
       <v-card>
-        <v-card-title class="headline">Delete Preset?</v-card-title>
+        <v-card-title class="headline">Confirm</v-card-title>
         <v-card-text>
-          Are you sure you want to delete "{{ preset.name }}"?
+          Delete the preset "{{ preset.name }}"?
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
