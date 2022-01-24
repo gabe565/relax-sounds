@@ -46,6 +46,7 @@ export default {
   methods: {
     remove() {
       this.$store.commit('presets/remove', { preset: this.preset });
+      this.show = false;
     },
   },
 };

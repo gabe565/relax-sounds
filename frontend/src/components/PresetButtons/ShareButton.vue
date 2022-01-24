@@ -100,9 +100,11 @@ export default {
         await this.$nextTick();
       }
       this.showSnackbar = true;
+      this.show = false;
     },
     async share() {
       await navigator.share(this.shareData);
+      this.show = false;
     },
   },
 };
