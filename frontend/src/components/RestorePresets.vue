@@ -31,7 +31,7 @@
       v-model="showSnackbar" timeout="5000"
       bottom class="pb-14 pb-md-0"
     >
-      Imported {{ imported }} presets.
+      Imported {{ imported }} preset{{ imported !== 1 ? 's' : '' }}.
     </v-snackbar>
   </div>
 </template>
