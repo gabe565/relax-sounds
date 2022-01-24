@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { wait } from '../../util/helpers';
+
 export default {
   name: 'DeleteButton',
 
@@ -44,9 +46,10 @@ export default {
   }),
 
   methods: {
-    remove() {
-      this.$store.commit('presets/remove', { preset: this.preset });
+    async remove() {
       this.show = false;
+      await wait(300);
+      this.$store.commit('presets/remove', { preset: this.preset });
     },
   },
 };

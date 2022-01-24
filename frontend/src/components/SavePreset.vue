@@ -39,6 +39,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { wait } from '../util/helpers';
 
 export default {
   name: 'SavePreset',
@@ -57,7 +58,10 @@ export default {
       this.showDialog = false;
       this.name = '';
     },
-    save() {
+    async save() {
+      this.showDialog = false;
+      await wait(300);
+
       let params;
       try {
         this.$store.dispatch('presets/savePlaying', { name: this.name });
@@ -67,7 +71,6 @@ export default {
         console.error(error);
         params = { alert: { type: 'error', text: 'Failed to save preset. Please try again later.' } };
       }
-      this.showDialog = false;
       return this.$router.push({ name: 'Presets', params });
     },
   },
