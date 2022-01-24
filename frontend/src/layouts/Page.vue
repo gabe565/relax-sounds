@@ -10,7 +10,7 @@
       <v-spacer/>
 
       <v-col class="shrink" v-if="actions">
-        <v-menu left bottom>
+        <v-menu left bottom transition="slide-y-transition">
           <template #activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
               <v-icon>fas fa-ellipsis-v</v-icon>
