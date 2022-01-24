@@ -39,6 +39,7 @@ const router = new VueRouter({
           const preset = { ...decode(params), new: true };
           store.commit('presets/add', { preset });
         } catch (error) {
+          console.error(error);
           redirectParams = {
             alert: {
               type: 'error',

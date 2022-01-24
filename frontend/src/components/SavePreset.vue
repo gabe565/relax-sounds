@@ -64,6 +64,7 @@ export default {
         params = { alert: { type: 'info', text: `Preset "${this.name}" saved successfully.` } };
         this.name = '';
       } catch (error) {
+        console.error(error);
         params = { alert: { type: 'error', text: 'Failed to save preset. Please try again later.' } };
       }
       this.showDialog = false;
