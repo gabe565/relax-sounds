@@ -30,9 +30,11 @@ export default {
   },
 
   mutations: {
-    add(state, { preset }) {
-      state.presets.push(preset);
-      state.currentName = preset.name;
+    add(state, { preset, playing = true }) {
+      state.presets.push(new Preset(preset));
+      if (playing) {
+        state.currentName = preset.name;
+      }
       saveState(state);
     },
     remove(state, { preset }) {

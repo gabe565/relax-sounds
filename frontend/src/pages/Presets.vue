@@ -14,6 +14,8 @@
         </v-alert>
       </v-col>
     </v-row>
+
+    <restore-presets v-model="showRestore"/>
   </Page>
 </template>
 
@@ -22,13 +24,17 @@ import { mapActions, mapState } from 'vuex';
 import { saveAs } from 'file-saver/src/FileSaver';
 import Preset from '../components/Preset.vue';
 import Page from '../layouts/Page.vue';
+import RestorePresets from '../components/RestorePresets.vue';
 
 export default {
   name: 'Presets',
-  components: { Page, Preset },
+  components: { RestorePresets, Page, Preset },
   props: {
     alert: Object,
   },
+  data: () => ({
+    showRestore: false,
+  }),
   async created() {
     await this.initSounds();
   },
@@ -36,6 +42,7 @@ export default {
     actions() {
       return [
         { title: 'Backup', icon: 'fas fa-file-download', on: { click: this.export } },
+        { title: 'Restore', icon: 'fas fa-file-upload', on: { click: () => { this.showRestore = true; } } },
       ];
     },
     ...mapState('presets', ['presets']),
