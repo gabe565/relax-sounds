@@ -52,6 +52,11 @@ export default {
     disableCurrent(state) {
       state.currentName = null;
     },
+    removeAll(state) {
+      state.presets = [];
+      state.currentName = null;
+      saveState(state);
+    },
   },
 
   actions: {

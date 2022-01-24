@@ -16,6 +16,7 @@
     </v-row>
 
     <restore-presets v-model="showRestore"/>
+    <remove-all v-model="showRemoveAll"/>
   </Page>
 </template>
 
@@ -25,15 +26,22 @@ import { saveAs } from 'file-saver/src/FileSaver';
 import Preset from '../components/Preset.vue';
 import Page from '../layouts/Page.vue';
 import RestorePresets from '../components/RestorePresets.vue';
+import RemoveAll from '../components/RemoveAll.vue';
 
 export default {
   name: 'Presets',
-  components: { RestorePresets, Page, Preset },
+  components: {
+    RemoveAll,
+    RestorePresets,
+    Page,
+    Preset,
+  },
   props: {
     alert: Object,
   },
   data: () => ({
     showRestore: false,
+    showRemoveAll: false,
   }),
   async created() {
     await this.initSounds();
@@ -53,6 +61,13 @@ export default {
           icon: 'fas fa-file-upload',
           on: {
             click: () => { this.showRestore = true; },
+          },
+        },
+        {
+          title: 'Remove All',
+          icon: 'fas fa-trash',
+          on: {
+            click: () => { this.showRemoveAll = true; },
           },
         },
       ];
