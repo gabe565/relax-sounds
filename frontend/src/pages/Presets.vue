@@ -41,8 +41,20 @@ export default {
   computed: {
     actions() {
       return [
-        { title: 'Backup', icon: 'fas fa-file-download', on: { click: this.export } },
-        { title: 'Restore', icon: 'fas fa-file-upload', on: { click: () => { this.showRestore = true; } } },
+        {
+          title: 'Backup',
+          icon: 'fas fa-file-download',
+          on: {
+            click: this.export,
+          },
+        },
+        {
+          title: 'Restore',
+          icon: 'fas fa-file-upload',
+          on: {
+            click: () => { this.showRestore = true; },
+          },
+        },
       ];
     },
     ...mapState('presets', ['presets']),
