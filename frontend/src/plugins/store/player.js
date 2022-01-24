@@ -1,4 +1,4 @@
-import { SoundState } from '../../util/sounds';
+import { SoundState } from '../../util/Sound';
 import { getSounds } from '../../data/sounds';
 import { formatError, getCastSession } from '../../util/googleCast';
 import { decodeSounds, encodeSounds } from '../../util/shareUrl';

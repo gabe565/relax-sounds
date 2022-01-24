@@ -1,4 +1,4 @@
-import { SoundState } from '../../util/sounds';
+import { SoundState } from '../../util/Sound';
 
 const saveState = ({ presets }) => localStorage.setItem('presets', JSON.stringify(presets));
 

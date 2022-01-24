@@ -1,6 +1,6 @@
 import axios from 'axios';
 import soundFile from './sounds.json';
-import { Sound } from '../util/sounds';
+import { Sound } from '../util/Sound';
 
 let sounds;
 
