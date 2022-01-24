@@ -1,22 +1,24 @@
 import { SoundState } from '../../util/Sound';
+import { Preset } from '../../util/Preset';
 
 const saveState = ({ presets }) => localStorage.setItem('presets', JSON.stringify(presets));
 
 const loadState = () => {
-  const presets = JSON.parse(localStorage.getItem('presets'));
+  let presets = JSON.parse(localStorage.getItem('presets'));
+
+  if (!presets) {
+    // Playlist to preset migration
+    const playlists = JSON.parse(localStorage.getItem('playlists'));
+    if (playlists) {
+      presets = playlists.playlists;
+      localStorage.setItem('presets', JSON.stringify(presets));
+      localStorage.removeItem('playlists');
+    }
+  }
+
   if (presets) {
-    return presets;
+    return presets.map((preset) => new Preset(preset));
   }
-
-  // Playlist to preset migration
-  const playlists = JSON.parse(localStorage.getItem('playlists'));
-  if (playlists) {
-    const newState = playlists.playlists;
-    localStorage.setItem('presets', JSON.stringify(newState));
-    localStorage.removeItem('playlists');
-    return newState;
-  }
-
   return [];
 };
 

@@ -10,7 +10,7 @@
       <v-card>
         <v-card-title class="headline">Debug</v-card-title>
         <v-card-text>
-          <v-btn :href="downloadUrl" target="_blank">Mix URL</v-btn>
+          <v-btn :href="preset.mixUrl" target="_blank">Mix URL</v-btn>
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
@@ -25,14 +25,14 @@
 </template>
 
 <script>
-import { encodeSounds } from '../../util/shareUrl';
+import { Preset } from '../../util/Preset';
 
 export default {
   name: 'DebugButton',
 
   props: {
     preset: {
-      type: Object,
+      type: Preset,
       required: true,
     },
   },
@@ -40,13 +40,6 @@ export default {
   data: () => ({
     show: false,
   }),
-
-  computed: {
-    downloadUrl() {
-      const sounds = encodeSounds(this.preset.sounds);
-      return `${window.location.origin}/api/mix/${sounds}`;
-    },
-  },
 
   watch: {
     value: {

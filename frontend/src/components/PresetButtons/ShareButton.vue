@@ -12,7 +12,7 @@
         <v-card-text>
           <v-text-field
             readonly
-            :value="shareUrl"
+            :value="preset.shareUrl"
             @focus="select($event.target)"
             @click="select($event.target)"
           />
@@ -44,15 +44,15 @@
 </template>
 
 <script>
-import { encode } from '../../util/shareUrl';
 import { wait } from '../../util/helpers';
+import { Preset } from '../../util/Preset';
 
 export default {
   name: 'ShareButton',
 
   props: {
     preset: {
-      type: Object,
+      type: Preset,
       required: true,
     },
   },
@@ -63,15 +63,11 @@ export default {
   }),
 
   computed: {
-    shareUrl() {
-      const { name, sounds } = encode(this.preset);
-      return `${window.location.origin}/import/${name}/${sounds}`;
-    },
     shareData() {
       return {
         title: 'Relax Sounds',
         text: `Import my Relax Sounds preset called "${this.preset.name}"`,
-        url: this.shareUrl,
+        url: this.preset.shareUrl,
       };
     },
     canShare() {
@@ -98,7 +94,7 @@ export default {
       e.scrollLeft = 0;
     },
     async copy() {
-      await navigator.clipboard.writeText(this.shareUrl);
+      await navigator.clipboard.writeText(this.preset.shareUrl);
       if (this.showSnackbar) {
         this.showSnackbar = false;
         await this.$nextTick();

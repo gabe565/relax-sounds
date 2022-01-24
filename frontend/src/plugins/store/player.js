@@ -1,7 +1,7 @@
 import { SoundState } from '../../util/Sound';
 import { getSounds } from '../../data/sounds';
 import { formatError, getCastSession } from '../../util/googleCast';
-import { decodeSounds, encodeSounds } from '../../util/shareUrl';
+import { Preset } from '../../util/Preset';
 
 export default {
   namespaced: true,
@@ -40,13 +40,6 @@ export default {
     },
     soundById(state) {
       return (id) => state.sounds.find((sound) => sound.id === id);
-    },
-    encodedSounds(state, getter) {
-      return encodeSounds(getter.soundsPlaying
-        .map((sound) => ({
-          id: sound.id,
-          volume: sound.volume,
-        })));
     },
   },
 
@@ -178,9 +171,9 @@ export default {
         cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
         async ({ value }) => {
           if (value && getters.isStopped) {
-            const encoded = value.contentId.match(/\/api\/mix\/(.+?)$/)[1];
-            const sounds = decodeSounds(encoded);
-            await Promise.all(sounds.map((savedSound) => {
+            const preset = new Preset();
+            preset.mixUrl = value.contentId;
+            await Promise.all(preset.sounds.map((savedSound) => {
               const sound = getters.soundById(savedSound.id);
               sound.volume = savedSound.volume;
               const fade = getters.state === SoundState.STOPPED ? 250 : false;
@@ -199,9 +192,9 @@ export default {
         const castSession = getCastSession();
         if (castSession) {
           const { chrome } = window;
-          const url = `${window.location.origin}/api/mix/${getters.encodedSounds}`;
+          const preset = new Preset({ sounds: getters.soundsPlaying });
 
-          const mediaInfo = new chrome.cast.media.MediaInfo(url, 'music');
+          const mediaInfo = new chrome.cast.media.MediaInfo(preset.mixUrl, 'music');
           mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
           if (rootState.presets.currentName) {
             mediaInfo.metadata.title = rootState.presets.currentName;

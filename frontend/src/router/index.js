@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '../plugins/store/main';
-import { decode } from '../util/shareUrl';
 import Sounds from '../pages/Sounds.vue';
 import Presets from '../pages/Presets.vue';
 import NotFound from '../pages/NotFound.vue';
+import { Preset } from '../util/Preset';
 
 Vue.use(VueRouter);
 
@@ -36,7 +36,9 @@ const router = new VueRouter({
       redirect: ({ params }) => {
         let redirectParams;
         try {
-          const preset = { ...decode(params), new: true };
+          const preset = new Preset({ new: true });
+          preset.encodedName = params.name;
+          preset.encodedShorthand = params.songs;
           store.commit('presets/add', { preset });
         } catch (error) {
           console.error(error);
