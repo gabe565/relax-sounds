@@ -1,5 +1,5 @@
 <template>
-  <Page :alert="alert">
+  <Page :alert="alert" :actions="actions">
     <v-row>
       <v-col
         cols="12" lg="6"
@@ -19,6 +19,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import { saveAs } from 'file-saver/src/FileSaver';
 import Preset from '../components/Preset.vue';
 import Page from '../layouts/Page.vue';
 
@@ -31,9 +32,29 @@ export default {
   async created() {
     await this.initSounds();
   },
-  computed: mapState('presets', [
-    'presets',
-  ]),
-  methods: mapActions('player', ['initSounds']),
+  computed: {
+    actions() {
+      return [
+        { title: 'Backup', icon: 'fas fa-file-download', on: { click: this.export } },
+      ];
+    },
+    ...mapState('presets', ['presets']),
+  },
+  methods: {
+    export() {
+      const { presets } = this.$store.state.presets;
+      const blob = new Blob(
+        [JSON.stringify(presets)],
+        { type: 'application/json;charset=utf-8' },
+      );
+      const offset = (new Date()).getTimezoneOffset() * 60000; // Offset in milliseconds
+      const localISOTime = (new Date(Date.now() - offset))
+        .toISOString()
+        .slice(0, -5) // Remove ".000Z"
+        .replaceAll(':', '');
+      saveAs(blob, `relax-sounds-presets-${localISOTime}.json`);
+    },
+    ...mapActions('player', ['initSounds']),
+  },
 };
 </script>

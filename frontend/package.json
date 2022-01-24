@@ -13,6 +13,7 @@
     "axios": "^0.24.0",
     "base64-url": "^2.3.3",
     "core-js": "^3.13.0",
+    "file-saver": "^2.0.5",
     "fuse.js": "^6.4.6",
     "howler": "^2.2.1",
     "register-service-worker": "^1.7.2",
