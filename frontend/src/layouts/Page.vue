@@ -1,9 +1,32 @@
 <template>
   <v-container>
     <v-row class="pa-5">
-      <h1 class="display-1">
-        <slot name="title">{{ $route.name }}</slot>
-      </h1>
+      <v-col>
+        <h1 class="display-1">
+          <slot name="title">{{ $route.name }}</slot>
+        </h1>
+      </v-col>
+
+      <v-spacer/>
+
+      <v-col class="shrink" v-if="actions">
+        <v-menu left bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>fas fa-ellipsis-v</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item v-for="(item, index) in actions" :key="index" v-on="item.on">
+              <v-list-item-icon>
+                <v-icon aria-hidden="true">{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
     </v-row>
 
     <v-fade-transition>
@@ -32,6 +55,7 @@ export default {
   name: 'Page',
   props: {
     alert: Object,
+    actions: Array,
   },
   data: () => ({
     showAlert: false,

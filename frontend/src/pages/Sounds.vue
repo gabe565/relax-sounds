@@ -1,5 +1,5 @@
 <template>
-  <Page :alert="alert">
+  <Page :alert="alert" :actions="actions">
     <Filters>
       <v-row>
         <template v-if="loading">
@@ -35,6 +35,7 @@ import { mapActions, mapGetters } from 'vuex';
 import Page from '../layouts/Page.vue';
 import Sound from '../components/Sound.vue';
 import Filters from '../components/Filters.vue';
+import { prefetch } from '../data/sounds';
 
 export default {
   name: 'Sounds',
@@ -51,7 +52,14 @@ export default {
     await this.initSounds();
     this.loading = false;
   },
-  computed: mapGetters('filters', ['sounds']),
+  computed: {
+    actions() {
+      return [
+        { title: 'Preload All', icon: 'fas fa-sync', on: { click: prefetch } },
+      ];
+    },
+    ...mapGetters('filters', ['sounds']),
+  },
   methods: mapActions('player', ['initSounds']),
 };
 </script>

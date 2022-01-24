@@ -1,23 +1,6 @@
 <template>
   <v-app>
-
-    <v-navigation-drawer app bottom temporary v-model="drawerOpen">
-      <v-list nav>
-        <v-list-item-group>
-          <v-list-item link @click="prefetch">
-            <v-list-item-avatar>
-              <v-icon aria-hidden="true">fas fa-download</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-title>
-              Preload All
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
-
     <v-app-bar app dark hide-on-scroll color="accent" flat>
-      <v-app-bar-nav-icon @click.stop="toggleDrawer" aria-label="Toggle Drawer"/>
       <v-toolbar-title>
         <v-icon aria-hidden="true" class="mr-2">fas fa-bed-alt</v-icon>
         Relax Sounds
@@ -75,7 +58,6 @@ import SavePreset from './components/SavePreset.vue';
 import PlayPauseAll from './components/PlayPauseAll.vue';
 import StopAll from './components/StopAll.vue';
 import UpdateSnackbar from './components/UpdateSnackbar.vue';
-import { prefetch } from './data/sounds';
 
 export default {
   name: 'App',
@@ -86,10 +68,6 @@ export default {
     PlayPauseAll,
     UpdateSnackbar,
   },
-
-  data: () => ({
-    drawerOpen: false,
-  }),
 
   beforeMount() {
     // check for browser support
@@ -107,17 +85,6 @@ export default {
   computed: {
     routes() {
       return this.$router.options.routes.filter((route) => route.meta?.showInNav);
-    },
-  },
-
-  methods: {
-    toggleDrawer() {
-      this.drawerOpen = !this.drawerOpen;
-    },
-
-    prefetch() {
-      this.toggleDrawer();
-      prefetch();
     },
   },
 };
