@@ -35,7 +35,7 @@ func Setup(staticFs, dataFs fs.FS) *chi.Mux {
 	router.With(StripPrefix("/data")).Get("/data/*", fsPwaHandler(router, dataFs, dataserv))
 
 	// Mixer
-	router.With(preset.DecoderMiddleware(dataFs)).Get("/api/mix/{enc}.mp3", mixer.Mix)
+	router.With(preset.DecoderMiddleware(dataFs)).Get("/api/mix/{enc}.{filetype}", mixer.Mix)
 
 	return router
 }

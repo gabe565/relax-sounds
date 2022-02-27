@@ -4,33 +4,33 @@ import (
 	"context"
 	"errors"
 	"github.com/faiface/beep"
+	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/stream"
-	flag "github.com/spf13/pflag"
-	"github.com/viert/go-lame"
+	"github.com/go-chi/chi/v5"
 	"net/http"
 	"os"
 	"syscall"
 )
 
-var (
-	quality float64
-	bitrate int
-)
-
-func init() {
-	flag.Float64Var(&quality, "quality", 2, "LAME VBR quality")
-	flag.IntVar(&bitrate, "bitrate", 160, "LAME output bitrate")
-}
-
 func Mix(res http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx := req.Context()
 
+	fileType := encoder.FileType(0)
+	err = (&fileType).UnmarshalText([]byte(chi.URLParam(req, "filetype")))
+	if err != nil {
+		if errors.Is(err, encoder.ErrInvalidFileType) {
+			http.Error(res, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+		panic(err)
+	}
+
 	// Stream headers
 	res.Header().Set("Connection", "Keep-Alive")
 	res.Header().Set("Transfer-Encoding", "chunked")
-	res.Header().Set("Content-Type", "audio/mp3")
+	res.Header().Set("Content-Type", fileType.ContentType())
 
 	// Set up stream
 	s, err := stream.New(ctx.Value(preset.RequestKey).(preset.Preset))
@@ -49,22 +49,23 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	// Encode wav to mp3
-	encoder := lame.NewEncoder(res)
-	defer encoder.Close()
-	if err = encoder.SetVBR(lame.VBRDefault); err != nil {
-		panic(err)
-	}
-	if err = encoder.SetVBRQuality(quality); err != nil {
-		panic(err)
-	}
-
-	// Encode to wav in a Goroutine
-	err = Encode(ctx, encoder, s.Mix(), beep.Format{
+	format := beep.Format{
 		SampleRate:  44100,
 		NumChannels: 2,
 		Precision:   2,
-	}, false)
+	}
+
+	// Get current filetype encoder
+	enc, err := fileType.NewEncoder(res, format)
+	if err != nil {
+		panic(err)
+	}
+	defer func(encoder encoder.Encoder) {
+		_ = encoder.Close()
+	}(enc)
+
+	// Write mix to encoder
+	err = encoder.Encode(ctx, enc, s.Mix(), format)
 	if err != nil {
 		if errors.Is(err, context.Canceled) || errors.Is(err, syscall.EPIPE) {
 			return
