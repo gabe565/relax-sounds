@@ -70,26 +70,24 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 		}
 	}
 
-loop:
 	for {
-		select {
-		case <-ctx.Done():
-			break loop
-		default:
-			n, ok := s.Stream(samples)
-			if !ok {
-				break loop
-			}
-			buf := buffer
-			for _, sample := range samples[:n] {
-				buf = buf[encode(buf, sample):]
-			}
-			_, err := w.Write(buffer[:n*format.Width()])
-			if err != nil {
-				return err
-			}
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+
+		n, ok := s.Stream(samples)
+		if !ok {
+			return nil
+		}
+
+		buf := buffer
+		for _, sample := range samples[:n] {
+			buf = buf[encode(buf, sample):]
+		}
+
+		_, err := w.Write(buffer[:n*format.Width()])
+		if err != nil {
+			return err
 		}
 	}
-
-	return nil
 }

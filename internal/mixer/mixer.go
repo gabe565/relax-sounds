@@ -1,6 +1,7 @@
 package mixer
 
 import (
+	"context"
 	"errors"
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/preset"
@@ -65,9 +66,9 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 		Precision:   2,
 	}, false)
 	if err != nil {
-		// Ignore broken pipe errors instead of using a context-aware reader
-		if !errors.Is(err, syscall.EPIPE) {
-			panic(err)
+		if errors.Is(err, context.Canceled) || errors.Is(err, syscall.EPIPE) {
+			return
 		}
+		panic(err)
 	}
 }
