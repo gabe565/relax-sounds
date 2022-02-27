@@ -48,7 +48,7 @@ export class Preset {
   }
 
   get mixUrl() {
-    return `${window.location.origin}/api/mix/${this.encodedShorthand}`;
+    return `${window.location.origin}/api/mix/${this.encodedShorthand}.mp3`;
   }
 
   set mixUrl(val) {
