@@ -18,6 +18,9 @@ jobs:
         with:
           go-version: ${{ env.go_version }}
       - run: sudo apt-get install -y libmp3lame-dev
+      - run: |
+          mkdir -p frontend/dist
+          echo stub >frontend/dist/gitkeep
       - name: Lint
         uses: golangci/golangci-lint-action@v2
         with:
@@ -36,6 +39,9 @@ jobs:
         with:
           go-version: ${{ env.go_version }}
       - run: sudo apt-get install -y libmp3lame-dev
+      - run: |
+          mkdir -p frontend/dist
+          echo stub >frontend/dist/gitkeep
       - uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
@@ -56,6 +62,9 @@ jobs:
         with:
           go-version: ${{ env.go_version }}
       - run: sudo apt-get install -y libmp3lame-dev
+      - run: |
+          mkdir -p frontend/dist
+          echo stub >frontend/dist/gitkeep
       - run: go build -ldflags='-w -s'
 
   frontend-lint:
