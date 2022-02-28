@@ -52,6 +52,6 @@ export class Preset {
   }
 
   set mixUrl(val) {
-    [, this.encodedShorthand] = val.match(/\/api\/mix\/(.+?)$/);
+    [, this.encodedShorthand] = val.match(/\/api\/mix\/(.+?)(\..+)?$/);
   }
 }
