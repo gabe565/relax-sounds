@@ -10,7 +10,8 @@
       <v-card>
         <v-card-title class="headline">Debug</v-card-title>
         <v-card-text>
-          <v-btn :href="preset.mixUrl" target="_blank">Mix URL</v-btn>
+          <v-btn :href="preset.mixUrlAs('mp3')" target="_blank" class="mr-2">Mix MP3</v-btn>
+          <v-btn :href="preset.mixUrlAs('wav')" target="_blank" class="mr-2">Mix WAV</v-btn>
         </v-card-text>
         <v-card-actions>
           <v-spacer/>

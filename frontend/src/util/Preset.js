@@ -1,4 +1,5 @@
 import base64 from 'base64-url';
+import { Filetype } from './filetype';
 
 export const toShorthand = (sounds) => sounds.map(
   (sound) => [sound.id, Math.round(sound.volume * 1000) / 1000],
@@ -47,8 +48,12 @@ export class Preset {
     return `${window.location.origin}/import/${this.encodedName}/${this.encodedShorthand}`;
   }
 
+  mixUrlAs(filetype = Filetype.Mp3) {
+    return `${window.location.origin}/api/mix/${this.encodedShorthand}.${filetype}`;
+  }
+
   get mixUrl() {
-    return `${window.location.origin}/api/mix/${this.encodedShorthand}.mp3`;
+    return this.mixUrlAs(Filetype.Mp3);
   }
 
   set mixUrl(val) {
