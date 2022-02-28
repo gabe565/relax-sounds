@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import { wait } from '../util/helpers';
-
 export default {
   name: 'UpdateSnackbar',
 
@@ -47,7 +45,6 @@ export default {
       // The new service worker is installed, but not yet active.
       // Store the ServiceWorkerRegistration instance for later use.
       this.registration = e.detail;
-      await wait(1000);
       this.show = true;
     },
 
