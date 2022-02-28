@@ -1,6 +1,8 @@
 package encoder
 
-import "io"
+import (
+	"io"
+)
 
 type Encoder interface {
 	io.WriteCloser

@@ -1,9 +1,10 @@
-package encoder
+package filetype
 
 import (
 	"errors"
 	"fmt"
 	"github.com/faiface/beep"
+	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/encoder/mp3"
 	"github.com/gabe565/relax-sounds/internal/encoder/wav"
 	"io"
@@ -14,8 +15,8 @@ import (
 type FileType uint8
 
 const (
-	FileTypeWav FileType = iota // wav
-	FileTypeMp3                 // mp3
+	Wav FileType = iota // wav
+	Mp3                 // mp3
 )
 
 var ErrInvalidFileType = errors.New("invalid file type")
@@ -37,19 +38,19 @@ func (i *FileType) UnmarshalText(b []byte) error {
 
 func (i FileType) ContentType() string {
 	switch i {
-	case FileTypeWav:
+	case Wav:
 		return "audio/wav"
-	case FileTypeMp3:
+	case Mp3:
 		return "audio/mp3"
 	}
 	return ""
 }
 
-func (i FileType) NewEncoder(w io.Writer, format beep.Format) (Encoder, error) {
+func (i FileType) NewEncoder(w io.Writer, format beep.Format) (encoder.Encoder, error) {
 	switch i {
-	case FileTypeWav:
+	case Wav:
 		return wav.NewEncoder(w, format)
-	case FileTypeMp3:
+	case Mp3:
 		return mp3.NewEncoder(w, format)
 	}
 	return nil, fmt.Errorf("%w: %s", ErrInvalidFileType, i)

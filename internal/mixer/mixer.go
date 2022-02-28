@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder"
+	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	"github.com/go-chi/chi/v5"
@@ -17,10 +18,10 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx := req.Context()
 
-	fileType := encoder.FileType(0)
+	fileType := filetype.FileType(0)
 	err = (&fileType).UnmarshalText([]byte(chi.URLParam(req, "filetype")))
 	if err != nil {
-		if errors.Is(err, encoder.ErrInvalidFileType) {
+		if errors.Is(err, filetype.ErrInvalidFileType) {
 			http.Error(res, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 			return
 		}
