@@ -7,14 +7,10 @@ import (
 	"io"
 )
 
-var (
-	quality float64
-	bitrate int
-)
+var quality float64
 
 func init() {
 	flag.Float64Var(&quality, "lame-quality", 2, "LAME VBR quality")
-	flag.IntVar(&bitrate, "lame-bitrate", 160, "LAME output bitrate")
 }
 
 type Encoder struct {
