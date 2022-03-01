@@ -1,11 +1,6 @@
-//go:generate -command npm npm --prefix frontend
-//go:generate npm install
-//go:generate npm run build
-
 package main
 
 import (
-	"embed"
 	"github.com/gabe565/relax-sounds/internal/server"
 	flag "github.com/spf13/pflag"
 	"io/fs"
@@ -17,15 +12,12 @@ import (
 
 const EnvPrefix = "RELAX_SOUNDS_"
 
-//go:embed frontend/dist
-var dist embed.FS
-
 func main() {
 	var err error
 
 	address := flag.String("address", ":3000", "Override listen address.")
-	staticDir := flag.String("static", "dist", "Override static asset directory. Useful for development.")
-	dataDir := flag.String("data", "data", "Override data directory. Useful for development.")
+	frontendDir := flag.String("frontend", defaultFrontend, "Override frontend asset directory."+frontendHelpExt)
+	dataDir := flag.String("data", "data", "Override data directory.")
 	flag.Parse()
 
 	flag.CommandLine.VisitAll(func(f *flag.Flag) {
@@ -40,16 +32,16 @@ func main() {
 		}
 	})
 
-	var contentFs fs.FS
-	if *staticDir != "" {
-		contentFs = os.DirFS(*staticDir)
+	var frontendFs fs.FS
+	if *frontendDir != "" {
+		frontendFs = os.DirFS(*frontendDir)
 	} else {
-		contentFs, err = fs.Sub(dist, "frontend/dist")
+		frontendFs, err = fs.Sub(frontendEmbed, "frontend/dist")
 		if err != nil {
 			panic(err)
 		}
 	}
-	router := server.Setup(contentFs, os.DirFS(*dataDir))
+	router := server.Setup(frontendFs, os.DirFS(*dataDir))
 
 	log.Println("Listening on " + *address)
 	err = http.ListenAndServe(*address, router)

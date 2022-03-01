@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func Setup(staticFs, dataFs fs.FS) *chi.Mux {
+func Setup(frontendFs, dataFs fs.FS) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
@@ -21,8 +21,8 @@ func Setup(staticFs, dataFs fs.FS) *chi.Mux {
 	router.Use(middleware.Recoverer)
 
 	// Static Files
-	staticserv := http.FileServer(http.FS(staticFs))
-	router.Get("/*", fsPwaHandler(router, staticFs, staticserv))
+	staticserv := http.FileServer(http.FS(frontendFs))
+	router.Get("/*", fsPwaHandler(router, frontendFs, staticserv))
 
 	// Serve index as 404
 	router.NotFound(func(res http.ResponseWriter, req *http.Request) {

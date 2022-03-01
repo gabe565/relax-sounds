@@ -21,8 +21,6 @@ RUN set -x \
         'linux/arm64') export GOARCH=arm64 ;; \
         *) echo "Unsupported target: $TARGETPLATFORM" && exit 1 ;; \
     esac \
-    && mkdir -p frontend/dist \
-    && echo stub >frontend/dist/gitkeep \
     && go build -ldflags="-w -s"
 
 
@@ -43,10 +41,9 @@ FROM alpine
 WORKDIR /app
 RUN apk add --no-cache lame
 COPY --from=go-builder /app/relax-sounds ./
-COPY --from=node-builder /app/dist dist/
+COPY --from=node-builder /app/dist frontend/
 RUN mv /app/dist/data /
 
 ENV RELAX_SOUNDS_ADDRESS ":80"
-ENV RELAX_SOUNDS_STATIC "dist"
 ENV RELAX_SOUNDS_DATA "/data"
 CMD ["./relax-sounds"]
