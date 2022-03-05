@@ -9,8 +9,7 @@ RUN apk add --no-cache gcc g++ lame-dev
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY main.go .
-COPY internal/ internal/
+COPY *.go internal/ ./
 ARG TARGETPLATFORM
 # Set Golang build envs based on Docker platform string
 RUN set -x \
