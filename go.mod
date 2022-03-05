@@ -3,6 +3,7 @@ module github.com/gabe565/relax-sounds
 go 1.17
 
 require (
+	github.com/aofei/mimesniffer v1.2.0
 	github.com/faiface/beep v1.1.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/spf13/pflag v1.0.5
@@ -11,8 +12,12 @@ require (
 )
 
 require (
+	github.com/hajimehoshi/go-mp3 v0.3.0 // indirect
+	github.com/icza/bitio v1.0.0 // indirect
 	github.com/jfreymuth/oggvorbis v1.0.3 // indirect
 	github.com/jfreymuth/vorbis v1.0.2 // indirect
+	github.com/mewkiz/flac v1.0.7 // indirect
+	github.com/mewkiz/pkg v0.0.0-20190919212034-518ade7978e2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 )
 

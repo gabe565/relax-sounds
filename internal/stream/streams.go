@@ -3,7 +3,6 @@ package stream
 import (
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/effects"
-	"github.com/faiface/beep/vorbis"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"io/fs"
 	"sync"
@@ -19,12 +18,13 @@ func (stream Streams) Close() error {
 }
 
 func (stream *Streams) Add(dataDir fs.FS, entry preset.Track, mu *sync.Mutex) error {
-	infile, err := dataDir.Open(entry.Path())
+	rawFile, err := dataDir.Open(entry.Path())
 	if err != nil {
 		return err
 	}
+	f := File{File: rawFile}
 
-	closer, format, err := vorbis.Decode(infile)
+	closer, format, err := f.Decode()
 	if err != nil {
 		return err
 	}
