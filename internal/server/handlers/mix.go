@@ -1,4 +1,4 @@
-package mixer
+package handlers
 
 import (
 	"context"
