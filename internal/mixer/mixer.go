@@ -35,7 +35,7 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 
 	// Set up stream
 	s, err := stream.New(ctx.Value(preset.RequestKey).(preset.Preset))
-	defer func(s *stream.Stream) {
+	defer func(s *stream.Streams) {
 		_ = s.Close()
 	}(&s)
 	if err != nil {
