@@ -2,7 +2,9 @@ package sound
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"gopkg.in/yaml.v3"
 	"io/fs"
 	"path/filepath"
 	"strings"
@@ -16,6 +18,8 @@ type Sound struct {
 	Tags     []string `json:"tags"`
 }
 
+var ErrInvalidMetaFileType = errors.New("invalid meta file type")
+
 func Load(fsys fs.FS, path string) (sound Sound, err error) {
 	f, err := fsys.Open(path)
 	if err != nil {
@@ -25,12 +29,20 @@ func Load(fsys fs.FS, path string) (sound Sound, err error) {
 		_ = f.Close()
 	}(f)
 
-	err = json.NewDecoder(f).Decode(&sound)
+	ext := filepath.Ext(path)
+
+	switch ext {
+	case ".yaml", ".yml":
+		err = yaml.NewDecoder(f).Decode(&sound)
+	case ".json":
+		err = json.NewDecoder(f).Decode(&sound)
+	default:
+		return sound, fmt.Errorf("%w: %s", ErrInvalidMetaFileType, path)
+	}
 	if err != nil {
 		return sound, err
 	}
 
-	ext := filepath.Ext(path)
 	rawPath := strings.TrimPrefix(path, fmt.Sprintf("meta%c", filepath.Separator))
 	if sound.Filename == "" {
 		sound.Filename = strings.TrimSuffix(rawPath, ext) + ".ogg"
