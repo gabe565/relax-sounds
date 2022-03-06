@@ -21,19 +21,19 @@ func DecoderMiddleware(dataFs fs.FS) func(handler http.Handler) http.Handler {
 			)
 			if err != nil {
 				http.Error(res, http.StatusText(400), 400)
-				return
+				panic(err)
 			}
 
 			var entries PresetShorthand
 			if err = json.Unmarshal(data, &entries); err != nil {
 				http.Error(res, http.StatusText(400), 400)
-				return
+				panic(err)
 			}
 
 			preset, err := entries.ToPreset(dataFs)
 			if err != nil {
 				http.Error(res, http.StatusText(400), 400)
-				return
+				panic(err)
 			}
 
 			ctx := context.WithValue(req.Context(), RequestKey, preset)

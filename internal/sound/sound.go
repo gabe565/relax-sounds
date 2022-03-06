@@ -39,7 +39,7 @@ func Load(fsys fs.FS, path string) (sound Sound, err error) {
 	case ".json":
 		err = json.NewDecoder(f).Decode(&sound)
 	default:
-		return sound, fmt.Errorf("%w: %s", ErrInvalidMetaFileType, path)
+		return sound, fmt.Errorf("%w: %#v", ErrInvalidMetaFileType, path)
 	}
 	if err != nil {
 		return sound, err

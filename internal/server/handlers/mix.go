@@ -43,11 +43,9 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 			// Invalid file ID returns 404
 			http.Error(res, http.StatusText(404), 404)
 			return
-		} else {
-			// Other errors return 500
-			http.Error(res, http.StatusText(500), 500)
-			panic(err)
 		}
+		// Other errors return 500
+		panic(err)
 	}
 
 	format := beep.Format{
