@@ -45,7 +45,7 @@ func Load(fsys fs.FS, path string) (sound Sound, err error) {
 		return sound, err
 	}
 
-	rawPath := strings.TrimPrefix(path, fmt.Sprintf("meta%c", filepath.Separator))
+	rawPath := strings.TrimPrefix(path, "meta")[1:]
 	if sound.Filename == "" {
 		sound.Filename = strings.TrimSuffix(rawPath, ext) + ".ogg"
 	}
