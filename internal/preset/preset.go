@@ -1,7 +1,6 @@
 package preset
 
 import (
-	"fmt"
 	"io/fs"
 	"path/filepath"
 )
@@ -16,7 +15,7 @@ func (track Track) ToShorthand() ShorthandTrack {
 }
 
 func (track Track) Path() string {
-	return filepath.Clean(fmt.Sprintf("audio/%s.ogg", track.Key))
+	return filepath.Join("/", "audio", track.Key+".ogg")[1:]
 }
 
 type Preset struct {

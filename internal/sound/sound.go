@@ -21,6 +21,8 @@ type Sound struct {
 var ErrInvalidMetaFileType = errors.New("invalid meta file type")
 
 func Load(fsys fs.FS, path string) (sound Sound, err error) {
+	path = filepath.Join("/", path)[1:]
+
 	f, err := fsys.Open(path)
 	if err != nil {
 		return sound, err
