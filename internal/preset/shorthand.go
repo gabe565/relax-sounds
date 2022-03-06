@@ -19,7 +19,7 @@ func (shorthand PresetShorthand) ToPreset(dataDir fs.FS) (Preset, error) {
 	for _, value := range shorthand {
 		track := Track{
 			Key:    fmt.Sprintf("%v", value[0]),
-			Volume: value[1].(float64) - 1,
+			Volume: value[1].(float64),
 		}
 		preset.Add(track)
 	}

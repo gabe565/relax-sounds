@@ -35,7 +35,7 @@ func (stream *Streams) Add(dataDir fs.FS, entry preset.Track, mu *sync.Mutex) er
 		streamer = &effects.Volume{
 			Streamer: streamer,
 			Base:     10,
-			Volume:   entry.Volume,
+			Volume:   entry.Volume - 1,
 		}
 	}
 
