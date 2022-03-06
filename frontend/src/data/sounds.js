@@ -1,5 +1,4 @@
 import axios from 'axios';
-import soundFile from './sounds.json';
 import { Sound } from '../util/Sound';
 
 let sounds;
@@ -9,7 +8,7 @@ export const getSounds = async () => {
     return sounds;
   }
 
-  let { data } = await axios.get(soundFile);
+  let { data } = await axios.get('/api/sounds');
   data = data
     .sort((left, right) => left.name.localeCompare(right.name))
     .map((sound) => new Sound(sound));

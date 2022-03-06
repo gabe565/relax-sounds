@@ -35,7 +35,10 @@ func Setup(frontendFs, dataFs fs.FS) *chi.Mux {
 	router.With(StripPrefix("/data")).Get("/data/*", fsPwaHandler(router, dataFs, dataserv))
 
 	// Mixer
-	router.With(preset.DecoderMiddleware(dataFs)).Get("/api/mix/{enc}.{filetype}", handlers.Mix)
+	router.Route("/api", func(router chi.Router) {
+		router.Get("/sounds", handlers.Sounds(dataFs))
+		router.With(preset.DecoderMiddleware(dataFs)).Get("/mix/{enc}.{filetype}", handlers.Mix)
+	})
 
 	return router
 }

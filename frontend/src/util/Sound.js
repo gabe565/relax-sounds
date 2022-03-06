@@ -22,7 +22,7 @@ export class Sound {
   }
 
   get src() {
-    return `${process.env.BASE_URL}data/audio/${this.id}.ogg`;
+    return `/data/audio/${this.filename}`;
   }
 
   load() {

@@ -1,23 +1,50 @@
 import { SoundState } from '../../util/Sound';
 import { Preset } from '../../util/Preset';
 
-const saveState = ({ presets }) => localStorage.setItem('presets', JSON.stringify(presets));
+const version = 2;
+
+const saveState = ({ presets }) => {
+  const state = { version, presets };
+  localStorage.setItem('presets', JSON.stringify(state));
+};
 
 const loadState = () => {
-  let presets = JSON.parse(localStorage.getItem('presets'));
+  let state = JSON.parse(localStorage.getItem('presets'));
 
-  if (!presets) {
+  if (!state) {
     // Playlist to preset migration
     const playlists = JSON.parse(localStorage.getItem('playlists'));
     if (playlists) {
-      presets = playlists.playlists;
-      localStorage.setItem('presets', JSON.stringify(presets));
+      state = { version, presets: playlists.playlists };
+      localStorage.setItem('presets', JSON.stringify(state));
       localStorage.removeItem('playlists');
     }
   }
 
-  if (presets) {
-    return presets.map((preset) => new Preset(preset));
+  if (state) {
+    let dirty = false;
+    if (Array.isArray(state)) {
+      // Migrate state to object
+      dirty = true;
+      state = { presets: state };
+    }
+
+    if (!state.version || state.version === 1) {
+      // v2 migration
+      dirty = true;
+      for (const preset of state.presets) {
+        for (const sound of preset.sounds) {
+          sound.id = sound.id.toString();
+        }
+      }
+      state.version = version;
+    }
+
+    if (dirty) {
+      saveState(state);
+    }
+
+    return state.presets.map((preset) => new Preset(preset));
   }
   return [];
 };
@@ -31,6 +58,11 @@ export default {
 
   mutations: {
     add(state, { preset, playing = true }) {
+      for (const sound of preset.sounds) {
+        if (typeof sound.id === 'number') {
+          sound.id = sound.id.toString();
+        }
+      }
       state.presets.push(new Preset(preset));
       if (playing) {
         state.currentName = preset.name;
