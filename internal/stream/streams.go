@@ -30,11 +30,15 @@ func (stream *Streams) Add(dataDir fs.FS, entry preset.Track, mu *sync.Mutex) er
 	}
 
 	streamer := beep.Loop(-1, closer)
-	streamer = &effects.Volume{
-		Streamer: streamer,
-		Base:     4,
-		Volume:   entry.Volume,
+
+	if entry.Volume != 1 {
+		streamer = &effects.Volume{
+			Streamer: streamer,
+			Base:     10,
+			Volume:   entry.Volume,
+		}
 	}
+
 	if format.NumChannels < 2 {
 		// Fix mono streams playing at 2x speed
 		streamer = beep.ResampleRatio(3, 0.5, streamer)
