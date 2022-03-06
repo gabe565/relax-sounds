@@ -24,7 +24,7 @@ func DecoderMiddleware(dataFs fs.FS) func(handler http.Handler) http.Handler {
 				panic(err)
 			}
 
-			var entries PresetShorthand
+			var entries Shorthand
 			if err = json.Unmarshal(data, &entries); err != nil {
 				http.Error(res, http.StatusText(400), 400)
 				panic(err)

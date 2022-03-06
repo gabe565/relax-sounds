@@ -9,8 +9,8 @@ type Preset struct {
 	Tracks []Track
 }
 
-func (preset Preset) ToShorthand() PresetShorthand {
-	shorthand := PresetShorthand{}
+func (preset Preset) ToShorthand() Shorthand {
+	shorthand := Shorthand{}
 	for _, track := range preset.Tracks {
 		shorthand = append(shorthand, track.ToShorthand())
 	}

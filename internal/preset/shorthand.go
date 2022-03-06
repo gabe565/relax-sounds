@@ -11,9 +11,9 @@ var ErrInvalidVolume = errors.New("invalid volume")
 
 type ShorthandTrack [2]interface{}
 
-type PresetShorthand []ShorthandTrack
+type Shorthand []ShorthandTrack
 
-func (shorthand PresetShorthand) ToPreset(dataDir fs.FS) (Preset, error) {
+func (shorthand Shorthand) ToPreset(dataDir fs.FS) (Preset, error) {
 	preset := Preset{
 		Dir: dataDir,
 	}
