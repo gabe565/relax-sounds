@@ -76,9 +76,8 @@ export default {
   },
   methods: {
     export() {
-      const { presets } = this.$store.state.presets;
       const blob = new Blob(
-        [JSON.stringify(presets)],
+        [JSON.stringify(this.presets)],
         { type: 'application/json;charset=utf-8' },
       );
       const offset = (new Date()).getTimezoneOffset() * 60000; // Offset in milliseconds
