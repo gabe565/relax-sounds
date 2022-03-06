@@ -9,7 +9,8 @@ RUN apk add --no-cache gcc g++ lame-dev
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY *.go internal/ ./
+COPY *.go ./
+COPY internal/ internal/
 ARG TARGETPLATFORM
 # Set Golang build envs based on Docker platform string
 RUN set -x \
@@ -41,7 +42,7 @@ WORKDIR /app
 RUN apk add --no-cache lame
 COPY --from=go-builder /app/relax-sounds ./
 COPY --from=node-builder /app/dist frontend/
-RUN mv /app/dist/data /
+RUN mv /app/frontend/data /
 
 ENV RELAX_SOUNDS_ADDRESS ":80"
 ENV RELAX_SOUNDS_DATA "/data"
