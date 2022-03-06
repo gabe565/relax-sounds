@@ -26,13 +26,13 @@ func (f File) Decode() (beep.StreamSeekCloser, beep.Format, error) {
 
 	switch contentType {
 	case "application/ogg", "audio/ogg":
-		return vorbis.Decode(f)
+		return vorbis.Decode(f.File)
 	case "audio/mpeg":
-		return mp3.Decode(f)
+		return mp3.Decode(f.File)
 	case "audio/wave", "audio/x-wav":
-		return wav.Decode(f)
+		return wav.Decode(f.File)
 	case "audio/x-flac":
-		return flac.Decode(f)
+		return flac.Decode(f.File)
 	}
 	return nil, beep.Format{}, fmt.Errorf("%w: %s", ErrUnsupportedFileType, contentType)
 }
