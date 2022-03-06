@@ -9,7 +9,6 @@ import (
 	"github.com/faiface/beep/vorbis"
 	"github.com/faiface/beep/wav"
 	"github.com/gabe565/relax-sounds/internal/util"
-	"io"
 	"io/fs"
 )
 
@@ -20,12 +19,7 @@ type File struct {
 var ErrUnsupportedFileType = errors.New("unsupported file type")
 
 func (f File) Decode() (beep.StreamSeekCloser, beep.Format, error) {
-	contentType, err := util.GetTypeFromFile(f)
-	if err != nil {
-		return nil, beep.Format{}, err
-	}
-
-	_, err = f.File.(io.ReadSeeker).Seek(0, io.SeekStart)
+	contentType, err := util.GetTypeFromFile(f.File)
 	if err != nil {
 		return nil, beep.Format{}, err
 	}
