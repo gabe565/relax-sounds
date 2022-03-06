@@ -29,7 +29,7 @@ func (shorthand PresetShorthand) ToPreset(dataDir fs.FS) (Preset, error) {
 		}
 
 		track := Track{
-			Key:    id,
+			Id:     id,
 			Volume: volume,
 		}
 		preset.Add(track)

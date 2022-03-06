@@ -3,14 +3,14 @@ package preset
 import "path/filepath"
 
 type Track struct {
-	Key    string
+	Id     string
 	Volume float64
 }
 
 func (track Track) ToShorthand() ShorthandTrack {
-	return ShorthandTrack{track.Key, track.Volume}
+	return ShorthandTrack{track.Id, track.Volume}
 }
 
 func (track Track) Path() string {
-	return filepath.Join("/", "audio", track.Key+".ogg")[1:]
+	return filepath.Join("/", "audio", track.Id+".ogg")[1:]
 }
