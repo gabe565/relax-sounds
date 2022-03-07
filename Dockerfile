@@ -40,9 +40,9 @@ RUN npm run build
 FROM alpine
 WORKDIR /app
 RUN apk add --no-cache lame
+COPY data-default /data
 COPY --from=go-builder /app/relax-sounds ./
 COPY --from=node-builder /app/dist frontend/
-RUN mv /app/frontend/data /
 
 ENV RELAX_SOUNDS_ADDRESS ":80"
 ENV RELAX_SOUNDS_DATA "/data"
