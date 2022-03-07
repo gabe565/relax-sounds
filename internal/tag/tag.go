@@ -11,6 +11,7 @@ import (
 
 type Tag struct {
 	Name string `json:"name"`
+	Icon string `json:"icon,omitempty"`
 }
 
 var ErrNoTagFile = errors.New("tag config not found")

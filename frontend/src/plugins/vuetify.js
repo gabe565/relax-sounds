@@ -3,6 +3,7 @@ import Vuetify from 'vuetify/lib';
 import colors from 'vuetify/lib/util/colors';
 import '@fortawesome/fontawesome-pro/css/fontawesome.css';
 import '@fortawesome/fontawesome-pro/css/light.css';
+import '@fortawesome/fontawesome-pro/css/regular.css';
 import '@fortawesome/fontawesome-pro/css/solid.css';
 
 Vue.use(Vuetify);

@@ -31,6 +31,9 @@
                   active-class="deep-orange"
                   class="ma-2"
           >
+            <v-icon v-if="tag.icon" x-small class="mr-2">
+              far {{ tag.icon }}
+            </v-icon>
             {{ tag.name }}
           </v-chip>
         </template>
