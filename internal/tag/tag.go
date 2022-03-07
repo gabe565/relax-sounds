@@ -10,6 +10,7 @@ import (
 )
 
 type Tag struct {
+	Id   string `json:"id"`
 	Name string `json:"name"`
 	Icon string `json:"icon,omitempty"`
 }
@@ -18,7 +19,7 @@ var ErrNoTagFile = errors.New("tag config not found")
 
 var tagFiles = []string{"tags.yaml", "tags.yml", "tags.json"}
 
-func LoadAll(fsys fs.FS) (tag map[string]Tag, err error) {
+func LoadAll(fsys fs.FS) (tags []Tag, err error) {
 	var f fs.File
 	var path string
 	for _, path = range tagFiles {
@@ -31,11 +32,11 @@ func LoadAll(fsys fs.FS) (tag map[string]Tag, err error) {
 			if errors.Is(err, os.ErrNotExist) {
 				continue
 			}
-			return tag, err
+			return tags, err
 		}
 	}
 	if f == nil {
-		return tag, ErrNoTagFile
+		return tags, ErrNoTagFile
 	}
 	defer func(f fs.File) {
 		_ = f.Close()
@@ -44,9 +45,10 @@ func LoadAll(fsys fs.FS) (tag map[string]Tag, err error) {
 	ext := filepath.Ext(path)[1:]
 	switch ext {
 	case "yaml", "yml":
-		err = yaml.NewDecoder(f).Decode(&tag)
+		err = yaml.NewDecoder(f).Decode(&tags)
 	case "json":
-		err = json.NewDecoder(f).Decode(&tag)
+		err = json.NewDecoder(f).Decode(&tags)
 	}
-	return tag, err
+
+	return tags, err
 }

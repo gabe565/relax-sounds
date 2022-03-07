@@ -26,7 +26,7 @@
         </template>
         <template v-else>
           <v-chip v-for="(tag, key) in tags" :key="key"
-                  :value="key"
+                  :value="tag.id"
                   outlined
                   active-class="deep-orange"
                   class="ma-2"
