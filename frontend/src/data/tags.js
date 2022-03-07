@@ -1,5 +1,4 @@
 import axios from 'axios';
-import tagFile from './tags.json';
 
 let tags;
 
@@ -8,7 +7,7 @@ export const getTags = async () => {
     return tags;
   }
 
-  const { data } = await axios.get(tagFile);
+  const { data } = await axios.get('/api/tags');
   tags = data;
   return tags;
 };

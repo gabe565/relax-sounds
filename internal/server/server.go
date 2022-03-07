@@ -37,6 +37,7 @@ func Setup(frontendFs, dataFs fs.FS) *chi.Mux {
 	// Mixer
 	router.Route("/api", func(router chi.Router) {
 		router.Get("/sounds", handlers.Sounds(dataFs))
+		router.Get("/tags", handlers.Tags(dataFs))
 		router.With(preset.DecoderMiddleware(dataFs)).Get("/mix/{enc}.{filetype}", handlers.Mix)
 	})
 
