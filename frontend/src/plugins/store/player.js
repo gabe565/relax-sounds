@@ -205,6 +205,9 @@ export default {
               .join(', ');
           }
           mediaInfo.metadata.artist = 'Relax Sounds';
+          mediaInfo.metadata.images = [
+            new chrome.cast.Image(`${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`),
+          ];
 
           const request = new chrome.cast.media.LoadRequest(mediaInfo);
 
