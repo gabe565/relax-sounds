@@ -4,7 +4,7 @@ export function getCastSession() {
 
 export function formatError(error) {
   const { chrome } = window;
-  switch (error.code) {
+  switch (error) {
     case chrome.cast.ErrorCode.API_NOT_INITIALIZED:
       return `The API is not initialized. ${error.description || ''}`;
     case chrome.cast.ErrorCode.CANCEL:
