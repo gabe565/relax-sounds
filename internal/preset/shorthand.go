@@ -9,7 +9,7 @@ import (
 var ErrInvalidId = errors.New("invalid id")
 var ErrInvalidVolume = errors.New("invalid volume")
 
-type ShorthandTrack [2]interface{}
+type ShorthandTrack [2]any
 
 type Shorthand []ShorthandTrack
 

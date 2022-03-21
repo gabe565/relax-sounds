@@ -1,4 +1,4 @@
-ARG GO_VERSION=1.17
+ARG GO_VERSION=1.18
 ARG NODE_VERSION=14
 
 FROM --platform=$BUILDPLATFORM golang:$GO_VERSION-alpine as go-builder
