@@ -23,7 +23,7 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 		return errors.New("encode: unsupported precision, 1, 2 or 3 is supported")
 	}
 
-	samples := make([][2]float64, 512)
+	samples := make([][2]float64, 4*1024)
 	buffer := make([]byte, len(samples)*format.Width())
 
 	for {
