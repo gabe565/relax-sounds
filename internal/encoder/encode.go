@@ -15,7 +15,11 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 	if format.NumChannels <= 0 {
 		return errors.New("encode: invalid number of channels (less than 1)")
 	}
-	if format.Precision != 1 && format.Precision != 2 && format.Precision != 3 {
+
+	switch format.Precision {
+	case 1, 2, 3:
+		//
+	default:
 		return errors.New("encode: unsupported precision, 1, 2 or 3 is supported")
 	}
 
