@@ -39,8 +39,11 @@ RUN npm run build
 
 
 FROM alpine
+LABEL org.opencontainers.image.source="https://github.com/gabe565/relax-sounds"
 WORKDIR /app
+
 RUN apk add --no-cache lame
+
 COPY data-default /data
 COPY --from=go-builder /app/relax-sounds ./
 COPY --from=node-builder /app/dist frontend/
