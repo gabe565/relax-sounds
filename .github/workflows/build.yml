@@ -35,7 +35,7 @@ jobs:
         with:
           go-version: ^${{ env.go_version }}
       - run: sudo apt-get install -y libmp3lame-dev
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
@@ -67,7 +67,7 @@ jobs:
         with:
           node-version: ${{ env.node_version }}
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -90,7 +90,7 @@ jobs:
         with:
           node-version: ${{ env.node_version }}
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
