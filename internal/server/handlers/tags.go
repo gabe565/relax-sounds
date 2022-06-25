@@ -15,6 +15,9 @@ func Tags(fsys fs.FS) http.HandlerFunc {
 		}
 
 		soundJson, err := json.Marshal(tags)
+		if err != nil {
+			panic(err)
+		}
 
 		w.Header().Set("Content-Type", "application/json")
 		_, err = w.Write(soundJson)

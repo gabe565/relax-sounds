@@ -15,6 +15,9 @@ func Sounds(fsys fs.FS) http.HandlerFunc {
 		}
 
 		soundJson, err := json.Marshal(sounds)
+		if err != nil {
+			panic(err)
+		}
 
 		w.Header().Set("Content-Type", "application/json")
 		_, err = w.Write(soundJson)

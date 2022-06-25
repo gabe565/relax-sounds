@@ -43,6 +43,9 @@ func LoadAll(fsys fs.FS) (sounds []Sound, err error) {
 		})
 		return nil
 	})
+	if err != nil {
+		return sounds, err
+	}
 
 	err = group.Wait()
 
