@@ -7,15 +7,21 @@
       color="accent"
       flat
     >
-      <v-toolbar-title>
-        <v-icon
-          aria-hidden="true"
-          class="mr-2"
-        >
-          fas fa-bed-alt
-        </v-icon>
-        Relax Sounds
-      </v-toolbar-title>
+      <v-btn
+        to="/"
+        text
+        class="text-body-2 text-none px-2"
+      >
+        <v-toolbar-title>
+          <v-icon
+            aria-hidden="true"
+            class="mr-2"
+          >
+            fas fa-bed-alt
+          </v-icon>
+          Relax Sounds
+        </v-toolbar-title>
+      </v-btn>
 
       <v-spacer />
 
@@ -114,6 +120,10 @@ export default {
 <style lang="scss">
   html {
     --disconnected-color: #fff;
+  }
+
+  .v-toolbar__content {
+    padding-left: 8px;
   }
 
   .theme--light {
