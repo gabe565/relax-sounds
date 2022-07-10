@@ -8,12 +8,12 @@ require (
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/spf13/pflag v1.0.5
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
-	github.com/hajimehoshi/go-mp3 v0.3.2 // indirect
+	github.com/hajimehoshi/go-mp3 v0.3.3 // indirect
 	github.com/icza/bitio v1.1.0 // indirect
 	github.com/jfreymuth/oggvorbis v1.0.3 // indirect
 	github.com/jfreymuth/vorbis v1.0.2 // indirect
