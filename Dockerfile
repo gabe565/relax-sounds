@@ -18,8 +18,6 @@ RUN --mount=type=cache,target=/root/.cache \
 FROM --platform=$BUILDPLATFORM node:$NODE_VERSION-alpine AS node-builder
 WORKDIR /app
 
-RUN apk add --no-cache g++ make python3
-
 COPY frontend/package.json frontend/package-lock.json frontend/.npmrc ./
 ARG FONTAWESOME_NPM_AUTH_TOKEN
 RUN npm ci
