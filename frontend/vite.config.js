@@ -60,6 +60,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        clientsClaim: true,
         globPatterns: ['**/*{js,css,html,woff2}'],
         runtimeCaching: [
           {
@@ -78,7 +79,6 @@ export default defineConfig({
             options: {
               cacheName: 'data-cache',
               expiration: {
-                maxEntries: 10,
                 maxAgeSeconds: 60 * 60 * 24 * 31,
               },
               cacheableResponse: {

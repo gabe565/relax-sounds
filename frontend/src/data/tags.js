@@ -2,8 +2,8 @@ import axios from 'axios';
 
 let tags;
 
-export const getTags = async () => {
-  if (tags) {
+export const getTags = async (force = false) => {
+  if (!force && tags) {
     return tags;
   }
 

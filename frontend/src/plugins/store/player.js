@@ -2,6 +2,7 @@ import { SoundState } from '../../util/Sound';
 import { getSounds } from '../../data/sounds';
 import { formatError, getCastSession } from '../../util/googleCast';
 import { Preset } from '../../util/Preset';
+import axios from 'axios';
 
 export default {
   namespaced: true,
@@ -227,6 +228,17 @@ export default {
         commit('initSounds', conf);
         dispatch('filters/initSounds', conf, { root: true });
       }
+    },
+    async prefetch({ state }) {
+      return Promise.all(state.sounds.map(async (sound) => {
+        sound.isLoading = true;
+        try {
+          await axios.get(sound.src);
+        } catch (error) {
+          console.error(error);
+        }
+        sound.isLoading = false;
+      }));
     },
   },
 };

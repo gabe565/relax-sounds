@@ -3,8 +3,8 @@ import { Sound } from '../util/Sound';
 
 let sounds;
 
-export const getSounds = async () => {
-  if (sounds) {
+export const getSounds = async (force = false) => {
+  if (!force && sounds) {
     return sounds;
   }
 
@@ -14,14 +14,4 @@ export const getSounds = async () => {
     .map((sound) => new Sound(sound));
   sounds = data;
   return sounds;
-};
-
-export const prefetch = async () => {
-  const cache = await window.caches.open('data-cache');
-  const soundConfig = await getSounds();
-  await Promise.all(soundConfig.map(async (sound) => {
-    sound.isLoading = true;
-    await cache.add(sound.src);
-    sound.isLoading = false;
-  }));
 };

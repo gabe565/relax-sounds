@@ -45,7 +45,6 @@ import { mapActions, mapGetters } from 'vuex';
 import PageLayout from '../layouts/PageLayout.vue';
 import SoundCard from '../components/SoundCard.vue';
 import FilterSection from '../components/FilterSection.vue';
-import { prefetch } from '../data/sounds';
 
 export default {
   name: 'SoundsPage',
@@ -72,7 +71,15 @@ export default {
   computed: {
     actions() {
       return [
-        { title: 'Preload All', icon: 'fas fa-sync', on: { click: prefetch } },
+        {
+          title: 'Preload All',
+          icon: 'fas fa-sync',
+          on: {
+            click: () => {
+              this.$store.dispatch('player/prefetch');
+            },
+          },
+        },
       ];
     },
     ...mapGetters('filters', ['sounds']),

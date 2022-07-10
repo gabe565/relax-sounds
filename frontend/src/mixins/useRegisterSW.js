@@ -1,4 +1,7 @@
 /* eslint-disable no-unused-vars */
+import { getSounds } from '../data/sounds';
+import { getTags } from '../data/tags';
+
 export default {
   name: 'useRegisterSW',
   data() {
@@ -40,7 +43,13 @@ export default {
       this.offlineReady = false;
       this.needRefresh = false;
     },
-    onOfflineReadyFn() {
+    async onOfflineReadyFn() {
+      try {
+        await getSounds(true);
+        await getTags(true);
+      } catch (error) {
+        console.error(error);
+      }
       console.log('onOfflineReady');
     },
     onNeedRefreshFn() {
