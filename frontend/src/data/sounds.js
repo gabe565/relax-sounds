@@ -17,7 +17,7 @@ export const getSounds = async () => {
 };
 
 export const prefetch = async () => {
-  const cache = await window.caches.open('audio-cache');
+  const cache = await window.caches.open('data-cache');
   const soundConfig = await getSounds();
   await Promise.all(soundConfig.map(async (sound) => {
     sound.isLoading = true;
