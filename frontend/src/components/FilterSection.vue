@@ -11,27 +11,38 @@
         />
       </v-col>
       <v-col class="shrink pb-0">
-        <v-switch v-model="filters.playing" label="Playing" flat inset/>
+        <v-switch
+          v-model="filters.playing"
+          label="Playing"
+          flat
+          inset
+        />
       </v-col>
     </v-row>
     <v-row class="pb-5">
       <v-chip-group v-model="filters.word">
         <template v-if="loading">
           <v-skeleton-loader
-            type="chip"
             v-for="i in 5"
             :key="i"
+            type="chip"
             class="ma-2"
           />
         </template>
         <template v-else>
-          <v-chip v-for="(tag, key) in tags" :key="key"
-                  :value="tag.id"
-                  outlined
-                  active-class="deep-orange"
-                  class="ma-2"
+          <v-chip
+            v-for="(tag, key) in tags"
+            :key="key"
+            :value="tag.id"
+            outlined
+            active-class="deep-orange"
+            class="ma-2"
           >
-            <v-icon v-if="tag.icon" x-small class="mr-2">
+            <v-icon
+              v-if="tag.icon"
+              x-small
+              class="mr-2"
+            >
               far {{ tag.icon }}
             </v-icon>
             {{ tag.name }}
@@ -41,18 +52,24 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-divider/>
+        <v-divider />
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <v-pagination v-model="filters.page" :length="pages"/>
+        <v-pagination
+          v-model="filters.page"
+          :length="pages"
+        />
       </v-col>
     </v-row>
-    <slot/>
+    <slot />
     <v-row>
       <v-col>
-        <v-pagination v-model="filters.page" :length="pages"/>
+        <v-pagination
+          v-model="filters.page"
+          :length="pages"
+        />
       </v-col>
     </v-row>
   </div>
@@ -63,29 +80,29 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 import { getTags } from '../data/tags';
 
 export default {
-  name: 'Filters',
+  name: 'FilterSection',
 
   data: () => ({
     tags: null,
     loading: true,
   }),
 
-  async created() {
-    this.tags = await getTags();
-    this.loading = false;
-  },
-
   computed: {
     ...mapState('filters', ['filters']),
     ...mapGetters('filters', ['pages']),
   },
-
-  methods: mapActions('filters', ['initSounds']),
 
   watch: {
     pages() {
       this.filters.page = 1;
     },
   },
+
+  async created() {
+    this.tags = await getTags();
+    this.loading = false;
+  },
+
+  methods: mapActions('filters', ['initSounds']),
 };
 </script>

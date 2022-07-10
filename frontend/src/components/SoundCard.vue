@@ -1,21 +1,30 @@
 <template>
-  <v-card flat
-          outlined
-          :dark="showProgress"
+  <v-card
+    flat
+    outlined
+    :dark="showProgress"
   >
     <v-fade-transition>
       <v-progress-linear
+        v-if="showProgress"
         v-model="volumePercentage"
         absolute
         height="100%"
         color="deep-purple darken-2"
-        v-if="showProgress"
       />
     </v-fade-transition>
-    <v-row align="center" justify="center" dense>
+    <v-row
+      align="center"
+      justify="center"
+      dense
+    >
       <v-col class="grow">
-        <v-card-title class="headline">
-          <v-icon aria-hidden="true" class="mr-4" :color="iconColor">
+        <v-card-title class="text-h5">
+          <v-icon
+            aria-hidden="true"
+            class="mr-4"
+            :color="iconColor"
+          >
             {{ iconStyle }} {{ sound.icon }} fa-fw no-transition
           </v-icon>
           {{ sound.name }}
@@ -23,11 +32,15 @@
       </v-col>
       <v-col class="shrink pr-4">
         <v-btn
-          elevation="0" icon
-          @click.stop="playStop"
+          elevation="0"
+          icon
           :aria-label="sound.isPlaying ? 'Stop' : 'Play'"
+          @click.stop="playStop"
         >
-          <v-icon dense aria-hidden="true">
+          <v-icon
+            dense
+            aria-hidden="true"
+          >
             fas fa-fw {{ icon }}
           </v-icon>
         </v-btn>
@@ -38,11 +51,12 @@
 
 <script>
 export default {
-  name: 'Sound',
+  name: 'SoundCard',
 
   props: {
     sound: {
       type: Object,
+      required: true,
     },
   },
 

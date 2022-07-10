@@ -1,16 +1,29 @@
 <template>
-  <v-tooltip bottom :key="isPlaying">
+  <v-tooltip
+    :key="isPlaying"
+    bottom
+  >
     <template #activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
-        v-on="on"
-        @click="playPauseAll"
         :disabled="isStopped"
         icon
         :aria-label="isPlaying ? 'Pause' : 'Play'"
+        v-on="on"
+        @click="playPauseAll"
       >
-        <v-icon v-if="isPlaying" aria-hidden="true">fas fa-pause-circle</v-icon>
-        <v-icon v-else aria-hidden="true">fas fa-play-circle</v-icon>
+        <v-icon
+          v-if="isPlaying"
+          aria-hidden="true"
+        >
+          fas fa-pause-circle
+        </v-icon>
+        <v-icon
+          v-else
+          aria-hidden="true"
+        >
+          fas fa-play-circle
+        </v-icon>
       </v-btn>
     </template>
     <span v-if="isPlaying">Pause</span>

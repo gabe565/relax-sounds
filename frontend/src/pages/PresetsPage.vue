@@ -1,51 +1,64 @@
 <template>
-  <Page :alert="alert" :actions="actions">
+  <PageLayout
+    :alert="alert"
+    :actions="actions"
+  >
     <v-row>
       <v-col
-        cols="12" lg="6"
         v-for="(preset, key) of presets"
         :key="key"
+        cols="12"
+        lg="6"
       >
-        <Preset :preset="preset"/>
+        <PresetCard :preset="preset" />
       </v-col>
       <v-col v-if="presets.length === 0">
-        <v-alert prominent text color="info" icon="fal fa-info-circle">
+        <v-alert
+          prominent
+          text
+          color="info"
+          icon="fal fa-info-circle"
+        >
           No Presets Saved Yet!
         </v-alert>
       </v-col>
     </v-row>
 
-    <restore-presets v-model="showRestore"/>
-    <remove-all v-model="showRemoveAll"/>
-  </Page>
+    <restore-presets v-model="showRestore" />
+    <remove-all v-model="showRemoveAll" />
+  </PageLayout>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
 import { saveAs } from 'file-saver/src/FileSaver';
-import Preset from '../components/Preset.vue';
-import Page from '../layouts/Page.vue';
+import PresetCard from '../components/PresetCard.vue';
+import PageLayout from '../layouts/PageLayout.vue';
 import RestorePresets from '../components/RestorePresets.vue';
 import RemoveAll from '../components/RemoveAll.vue';
 
 export default {
-  name: 'Presets',
+  name: 'PresetsPage',
+
   components: {
     RemoveAll,
     RestorePresets,
-    Page,
-    Preset,
+    PageLayout,
+    PresetCard,
   },
+
   props: {
-    alert: Object,
+    alert: {
+      type: Object,
+      default: null,
+    },
   },
+
   data: () => ({
     showRestore: false,
     showRemoveAll: false,
   }),
-  async created() {
-    await this.initSounds();
-  },
+
   computed: {
     actions() {
       return [
@@ -74,6 +87,11 @@ export default {
     },
     ...mapState('presets', ['presets']),
   },
+
+  async created() {
+    await this.initSounds();
+  },
+
   methods: {
     export() {
       const blob = new Blob(

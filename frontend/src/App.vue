@@ -1,40 +1,61 @@
 <template>
   <v-app>
-    <v-app-bar app dark hide-on-scroll color="accent" flat>
+    <v-app-bar
+      app
+      dark
+      hide-on-scroll
+      color="accent"
+      flat
+    >
       <v-toolbar-title>
-        <v-icon aria-hidden="true" class="mr-2">fas fa-bed-alt</v-icon>
+        <v-icon
+          aria-hidden="true"
+          class="mr-2"
+        >
+          fas fa-bed-alt
+        </v-icon>
         Relax Sounds
       </v-toolbar-title>
 
-      <v-spacer/>
+      <v-spacer />
 
-      <google-cast-launcher class="v-btn v-btn--icon theme--dark v-size--default"/>
-      <SavePreset/>
-      <PlayPauseAll/>
-      <StopAll/>
+      <google-cast-launcher class="v-btn v-btn--icon theme--dark v-size--default" />
+      <SavePreset />
+      <PlayPauseAll />
+      <StopAll />
 
-      <template #extension v-if="$vuetify.breakpoint.mdAndUp">
+      <template
+        v-if="$vuetify.breakpoint.mdAndUp"
+        #extension
+      >
         <v-tabs centered>
-          <v-tab v-for="route in routes" :key="route.path" :to="route.path" exact>
-            <v-icon class="pr-2">fas {{ route.meta.icon }} fa-fw</v-icon>
+          <v-tab
+            v-for="route in routes"
+            :key="route.path"
+            :to="route.path"
+            exact
+          >
+            <v-icon class="pr-2">
+              fas {{ route.meta.icon }} fa-fw
+            </v-icon>
             {{ route.name }}
           </v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
 
-    <UpdateSnackbar/>
+    <UpdateSnackbar />
 
     <v-main>
       <keep-alive>
-        <router-view/>
+        <router-view />
       </keep-alive>
-      <v-spacer :style="{ height: $vuetify.breakpoint.smAndDown ? '56px' : '28px' }"/>
+      <v-spacer :style="{ height: $vuetify.breakpoint.smAndDown ? '56px' : '28px' }" />
     </v-main>
 
     <v-bottom-navigation
-      fixed
       v-if="$vuetify.breakpoint.smAndDown"
+      fixed
       background-color="accent"
       color="primary"
       dark
@@ -69,6 +90,12 @@ export default {
     UpdateSnackbar,
   },
 
+  computed: {
+    routes() {
+      return this.$router.options.routes.filter((route) => route.meta?.showInNav);
+    },
+  },
+
   beforeMount() {
     // check for browser support
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
@@ -80,12 +107,6 @@ export default {
         this.$vuetify.theme.dark = e.matches;
       });
     }
-  },
-
-  computed: {
-    routes() {
-      return this.$router.options.routes.filter((route) => route.meta?.showInNav);
-    },
   },
 };
 </script>

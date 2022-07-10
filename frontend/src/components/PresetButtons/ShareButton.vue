@@ -1,14 +1,27 @@
 <template>
   <v-col class="shrink">
-    <v-btn @click.stop="show = true" elevation="0" icon aria-label="Share">
-      <v-icon dense aria-hidden="true">
+    <v-btn
+      elevation="0"
+      icon
+      aria-label="Share"
+      @click.stop="show = true"
+    >
+      <v-icon
+        dense
+        aria-hidden="true"
+      >
         fas fa-fw fa-share-alt
       </v-icon>
     </v-btn>
 
-    <v-dialog v-model="show" width="400">
+    <v-dialog
+      v-model="show"
+      width="400"
+    >
       <v-card>
-        <v-card-title class="headline">Share</v-card-title>
+        <v-card-title class="text-h5">
+          Share
+        </v-card-title>
         <v-card-text>
           <v-text-field
             readonly
@@ -18,25 +31,43 @@
           />
         </v-card-text>
         <v-card-actions>
-          <v-spacer/>
-          <v-btn text @click="show = false">
-            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+          <v-spacer />
+          <v-btn
+            text
+            @click="show = false"
+          >
+            <v-icon aria-hidden="true">
+              fal fa-times fa-fw
+            </v-icon>
             Close
           </v-btn>
-          <v-btn text @click="copy">
-            <v-icon aria-hidden="true">fal fa-copy fa-fw</v-icon>
+          <v-btn
+            text
+            @click="copy"
+          >
+            <v-icon aria-hidden="true">
+              fal fa-copy fa-fw
+            </v-icon>
             Copy
           </v-btn>
-          <v-btn text @click="share" v-if="canShare">
-            <v-icon aria-hidden="true">fal fa-share-alt fa-fw</v-icon>
+          <v-btn
+            v-if="canShare"
+            text
+            @click="share"
+          >
+            <v-icon aria-hidden="true">
+              fal fa-share-alt fa-fw
+            </v-icon>
             Share
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-snackbar
-      v-model="showSnackbar" timeout="5000"
-      bottom class="pb-14 pb-md-0"
+      v-model="showSnackbar"
+      timeout="5000"
+      bottom
+      class="pb-14 pb-md-0"
     >
       Copied to clipboard.
     </v-snackbar>

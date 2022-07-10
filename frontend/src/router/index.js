@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '../plugins/store/main';
-import Sounds from '../pages/Sounds.vue';
-import Presets from '../pages/Presets.vue';
-import NotFound from '../pages/NotFound.vue';
+import SoundsPage from '../pages/SoundsPage.vue';
+import PresetsPage from '../pages/PresetsPage.vue';
+import NotFoundPage from '../pages/NotFoundPage.vue';
 import { Preset } from '../util/Preset';
 
 Vue.use(VueRouter);
@@ -14,7 +14,7 @@ const router = new VueRouter({
     {
       path: '/sounds',
       name: 'Sounds',
-      component: Sounds,
+      component: SoundsPage,
       props: true,
       meta: {
         icon: 'fa-volume',
@@ -24,7 +24,7 @@ const router = new VueRouter({
     {
       path: '/presets',
       name: 'Presets',
-      component: Presets,
+      component: PresetsPage,
       props: true,
       meta: {
         icon: 'fa-list-music',
@@ -59,7 +59,7 @@ const router = new VueRouter({
     {
       path: '*',
       name: '404 Not Found',
-      component: NotFound,
+      component: NotFoundPage,
     },
   ],
 });

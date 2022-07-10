@@ -4,6 +4,7 @@ import store from './plugins/store/main';
 import router from './router';
 import App from './App.vue';
 
+import './cast';
 import './plugins/buffer';
 
 Vue.config.productionTip = false;
@@ -16,5 +17,3 @@ window.vue = new Vue({
   router,
   render: (h) => h(App),
 }).$mount('#app');
-
-import './cast';

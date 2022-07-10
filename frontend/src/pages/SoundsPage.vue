@@ -1,14 +1,22 @@
 <template>
-  <Page :alert="alert" :actions="actions">
-    <Filters>
+  <PageLayout
+    :alert="alert"
+    :actions="actions"
+  >
+    <FilterSection>
       <v-row>
         <template v-if="loading">
           <v-col
-            cols="12" md="6" lg="4"
             v-for="i in 24"
             :key="i"
+            cols="12"
+            md="6"
+            lg="4"
           >
-            <v-card flat outlined>
+            <v-card
+              flat
+              outlined
+            >
               <v-skeleton-loader
                 type="card-heading"
                 class="my-1 transparent"
@@ -18,40 +26,49 @@
         </template>
         <template v-else>
           <v-col
-            cols="12" md="6" lg="4"
             v-for="(sound, key) of sounds"
             :key="key"
+            cols="12"
+            md="6"
+            lg="4"
           >
-            <Sound :sound="sound"/>
+            <SoundCard :sound="sound" />
           </v-col>
         </template>
       </v-row>
-    </Filters>
-  </Page>
+    </FilterSection>
+  </PageLayout>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Page from '../layouts/Page.vue';
-import Sound from '../components/Sound.vue';
-import Filters from '../components/Filters.vue';
+import PageLayout from '../layouts/PageLayout.vue';
+import SoundCard from '../components/SoundCard.vue';
+import FilterSection from '../components/FilterSection.vue';
 import { prefetch } from '../data/sounds';
 
 export default {
-  name: 'Sounds',
-  components: { Filters, Page, Sound },
-  props: {
-    alert: Object,
+  name: 'SoundsPage',
+
+  components: {
+    FilterSection,
+    PageLayout,
+    SoundCard,
   },
+
+  props: {
+    alert: {
+      type: Object,
+      default: null,
+    },
+  },
+
   data: () => ({
     loading: true,
     error: null,
     page: 1,
   }),
-  async created() {
-    await this.initSounds();
-    this.loading = false;
-  },
+
   computed: {
     actions() {
       return [
@@ -59,6 +76,11 @@ export default {
       ];
     },
     ...mapGetters('filters', ['sounds']),
+  },
+
+  async created() {
+    await this.initSounds();
+    this.loading = false;
   },
   methods: mapActions('player', ['initSounds']),
 };

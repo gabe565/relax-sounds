@@ -1,25 +1,49 @@
 <template>
   <v-col class="shrink">
-    <v-btn @click.stop="show = true" elevation="0" icon aria-label="Share">
-      <v-icon dense aria-hidden="true">
+    <v-btn
+      elevation="0"
+      icon
+      aria-label="Share"
+      @click.stop="show = true"
+    >
+      <v-icon
+        dense
+        aria-hidden="true"
+      >
         fas fa-fw fa-trash
       </v-icon>
     </v-btn>
 
-    <v-dialog v-model="show" width="400">
+    <v-dialog
+      v-model="show"
+      width="400"
+    >
       <v-card>
-        <v-card-title class="headline">Confirm</v-card-title>
+        <v-card-title class="text-h5">
+          Confirm
+        </v-card-title>
         <v-card-text>
           Delete the preset "{{ preset.name }}"?
         </v-card-text>
         <v-card-actions>
-          <v-spacer/>
-          <v-btn text @click="show = false">
-            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+          <v-spacer />
+          <v-btn
+            text
+            @click="show = false"
+          >
+            <v-icon aria-hidden="true">
+              fal fa-times fa-fw
+            </v-icon>
             Close
           </v-btn>
-          <v-btn color="red" text @click="remove">
-            <v-icon aria-hidden="true">fal fa-trash fa-fw</v-icon>
+          <v-btn
+            color="red"
+            text
+            @click="remove"
+          >
+            <v-icon aria-hidden="true">
+              fal fa-trash fa-fw
+            </v-icon>
             Delete
           </v-btn>
         </v-card-actions>

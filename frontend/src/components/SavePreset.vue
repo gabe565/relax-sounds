@@ -3,29 +3,52 @@
     <template #activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
-        v-on="on"
-        @click="showDialog = !showDialog"
         :disabled="isStopped"
         icon
         aria-label="Save Preset"
+        v-on="on"
+        @click="showDialog = !showDialog"
       >
-        <v-icon aria-hidden="true">fas fa-plus-circle</v-icon>
-        <v-dialog v-model="showDialog" max-width="500">
+        <v-icon aria-hidden="true">
+          fas fa-plus-circle
+        </v-icon>
+        <v-dialog
+          v-model="showDialog"
+          max-width="500"
+        >
           <v-card>
-            <v-card-title class="headline">Preset Name</v-card-title>
+            <v-card-title class="text-h5">
+              Preset Name
+            </v-card-title>
             <v-card-text>
               <v-form @submit.prevent="save">
-                <v-text-field required autofocus label="Name" v-model="name"/>
+                <v-text-field
+                  v-model="name"
+                  required
+                  autofocus
+                  label="Name"
+                />
               </v-form>
             </v-card-text>
             <v-card-actions>
-              <v-spacer/>
-              <v-btn text @click="cancel">
-                <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+              <v-spacer />
+              <v-btn
+                text
+                @click="cancel"
+              >
+                <v-icon aria-hidden="true">
+                  fal fa-times fa-fw
+                </v-icon>
                 Cancel
               </v-btn>
-              <v-btn color="green" text @click="save">
-                <v-icon aria-hidden="true">fal fa-save fa-fw</v-icon>
+              <v-btn
+                color="green"
+                text
+                @click="save"
+              >
+                <v-icon aria-hidden="true">
+                  fal fa-save fa-fw
+                </v-icon>
                 Save Preset
               </v-btn>
             </v-card-actions>
@@ -65,7 +88,7 @@ export default {
       let params;
       try {
         this.$store.dispatch('presets/savePlaying', { name: this.name });
-        params = { alert: { type: 'info', text: `Preset "${this.name}" saved successfully.` } };
+        params = { alert: { type: 'info', text: `PresetCard "${this.name}" saved successfully.` } };
         this.name = '';
       } catch (error) {
         console.error(error);
