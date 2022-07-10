@@ -60,6 +60,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        globPatterns: ['**/*{js,css,html,woff2}'],
         runtimeCaching: [
           {
             urlPattern: /\/api\//,
