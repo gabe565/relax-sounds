@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import './registerServiceWorker';
 import vuetify from './plugins/vuetify';
 import store from './plugins/store/main';
 import router from './router';
@@ -16,4 +15,4 @@ window.vue = new Vue({
   render: (h) => h(App),
 }).$mount('#app');
 
-require('./cast');
+import './cast';

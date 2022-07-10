@@ -1,14 +1,15 @@
 module.exports = {
   root: true,
   env: {
-    node: true,
+    browser: true,
   },
   extends: [
-    'plugin:vue/essential',
-    '@vue/airbnb',
+    'airbnb',
+    'plugin:vue/recommended',
+    'plugin:vuetify/recommended',
   ],
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
   },
   rules: {
     'import/prefer-default-export': 'off',
@@ -17,5 +18,6 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
+    'import/no-unresolved': 'off',
   },
 };
