@@ -4,6 +4,8 @@ import store from './plugins/store/main';
 import router from './router';
 import App from './App.vue';
 
+import './plugins/buffer';
+
 Vue.config.productionTip = false;
 
 Vue.config.ignoredElements = ['google-cast-launcher'];
