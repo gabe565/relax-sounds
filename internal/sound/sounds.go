@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-var sortMixed = regexp.MustCompile("^[0-9]+")
+var sortMixed = regexp.MustCompile(`^\d+`)
 
 func LoadAll(fsys fs.FS) (sounds []Sound, err error) {
 	var mu sync.Mutex
