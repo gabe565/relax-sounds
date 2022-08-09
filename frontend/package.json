@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vite serve",
     "build": "vite build",
-    "watch": "vite build --watch",
+    "watch": "vite build --mode=dev --watch",
     "lint": "eslint --ext .js,.vue --fix src"
   },
   "dependencies": {
