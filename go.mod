@@ -3,7 +3,7 @@ module github.com/gabe565/relax-sounds
 go 1.18
 
 require (
-	github.com/aofei/mimesniffer v1.2.0
+	github.com/aofei/mimesniffer v1.2.1
 	github.com/faiface/beep v1.1.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/spf13/pflag v1.0.5

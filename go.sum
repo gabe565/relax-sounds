@@ -1,6 +1,6 @@
 github.com/DATA-DOG/go-sqlmock v1.3.3/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
-github.com/aofei/mimesniffer v1.2.0 h1:xrhv1cQ2EpVPbNfdmzy/gIuegaEIqfQUhK7aK7VwJWg=
-github.com/aofei/mimesniffer v1.2.0/go.mod h1:RdFvw/YnqGk4qKjvwV5N6SXc/Hr/VaX+eP1iabbqBKk=
+github.com/aofei/mimesniffer v1.2.1 h1:IMsdcpRp6cxmRywsOo3GlN1p5nwYdW/6kNK543/GYBg=
+github.com/aofei/mimesniffer v1.2.1/go.mod h1:RdFvw/YnqGk4qKjvwV5N6SXc/Hr/VaX+eP1iabbqBKk=
 github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1 h1:dEvGWdg2FAR7hnP4gxgzMajDuznVS61xVoT6kxZ+g1s=
 github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1/go.mod h1:EqTcYM7y4JlSfeTI47pmNu3EZQuCuLQefsQyg1Imlz8=
 github.com/d4l3k/messagediff v1.2.2-0.20190829033028-7e0a312ae40b/go.mod h1:Oozbb1TVXFac9FtSIxHBMnBCq2qeH/2KkEQxENCrlLo=
