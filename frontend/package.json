@@ -9,7 +9,7 @@
     "lint": "eslint --ext .js,.vue --fix src"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-pro": "^6.1.1",
+    "@fortawesome/fontawesome-pro": "^6.2.0",
     "@vitejs/plugin-vue": "^1.6.1",
     "@vue/cli-plugin-babel": "^5.0.8",
     "axios": "^0.27.2",
