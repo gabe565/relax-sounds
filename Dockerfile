@@ -32,9 +32,17 @@ WORKDIR /app
 
 RUN apk add --no-cache lame
 
-COPY data-default /data
 COPY --from=go-builder /app/relax-sounds ./
 COPY --from=node-builder /app/dist frontend/
+
+ARG USERNAME=relax-sounds
+ARG UID=1000
+ARG GID=$UID
+RUN addgroup -g "$GID" "$USERNAME" \
+    && adduser -S -u "$UID" -G "$USERNAME" "$USERNAME"
+USER $USERNAME
+
+COPY data-default /data
 
 ENV RELAX_SOUNDS_ADDRESS ":80"
 ENV RELAX_SOUNDS_DATA "/data"
