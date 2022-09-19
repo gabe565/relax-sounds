@@ -19,7 +19,7 @@
     "fuse.js": "^6.6.2",
     "howler": "^2.2.3",
     "register-service-worker": "^1.7.2",
-    "sass": "~1.32.6",
+    "sass": "~1.54.9",
     "unplugin-vue-components": "^0.22.7",
     "vite": "^2.5.4",
     "vite-plugin-pwa": "^0.12.8",
