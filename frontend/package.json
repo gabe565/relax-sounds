@@ -24,9 +24,9 @@
     "vite": "^2.5.4",
     "vite-plugin-pwa": "^0.12.2",
     "vite-plugin-vue2": "1.9.0",
-    "vue": "^2.7.4",
+    "vue": "^2.7.10",
     "vue-router": "^3.5.4",
-    "vue-template-compiler": "^2.7.4",
+    "vue-template-compiler": "^2.7.10",
     "vuetify": "^2.6.7",
     "vuex": "^3.6.2"
   },
