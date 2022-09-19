@@ -4,7 +4,6 @@
     :timeout="needRefresh ? -1 : 5000"
     bottom
     class="pb-14 pb-md-0"
-    @input="close"
   >
     <span v-if="needRefresh">
       New content available, click on reload button to update.
