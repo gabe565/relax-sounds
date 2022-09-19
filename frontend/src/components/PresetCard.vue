@@ -17,7 +17,7 @@
           </v-card-title>
         </v-col>
         <debug-button
-          v-if="DEBUG_ENABLED"
+          v-if="debugEnabled"
           :preset="preset"
         />
         <share-button :preset="preset" />
@@ -53,11 +53,8 @@ export default {
 
   data: () => ({
     deleteDialog: false,
+    debugEnabled: import.meta.env.DEV,
     debugDialog: false,
   }),
-
-  created() {
-    this.DEBUG_ENABLED = import.meta.env.NODE_ENV === 'development';
-  },
 };
 </script>
