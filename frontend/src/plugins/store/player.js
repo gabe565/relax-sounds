@@ -1,8 +1,8 @@
+import axios from 'axios';
 import { SoundState } from '../../util/Sound';
 import { getSounds } from '../../data/sounds';
 import { formatError, getCastSession } from '../../util/googleCast';
 import { Preset } from '../../util/Preset';
-import axios from 'axios';
 
 export default {
   namespaced: true,
