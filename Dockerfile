@@ -46,4 +46,5 @@ COPY data-default /data
 
 ENV RELAX_SOUNDS_ADDRESS ":80"
 ENV RELAX_SOUNDS_DATA "/data"
+ENV RELAX_SOUNDS_FRONTEND "frontend"
 CMD ["./relax-sounds"]
