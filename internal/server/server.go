@@ -38,6 +38,9 @@ func Setup(frontendFs, dataFs fs.FS) *chi.Mux {
 		router.Get("/sounds", handlers.Sounds(dataFs))
 		router.Get("/tags", handlers.Tags(dataFs))
 		router.With(preset.DecoderMiddleware(dataFs)).Get("/mix/{enc}.{filetype}", handlers.Mix)
+		router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
+			http.NotFound(w, r)
+		})
 	})
 
 	return router
