@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/server/handlers"
 	"github.com/go-chi/chi/v5"
@@ -37,7 +38,10 @@ func Setup(frontendFs, dataFs fs.FS) *chi.Mux {
 	router.Route("/api", func(router chi.Router) {
 		router.Get("/sounds", handlers.Sounds(dataFs))
 		router.Get("/tags", handlers.Tags(dataFs))
-		router.With(preset.DecoderMiddleware(dataFs)).Get("/mix/{enc}.{filetype}", handlers.Mix)
+		router.With(
+			preset.DecoderMiddleware(dataFs),
+			filetype.Middleware,
+		).Get("/mix/{enc}.{filetype}", handlers.Mix)
 		router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
 			http.NotFound(w, r)
 		})

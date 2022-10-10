@@ -7,7 +7,6 @@ import (
 	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/stream"
-	"github.com/go-chi/chi/v5"
 	"net/http"
 	"os"
 )
@@ -16,15 +15,7 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx := req.Context()
 
-	fileType := filetype.FileType(0)
-	err = fileType.UnmarshalText([]byte(chi.URLParam(req, "filetype")))
-	if err != nil {
-		if errors.Is(err, filetype.ErrInvalidFileType) {
-			http.Error(res, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-			return
-		}
-		panic(err)
-	}
+	fileType := ctx.Value(filetype.RequestKey).(filetype.FileType)
 
 	// Stream headers
 	res.Header().Set("Connection", "Keep-Alive")
