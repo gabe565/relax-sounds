@@ -88,7 +88,7 @@ export default {
       let params;
       try {
         this.$store.dispatch('presets/savePlaying', { name: this.name });
-        params = { alert: { type: 'info', text: `PresetCard "${this.name}" saved successfully.` } };
+        params = { alert: { type: 'info', text: `Preset "${this.name}" saved successfully.` } };
         this.name = '';
       } catch (error) {
         console.error(error);
