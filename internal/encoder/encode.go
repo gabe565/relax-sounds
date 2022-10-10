@@ -27,32 +27,33 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 	buffer := make([]byte, len(samples)*format.Width())
 
 	for {
-		if ctx.Err() != nil {
-			return ctx.Err()
-		}
-
-		n, ok := s.Stream(samples)
-		if !ok {
+		select {
+		case <-ctx.Done():
 			return nil
-		}
-
-		buf := buffer
-		switch format.Precision {
-		case 1:
-			for _, sample := range samples[:n] {
-				buf = buf[format.EncodeUnsigned(buf, sample):]
-			}
-		case 2, 3:
-			for _, sample := range samples[:n] {
-				buf = buf[format.EncodeSigned(buf, sample):]
-			}
 		default:
-			return fmt.Errorf("encode: invalid precision: %d", format.Precision)
-		}
+			n, ok := s.Stream(samples)
+			if !ok {
+				return nil
+			}
 
-		_, err := w.Write(buffer[:n*format.Width()])
-		if err != nil {
-			return err
+			buf := buffer
+			switch format.Precision {
+			case 1:
+				for _, sample := range samples[:n] {
+					buf = buf[format.EncodeUnsigned(buf, sample):]
+				}
+			case 2, 3:
+				for _, sample := range samples[:n] {
+					buf = buf[format.EncodeSigned(buf, sample):]
+				}
+			default:
+				return fmt.Errorf("encode: invalid precision: %d", format.Precision)
+			}
+
+			_, err := w.Write(buffer[:n*format.Width()])
+			if err != nil {
+				return err
+			}
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"context"
 	"errors"
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder"
@@ -11,7 +10,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"net/http"
 	"os"
-	"syscall"
 )
 
 func Mix(res http.ResponseWriter, req *http.Request) {
@@ -64,13 +62,7 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	}(enc)
 
 	// Write mix to encoder
-	err = encoder.Encode(ctx, enc, s.Mix(), format)
-	if err != nil {
-		if errors.Is(err, context.Canceled) ||
-			errors.Is(err, syscall.ECONNRESET) ||
-			errors.Is(err, syscall.EPIPE) {
-			return
-		}
+	if err = encoder.Encode(ctx, enc, s.Mix(), format); err != nil {
 		panic(err)
 	}
 }
