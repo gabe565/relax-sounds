@@ -14,7 +14,7 @@ func _() {
 
 const _FileType_name = "wavmp3"
 
-var _FileType_index = [...]uint8{0, 3, 6, 9}
+var _FileType_index = [...]uint8{0, 3, 6}
 
 func (i FileType) String() string {
 	if i >= FileType(len(_FileType_index)-1) {
