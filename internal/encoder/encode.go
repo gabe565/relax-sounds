@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/faiface/beep"
 	"io"
+	"time"
 )
 
 // Encode writes all audio streamed from s to w in WAVE format.
@@ -23,7 +24,7 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 		return errors.New("encode: unsupported precision, 1, 2 or 3 is supported")
 	}
 
-	samples := make([][2]float64, 4*1024)
+	samples := make([][2]float64, format.SampleRate.N(time.Second/10))
 	buffer := make([]byte, len(samples)*format.Width())
 
 	for {
