@@ -17,7 +17,7 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 
 	fileType := filetype.FileType(0)
-	err = (&fileType).UnmarshalText([]byte(chi.URLParam(req, "filetype")))
+	err = fileType.UnmarshalText([]byte(chi.URLParam(req, "filetype")))
 	if err != nil {
 		if errors.Is(err, filetype.ErrInvalidFileType) {
 			http.Error(res, http.StatusText(http.StatusNotFound), http.StatusNotFound)
