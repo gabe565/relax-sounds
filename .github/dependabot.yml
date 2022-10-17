@@ -3,17 +3,17 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
   - package-ecosystem: "npm"
     directory: "/frontend"
     registries:
       - fontawesome-pro
     schedule:
-      interval: "daily"
+      interval: "weekly"
 registries:
   fontawesome-pro:
     type: npm-registry
