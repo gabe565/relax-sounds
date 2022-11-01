@@ -8,3 +8,13 @@ repos:
       - id: go-vet-mod
       - id: golangci-lint-mod
         args: [--fix]
+
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint
+        entry: npm --prefix frontend run lint
+        language: system
+        files: '^frontend/src'
+        types_or: [javascript, vue]
+        pass_filenames: false
