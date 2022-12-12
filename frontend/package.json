@@ -12,7 +12,7 @@
     "@fortawesome/fontawesome-pro": "^6.2.1",
     "@vitejs/plugin-vue": "^1.6.1",
     "@vue/cli-plugin-babel": "^5.0.8",
-    "axios": "^1.2.0",
+    "axios": "^1.2.1",
     "base64-url": "^2.3.3",
     "buffer": "^6.0.3",
     "file-saver": "^2.0.5",
