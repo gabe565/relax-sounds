@@ -9,6 +9,7 @@ import (
 	"github.com/gabe565/relax-sounds/internal/stream"
 	"net/http"
 	"os"
+	"syscall"
 )
 
 func Mix(res http.ResponseWriter, req *http.Request) {
@@ -54,6 +55,8 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 
 	// Write mix to encoder
 	if err = encoder.Encode(ctx, enc, s.Mix(), format); err != nil {
-		panic(err)
+		if !errors.Is(err, syscall.EPIPE) {
+			panic(err)
+		}
 	}
 }
