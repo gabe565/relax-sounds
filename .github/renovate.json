@@ -42,6 +42,10 @@
       "allowedVersions": "< 4"
     },
     {
+      "matchPackageNames": ["vuex"],
+      "allowedVersions": "< 4"
+    },
+    {
       "matchPackageNames": ["sass"],
       "allowedVersions": "<= 1.32"
     },
