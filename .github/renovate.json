@@ -62,5 +62,6 @@
         "token": "wcFMA/xDdHCJBTolAQ/8C2dhzvlBtx+5J/0MZygON0wOIADQjKOBeFSlMhX4g9rM1EZN1WDsMNmkCEAsgzBlKg7ym8si4fF0yMN09bKSXt9w+e14sc1e3z4yi+9MVyfsc1rWxs89kS1XcMArKYlsX6ZF6ctpqLA4dUEUM2eDmKJdavLCWd5N7ZwBSqwsV567rrs4D+PnradgVeVG1xntMTcKVP599B2IZCdz5hBNQVpvMkUYjJbz6WgBjbPShyLZWJwYBX9Eckh9iTJi5m0F2BLCzLyt2nmMrxb/YFAk4ynqht/gWsHexNxRL9j7kcvzzmhxMNAupZ3QLB7Ra+FPUq/4M95Hb4UZwI2vXFD6tnWpjoOMB7vcFiCr7Eu/3/i9ggvslwBtG03BDq2g7TfpNT+lGIGa85LvogSkr0KdrzVjDnW2UHGOOTtIJSkY+oTqfdBGNb7u1V/9Esodf2acTnZhMwlEKQq7jlgkbTRr7NcnW9zzB8MRCos9F4sAM6vyl2o6kiFQwmCLMLf/leJdq8FClS4wxKFfizHa4wnNEQzOF+sKKFoYj+EjkfVz8Nr5VAnLgbhBu7sCLBVVncQDNh4xgQnADZbojSnbD7XNRG8L27uiO07ILebSTVXDx6tNFs3Of8/wO+x2+sAQ+2zeMabr1IkoR+2eUX87LzOwwo4qSOKoww3LjHI6AdqV9oXSfgFYvMNs6lKog9MzHzNpMia0Mmq7USRMVQgP7XWnmsKmdUPPRue6jy+3SOeeHJYa62xvN2Fi5ZJCOWknR6wx+VqAW3LuTkkP34wqzk+yrLqHzgTTHx3+qoOUE7g+zdchdvJT/EY38/wgpm74fyQOttWOchpGyG/e03UtBsh6cA"
       }
     }
-  ]
+  ],
+  "postUpdateOptions": ["gomodTidy"]
 }
