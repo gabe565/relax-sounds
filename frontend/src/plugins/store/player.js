@@ -210,7 +210,13 @@ export default {
             new chrome.cast.Image(`${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`),
           ];
 
+          const queue = new chrome.cast.media.QueueLoadRequest([
+            new chrome.cast.media.QueueItem(mediaInfo),
+          ]);
+          queue.repeatMode = chrome.cast.media.RepeatMode.SINGLE;
+
           const request = new chrome.cast.media.LoadRequest(mediaInfo);
+          request.queueData = queue;
 
           try {
             await castSession.loadMedia(request);
