@@ -17,6 +17,7 @@
         v-bind="attrs"
         text
         color="primary"
+        :loading="loading"
         @click.native="updateServiceWorker"
       >
         Refresh

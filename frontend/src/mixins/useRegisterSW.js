@@ -9,6 +9,7 @@ export default {
       updateSW: undefined,
       offlineReady: false,
       needRefresh: false,
+      loading: false,
     };
   },
   async mounted() {
@@ -56,6 +57,7 @@ export default {
       console.log('onNeedRefresh');
     },
     updateServiceWorker() {
+      this.loading = true;
       if (this.updateSW) {
         this.updateSW(true);
       }
