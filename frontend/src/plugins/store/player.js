@@ -127,19 +127,20 @@ export default {
       }
     },
     initializeCastApi({ commit, dispatch, getters }) {
-      const { cast, chrome } = window;
+      const { framework: castFramework } = window.cast;
+      const { cast } = window.chrome;
 
-      cast.framework.CastContext.getInstance().setOptions({
-        receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
-        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
+      castFramework.CastContext.getInstance().setOptions({
+        receiverApplicationId: cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+        autoJoinPolicy: cast.AutoJoinPolicy.ORIGIN_SCOPED,
       });
 
-      const remotePlayer = new cast.framework.RemotePlayer();
-      const remotePlayerController = new cast.framework.RemotePlayerController(remotePlayer);
+      const remotePlayer = new castFramework.RemotePlayer();
+      const remotePlayerController = new castFramework.RemotePlayerController(remotePlayer);
       commit('initCastApi', { remotePlayer, remotePlayerController });
 
       remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
+        castFramework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
         async ({ value }) => {
           let shouldPlay;
           if (getters.state !== SoundState.STOPPED) {
@@ -155,7 +156,7 @@ export default {
       );
 
       remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
+        castFramework.RemotePlayerEventType.IS_PAUSED_CHANGED,
         async () => {
           if (remotePlayer.isPaused) {
             dispatch('pauseAll', { local: true });
@@ -169,7 +170,7 @@ export default {
       );
 
       remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
+        castFramework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
         async ({ value }) => {
           if (value && getters.isStopped) {
             const preset = new Preset();
@@ -192,11 +193,11 @@ export default {
       if (getters.isPlaying) {
         const castSession = getCastSession();
         if (castSession) {
-          const { chrome } = window;
+          const { cast } = window.chrome;
           const preset = new Preset({ sounds: getters.soundsPlaying });
 
-          const mediaInfo = new chrome.cast.media.MediaInfo(preset.mixUrl, 'music');
-          mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+          const mediaInfo = new cast.media.MediaInfo(preset.mixUrl, 'music');
+          mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
           if (rootState.presets.currentName) {
             mediaInfo.metadata.title = rootState.presets.currentName;
           } else {
@@ -207,15 +208,15 @@ export default {
           }
           mediaInfo.metadata.artist = 'Relax Sounds';
           mediaInfo.metadata.images = [
-            new chrome.cast.Image(`${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`),
+            new cast.Image(`${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`),
           ];
 
-          const queue = new chrome.cast.media.QueueLoadRequest([
-            new chrome.cast.media.QueueItem(mediaInfo),
+          const queue = new cast.media.QueueLoadRequest([
+            new cast.media.QueueItem(mediaInfo),
           ]);
-          queue.repeatMode = chrome.cast.media.RepeatMode.SINGLE;
+          queue.repeatMode = cast.media.RepeatMode.SINGLE;
 
-          const request = new chrome.cast.media.LoadRequest(mediaInfo);
+          const request = new cast.media.LoadRequest(mediaInfo);
           request.queueData = queue;
 
           try {
