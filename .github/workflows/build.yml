@@ -13,14 +13,11 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version-file: go.mod
-          cache: true
       - run: sudo apt-get install -y libmp3lame-dev
       - name: Lint
         uses: golangci/golangci-lint-action@v3
         with:
           args: --timeout=5m
-          skip-build-cache: true
-          skip-pkg-cache: true
 
   backend-test:
     name: Backend Test
