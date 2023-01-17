@@ -55,7 +55,7 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 
 	// Write mix to encoder
 	if err = encoder.Encode(ctx, enc, s.Mix(), format); err != nil {
-		if !errors.Is(err, syscall.EPIPE) {
+		if !errors.Is(err, syscall.EPIPE) && !errors.Is(err, syscall.ECONNRESET) {
 			panic(err)
 		}
 	}
