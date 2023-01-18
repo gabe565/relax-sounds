@@ -10,13 +10,10 @@ export const fromShorthand = (shorthand) => shorthand.map(
 );
 
 export class Preset {
-  name = 'Unnamed Preset';
-
-  sounds = [];
-
-  new = false;
-
   constructor(obj) {
+    this.name = 'Unnamed Preset';
+    this.sounds = [];
+    this.new = false;
     Object.assign(this, obj);
   }
 

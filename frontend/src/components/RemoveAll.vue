@@ -14,7 +14,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            text
+            variant="text"
             @click="show = false"
           >
             <v-icon aria-hidden="true">
@@ -23,7 +23,7 @@
             Close
           </v-btn>
           <v-btn
-            text
+            variant="text"
             :disabled="countdown > 0"
             color="red"
             @click="remove"
@@ -42,7 +42,7 @@
     <v-snackbar
       v-model="showSnackbar"
       timeout="5000"
-      bottom
+      location="bottom"
       class="pb-14 pb-md-0"
     >
       All presets have been removed.
@@ -61,8 +61,10 @@ export default {
   name: 'RemoveAll',
 
   props: {
-    value: Boolean,
+    modelValue: Boolean,
   },
+
+  emits: ['update:modelValue'],
 
   data: () => ({
     show: false,
@@ -77,11 +79,11 @@ export default {
   },
 
   watch: {
-    value(val) {
+    modelValue(val) {
       this.show = val;
     },
     show(val) {
-      this.$emit('input', val);
+      this.$emit('update:modelValue', val);
 
       if (val) {
         clearTimeout(timeout);
@@ -107,7 +109,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-</style>

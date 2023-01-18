@@ -13,17 +13,17 @@
         </v-card-text>
         <v-card-text>
           <v-file-input
-            outlined
+            v-model="file"
+            variant="outlined"
             dense
             accept="application/json"
             :error="error"
-            @change="file = $event"
           />
         </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
-            text
+            variant="text"
             @click="show = false"
           >
             <v-icon aria-hidden="true">
@@ -32,7 +32,7 @@
             Close
           </v-btn>
           <v-btn
-            text
+            variant="text"
             :disabled="!file"
             @click="restore"
           >
@@ -47,7 +47,7 @@
     <v-snackbar
       v-model="showSnackbar"
       timeout="5000"
-      bottom
+      location="bottom"
       class="pb-14 pb-md-0"
     >
       Imported {{ imported }} preset{{ imported !== 1 ? 's' : '' }}.
@@ -60,8 +60,10 @@ export default {
   name: 'RestorePresets',
 
   props: {
-    value: Boolean,
+    modelValue: Boolean,
   },
+
+  emits: ['update:modelValue'],
 
   data: () => ({
     show: false,
@@ -72,22 +74,22 @@ export default {
   }),
 
   watch: {
-    value(val) {
+    modelValue(val) {
       this.show = val;
     },
     show(val) {
-      this.$emit('input', val);
+      this.$emit('update:modelValue', val);
     },
   },
 
   methods: {
     async restore() {
       try {
-        const presets = JSON.parse(await this.file.text());
+        const presets = JSON.parse(await this.file[0].text());
         presets.forEach((preset) => {
           this.$store.commit('presets/add', { preset, playing: false });
-          this.show = false;
         });
+        this.show = false;
         this.imported = presets.length;
         this.showSnackbar = true;
       } catch (error) {
@@ -98,7 +100,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-</style>

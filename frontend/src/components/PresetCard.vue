@@ -1,8 +1,7 @@
 <template>
   <v-fade-transition>
     <v-card
-      flat
-      outlined
+      :variant="preset.new ? 'flat' : 'outlined'"
       :dark="preset.new"
       :color="preset.new ? 'deep-purple darken-2' : ''"
       transition="fade-transition"
@@ -12,7 +11,7 @@
         dense
       >
         <v-col class="overflow-hidden">
-          <v-card-title class="text-h5 d-block text-truncate">
+          <v-card-title class="text-h5 pa-4 d-block text-truncate">
             {{ preset.name }}
           </v-card-title>
         </v-col>

@@ -1,23 +1,15 @@
-import { VuetifyResolver } from 'unplugin-vue-components/resolvers';
-import vue from "@vitejs/plugin-vue2";
-import Components from 'unplugin-vue-components/vite';
+import vue from '@vitejs/plugin-vue';
+import vuetify from 'vite-plugin-vuetify';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
     vue(),
-    Components({
-      directives: false,
-      resolvers: [
-        VuetifyResolver(),
-      ],
-      types: [
-        {
-          from: 'vue-router',
-          names: ['RouterLink', 'RouterView'],
-        },
-      ],
+    vuetify({
+      styles: {
+        configFile: 'src/scss/variables.scss',
+      },
     }),
     VitePWA({
       devOptions: {

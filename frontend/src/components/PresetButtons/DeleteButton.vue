@@ -1,15 +1,13 @@
 <template>
-  <v-col class="shrink">
+  <v-col class="flex-grow-0">
     <v-btn
       elevation="0"
       icon
+      variant="plain"
       aria-label="Share"
       @click.stop="show = true"
     >
-      <v-icon
-        dense
-        aria-hidden="true"
-      >
+      <v-icon aria-hidden="true">
         fas fa-fw fa-trash
       </v-icon>
     </v-btn>
@@ -28,7 +26,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            text
+            variant="text"
             @click="show = false"
           >
             <v-icon aria-hidden="true">
@@ -38,7 +36,7 @@
           </v-btn>
           <v-btn
             color="red"
-            text
+            variant="text"
             @click="remove"
           >
             <v-icon aria-hidden="true">

@@ -1,12 +1,14 @@
 <template>
-  <v-tooltip bottom>
-    <template #activator="{ on, attrs }">
+  <v-tooltip
+    v-model="showTooltip"
+    location="bottom"
+  >
+    <template #activator="{ props }">
       <v-btn
-        v-bind="attrs"
+        v-bind="props"
         :disabled="isStopped"
         icon
         aria-label="Stop All"
-        v-on="on"
         @click="stopAll"
       >
         <v-icon aria-hidden="true">
@@ -19,17 +21,24 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'StopAll',
+
+  data: () => ({
+    showTooltip: false,
+  }),
 
   computed: mapGetters('player', [
     'isStopped',
   ]),
 
-  methods: mapActions('player', [
-    'stopAll',
-  ]),
+  methods: {
+    stopAll() {
+      this.showTooltip = false;
+      this.$store.dispatch('player/stopAll', {});
+    },
+  },
 };
 </script>

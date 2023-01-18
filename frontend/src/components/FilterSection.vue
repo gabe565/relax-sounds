@@ -1,53 +1,51 @@
 <template>
-  <div>
-    <v-row>
-      <v-col class="grow pb-0">
+  <template v-if="loading">
+    <slot />
+  </template>
+  <template v-else>
+    <v-row class="filters">
+      <v-col class="pb-0">
         <v-text-field
           v-model="filters.word"
           label="Search"
-          prepend-inner-icon="fal fa-search v-icon--dense"
+          prepend-icon="fal fa-search"
           clearable
-          single-line
+          variant="underlined"
+          hide-details
         />
       </v-col>
-      <v-col class="shrink pb-0">
+      <v-col class="flex-grow-0 pb-0">
         <v-switch
           v-model="filters.playing"
           label="Playing"
-          flat
           inset
+          hide-details
         />
       </v-col>
     </v-row>
     <v-row class="pb-5">
-      <v-chip-group v-model="filters.word">
-        <template v-if="loading">
-          <v-skeleton-loader
-            v-for="i in 5"
-            :key="i"
-            type="chip"
-            class="ma-2"
-          />
-        </template>
-        <template v-else>
-          <v-chip
-            v-for="(tag, key) in tags"
-            :key="key"
-            :value="tag.id"
-            outlined
-            active-class="deep-orange"
-            class="ma-2"
+      <v-chip-group
+        v-model="filters.word"
+        column
+      >
+        <v-chip
+          v-for="(tag, key) in tags"
+          :key="key"
+          :value="tag.id"
+          variant="outlined"
+          active-class="deep-orange"
+          class="ma-2"
+          filter
+        >
+          <v-icon
+            v-if="tag.icon"
+            size="x-small"
+            class="mr-2"
           >
-            <v-icon
-              v-if="tag.icon"
-              x-small
-              class="mr-2"
-            >
-              far {{ tag.icon }}
-            </v-icon>
-            {{ tag.name }}
-          </v-chip>
-        </template>
+            far {{ tag.icon }}
+          </v-icon>
+          {{ tag.name }}
+        </v-chip>
       </v-chip-group>
     </v-row>
     <v-row>
@@ -60,6 +58,9 @@
         <v-pagination
           v-model="filters.page"
           :length="pages"
+          variant="outlined"
+          size="small"
+          active-color="primary"
         />
       </v-col>
     </v-row>
@@ -69,10 +70,13 @@
         <v-pagination
           v-model="filters.page"
           :length="pages"
+          variant="outlined"
+          size="small"
+          active-color="primary"
         />
       </v-col>
     </v-row>
-  </div>
+  </template>
 </template>
 
 <script>
@@ -106,3 +110,9 @@ export default {
   methods: mapActions('filters', ['initSounds']),
 };
 </script>
+
+<style scoped>
+.filters :deep(.v-input__control) {
+  grid-area: auto;
+}
+</style>

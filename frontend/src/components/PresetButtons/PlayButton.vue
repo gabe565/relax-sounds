@@ -1,15 +1,13 @@
 <template>
-  <v-col class="shrink pr-4">
+  <v-col class="flex-grow-0 pr-4">
     <v-btn
       elevation="0"
       icon
+      variant="plain"
       aria-label="Play"
       @click.stop="play"
     >
-      <v-icon
-        dense
-        aria-hidden="true"
-      >
+      <v-icon aria-hidden="true">
         fas fa-fw fa-play
       </v-icon>
     </v-btn>

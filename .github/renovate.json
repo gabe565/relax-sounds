@@ -3,24 +3,6 @@
   "extends": [
     "local>gabe565/renovate-config"
   ],
-  "packageRules": [
-    {
-      "matchPackageNames": ["vue"],
-      "allowedVersions": "< 3"
-    },
-    {
-      "matchPackageNames": ["vue-router"],
-      "allowedVersions": "< 4"
-    },
-    {
-      "matchPackageNames": ["vuex"],
-      "allowedVersions": "< 4"
-    },
-    {
-      "matchPackageNames": ["sass"],
-      "allowedVersions": "<= 1.32"
-    }
-  ],
   "hostRules": [
     {
       "matchHost": "https://npm.fontawesome.com/",

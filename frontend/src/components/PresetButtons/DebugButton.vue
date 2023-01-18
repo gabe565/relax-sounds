@@ -1,15 +1,13 @@
 <template>
-  <v-col class="shrink">
+  <v-col class="flex-grow-0">
     <v-btn
       elevation="0"
       icon
+      variant="plain"
       aria-label="Debug"
       @click.stop="show = true"
     >
-      <v-icon
-        dense
-        aria-hidden="true"
-      >
+      <v-icon aria-hidden="true">
         fas fa-fw fa-bug
       </v-icon>
     </v-btn>
@@ -41,7 +39,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            text
+            variant="text"
             @click="show = false"
           >
             <v-icon aria-hidden="true">
@@ -68,6 +66,8 @@ export default {
     },
   },
 
+  emits: ['update:modelValue'],
+
   data: () => ({
     show: false,
   }),
@@ -80,7 +80,7 @@ export default {
       immediate: true,
     },
     show(val) {
-      this.$emit('input', val);
+      this.$emit('update:modelValue', val);
     },
   },
 };

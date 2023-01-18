@@ -1,15 +1,13 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import { nextTick } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router';
 import store from '../plugins/store/main';
 import SoundsPage from '../pages/SoundsPage.vue';
 import PresetsPage from '../pages/PresetsPage.vue';
 import NotFoundPage from '../pages/NotFoundPage.vue';
 import { Preset } from '../util/Preset';
 
-Vue.use(VueRouter);
-
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory(),
   routes: [
     {
       path: '/sounds',
@@ -57,7 +55,7 @@ const router = new VueRouter({
       redirect: { name: 'Sounds' },
     },
     {
-      path: '*',
+      path: '/:catchAll(.*)',
       name: '404 Not Found',
       component: NotFoundPage,
     },
@@ -68,7 +66,7 @@ const defaultTitle = document.title;
 router.afterEach(async (to) => {
   // Use next tick to handle router history correctly
   // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
-  await Vue.nextTick();
+  await nextTick();
   document.title = to.name ? `${to.name} - ${defaultTitle}` : defaultTitle;
 });
 

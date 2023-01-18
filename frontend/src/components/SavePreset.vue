@@ -1,12 +1,11 @@
 <template>
-  <v-tooltip bottom>
-    <template #activator="{ on, attrs }">
+  <v-tooltip location="bottom">
+    <template #activator="{ props }">
       <v-btn
-        v-bind="attrs"
+        v-bind="props"
         :disabled="isStopped"
         icon
         aria-label="Save Preset"
-        v-on="on"
         @click="showDialog = !showDialog"
       >
         <v-icon aria-hidden="true">
@@ -33,7 +32,7 @@
             <v-card-actions>
               <v-spacer />
               <v-btn
-                text
+                variant="text"
                 @click="cancel"
               >
                 <v-icon aria-hidden="true">
@@ -43,7 +42,7 @@
               </v-btn>
               <v-btn
                 color="green"
-                text
+                variant="text"
                 @click="save"
               >
                 <v-icon aria-hidden="true">

@@ -1,15 +1,13 @@
 <template>
-  <v-col class="shrink">
+  <v-col class="flex-grow-0">
     <v-btn
       elevation="0"
       icon
+      variant="plain"
       aria-label="Share"
       @click.stop="show = true"
     >
-      <v-icon
-        dense
-        aria-hidden="true"
-      >
+      <v-icon aria-hidden="true">
         fas fa-fw fa-share-alt
       </v-icon>
     </v-btn>
@@ -25,7 +23,7 @@
         <v-card-text>
           <v-text-field
             readonly
-            :value="preset.shareUrl"
+            :model-value="preset.shareUrl"
             @focus="select($event.target)"
             @click="select($event.target)"
           />
@@ -33,7 +31,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            text
+            variant="text"
             @click="show = false"
           >
             <v-icon aria-hidden="true">
@@ -42,7 +40,7 @@
             Close
           </v-btn>
           <v-btn
-            text
+            variant="text"
             @click="copy"
           >
             <v-icon aria-hidden="true">
@@ -52,7 +50,7 @@
           </v-btn>
           <v-btn
             v-if="canShare"
-            text
+            variant="text"
             @click="share"
           >
             <v-icon aria-hidden="true">
@@ -66,7 +64,7 @@
     <v-snackbar
       v-model="showSnackbar"
       timeout="5000"
-      bottom
+      location="bottom"
       class="pb-14 pb-md-0"
     >
       Copied to clipboard.
@@ -87,6 +85,8 @@ export default {
       required: true,
     },
   },
+
+  emits: ['update:modelValue'],
 
   data: () => ({
     show: false,
@@ -114,7 +114,7 @@ export default {
       immediate: true,
     },
     show(val) {
-      this.$emit('input', val);
+      this.$emit('update:modelValue', val);
     },
   },
 

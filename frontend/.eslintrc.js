@@ -4,12 +4,12 @@ module.exports = {
     browser: true,
   },
   extends: [
-    'airbnb',
-    'plugin:vue/recommended',
-    'plugin:vuetify/recommended',
+    'airbnb-base',
+    'plugin:vue/vue3-recommended',
+    'plugin:vuetify/base',
   ],
   parserOptions: {
-    parser: '@babel/eslint-parser',
+    sourceType: 'module',
   },
   rules: {
     'import/prefer-default-export': 'off',

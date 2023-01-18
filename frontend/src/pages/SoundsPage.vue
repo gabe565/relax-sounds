@@ -6,23 +6,17 @@
     <FilterSection>
       <v-row>
         <template v-if="loading">
-          <v-col
-            v-for="i in 24"
-            :key="i"
-            cols="12"
-            md="6"
-            lg="4"
+          <v-overlay
+            v-model="loading"
+            class="align-center justify-center"
+            persistent
           >
-            <v-card
-              flat
-              outlined
-            >
-              <v-skeleton-loader
-                type="card-heading"
-                class="my-1 transparent"
-              />
-            </v-card>
-          </v-col>
+            <v-progress-circular
+              color="primary"
+              indeterminate
+              size="64"
+            />
+          </v-overlay>
         </template>
         <template v-else>
           <v-col

@@ -13,18 +13,17 @@
 
       <v-col
         v-if="actions"
-        class="shrink"
+        class="flex-grow-0"
       >
         <v-menu
-          left
-          bottom
+          location="bottom right"
           transition="slide-y-transition"
         >
-          <template #activator="{ on, attrs }">
+          <template #activator="{ props }">
             <v-btn
               icon
-              v-bind="attrs"
-              v-on="on"
+              variant="plain"
+              v-bind="props"
             >
               <v-icon>fas fa-ellipsis-v</v-icon>
             </v-btn>
@@ -36,11 +35,11 @@
               :key="index"
               v-on="item.on"
             >
-              <v-list-item-icon>
+              <template #prepend>
                 <v-icon aria-hidden="true">
                   {{ item.icon }}
                 </v-icon>
-              </v-list-item-icon>
+              </template>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -53,7 +52,7 @@
         <v-col>
           <v-alert
             v-model="showAlert"
-            dismissible
+            closable
             prominent
             text
             :type="alert.type"

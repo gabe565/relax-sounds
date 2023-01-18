@@ -1,15 +1,14 @@
 <template>
   <v-tooltip
     :key="isPlaying"
-    bottom
+    location="bottom"
   >
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props }">
       <v-btn
-        v-bind="attrs"
+        v-bind="props"
         :disabled="isStopped"
         icon
         :aria-label="isPlaying ? 'Pause' : 'Play'"
-        v-on="on"
         @click="playPauseAll"
       >
         <v-icon
