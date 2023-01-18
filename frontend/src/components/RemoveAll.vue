@@ -80,7 +80,6 @@ export default {
       this.showSnackbar = true;
     },
     doCountdown() {
-      console.log("countdown");
       this.countdown -= 1;
       if (this.countdown > 0) {
         timeout = setTimeout(this.doCountdown, 1000);
