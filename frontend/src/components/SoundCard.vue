@@ -1,8 +1,8 @@
 <template>
-  <v-card variant="outlined" :dark="showProgress">
-    <v-row align="center" justify="center" dense class="pl-2">
+  <v-card variant="outlined" :dark="showProgress" class="pa-2">
+    <v-row align="center" justify="center" dense class="flex-nowrap pl-2">
       <v-col>
-        <v-card-title class="text-h5 pa-4">
+        <v-card-title class="text-h5">
           <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
             {{ iconStyle }} {{ sound.icon }} fa-fw
           </v-icon>
@@ -31,7 +31,7 @@
           </v-card>
         </v-dialog>
       </v-col>
-      <v-col class="flex-grow-0 pr-4">
+      <v-col class="flex-grow-0">
         <v-btn
           elevation="0"
           icon
