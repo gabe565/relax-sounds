@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/faiface/beep"
+	"golang.org/x/time/rate"
 	"io"
 	"time"
 )
@@ -26,6 +27,10 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 
 	samples := make([][2]float64, format.SampleRate.N(time.Second/10))
 	buffer := make([]byte, len(samples)*format.Width())
+	limit := rate.NewLimiter(
+		rate.Limit(format.SampleRate.N(time.Second)), // Throttle buffer to 1s per 1s
+		format.SampleRate.N(20*time.Second),          // Allow burst up to 20s
+	)
 
 	for {
 		n, ok := s.Stream(samples)
@@ -45,6 +50,13 @@ func Encode(ctx context.Context, w io.Writer, s beep.Streamer, format beep.Forma
 			}
 		default:
 			return fmt.Errorf("encode: invalid precision: %d", format.Precision)
+		}
+
+		if err := limit.WaitN(ctx, n); err != nil {
+			if errors.Is(err, context.Canceled) {
+				err = nil
+			}
+			return err
 		}
 
 		select {
