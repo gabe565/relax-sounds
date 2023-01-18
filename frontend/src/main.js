@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import vuetify from "./plugins/vuetify";
 import store from "./plugins/store/main";
-import router from "./router";
+import router from "./plugins/router";
 import App from "./App.vue";
 
 import "./cast";

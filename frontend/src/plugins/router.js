@@ -1,6 +1,6 @@
 import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import store from "../plugins/store/main";
+import store from "./store/main";
 import SoundsPage from "../pages/SoundsPage.vue";
 import PresetsPage from "../pages/PresetsPage.vue";
 import NotFoundPage from "../pages/NotFoundPage.vue";
