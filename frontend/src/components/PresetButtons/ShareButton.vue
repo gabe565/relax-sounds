@@ -37,7 +37,7 @@
       v-model="showSnackbar"
       timeout="5000"
       location="bottom"
-      content-class="pb-14 pb-md-0"
+      content-class="mb-14 mb-md-0"
     >
       Copied to clipboard.
     </v-snackbar>
