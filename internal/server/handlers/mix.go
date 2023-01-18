@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"errors"
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder"
@@ -12,9 +13,17 @@ import (
 	"syscall"
 )
 
+var globalMixCtx, globalMixCancel = context.WithCancel(context.Background())
+
+func MixCancelFunc() context.CancelFunc {
+	return globalMixCancel
+}
+
 func Mix(res http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx := req.Context()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 
 	fileType := ctx.Value(filetype.RequestKey).(filetype.FileType)
 
@@ -52,6 +61,16 @@ func Mix(res http.ResponseWriter, req *http.Request) {
 	defer func(encoder encoder.Encoder) {
 		_ = encoder.Close()
 	}(enc)
+
+	go func() {
+		select {
+		case <-globalMixCtx.Done():
+			// Stop streaming when global cancel called
+			cancel()
+		case <-ctx.Done():
+			// Exit Goroutine when request ends
+		}
+	}()
 
 	// Write mix to encoder
 	if err = encoder.Encode(ctx, enc, s.Mix(), format); err != nil {

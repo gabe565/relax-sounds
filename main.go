@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/gabe565/relax-sounds/internal/server"
+	"github.com/gabe565/relax-sounds/internal/server/handlers"
 	flag "github.com/spf13/pflag"
 	"io/fs"
 	"log"
@@ -51,6 +52,7 @@ func main() {
 		Addr:    *address,
 		Handler: server.Setup(frontendFs, os.DirFS(*dataDir)),
 	}
+	server.RegisterOnShutdown(handlers.MixCancelFunc())
 
 	ctx, cancel := context.WithCancel(context.Background())
 
