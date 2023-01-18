@@ -1,5 +1,5 @@
-import store from './plugins/store/main';
-import { wait } from './util/helpers';
+import store from "./plugins/store/main";
+import { wait } from "./util/helpers";
 
 window.__onGCastApiAvailable = async (isAvailable) => {
   if (isAvailable) {
@@ -12,6 +12,6 @@ window.__onGCastApiAvailable = async (isAvailable) => {
       waitMs *= 2;
     }
 
-    await store.dispatch('player/initializeCastApi');
+    await store.dispatch("player/initializeCastApi");
   }
 };

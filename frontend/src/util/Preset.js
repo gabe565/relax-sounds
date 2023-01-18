@@ -1,17 +1,15 @@
-import base64 from 'base64-url';
-import { Filetype } from './filetype';
+import base64 from "base64-url";
+import { Filetype } from "./filetype";
 
-export const toShorthand = (sounds) => sounds.map(
-  (sound) => [sound.id, Math.round(sound.volume * 1000) / 1000],
-);
+export const toShorthand = (sounds) =>
+  sounds.map((sound) => [sound.id, Math.round(sound.volume * 1000) / 1000]);
 
-export const fromShorthand = (shorthand) => shorthand.map(
-  (song) => ({ id: song[0], volume: song[1] }),
-);
+export const fromShorthand = (shorthand) =>
+  shorthand.map((song) => ({ id: song[0], volume: song[1] }));
 
 export class Preset {
   constructor(obj) {
-    this.name = 'Unnamed Preset';
+    this.name = "Unnamed Preset";
     this.sounds = [];
     this.new = false;
     Object.assign(this, obj);
@@ -26,11 +24,11 @@ export class Preset {
   }
 
   get encodedName() {
-    return encodeURIComponent(this.name).replace(/%20/g, '+');
+    return encodeURIComponent(this.name).replace(/%20/g, "+");
   }
 
   set encodedName(val) {
-    this.name = val.replace(/\+/g, ' ');
+    this.name = val.replace(/\+/g, " ");
   }
 
   get encodedShorthand() {

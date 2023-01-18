@@ -1,23 +1,23 @@
-import { SoundState } from '../../util/Sound';
-import { Preset } from '../../util/Preset';
+import { SoundState } from "../../util/Sound";
+import { Preset } from "../../util/Preset";
 
 const version = 2;
 
 const saveState = ({ presets }) => {
   const state = { version, presets };
-  localStorage.setItem('presets', JSON.stringify(state));
+  localStorage.setItem("presets", JSON.stringify(state));
 };
 
 const loadState = () => {
-  let state = JSON.parse(localStorage.getItem('presets'));
+  let state = JSON.parse(localStorage.getItem("presets"));
 
   if (!state) {
     // Playlist to preset migration
-    const playlists = JSON.parse(localStorage.getItem('playlists'));
+    const playlists = JSON.parse(localStorage.getItem("playlists"));
     if (playlists) {
       state = { version, presets: playlists.playlists };
-      localStorage.setItem('presets', JSON.stringify(state));
-      localStorage.removeItem('playlists');
+      localStorage.setItem("presets", JSON.stringify(state));
+      localStorage.removeItem("playlists");
     }
   }
 
@@ -59,7 +59,7 @@ export default {
   mutations: {
     add(state, { preset, playing = true }) {
       for (const sound of preset.sounds) {
-        if (typeof sound.id === 'number') {
+        if (typeof sound.id === "number") {
           sound.id = sound.id.toString();
         }
       }
@@ -93,13 +93,12 @@ export default {
 
   actions: {
     savePlaying({ commit, rootGetters }, { name }) {
-      const sounds = rootGetters['player/soundsPlaying']
-        .map((sound) => ({
-          id: sound.id,
-          volume: sound.volume,
-        }));
+      const sounds = rootGetters["player/soundsPlaying"].map((sound) => ({
+        id: sound.id,
+        volume: sound.volume,
+      }));
 
-      commit('add', {
+      commit("add", {
         preset: {
           name,
           sounds,
@@ -109,24 +108,28 @@ export default {
     },
 
     load({ dispatch, rootGetters }, { preset }) {
-      return Promise.all(preset.sounds.map((savedSound) => {
-        const sound = rootGetters['player/soundById'](savedSound.id);
-        return dispatch('player/load', { sound }, { root: true });
-      }));
+      return Promise.all(
+        preset.sounds.map((savedSound) => {
+          const sound = rootGetters["player/soundById"](savedSound.id);
+          return dispatch("player/load", { sound }, { root: true });
+        })
+      );
     },
 
     async play({ commit, dispatch, rootGetters }, { preset }) {
-      if (rootGetters['player/state'] !== SoundState.STOPPED) {
-        dispatch('player/stopAll', { fade: 0, local: true }, { root: true });
+      if (rootGetters["player/state"] !== SoundState.STOPPED) {
+        dispatch("player/stopAll", { fade: 0, local: true }, { root: true });
       }
-      await Promise.all(preset.sounds.map((savedSound) => {
-        const sound = rootGetters['player/soundById'](savedSound.id);
-        sound.volume = savedSound.volume;
-        const fade = rootGetters['player/state'] === SoundState.STOPPED ? 500 : false;
-        return dispatch('player/playStop', { sound, fade, local: true }, { root: true });
-      }));
-      commit('play', { preset });
-      await dispatch('player/updateCast', null, { root: true });
+      await Promise.all(
+        preset.sounds.map((savedSound) => {
+          const sound = rootGetters["player/soundById"](savedSound.id);
+          sound.volume = savedSound.volume;
+          const fade = rootGetters["player/state"] === SoundState.STOPPED ? 500 : false;
+          return dispatch("player/playStop", { sound, fade, local: true }, { root: true });
+        })
+      );
+      commit("play", { preset });
+      await dispatch("player/updateCast", null, { root: true });
     },
   },
 };

@@ -11,30 +11,16 @@
 
       <v-spacer />
 
-      <v-col
-        v-if="actions"
-        class="flex-grow-0"
-      >
-        <v-menu
-          location="bottom right"
-          transition="slide-y-transition"
-        >
+      <v-col v-if="actions" class="flex-grow-0">
+        <v-menu location="bottom right" transition="slide-y-transition">
           <template #activator="{ props }">
-            <v-btn
-              icon
-              variant="plain"
-              v-bind="props"
-            >
+            <v-btn icon variant="plain" v-bind="props">
               <v-icon>fas fa-ellipsis-v</v-icon>
             </v-btn>
           </template>
 
           <v-list>
-            <v-list-item
-              v-for="(item, index) in actions"
-              :key="index"
-              v-on="item.on"
-            >
+            <v-list-item v-for="(item, index) in actions" :key="index" v-on="item.on">
               <template #prepend>
                 <v-icon aria-hidden="true">
                   {{ item.icon }}
@@ -50,13 +36,7 @@
     <v-fade-transition>
       <v-row v-if="showAlert">
         <v-col>
-          <v-alert
-            v-model="showAlert"
-            closable
-            prominent
-            text
-            :type="alert.type"
-          >
+          <v-alert v-model="showAlert" closable prominent text :type="alert.type">
             {{ alert.text }}
           </v-alert>
         </v-col>
@@ -69,7 +49,7 @@
 
 <script>
 export default {
-  name: 'PageLayout',
+  name: "PageLayout",
 
   props: {
     alert: {

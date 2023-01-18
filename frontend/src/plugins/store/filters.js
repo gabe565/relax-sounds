@@ -1,4 +1,4 @@
-import Fuse from 'fuse.js';
+import Fuse from "fuse.js";
 
 const PER_PAGE = 48;
 
@@ -9,17 +9,14 @@ export const fuse = new Fuse([], {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: [
-    'name',
-    'tags',
-  ],
+  keys: ["name", "tags"],
 });
 
 export default {
   namespaced: true,
   state: {
     filters: {
-      word: '',
+      word: "",
       playing: false,
       page: 1,
     },

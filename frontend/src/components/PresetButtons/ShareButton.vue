@@ -1,25 +1,12 @@
 <template>
   <v-col class="flex-grow-0">
-    <v-btn
-      elevation="0"
-      icon
-      variant="plain"
-      aria-label="Share"
-      @click.stop="show = true"
-    >
-      <v-icon aria-hidden="true">
-        fas fa-fw fa-share-alt
-      </v-icon>
+    <v-btn elevation="0" icon variant="plain" aria-label="Share" @click.stop="show = true">
+      <v-icon aria-hidden="true">fas fa-fw fa-share-alt</v-icon>
     </v-btn>
 
-    <v-dialog
-      v-model="show"
-      width="400"
-    >
+    <v-dialog v-model="show" width="400">
       <v-card>
-        <v-card-title class="text-h5">
-          Share
-        </v-card-title>
+        <v-card-title class="text-h5">Share</v-card-title>
         <v-card-text>
           <v-text-field
             readonly
@@ -30,54 +17,33 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            variant="text"
-            @click="show = false"
-          >
-            <v-icon aria-hidden="true">
-              fal fa-times fa-fw
-            </v-icon>
+          <v-btn variant="text" @click="show = false">
+            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
             Close
           </v-btn>
-          <v-btn
-            variant="text"
-            @click="copy"
-          >
-            <v-icon aria-hidden="true">
-              fal fa-copy fa-fw
-            </v-icon>
+          <v-btn variant="text" @click="copy">
+            <v-icon aria-hidden="true">fal fa-copy fa-fw</v-icon>
             Copy
           </v-btn>
-          <v-btn
-            v-if="canShare"
-            variant="text"
-            @click="share"
-          >
-            <v-icon aria-hidden="true">
-              fal fa-share-alt fa-fw
-            </v-icon>
+          <v-btn v-if="canShare" variant="text" @click="share">
+            <v-icon aria-hidden="true">fal fa-share-alt fa-fw</v-icon>
             Share
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar
-      v-model="showSnackbar"
-      timeout="5000"
-      location="bottom"
-      class="pb-14 pb-md-0"
-    >
+    <v-snackbar v-model="showSnackbar" timeout="5000" location="bottom" class="pb-14 pb-md-0">
       Copied to clipboard.
     </v-snackbar>
   </v-col>
 </template>
 
 <script>
-import { wait } from '../../util/helpers';
-import { Preset } from '../../util/Preset';
+import { wait } from "../../util/helpers";
+import { Preset } from "../../util/Preset";
 
 export default {
-  name: 'ShareButton',
+  name: "ShareButton",
 
   props: {
     preset: {
@@ -86,7 +52,7 @@ export default {
     },
   },
 
-  emits: ['update:modelValue'],
+  emits: ["update:modelValue"],
 
   data: () => ({
     show: false,
@@ -96,7 +62,7 @@ export default {
   computed: {
     shareData() {
       return {
-        title: 'Relax Sounds',
+        title: "Relax Sounds",
         text: `Import my Relax Sounds preset called "${this.preset.name}"`,
         url: this.preset.shareUrl,
       };
@@ -114,7 +80,7 @@ export default {
       immediate: true,
     },
     show(val) {
-      this.$emit('update:modelValue', val);
+      this.$emit("update:modelValue", val);
     },
   },
 

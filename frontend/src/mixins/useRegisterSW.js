@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { getSounds } from '../data/sounds';
-import { getTags } from '../data/tags';
+import { getSounds } from "../data/sounds";
+import { getTags } from "../data/tags";
 
 export default {
-  name: 'useRegisterSW',
+  name: "useRegisterSW",
   data() {
     return {
       updateSW: undefined,
@@ -14,7 +14,7 @@ export default {
   },
   async mounted() {
     try {
-      const { registerSW } = await import('virtual:pwa-register');
+      const { registerSW } = await import("virtual:pwa-register");
       const vm = this;
       this.updateSW = registerSW({
         immediate: true,
@@ -36,7 +36,7 @@ export default {
         },
       });
     } catch {
-      console.log('PWA disabled.');
+      console.log("PWA disabled.");
     }
   },
   methods: {
@@ -51,10 +51,10 @@ export default {
       } catch (error) {
         console.error(error);
       }
-      console.log('onOfflineReady');
+      console.log("onOfflineReady");
     },
     onNeedRefreshFn() {
-      console.log('onNeedRefresh');
+      console.log("onNeedRefresh");
     },
     updateServiceWorker() {
       this.loading = true;

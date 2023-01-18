@@ -1,8 +1,5 @@
 <template>
-  <v-tooltip
-    :key="isPlaying"
-    location="bottom"
-  >
+  <v-tooltip :key="isPlaying" location="bottom">
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
@@ -11,18 +8,8 @@
         :aria-label="isPlaying ? 'Pause' : 'Play'"
         @click="playPauseAll"
       >
-        <v-icon
-          v-if="isPlaying"
-          aria-hidden="true"
-        >
-          fas fa-pause-circle
-        </v-icon>
-        <v-icon
-          v-else
-          aria-hidden="true"
-        >
-          fas fa-play-circle
-        </v-icon>
+        <v-icon v-if="isPlaying" aria-hidden="true">fas fa-pause-circle</v-icon>
+        <v-icon v-else aria-hidden="true">fas fa-play-circle</v-icon>
       </v-btn>
     </template>
     <span v-if="isPlaying">Pause</span>
@@ -31,17 +18,13 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: 'PlayPauseAll',
+  name: "PlayPauseAll",
 
-  computed: mapGetters('player', [
-    'isPlaying', 'isStopped',
-  ]),
+  computed: mapGetters("player", ["isPlaying", "isStopped"]),
 
-  methods: mapActions('player', [
-    'playPauseAll',
-  ]),
+  methods: mapActions("player", ["playPauseAll"]),
 };
 </script>

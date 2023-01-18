@@ -3,19 +3,17 @@
     <v-row>
       <v-col>
         I hate to be the bearer of bad news, but the requested file could not be located.
-        <router-link to="/">
-          Click here to go home.
-        </router-link>
+        <router-link to="/">Click here to go home.</router-link>
       </v-col>
     </v-row>
   </PageLayout>
 </template>
 
 <script>
-import PageLayout from '../layouts/PageLayout.vue';
+import PageLayout from "../layouts/PageLayout.vue";
 
 export default {
-  name: 'NotFoundPage',
+  name: "NotFoundPage",
   components: { PageLayout },
 };
 </script>

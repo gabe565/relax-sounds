@@ -1,47 +1,19 @@
 <template>
-  <v-card
-    variant="outlined"
-    :dark="showProgress"
-  >
-    <v-row
-      align="center"
-      justify="center"
-      dense
-      class="pl-2"
-    >
+  <v-card variant="outlined" :dark="showProgress">
+    <v-row align="center" justify="center" dense class="pl-2">
       <v-col>
         <v-card-title class="text-h5 pa-4">
-          <v-icon
-            aria-hidden="true"
-            class="mr-4"
-            size="x-small"
-            :color="iconColor"
-          >
+          <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
             {{ iconStyle }} {{ sound.icon }} fa-fw
           </v-icon>
           {{ sound.name }}
         </v-card-title>
       </v-col>
-      <v-col
-        v-if="showProgress"
-        class="flex-grow-0"
-      >
-        <v-dialog
-          location="bottom"
-          location-strategy="connected"
-          max-width="400"
-        >
+      <v-col v-if="showProgress" class="flex-grow-0">
+        <v-dialog location="bottom" location-strategy="connected" max-width="400">
           <template #activator="{ props }">
-            <v-btn
-              v-bind="props"
-              elevation="0"
-              icon
-              variant="plain"
-              aria-label="Volume"
-            >
-              <v-icon aria-hidden="true">
-                fas fa-fw fa-volume
-              </v-icon>
+            <v-btn v-bind="props" elevation="0" icon variant="plain" aria-label="Volume">
+              <v-icon aria-hidden="true">fas fa-fw fa-volume</v-icon>
             </v-btn>
           </template>
 
@@ -67,9 +39,7 @@
           :aria-label="sound.isPlaying ? 'Stop' : 'Play'"
           @click.stop="playStop"
         >
-          <v-icon aria-hidden="true">
-            fas fa-fw {{ icon }}
-          </v-icon>
+          <v-icon aria-hidden="true">fas fa-fw {{ icon }}</v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -78,7 +48,7 @@
 
 <script>
 export default {
-  name: 'SoundCard',
+  name: "SoundCard",
 
   props: {
     sound: {
@@ -95,26 +65,26 @@ export default {
       set(newValue) {
         // eslint-disable-next-line vue/no-mutating-props
         this.sound.volume = newValue / 100;
-        this.$store.dispatch('player/updateCast');
+        this.$store.dispatch("player/updateCast");
       },
     },
 
     iconStyle() {
-      return this.sound.isStopped ? 'fal' : 'fas';
+      return this.sound.isStopped ? "fal" : "fas";
     },
 
     iconColor() {
-      return this.sound.isStopped ? '' : 'primary';
+      return this.sound.isStopped ? "" : "primary";
     },
 
     icon() {
       if (this.sound.isLoading) {
-        return 'fa-spinner-third fa-spin-2x';
+        return "fa-spinner-third fa-spin-2x";
       }
       if (this.sound.isPlaying) {
-        return 'fa-stop';
+        return "fa-stop";
       }
-      return 'fa-play';
+      return "fa-play";
     },
 
     showProgress() {
@@ -124,7 +94,7 @@ export default {
 
   methods: {
     async playStop() {
-      return this.$store.dispatch('player/playStop', { sound: this.sound });
+      return this.$store.dispatch("player/playStop", { sound: this.sound });
     },
   },
 };

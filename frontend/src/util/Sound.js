@@ -1,10 +1,10 @@
-import { Howl } from 'howler';
+import { Howl } from "howler";
 
 export const SoundState = {
-  PLAYING: 'playing',
-  PAUSED: 'paused',
-  STOPPED: 'stopped',
-  UNLOADED: 'unloaded',
+  PLAYING: "playing",
+  PAUSED: "paused",
+  STOPPED: "stopped",
+  UNLOADED: "unloaded",
 };
 
 export class Sound {
@@ -29,11 +29,11 @@ export class Sound {
     if (this.isUnloaded) {
       this.isLoading = true;
       return new Promise((resolve, reject) => {
-        this.howl.once('load', () => {
+        this.howl.once("load", () => {
           this.isLoading = false;
           resolve();
         });
-        this.howl.once('loaderror', () => {
+        this.howl.once("loaderror", () => {
           this.isLoading = false;
           reject();
         });
@@ -66,7 +66,7 @@ export class Sound {
     this.state = SoundState.STOPPED;
     if (local) {
       if (fade) {
-        this.howl.once('fade', () => {
+        this.howl.once("fade", () => {
           this.howl.stop();
           this.howl.unload();
         });

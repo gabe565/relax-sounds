@@ -1,4 +1,4 @@
 export const Filetype = {
-  Wav: 'wav',
-  Mp3: 'mp3',
+  Wav: "wav",
+  Mp3: "mp3",
 };

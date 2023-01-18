@@ -7,6 +7,8 @@ module.exports = {
     'airbnb-base',
     'plugin:vue/vue3-recommended',
     'plugin:vuetify/base',
+    'prettier',
+    'plugin:prettier/recommended',
   ],
   parserOptions: {
     sourceType: 'module',

@@ -15,19 +15,11 @@
         />
       </v-col>
       <v-col class="flex-grow-0 pb-0">
-        <v-switch
-          v-model="filters.playing"
-          label="Playing"
-          inset
-          hide-details
-        />
+        <v-switch v-model="filters.playing" label="Playing" inset hide-details />
       </v-col>
     </v-row>
     <v-row class="pb-5">
-      <v-chip-group
-        v-model="filters.word"
-        column
-      >
+      <v-chip-group v-model="filters.word" column>
         <v-chip
           v-for="(tag, key) in tags"
           :key="key"
@@ -37,13 +29,7 @@
           class="ma-2"
           filter
         >
-          <v-icon
-            v-if="tag.icon"
-            size="x-small"
-            class="mr-2"
-          >
-            far {{ tag.icon }}
-          </v-icon>
+          <v-icon v-if="tag.icon" size="x-small" class="mr-2">far {{ tag.icon }}</v-icon>
           {{ tag.name }}
         </v-chip>
       </v-chip-group>
@@ -80,11 +66,11 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
-import { getTags } from '../data/tags';
+import { mapState, mapGetters, mapActions } from "vuex";
+import { getTags } from "../data/tags";
 
 export default {
-  name: 'FilterSection',
+  name: "FilterSection",
 
   data: () => ({
     tags: null,
@@ -92,8 +78,8 @@ export default {
   }),
 
   computed: {
-    ...mapState('filters', ['filters']),
-    ...mapGetters('filters', ['pages']),
+    ...mapState("filters", ["filters"]),
+    ...mapGetters("filters", ["pages"]),
   },
 
   watch: {
@@ -107,7 +93,7 @@ export default {
     this.loading = false;
   },
 
-  methods: mapActions('filters', ['initSounds']),
+  methods: mapActions("filters", ["initSounds"]),
 };
 </script>
 

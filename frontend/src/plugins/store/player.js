@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { SoundState } from '../../util/Sound';
-import { getSounds } from '../../data/sounds';
-import { formatError, getCastSession } from '../../util/googleCast';
-import { Preset } from '../../util/Preset';
+import axios from "axios";
+import { SoundState } from "../../util/Sound";
+import { getSounds } from "../../data/sounds";
+import { formatError, getCastSession } from "../../util/googleCast";
+import { Preset } from "../../util/Preset";
 
 export default {
   namespaced: true,
@@ -70,11 +70,9 @@ export default {
   },
 
   actions: {
-    async playStop({
-      state, commit, dispatch, rootState,
-    }, { sound, fade = 250, local = false }) {
+    async playStop({ state, commit, dispatch, rootState }, { sound, fade = 250, local = false }) {
       if (sound.state === SoundState.PLAYING) {
-        commit('stop', { sound, fade });
+        commit("stop", { sound, fade });
       } else {
         if (!state.castConnected && sound.isUnloaded) {
           await sound.load();
@@ -82,48 +80,52 @@ export default {
         if (sound.isPaused) {
           fade = false;
         }
-        commit('play', { sound, fade });
+        commit("play", { sound, fade });
       }
       if (rootState.presets.currentName) {
-        commit('presets/disableCurrent', null, { root: true });
+        commit("presets/disableCurrent", null, { root: true });
       }
-      if (!local && state.castConnected) dispatch('updateCast');
+      if (!local && state.castConnected) dispatch("updateCast");
     },
     pauseAll({ commit, getters, state }, { local = false } = {}) {
       getters.soundsPlaying.forEach((sound) => {
-        commit('pause', { sound });
+        commit("pause", { sound });
       });
       if (!local && state.castConnected) {
         state.remotePlayerController.playOrPause();
       }
     },
     async playPauseAll({ commit, getters, state }, { local = false } = {}) {
-      const newState = this.getters['player/state'] === SoundState.PLAYING ? SoundState.PAUSED : SoundState.PLAYING;
-      await Promise.all(getters.soundsNotStopped
-        .map(async (sound) => {
+      const newState =
+        this.getters["player/state"] === SoundState.PLAYING
+          ? SoundState.PAUSED
+          : SoundState.PLAYING;
+      await Promise.all(
+        getters.soundsNotStopped.map(async (sound) => {
           sound.state = newState;
           if (newState === SoundState.PAUSED) {
-            commit('pause', { sound });
+            commit("pause", { sound });
           } else {
             if (!state.castConnected && sound.isUnloaded) {
               await sound.load();
             }
-            commit('play', { sound, fade: false });
+            commit("play", { sound, fade: false });
           }
-        }));
+        })
+      );
       if (!local && state.castConnected) {
         state.remotePlayerController.playOrPause();
       }
     },
     stopAll({ commit, getters, state }, { fade = 250, local = false }) {
       getters.soundsNotStopped.forEach((sound) => {
-        commit('stop', { sound, fade });
+        commit("stop", { sound, fade });
       });
       if (state.remotePlayerController) {
         state.remotePlayerController.stop();
       }
       if (!local && state.castConnected) {
-        commit('presets/disableCurrent', null, { root: true });
+        commit("presets/disableCurrent", null, { root: true });
       }
     },
     initializeCastApi({ commit, dispatch, getters }) {
@@ -137,36 +139,36 @@ export default {
 
       const remotePlayer = new castFramework.RemotePlayer();
       const remotePlayerController = new castFramework.RemotePlayerController(remotePlayer);
-      commit('initCastApi', { remotePlayer, remotePlayerController });
+      commit("initCastApi", { remotePlayer, remotePlayerController });
 
       remotePlayerController.addEventListener(
         castFramework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
         async ({ value }) => {
           let shouldPlay;
           if (getters.state !== SoundState.STOPPED) {
-            dispatch('pauseAll');
+            dispatch("pauseAll");
             shouldPlay = true;
           }
-          commit('castConnectedChanged', { value });
+          commit("castConnectedChanged", { value });
           if (shouldPlay) {
-            await dispatch('playPauseAll');
-            dispatch('updateCast');
+            await dispatch("playPauseAll");
+            dispatch("updateCast");
           }
-        },
+        }
       );
 
       remotePlayerController.addEventListener(
         castFramework.RemotePlayerEventType.IS_PAUSED_CHANGED,
         async () => {
           if (remotePlayer.isPaused) {
-            dispatch('pauseAll', { local: true });
+            dispatch("pauseAll", { local: true });
           } else if (getters.state !== SoundState.PLAYING) {
             // If currently not playing, start to play.
             // This occurs if starting to play from local, but this check is
             // required if the state is changed remotely.
-            await dispatch('playPauseAll', { local: true });
+            await dispatch("playPauseAll", { local: true });
           }
-        },
+        }
       );
 
       remotePlayerController.addEventListener(
@@ -175,18 +177,20 @@ export default {
           if (value && getters.isStopped) {
             const preset = new Preset();
             preset.mixUrl = value.contentId;
-            await Promise.all(preset.sounds.map((savedSound) => {
-              const sound = getters.soundById(savedSound.id);
-              sound.volume = savedSound.volume;
-              const fade = getters.state === SoundState.STOPPED ? 250 : false;
-              return dispatch('playStop', {
-                sound,
-                fade,
-                local: true,
-              });
-            }));
+            await Promise.all(
+              preset.sounds.map((savedSound) => {
+                const sound = getters.soundById(savedSound.id);
+                sound.volume = savedSound.volume;
+                const fade = getters.state === SoundState.STOPPED ? 250 : false;
+                return dispatch("playStop", {
+                  sound,
+                  fade,
+                  local: true,
+                });
+              })
+            );
           }
-        },
+        }
       );
     },
     async updateCast({ getters, rootState, state }) {
@@ -196,7 +200,7 @@ export default {
           const { cast } = window.chrome;
           const preset = new Preset({ sounds: getters.soundsPlaying });
 
-          const mediaInfo = new cast.media.MediaInfo(preset.mixUrl, 'music');
+          const mediaInfo = new cast.media.MediaInfo(preset.mixUrl, "music");
           mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
           if (rootState.presets.currentName) {
             mediaInfo.metadata.title = rootState.presets.currentName;
@@ -204,16 +208,16 @@ export default {
             mediaInfo.metadata.title = getters.soundsPlaying
               .map((sound) => sound.name)
               .sort((a, b) => a.localeCompare(b))
-              .join(', ');
+              .join(", ");
           }
-          mediaInfo.metadata.artist = 'Relax Sounds';
+          mediaInfo.metadata.artist = "Relax Sounds";
           mediaInfo.metadata.images = [
-            new cast.Image(`${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`),
+            new cast.Image(
+              `${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`
+            ),
           ];
 
-          const queue = new cast.media.QueueLoadRequest([
-            new cast.media.QueueItem(mediaInfo),
-          ]);
+          const queue = new cast.media.QueueLoadRequest([new cast.media.QueueItem(mediaInfo)]);
           queue.repeatMode = cast.media.RepeatMode.SINGLE;
 
           const request = new cast.media.LoadRequest(mediaInfo);
@@ -232,20 +236,22 @@ export default {
     async initSounds({ commit, dispatch, state }) {
       if (!state.sounds.length) {
         const conf = await getSounds();
-        commit('initSounds', conf);
-        dispatch('filters/initSounds', conf, { root: true });
+        commit("initSounds", conf);
+        dispatch("filters/initSounds", conf, { root: true });
       }
     },
     async prefetch({ state }) {
-      return Promise.all(state.sounds.map(async (sound) => {
-        sound.isLoading = true;
-        try {
-          await axios.get(sound.src);
-        } catch (error) {
-          console.error(error);
-        }
-        sound.isLoading = false;
-      }));
+      return Promise.all(
+        state.sounds.map(async (sound) => {
+          sound.isLoading = true;
+          try {
+            await axios.get(sound.src);
+          } catch (error) {
+            console.error(error);
+          }
+          sound.isLoading = false;
+        })
+      );
     },
   },
 };
