@@ -112,8 +112,4 @@ html {
 .v-card--variant-flat {
   border: thin solid rgba(0, 0, 0, 0);
 }
-
-.v-overlay__scrim {
-  background: rgb(0, 0, 0);
-}
 </style>
