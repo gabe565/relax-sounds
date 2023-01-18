@@ -11,7 +11,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-pro": "6.2.1",
     "@vitejs/plugin-vue": "4.0.0",
-    "axios": "1.2.2",
+    "axios": "1.2.3",
     "base64-url": "2.3.3",
     "buffer": "6.0.3",
     "file-saver": "2.0.5",
