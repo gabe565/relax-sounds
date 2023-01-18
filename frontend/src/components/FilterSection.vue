@@ -11,11 +11,10 @@
           prepend-icon="fal fa-search"
           clearable
           variant="underlined"
-          hide-details
         />
       </v-col>
       <v-col class="flex-grow-0 pb-0">
-        <v-switch v-model="filters.playing" label="Playing" inset hide-details />
+        <v-switch v-model="filters.playing" label="Playing" inset />
       </v-col>
     </v-row>
     <v-row class="pb-5">
