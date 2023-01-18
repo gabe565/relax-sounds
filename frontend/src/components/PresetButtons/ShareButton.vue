@@ -11,6 +11,7 @@
           <v-text-field
             readonly
             :model-value="preset.shareUrl"
+            label="Share URL"
             @focus="select($event.target)"
             @click="select($event.target)"
           />
