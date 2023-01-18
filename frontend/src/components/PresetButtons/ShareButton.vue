@@ -32,7 +32,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar v-model="showSnackbar" timeout="5000" location="bottom" class="pb-14 pb-md-0">
+    <v-snackbar
+      v-model="showSnackbar"
+      timeout="5000"
+      location="bottom"
+      content-class="pb-14 pb-md-0"
+    >
       Copied to clipboard.
     </v-snackbar>
   </v-col>

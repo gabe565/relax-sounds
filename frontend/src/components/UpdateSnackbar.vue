@@ -3,14 +3,13 @@
     :model-value="offlineReady || needRefresh"
     :timeout="needRefresh ? -1 : 5000"
     location="bottom"
-    class="pb-14 pb-md-0"
+    content-class="pb-14 pb-md-0"
   >
     <span v-if="needRefresh">New content available, click on reload button to update.</span>
     <span v-else>App ready to work offline</span>
-    <template #action="{ attrs }">
+    <template #actions>
       <v-btn
         v-if="needRefresh"
-        v-bind="attrs"
         variant="text"
         color="primary"
         :loading="loading"
