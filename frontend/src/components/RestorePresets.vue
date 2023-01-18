@@ -9,10 +9,9 @@
         <v-card-text>
           <v-file-input
             v-model="file"
-            variant="outlined"
-            dense
             accept="application/json"
             :error="error"
+            label="Preset File"
           />
         </v-card-text>
         <v-card-actions>
