@@ -1,6 +1,6 @@
 <template>
-  <v-card variant="outlined" :dark="showProgress" class="pa-2">
-    <v-row align="center" justify="center" dense class="flex-nowrap pl-2">
+  <v-card variant="outlined" :dark="showProgress" class="px-1 py-2">
+    <v-row align="center" justify="center" dense class="flex-nowrap">
       <v-col>
         <v-card-title class="text-h5">
           <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
