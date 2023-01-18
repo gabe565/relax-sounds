@@ -8,7 +8,8 @@
         v-for="(preset, key) of presets"
         :key="key"
         cols="12"
-        lg="6"
+        md="6"
+        xl="4"
       >
         <PresetCard :preset="preset" />
       </v-col>
