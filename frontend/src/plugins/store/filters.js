@@ -1,4 +1,5 @@
 import Fuse from "fuse.js";
+import { reactive } from "vue";
 
 const PER_PAGE = 48;
 
@@ -25,7 +26,7 @@ export default {
     filteredSounds(state, _, rootState) {
       let result;
       if (state.filters.word) {
-        result = fuse.search(state.filters.word).map((e) => e.item);
+        result = reactive(fuse.search(state.filters.word).map((e) => e.item));
       } else {
         result = rootState.player.sounds;
       }
