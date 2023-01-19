@@ -30,9 +30,11 @@
     <UpdateSnackbar />
 
     <v-main>
-      <keep-alive>
-        <router-view />
-      </keep-alive>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
       <v-spacer :style="{ height: smAndDown ? '56px' : '28px' }" />
     </v-main>
 
