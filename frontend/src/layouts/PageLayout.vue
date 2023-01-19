@@ -14,7 +14,7 @@
       <v-col v-if="actions" class="flex-grow-0">
         <v-menu location="bottom right" transition="slide-y-transition">
           <template #activator="{ props }">
-            <v-btn icon variant="plain" v-bind="props">
+            <v-btn icon variant="plain" v-bind="props" aria-label="Menu">
               <v-icon>fas fa-ellipsis-v</v-icon>
             </v-btn>
           </template>

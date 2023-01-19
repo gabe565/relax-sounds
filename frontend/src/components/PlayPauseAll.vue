@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip :key="isPlaying" location="bottom">
+  <v-tooltip :key="isPlaying" location="bottom" :aria-label="isPlaying ? 'Pause' : 'Play'">
     <template #activator="{ props }">
       <v-btn
         v-bind="props"

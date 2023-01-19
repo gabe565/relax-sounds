@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip location="bottom">
+  <v-tooltip location="bottom" aria-label="Save Preset">
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
