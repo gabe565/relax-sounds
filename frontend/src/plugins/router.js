@@ -1,9 +1,6 @@
 import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import store from "./store/main";
-import SoundsPage from "../pages/SoundsPage.vue";
-import PresetsPage from "../pages/PresetsPage.vue";
-import NotFoundPage from "../pages/NotFoundPage.vue";
 import { Preset } from "../util/Preset";
 
 const router = createRouter({
@@ -12,7 +9,7 @@ const router = createRouter({
     {
       path: "/sounds",
       name: "Sounds",
-      component: SoundsPage,
+      component: () => import("../pages/SoundsPage.vue"),
       props: true,
       meta: {
         icon: "fa-volume",
@@ -22,7 +19,7 @@ const router = createRouter({
     {
       path: "/presets",
       name: "Presets",
-      component: PresetsPage,
+      component: () => import("../pages/PresetsPage.vue"),
       props: true,
       meta: {
         icon: "fa-list-music",
@@ -57,7 +54,7 @@ const router = createRouter({
     {
       path: "/:catchAll(.*)",
       name: "404 Not Found",
-      component: NotFoundPage,
+      component: () => import("../pages/NotFoundPage.vue"),
     },
   ],
 });
