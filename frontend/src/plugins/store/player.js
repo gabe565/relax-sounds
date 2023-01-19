@@ -202,9 +202,8 @@ export default {
 
           const mediaInfo = new cast.media.MediaInfo(preset.mixUrl, "music");
           mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
-          if (rootState.presets.currentName) {
-            mediaInfo.metadata.title = rootState.presets.currentName;
-          } else {
+          mediaInfo.metadata.title = rootState.presets.currentName;
+          if (!mediaInfo.metadata.title) {
             mediaInfo.metadata.title = getters.soundsPlaying
               .map((sound) => sound.name)
               .sort((a, b) => a.localeCompare(b))
