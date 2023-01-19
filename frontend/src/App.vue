@@ -11,6 +11,7 @@
       <v-spacer />
 
       <google-cast-launcher
+        v-pre
         class="v-btn v-btn--icon v-theme--dark v-btn--density-default v-btn--size-x-small mr-4"
       />
       <SavePreset />
