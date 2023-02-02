@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine as go-builder
+FROM golang:1.20-alpine as go-builder
 WORKDIR /app
 
 RUN apk add --no-cache gcc g++ lame-dev
