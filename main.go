@@ -20,8 +20,6 @@ import (
 const EnvPrefix = "RELAX_SOUNDS_"
 
 func main() {
-	var err error
-
 	address := flag.String("address", ":3000", "Override listen address.")
 	frontendDir := flag.String("frontend", defaultFrontend, "Override frontend asset directory."+frontendHelpExt)
 	dataDir := flag.String("data", "data", "Override data directory.")
@@ -32,8 +30,7 @@ func main() {
 		optName = strings.ReplaceAll(optName, "-", "_")
 		varName := EnvPrefix + optName
 		if val, ok := os.LookupEnv(varName); !f.Changed && ok {
-			err = f.Value.Set(val)
-			if err != nil {
+			if err := f.Value.Set(val); err != nil {
 				log.Fatalln(err)
 			}
 		}
@@ -43,6 +40,7 @@ func main() {
 	if *frontendDir != "" {
 		frontendFs = os.DirFS(*frontendDir)
 	} else {
+		var err error
 		frontendFs, err = fs.Sub(frontendEmbed, "frontend/dist")
 		if err != nil {
 			panic(err)
