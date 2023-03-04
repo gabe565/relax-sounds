@@ -6,6 +6,7 @@ import (
 	"github.com/gabe565/relax-sounds/internal/server"
 	"github.com/gabe565/relax-sounds/internal/server/handlers"
 	flag "github.com/spf13/pflag"
+	"golang.org/x/sync/errgroup"
 	"io/fs"
 	"log"
 	"net/http"
@@ -54,38 +55,36 @@ func main() {
 	}
 	server.RegisterOnShutdown(handlers.MixCancelFunc())
 
-	ctx, cancel := context.WithCancel(context.Background())
-
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
-	go func() {
+	var group errgroup.Group
+	group.Go(func() error {
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 		<-sig
 
 		// Shutdown signal with grace period of 60 seconds
-		ctx, cancelTimeout := context.WithTimeout(ctx, 60*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 		defer func() {
-			cancelTimeout()
+			cancel()
 		}()
 
 		// Trigger graceful shutdown
 		log.Println("Performing graceful shutdown...")
-		if err := server.Shutdown(ctx); err != nil {
-			if errors.Is(ctx.Err(), context.DeadlineExceeded) {
-				log.Println("Graceful shutdown timed out")
-			} else {
-				log.Println(err)
-			}
-		}
-		cancel()
-	}()
+		return server.Shutdown(ctx)
+	})
 
-	log.Println("Listening on " + *address)
-	err = server.ListenAndServe()
-	if err != nil && !errors.Is(err, http.ErrServerClosed) {
-		log.Fatal(err)
+	group.Go(func() error {
+		log.Println("Listening on " + *address)
+		err := server.ListenAndServe()
+		if errors.Is(err, http.ErrServerClosed) {
+			return nil
+		}
+		return err
+	})
+
+	if err := group.Wait(); err != nil {
+		log.Fatalln(err)
 	}
 
 	// Wait for server context to be stopped
-	<-ctx.Done()
 	log.Println("Exiting")
 }
