@@ -2,10 +2,11 @@
   <v-app>
     <v-app-bar theme="dark" color="accent" flat>
       <v-btn to="/" class="text-body-2 text-none px-2">
-        <v-app-bar-title>
-          <v-icon aria-hidden="true" class="mr-2">fas fa-bed-alt</v-icon>
-          Relax Sounds
-        </v-app-bar-title>
+        <template #prepend>
+          <img alt="Relax Sounds Logo" :src="icon" style="height: 30px" />
+        </template>
+
+        <v-app-bar-title>Relax Sounds</v-app-bar-title>
       </v-btn>
 
       <v-spacer />
@@ -60,6 +61,7 @@ import SavePreset from "./components/SavePreset.vue";
 import PlayPauseAll from "./components/PlayPauseAll.vue";
 import StopAll from "./components/StopAll.vue";
 import UpdateSnackbar from "./components/UpdateSnackbar.vue";
+import icon from "./assets/icon-white.svg";
 
 export default {
   name: "App",
@@ -75,6 +77,10 @@ export default {
     const { mdAndUp, smAndDown } = useDisplay();
     return { mdAndUp, smAndDown };
   },
+
+  data: () => ({
+    icon,
+  }),
 
   computed: {
     routes() {
