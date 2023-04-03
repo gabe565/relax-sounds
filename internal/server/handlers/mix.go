@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/faiface/beep"
+	"github.com/gabe565/relax-sounds/internal/encoder/encode"
 	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
-	"github.com/gabe565/relax-sounds/internal/mix"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	"github.com/gabe565/relax-sounds/internal/stream/stream_cache"
@@ -67,7 +67,7 @@ func Mix() http.HandlerFunc {
 				Precision:   2,
 			}
 
-			if err := mix.VerifyFormat(entry.Format); err != nil {
+			if err := encode.VerifyFormat(entry.Format); err != nil {
 				panic(err)
 			}
 
@@ -125,7 +125,7 @@ func Mix() http.HandlerFunc {
 		defer entry.Mu.Unlock()
 
 		// Mux streams to encoder
-		if err = mix.Encode(ctx, chunkSize, entry); err != nil {
+		if err = encode.Encode(ctx, chunkSize, entry); err != nil {
 			panic(err)
 		}
 

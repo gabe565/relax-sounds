@@ -1,30 +1,13 @@
-package mix
+package encode
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/stream/stream_cache"
 	"time"
 )
 
-func VerifyFormat(format beep.Format) error {
-	if format.NumChannels <= 0 {
-		return errors.New("encode: invalid number of channels (less than 1)")
-	}
-
-	switch format.Precision {
-	case 1, 2, 3:
-		//
-	default:
-		return errors.New("encode: unsupported precision, 1, 2 or 3 is supported")
-	}
-
-	return nil
-}
-
-// Encode writes all audio streamed from s to w in WAVE format.
+// Encode writes a duration of the audio stream in PCM format.
 //
 // Format precision must be 1 or 2 bytes.
 func Encode(ctx context.Context, duration time.Duration, entry *stream_cache.Entry) (err error) {
