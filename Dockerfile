@@ -1,10 +1,17 @@
+FROM --platform=$BUILDPLATFORM golang:1.20-alpine as go-dependencies
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+
 FROM golang:1.20-alpine as go-builder
 WORKDIR /app
 
 RUN apk add --no-cache gcc g++ lame-dev
 
-COPY go.mod go.sum ./
-RUN go mod download
+COPY --from=go-dependencies /app /app
+COPY --from=go-dependencies /go /go
 
 COPY *.go ./
 COPY internal/ internal/
