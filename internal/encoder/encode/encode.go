@@ -32,7 +32,7 @@ func Encode(ctx context.Context, duration time.Duration, entry *stream_cache.Ent
 				buf = buf[entry.Format.EncodeSigned(buf, sample):]
 			}
 		default:
-			return fmt.Errorf("encode: invalid precision: %d", entry.Format.Precision)
+			return fmt.Errorf("%w: %d", ErrUnsupportedPrecision, entry.Format.Precision)
 		}
 
 		select {
