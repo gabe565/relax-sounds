@@ -1,13 +1,19 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"github.com/gabe565/relax-sounds/internal/server"
 	log "github.com/sirupsen/logrus"
 	flag "github.com/spf13/pflag"
+	"golang.org/x/sync/errgroup"
 	"io/fs"
 	"net/http"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
+	"time"
 )
 
 const EnvPrefix = "RELAX_SOUNDS_"
@@ -45,8 +51,34 @@ func main() {
 		Handler: server.Setup(frontendFs, os.DirFS(*dataDir)),
 	}
 
-	log.WithField("address", *address).Info("Listening")
-	if err := server.ListenAndServe(); err != nil {
-		panic(err)
+	var group errgroup.Group
+	group.Go(func() error {
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+		<-sig
+
+		// Shutdown signal with grace period of 60 seconds
+		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+		defer cancel()
+
+		// Trigger graceful shutdown
+		log.Info("Performing graceful shutdown...")
+		return server.Shutdown(ctx)
+	})
+
+	group.Go(func() error {
+		log.WithField("address", *address).Info("Listening")
+		err := server.ListenAndServe()
+		if errors.Is(err, http.ErrServerClosed) {
+			return nil
+		}
+		return err
+	})
+
+	if err := group.Wait(); err != nil {
+		log.Fatal(err)
 	}
+
+	// Wait for server context to be stopped
+	log.Info("Exiting")
 }
