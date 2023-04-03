@@ -68,9 +68,6 @@ export default defineConfig({
             handler: "CacheFirst",
             options: {
               cacheName: "data-cache",
-              expiration: {
-                maxAgeSeconds: 60 * 60 * 24 * 31,
-              },
               cacheableResponse: {
                 statuses: [0, 200],
               },
