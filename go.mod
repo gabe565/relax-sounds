@@ -6,10 +6,10 @@ require (
 	github.com/aofei/mimesniffer v1.2.1
 	github.com/faiface/beep v1.1.0
 	github.com/go-chi/chi/v5 v5.0.8
+	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/pflag v1.0.5
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
 	golang.org/x/sync v0.1.0
-	golang.org/x/time v0.3.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -21,6 +21,7 @@ require (
 	github.com/mewkiz/flac v1.0.7 // indirect
 	github.com/mewkiz/pkg v0.0.0-20211102230744-16a6ce8f1b77 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 )
 
 replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1

@@ -41,7 +41,7 @@ func Setup(frontendFs, dataFs fs.FS) *chi.Mux {
 		router.With(
 			preset.DecoderMiddleware(dataFs),
 			filetype.Middleware,
-		).Get("/mix/{enc}.{filetype}", handlers.Mix)
+		).Get("/mix/{uuid}/{enc}.{filetype}", handlers.Mix())
 		router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
 			http.NotFound(w, r)
 		})

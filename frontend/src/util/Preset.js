@@ -44,7 +44,12 @@ export class Preset {
   }
 
   mixUrlAs(filetype = Filetype.Mp3) {
-    return `${window.location.origin}/api/mix/${this.encodedShorthand}.${filetype}`;
+    let uuid = sessionStorage.getItem("uuid");
+    if (!uuid) {
+      uuid = crypto.randomUUID();
+      sessionStorage.setItem("uuid", uuid);
+    }
+    return `${window.location.origin}/api/mix/${uuid}/${this.encodedShorthand}.${filetype}`;
   }
 
   get mixUrl() {

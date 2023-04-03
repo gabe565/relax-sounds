@@ -1,20 +1,13 @@
 package main
 
 import (
-	"context"
-	"errors"
 	"github.com/gabe565/relax-sounds/internal/server"
-	"github.com/gabe565/relax-sounds/internal/server/handlers"
 	flag "github.com/spf13/pflag"
-	"golang.org/x/sync/errgroup"
 	"io/fs"
 	"log"
 	"net/http"
 	"os"
-	"os/signal"
 	"strings"
-	"syscall"
-	"time"
 )
 
 const EnvPrefix = "RELAX_SOUNDS_"
@@ -51,38 +44,9 @@ func main() {
 		Addr:    *address,
 		Handler: server.Setup(frontendFs, os.DirFS(*dataDir)),
 	}
-	server.RegisterOnShutdown(handlers.MixCancelFunc())
 
-	var group errgroup.Group
-	group.Go(func() error {
-		sig := make(chan os.Signal, 1)
-		signal.Notify(sig, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
-		<-sig
-
-		// Shutdown signal with grace period of 60 seconds
-		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
-		defer func() {
-			cancel()
-		}()
-
-		// Trigger graceful shutdown
-		log.Println("Performing graceful shutdown...")
-		return server.Shutdown(ctx)
-	})
-
-	group.Go(func() error {
-		log.Println("Listening on " + *address)
-		err := server.ListenAndServe()
-		if errors.Is(err, http.ErrServerClosed) {
-			return nil
-		}
-		return err
-	})
-
-	if err := group.Wait(); err != nil {
-		log.Fatalln(err)
+	log.Println("Listening on " + *address)
+	if err := server.ListenAndServe(); err != nil {
+		panic(err)
 	}
-
-	// Wait for server context to be stopped
-	log.Println("Exiting")
 }
