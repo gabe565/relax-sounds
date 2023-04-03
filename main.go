@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/gabe565/relax-sounds/internal/server"
+	log "github.com/sirupsen/logrus"
 	flag "github.com/spf13/pflag"
 	"io/fs"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -45,7 +45,7 @@ func main() {
 		Handler: server.Setup(frontendFs, os.DirFS(*dataDir)),
 	}
 
-	log.Println("Listening on " + *address)
+	log.WithField("address", *address).Info("Listening")
 	if err := server.ListenAndServe(); err != nil {
 		panic(err)
 	}

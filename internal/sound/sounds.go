@@ -2,8 +2,8 @@ package sound
 
 import (
 	"errors"
+	log "github.com/sirupsen/logrus"
 	"io/fs"
-	"log"
 	"regexp"
 	"sort"
 	"strconv"
@@ -24,7 +24,7 @@ func LoadAll(fsys fs.FS) (sounds []Sound, err error) {
 		sound, err := Load(fsys, path)
 		if err != nil {
 			if errors.Is(err, ErrInvalidMetaFileType) {
-				log.Println("WARN: " + err.Error())
+				log.Warn(err.Error())
 				return nil
 			} else {
 				return err
