@@ -111,10 +111,13 @@ func Mix() http.HandlerFunc {
 			}
 		}
 
-		chunkSize := time.Minute
-		if entry.ChunkNum == 0 {
-			// First chunk will be smaller to minimize delay
+		chunkSize := 2 * time.Minute
+		// First chunks will be smaller to minimize delay
+		switch entry.ChunkNum {
+		case 0:
 			chunkSize = 15 * time.Second
+		case 1:
+			chunkSize = time.Minute
 		}
 
 		// Ensure a single stream isn't fetched in parallel

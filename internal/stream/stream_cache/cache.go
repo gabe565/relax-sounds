@@ -45,7 +45,7 @@ func (a *Cache) Close() {
 func (a *Cache) beginCleanupCron() chan<- struct{} {
 	closer := make(chan struct{})
 	go func() {
-		ticker := time.NewTicker(5 * time.Minute)
+		ticker := time.NewTicker(15 * time.Minute)
 
 		for {
 			select {
@@ -53,7 +53,7 @@ func (a *Cache) beginCleanupCron() chan<- struct{} {
 				ticker.Stop()
 				return
 			case <-ticker.C:
-				a.cleanup(5 * time.Minute)
+				a.cleanup(15 * time.Minute)
 			}
 		}
 	}()
