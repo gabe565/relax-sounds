@@ -11,10 +11,11 @@ import (
 //
 // Format precision must be 1 or 2 bytes.
 func Encode(ctx context.Context, duration time.Duration, entry *stream_cache.Entry) (err error) {
-	samples := make([][2]float64, entry.Format.SampleRate.N(time.Second/10))
+	durationPerLoop := time.Second / 10
+	samples := make([][2]float64, entry.Format.SampleRate.N(durationPerLoop))
 	buffer := make([]byte, len(samples)*entry.Format.Width())
 
-	var totalDuration time.Duration
+	var writtenDuration time.Duration
 	for {
 		n, ok := entry.Mix.Stream(samples)
 		if !ok {
@@ -44,8 +45,8 @@ func Encode(ctx context.Context, duration time.Duration, entry *stream_cache.Ent
 				return err
 			}
 
-			totalDuration += time.Second / 10
-			if totalDuration >= duration {
+			writtenDuration += durationPerLoop
+			if writtenDuration >= duration {
 				return nil
 			}
 		}
