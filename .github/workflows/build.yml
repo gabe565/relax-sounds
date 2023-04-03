@@ -13,6 +13,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
+          cache: false
       - run: sudo apt-get install -y libmp3lame-dev
       - name: Lint
         uses: golangci/golangci-lint-action@v3
@@ -29,7 +30,6 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
-          cache: true
       - run: sudo apt-get install -y libmp3lame-dev
       - name: Test
         run: go test ./...
