@@ -54,7 +54,7 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
-            urlPattern: /\/api\//,
+            urlPattern: /\/api\/(?!mix\/)/,
             handler: "NetworkFirst",
             options: {
               cacheName: "api-cache",
