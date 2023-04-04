@@ -38,14 +38,16 @@ WORKDIR /app
 
 RUN apk add --no-cache lame tzdata
 
-COPY --from=go-builder /app/relax-sounds ./
-COPY --from=node-builder /app/dist public/
-
 ARG USERNAME=relax-sounds
 ARG UID=1000
 ARG GID=$UID
 RUN addgroup -g "$GID" "$USERNAME" \
     && adduser -S -u "$UID" -G "$USERNAME" "$USERNAME"
-USER $UID
 
+RUN mkdir pb_data && chown 1000:1000 pb_data
+
+COPY --from=node-builder /app/dist public/
+COPY --from=go-builder /app/relax-sounds ./
+
+USER $UID
 CMD ["./relax-sounds", "serve", "--http=0.0.0.0:80", "--dir=/data", "--public=public"]
