@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"errors"
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"io/fs"
@@ -10,10 +11,11 @@ import (
 type Streams []Streamer
 
 func (stream Streams) Close() error {
+	errs := make([]error, 0, len(stream))
 	for _, streamer := range stream {
-		_ = streamer.Close()
+		errs = append(errs, streamer.Close())
 	}
-	return nil
+	return errors.Join(errs...)
 }
 
 func (stream *Streams) Add(f fs.File, entry preset.Track, mu *sync.Mutex) error {
