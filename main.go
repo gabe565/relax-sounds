@@ -18,7 +18,7 @@ func main() {
 
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.GET("/*", handlers.StaticHandler())
-		e.Router.GET("/api/mix/:uuid/:query", handlers.Mix(app.DataDir(), app.Dao()))
+		e.Router.GET("/api/mix/:uuid/:query", handlers.Mix(app))
 		return nil
 	})
 

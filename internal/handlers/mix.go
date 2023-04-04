@@ -11,7 +11,7 @@ import (
 	"github.com/gabe565/relax-sounds/internal/stream/stream_cache"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
-	"github.com/pocketbase/pocketbase/daos"
+	"github.com/pocketbase/pocketbase/core"
 	log "github.com/sirupsen/logrus"
 	"io"
 	"net/http"
@@ -23,9 +23,9 @@ import (
 	"time"
 )
 
-func Mix(dataDir string, dao *daos.Dao) echo.HandlerFunc {
+func Mix(app core.App) echo.HandlerFunc {
 	cache := stream_cache.New()
-	dataFs := os.DirFS(filepath.Join(dataDir, "storage"))
+	dataFs := os.DirFS(filepath.Join(app.DataDir(), "storage"))
 
 	return func(c echo.Context) error {
 		var err error
@@ -72,7 +72,7 @@ func Mix(dataDir string, dao *daos.Dao) echo.HandlerFunc {
 			entry = stream_cache.NewEntry(presetEncoded)
 
 			// Set up stream
-			if entry.Streams, err = stream.New(dataFs, dao, preset); err != nil {
+			if entry.Streams, err = stream.New(dataFs, app.Dao(), preset); err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					// Invalid file ID returns 404
 					return apis.NewNotFoundError("", nil)
