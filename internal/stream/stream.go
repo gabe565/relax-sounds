@@ -17,13 +17,14 @@ func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (stream Streams, err err
 
 	for _, entry := range p.Tracks {
 		entry := entry
-		record, err := dao.FindRecordById("sounds", entry.Id)
-		if err != nil {
-			return nil, err
-		}
-
-		path := filepath.Join(record.BaseFilesPath(), record.Get("file").(string))
 		group.Go(func() error {
+			record, err := dao.FindRecordById("sounds", entry.Id)
+			if err != nil {
+				return err
+			}
+
+			path := filepath.Join(record.BaseFilesPath(), record.Get("file").(string))
+
 			f, err := dataDir.Open(path)
 			if err != nil {
 				return err
