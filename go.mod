@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/aofei/mimesniffer v1.2.1
 	github.com/faiface/beep v1.1.0
-	github.com/labstack/echo/v5 v5.0.0-20220201181537-ed2888cfa198
+	github.com/labstack/echo/v5 c0bc886b78b8
 	github.com/pocketbase/dbx v1.10.0
 	github.com/pocketbase/pocketbase v0.14.2
 	github.com/sirupsen/logrus v1.9.0
