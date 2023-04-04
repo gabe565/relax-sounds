@@ -1,4 +1,5 @@
 import { Howl } from "howler";
+import pb from "../plugins/pocketbase";
 
 export const SoundState = {
   PLAYING: "playing",
@@ -22,7 +23,7 @@ export class Sound {
   }
 
   get src() {
-    return `/data/audio/${this.filename}`;
+    return pb.getFileUrl(this, this.file);
   }
 
   load() {

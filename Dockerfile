@@ -14,7 +14,9 @@ COPY --from=go-dependencies /app /app
 COPY --from=go-dependencies /go /go
 
 COPY *.go ./
+COPY migrations/ migrations/
 COPY internal/ internal/
+
 RUN --mount=type=cache,target=/root/.cache \
     go build -ldflags="-w -s"
 
@@ -37,7 +39,7 @@ WORKDIR /app
 RUN apk add --no-cache lame tzdata
 
 COPY --from=go-builder /app/relax-sounds ./
-COPY --from=node-builder /app/dist frontend/
+COPY --from=node-builder /app/dist public/
 
 ARG USERNAME=relax-sounds
 ARG UID=1000
@@ -46,9 +48,4 @@ RUN addgroup -g "$GID" "$USERNAME" \
     && adduser -S -u "$UID" -G "$USERNAME" "$USERNAME"
 USER $UID
 
-COPY data-default /data
-
-ENV RELAX_SOUNDS_ADDRESS ":80"
-ENV RELAX_SOUNDS_DATA "/data"
-ENV RELAX_SOUNDS_FRONTEND "frontend"
-CMD ["./relax-sounds"]
+CMD ["./relax-sounds", "serve", "--http=0.0.0.0:80", "--dir=/data", "--public=public"]

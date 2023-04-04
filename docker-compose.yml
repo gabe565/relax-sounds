@@ -10,4 +10,4 @@ services:
     ports:
       - "80:80"
     volumes:
-      - "./data:/data:ro"
+      - "./pb_data:/data"

@@ -20,11 +20,7 @@ func (s Streamer) Close() error {
 	return nil
 }
 
-func NewStreamer(fsys fs.FS, entry preset.Track) (streamer Streamer, err error) {
-	rawFile, err := fsys.Open(entry.Path())
-	if err != nil {
-		return streamer, err
-	}
+func NewStreamer(rawFile fs.File, entry preset.Track) (streamer Streamer, err error) {
 	f := File{File: rawFile}
 
 	closer, format, err := f.Decode()

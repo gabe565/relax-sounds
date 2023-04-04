@@ -22,7 +22,7 @@
         <v-chip
           v-for="(tag, key) in tags"
           :key="key"
-          :value="tag.id"
+          :value="tag.name"
           variant="outlined"
           active-class="deep-orange"
           class="ma-2"

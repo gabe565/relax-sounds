@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { Preset } from "../util/Preset";
+
 export default {
   name: "RestorePresets",
 
@@ -69,9 +71,13 @@ export default {
     async restore() {
       try {
         const presets = JSON.parse(await this.file[0].text());
-        presets.forEach((preset) => {
-          this.$store.commit("presets/add", { preset, playing: false });
-        });
+        await Promise.all(
+          presets.map(async (preset) => {
+            preset = new Preset(preset);
+            await preset.migrate();
+            this.$store.commit("presets/add", { preset, playing: false });
+          })
+        );
         this.show = false;
         this.imported = presets.length;
         this.showSnackbar = true;

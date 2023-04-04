@@ -1,4 +1,4 @@
-import axios from "axios";
+import pb from "../plugins/pocketbase";
 
 let tags;
 
@@ -7,7 +7,6 @@ export const getTags = async (force = false) => {
     return tags;
   }
 
-  const { data } = await axios.get("/api/tags");
-  tags = data;
+  tags = await pb.collection("tags").getFullList();
   return tags;
 };

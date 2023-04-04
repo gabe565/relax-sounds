@@ -51,23 +51,23 @@ export default defineConfig({
       workbox: {
         clientsClaim: true,
         globPatterns: ["**/*{js,css,html,woff2,svg}"],
-        navigateFallbackDenylist: [/^\/api\//, /^\/data\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/_\/?/],
         runtimeCaching: [
           {
-            urlPattern: /\/api\/(?!mix\/)/,
-            handler: "NetworkFirst",
+            urlPattern: /\/api\/files/,
+            handler: "CacheFirst",
             options: {
-              cacheName: "api-cache",
+              cacheName: "data-cache",
               cacheableResponse: {
                 statuses: [0, 200],
               },
             },
           },
           {
-            urlPattern: /\/data\/audio/,
-            handler: "CacheFirst",
+            urlPattern: /\/api\/collections\//,
+            handler: "NetworkFirst",
             options: {
-              cacheName: "data-cache",
+              cacheName: "api-cache",
               cacheableResponse: {
                 statuses: [0, 200],
               },

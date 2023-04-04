@@ -1,11 +1,6 @@
 package preset
 
-import (
-	"io/fs"
-)
-
 type Preset struct {
-	Dir    fs.FS
 	Tracks []Track
 }
 

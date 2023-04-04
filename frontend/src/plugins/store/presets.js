@@ -1,7 +1,8 @@
 import { SoundState } from "../../util/Sound";
 import { Preset } from "../../util/Preset";
 
-const version = 2;
+let stateVersion = 0;
+const version = 3;
 
 const saveState = ({ presets }) => {
   const state = { version, presets };
@@ -40,6 +41,7 @@ const loadState = () => {
       state.version = version;
     }
 
+    stateVersion = state.version;
     if (dirty) {
       saveState(state);
     }
@@ -130,6 +132,13 @@ export default {
       );
       commit("play", { preset });
       await dispatch("player/updateCast", null, { root: true });
+    },
+
+    async migrate({ state }) {
+      if (stateVersion === 2) {
+        await Promise.all(state.presets.map((preset) => preset.migrate()));
+        saveState(state);
+      }
     },
   },
 };

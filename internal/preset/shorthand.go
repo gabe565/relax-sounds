@@ -3,7 +3,6 @@ package preset
 import (
 	"errors"
 	"fmt"
-	"io/fs"
 )
 
 var ErrInvalidId = errors.New("invalid id")
@@ -13,10 +12,8 @@ type ShorthandTrack [2]any
 
 type Shorthand []ShorthandTrack
 
-func (shorthand Shorthand) ToPreset(dataDir fs.FS) (Preset, error) {
-	preset := Preset{
-		Dir: dataDir,
-	}
+func (shorthand Shorthand) ToPreset() (Preset, error) {
+	var preset Preset
 	for _, value := range shorthand {
 		id, ok := value[0].(string)
 		if !ok {

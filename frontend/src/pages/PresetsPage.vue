@@ -81,6 +81,7 @@ export default {
 
   async created() {
     await this.initSounds();
+    await this.$store.dispatch("presets/migrate");
   },
 
   methods: {

@@ -1,5 +1,6 @@
 import base64 from "base64-url";
 import { Filetype } from "./filetype";
+import { getSounds } from "../data/sounds";
 
 export const toShorthand = (sounds) =>
   sounds.map((sound) => [sound.id, Math.round(sound.volume * 1000) / 1000]);
@@ -58,5 +59,19 @@ export class Preset {
 
   set mixUrl(val) {
     [, this.encodedShorthand] = val.match(/\/api\/mix\/(.+?)(\..+)?$/);
+  }
+
+  async migrate() {
+    await Promise.all(
+      this.sounds.map(async (sound) => {
+        if (sound.id.length <= 3) {
+          const sounds = await getSounds();
+          const found = sounds.find((e) => `${e.old_id}` === sound.id);
+          if (found) {
+            sound.id = found.id;
+          }
+        }
+      })
+    );
   }
 }

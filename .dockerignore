@@ -5,7 +5,7 @@
 .idea/
 .pre-commit-config.yaml
 Dockerfile
-data/
+pb_data/
 docker-compose.yml
 frontend/README.md
 frontend/dist/

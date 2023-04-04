@@ -16,8 +16,8 @@ func (stream Streams) Close() error {
 	return nil
 }
 
-func (stream *Streams) Add(fsys fs.FS, entry preset.Track, mu *sync.Mutex) error {
-	streamer, err := NewStreamer(fsys, entry)
+func (stream *Streams) Add(f fs.File, entry preset.Track, mu *sync.Mutex) error {
+	streamer, err := NewStreamer(f, entry)
 	if err != nil {
 		return err
 	}

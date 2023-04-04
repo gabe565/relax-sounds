@@ -3,6 +3,7 @@ import { SoundState } from "../../util/Sound";
 import { getSounds } from "../../data/sounds";
 import { formatError, getCastSession } from "../../util/googleCast";
 import { Preset } from "../../util/Preset";
+import pb from "../pocketbase";
 
 export default {
   namespaced: true,
@@ -244,7 +245,8 @@ export default {
         state.sounds.map(async (sound) => {
           sound.isLoading = true;
           try {
-            await axios.get(sound.src);
+            const url = pb.getFileUrl(sound, sound.file);
+            await axios.get(url);
           } catch (error) {
             console.error(error);
           }

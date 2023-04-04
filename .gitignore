@@ -25,4 +25,4 @@ yarn-error.log*
 out
 vendor
 relax-sounds
-/data/
+/pb_data/
