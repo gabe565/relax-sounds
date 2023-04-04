@@ -14,6 +14,7 @@ func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (stream Streams, err err
 
 	var mu sync.Mutex
 	group := errgroup.Group{}
+	group.SetLimit(5)
 
 	for _, entry := range p.Tracks {
 		entry := entry
