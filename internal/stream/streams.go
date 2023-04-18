@@ -2,10 +2,11 @@ package stream
 
 import (
 	"errors"
-	"github.com/faiface/beep"
-	"github.com/gabe565/relax-sounds/internal/preset"
 	"io/fs"
 	"sync"
+
+	"github.com/faiface/beep"
+	"github.com/gabe565/relax-sounds/internal/preset"
 )
 
 type Streams []Streamer

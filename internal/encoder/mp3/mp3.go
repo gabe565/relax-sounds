@@ -1,10 +1,11 @@
 package mp3
 
 import (
+	"io"
+
 	"github.com/faiface/beep"
 	flag "github.com/spf13/pflag"
 	"github.com/viert/go-lame"
-	"io"
 )
 
 var quality float64

@@ -3,6 +3,15 @@ package handlers
 import (
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"syscall"
+	"time"
+
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder/encode"
 	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
@@ -13,14 +22,6 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	log "github.com/sirupsen/logrus"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strconv"
-	"strings"
-	"syscall"
-	"time"
 )
 
 func Mix(app core.App) echo.HandlerFunc {

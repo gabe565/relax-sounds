@@ -5,8 +5,10 @@ import (
 	"fmt"
 )
 
-var ErrInvalidId = errors.New("invalid id")
-var ErrInvalidVolume = errors.New("invalid volume")
+var (
+	ErrInvalidId     = errors.New("invalid id")
+	ErrInvalidVolume = errors.New("invalid volume")
+)
 
 type ShorthandTrack [2]any
 

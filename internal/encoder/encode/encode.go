@@ -3,8 +3,9 @@ package encode
 import (
 	"context"
 	"fmt"
-	"github.com/gabe565/relax-sounds/internal/stream/stream_cache"
 	"time"
+
+	"github.com/gabe565/relax-sounds/internal/stream/stream_cache"
 )
 
 // Encode writes a duration of the audio stream in PCM format.

@@ -3,11 +3,12 @@ package stream_cache
 import (
 	"bytes"
 	"errors"
+	"sync"
+	"time"
+
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/stream"
-	"sync"
-	"time"
 )
 
 type Entry struct {

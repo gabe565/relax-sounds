@@ -3,13 +3,14 @@ package stream
 import (
 	"errors"
 	"fmt"
+	"io/fs"
+
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/flac"
 	"github.com/faiface/beep/mp3"
 	"github.com/faiface/beep/vorbis"
 	"github.com/faiface/beep/wav"
 	"github.com/gabe565/relax-sounds/internal/util"
-	"io/fs"
 )
 
 type File struct {

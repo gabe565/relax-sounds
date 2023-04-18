@@ -1,9 +1,10 @@
 package stream_cache
 
 import (
-	log "github.com/sirupsen/logrus"
 	"sync"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type Cache struct {

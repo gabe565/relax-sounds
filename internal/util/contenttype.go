@@ -1,9 +1,10 @@
 package util
 
 import (
-	"github.com/aofei/mimesniffer"
 	"io"
 	"io/fs"
+
+	"github.com/aofei/mimesniffer"
 )
 
 func GetTypeFromFile(f fs.File) (string, error) {

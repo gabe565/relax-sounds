@@ -3,6 +3,7 @@ package encode
 import (
 	"errors"
 	"fmt"
+
 	"github.com/faiface/beep"
 )
 

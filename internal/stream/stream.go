@@ -1,12 +1,13 @@
 package stream
 
 import (
-	"github.com/gabe565/relax-sounds/internal/preset"
-	"github.com/pocketbase/pocketbase/daos"
-	"golang.org/x/sync/errgroup"
 	"io/fs"
 	"path/filepath"
 	"sync"
+
+	"github.com/gabe565/relax-sounds/internal/preset"
+	"github.com/pocketbase/pocketbase/daos"
+	"golang.org/x/sync/errgroup"
 )
 
 func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (stream Streams, err error) {

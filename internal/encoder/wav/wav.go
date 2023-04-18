@@ -2,8 +2,9 @@ package wav
 
 import (
 	"encoding/binary"
-	"github.com/faiface/beep"
 	"io"
+
+	"github.com/faiface/beep"
 )
 
 type Encoder struct {
