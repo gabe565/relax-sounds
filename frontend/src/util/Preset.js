@@ -1,4 +1,5 @@
 import base64 from "base64-url";
+import { nanoid } from "nanoid";
 import { Filetype } from "./filetype";
 import { getSounds } from "../data/sounds";
 
@@ -47,7 +48,7 @@ export class Preset {
   mixUrlAs(filetype = Filetype.Mp3) {
     let uuid = sessionStorage.getItem("uuid");
     if (!uuid) {
-      uuid = crypto.randomUUID();
+      uuid = nanoid();
       sessionStorage.setItem("uuid", uuid);
     }
     return `${window.location.origin}/api/mix/${uuid}/${this.encodedShorthand}.${filetype}`;
