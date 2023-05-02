@@ -108,9 +108,7 @@ func Mix(app core.App) echo.HandlerFunc {
 
 		var firstByteIdx int
 		if rangeHeader := c.Request().Header.Get("Range"); rangeHeader == "" {
-			// Write 200 OK if no range requested
-			c.Response().WriteHeader(http.StatusOK)
-			return nil
+			firstByteIdx = 0
 		} else {
 			unit, ranges, found := strings.Cut(rangeHeader, "=")
 			// Error if no `=`, invalid unit, or multipart range
