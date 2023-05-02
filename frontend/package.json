@@ -21,7 +21,7 @@
     "nanoid": "4.0.2",
     "pocketbase": "0.14.0",
     "register-service-worker": "1.7.2",
-    "sass": "1.62.0",
+    "sass": "1.62.1",
     "vite": "4.3.3",
     "vite-plugin-pwa": "0.14.7",
     "vite-plugin-vuetify": "1.0.2",
