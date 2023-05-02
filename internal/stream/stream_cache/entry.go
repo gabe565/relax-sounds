@@ -23,12 +23,14 @@ type Entry struct {
 	Mu        sync.Mutex
 	ChunkNum  int
 	TotalSize int
+	Created   time.Time
 	Accessed  time.Time
 }
 
 func NewEntry(preset string) *Entry {
 	return &Entry{
-		Preset: preset,
+		Preset:  preset,
+		Created: time.Now(),
 	}
 }
 

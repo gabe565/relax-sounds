@@ -70,6 +70,7 @@ func (a *Cache) cleanup(since time.Duration) {
 			log.WithFields(log.Fields{
 				"id":       id,
 				"accessed": entry.Accessed,
+				"age":      time.Since(entry.Created).Truncate(time.Millisecond).String(),
 			}).Info("Cleanup stream")
 			if err := entry.Close(); err != nil {
 				log.WithError(err).WithField("id", id).

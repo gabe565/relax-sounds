@@ -59,7 +59,11 @@ func Mix(app core.App) echo.HandlerFunc {
 		if found && entry.Preset != presetEncoded {
 			// Same window is changing streams
 			// Destroy old stream then recreate
-			log.WithField("id", uuid).Info("Close stream")
+			log.WithFields(log.Fields{
+				"id":       uuid,
+				"accessed": entry.Accessed,
+				"age":      time.Since(entry.Created).Truncate(time.Millisecond).String(),
+			}).Info("Close stream")
 			if err := entry.Close(); err != nil {
 				log.WithError(err).WithField("id", uuid).
 					Error("Failed to close stream")
