@@ -1,4 +1,3 @@
-import axios from "axios";
 import { SoundState } from "../../util/Sound";
 import { getSounds } from "../../data/sounds";
 import { formatError, getCastSession } from "../../util/googleCast";
@@ -246,7 +245,7 @@ export default {
           sound.isLoading = true;
           try {
             const url = pb.getFileUrl(sound, sound.file);
-            await axios.get(url);
+            await fetch(url);
           } catch (error) {
             console.error(error);
           }
