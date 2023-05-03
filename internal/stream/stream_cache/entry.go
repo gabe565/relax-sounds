@@ -12,6 +12,8 @@ import (
 )
 
 type Entry struct {
+	RemoteAddr string
+
 	Preset  string
 	Streams stream.Streams
 	Mix     beep.Streamer
@@ -27,10 +29,11 @@ type Entry struct {
 	Accessed  time.Time
 }
 
-func NewEntry(preset string) *Entry {
+func NewEntry(remoteAddr, preset string) *Entry {
 	return &Entry{
-		Preset:  preset,
-		Created: time.Now(),
+		RemoteAddr: remoteAddr,
+		Preset:     preset,
+		Created:    time.Now(),
 	}
 }
 

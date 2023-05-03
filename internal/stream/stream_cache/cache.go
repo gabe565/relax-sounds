@@ -68,6 +68,7 @@ func (a *Cache) cleanup(since time.Duration) {
 	for id, entry := range a.Entries {
 		if time.Since(entry.Accessed) >= since {
 			log.WithFields(log.Fields{
+				"ip":       entry.RemoteAddr,
 				"id":       id,
 				"accessed": entry.Accessed,
 				"age":      time.Since(entry.Created).Truncate(time.Millisecond).String(),

@@ -60,6 +60,7 @@ func Mix(app core.App) echo.HandlerFunc {
 			// Same window is changing streams
 			// Destroy old stream then recreate
 			log.WithFields(log.Fields{
+				"ip":       entry.RemoteAddr,
 				"id":       uuid,
 				"accessed": entry.Accessed,
 				"age":      time.Since(entry.Created).Truncate(time.Millisecond).String(),
@@ -73,8 +74,10 @@ func Mix(app core.App) echo.HandlerFunc {
 		if !found {
 			log.WithField("id", uuid).Info("Create stream")
 
+			remoteAddr, _, _ := strings.Cut(c.Request().RemoteAddr, ":")
+
 			// Entry was not found
-			entry = stream_cache.NewEntry(presetEncoded)
+			entry = stream_cache.NewEntry(remoteAddr, presetEncoded)
 
 			// Set up stream
 			if entry.Streams, err = stream.New(dataFs, app.Dao(), preset); err != nil {
