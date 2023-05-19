@@ -39,8 +39,8 @@ func (a *Cache) Get(id string) (*Entry, bool) {
 }
 
 func (a *Cache) Close() {
-	a.cleanup(0)
 	a.close <- struct{}{}
+	a.cleanup(0)
 }
 
 func (a *Cache) beginCleanupCron() chan<- struct{} {
