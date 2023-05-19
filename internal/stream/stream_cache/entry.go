@@ -38,6 +38,9 @@ func NewEntry(remoteAddr, preset string) *Entry {
 }
 
 func (e *Entry) Close() error {
+	e.Mu.Lock()
+	defer e.Mu.Unlock()
+
 	return errors.Join(
 		e.Streams.Close(),
 		e.Encoder.Close(),
