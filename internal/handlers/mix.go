@@ -39,11 +39,6 @@ func Mix(app core.App) echo.HandlerFunc {
 			return apis.NewNotFoundError("", nil)
 		}
 
-		preset, err := preset.FromParam(presetEncoded)
-		if err != nil {
-			return apis.NewBadRequestError("", nil)
-		}
-
 		// File type parameter
 		var fileType filetype.FileType
 		err = fileType.UnmarshalText([]byte(fileTypeStr))
@@ -79,8 +74,13 @@ func Mix(app core.App) echo.HandlerFunc {
 			// Entry was not found
 			entry = stream_cache.NewEntry(remoteAddr, presetEncoded)
 
+			presetDecoded, err := preset.FromParam(presetEncoded)
+			if err != nil {
+				return apis.NewBadRequestError("", nil)
+			}
+
 			// Set up stream
-			if entry.Streams, err = stream.New(dataFs, app.Dao(), preset); err != nil {
+			if entry.Streams, err = stream.New(dataFs, app.Dao(), presetDecoded); err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					// Invalid file ID returns 404
 					return apis.NewNotFoundError("", nil)
