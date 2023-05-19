@@ -30,11 +30,13 @@ type Entry struct {
 }
 
 func NewEntry(remoteAddr, preset string) *Entry {
-	return &Entry{
+	entry := &Entry{
 		RemoteAddr: remoteAddr,
 		Preset:     preset,
 		Created:    time.Now(),
 	}
+	entry.Accessed = entry.Created
+	return entry
 }
 
 func (e *Entry) Close() error {
