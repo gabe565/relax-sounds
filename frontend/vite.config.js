@@ -2,6 +2,7 @@ import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import autoprefixer from "autoprefixer";
 
 export default defineConfig({
   plugins: [
@@ -77,4 +78,9 @@ export default defineConfig({
       },
     }),
   ],
+  css: {
+    postcss: {
+      plugins: [autoprefixer({})],
+    },
+  },
 });
