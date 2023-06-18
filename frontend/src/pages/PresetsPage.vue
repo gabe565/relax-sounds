@@ -5,9 +5,7 @@
         <PresetCard :preset="preset" />
       </v-col>
       <v-col v-if="presets.presets.length === 0">
-        <v-alert prominent text color="info" icon="fal fa-info-circle">
-          No Presets Saved Yet!
-        </v-alert>
+        <v-alert prominent text type="info"> No Presets Saved Yet! </v-alert>
       </v-col>
     </v-row>
 
@@ -19,6 +17,9 @@
 <script setup>
 import { saveAs } from "file-saver/src/FileSaver";
 import { onMounted, ref } from "vue";
+import BackupIcon from "~icons/solar/download-square-bold";
+import RestoreIcon from "~icons/solar/upload-square-bold";
+import RemoveAllIcon from "~icons/solar/trash-bin-2-bold";
 import PresetCard from "../components/PresetCard.vue";
 import PageLayout from "../layouts/PageLayout.vue";
 import RestorePresets from "../components/RestorePresets.vue";
@@ -53,14 +54,14 @@ const exportPresets = () => {
 const actions = [
   {
     title: "Backup",
-    icon: "fas fa-file-download",
+    icon: BackupIcon,
     on: {
       click: exportPresets,
     },
   },
   {
     title: "Restore",
-    icon: "fas fa-file-upload",
+    icon: RestoreIcon,
     on: {
       click: () => {
         showRestore.value = true;
@@ -69,7 +70,7 @@ const actions = [
   },
   {
     title: "Remove All",
-    icon: "fas fa-trash",
+    icon: RemoveAllIcon,
     on: {
       click: () => {
         showRemoveAll.value = true;

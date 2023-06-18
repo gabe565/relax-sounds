@@ -1,16 +1,27 @@
 import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 import { defineConfig } from "vite";
+import Icons from "unplugin-icons/vite";
 import { VitePWA } from "vite-plugin-pwa";
 import autoprefixer from "autoprefixer";
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag === "google-cast-launcher",
+        },
+      },
+    }),
     vuetify({
       styles: {
         configFile: "src/scss/variables.scss",
       },
+    }),
+    Icons({
+      compiler: "vue3",
+      autoInstall: true,
     }),
     VitePWA({
       devOptions: {

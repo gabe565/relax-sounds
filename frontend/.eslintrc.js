@@ -21,5 +21,6 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
     'import/no-unresolved': 'off',
+    "import/extensions": "off",
   },
 };

@@ -8,7 +8,7 @@
         <v-text-field
           v-model="filters.filters.word"
           label="Search"
-          prepend-icon="fal fa-search"
+          :prepend-icon="SearchIcon"
           clearable
           variant="underlined"
         />
@@ -66,6 +66,7 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
+import SearchIcon from "~icons/solar/magnifer-bold";
 import { useFiltersStore } from "../plugins/store/filters";
 import { getTags } from "../data/tags";
 

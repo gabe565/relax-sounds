@@ -1,7 +1,7 @@
 <template>
   <v-col class="flex-grow-0">
     <v-btn elevation="0" icon variant="plain" aria-label="Share" @click.stop="show = true">
-      <v-icon aria-hidden="true">fas fa-fw fa-share-alt</v-icon>
+      <v-icon :icon="ShareIcon" aria-hidden="true" />
     </v-btn>
 
     <v-dialog v-model="show" width="400">
@@ -19,15 +19,15 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+            <v-icon :icon="CloseIcon" aria-hidden="true" />
             Close
           </v-btn>
           <v-btn variant="text" @click="copy">
-            <v-icon aria-hidden="true">fal fa-copy fa-fw</v-icon>
+            <v-icon :icon="CopyIcon" aria-hidden="true" />
             Copy
           </v-btn>
           <v-btn v-if="canShare" variant="text" @click="share">
-            <v-icon aria-hidden="true">fal fa-share-alt fa-fw</v-icon>
+            <v-icon :icon="ShareIcon" aria-hidden="true" />
             Share
           </v-btn>
         </v-card-actions>
@@ -46,6 +46,9 @@
 
 <script setup>
 import { computed, nextTick, ref } from "vue";
+import ShareIcon from "~icons/solar/share-bold";
+import CopyIcon from "~icons/solar/copy-bold";
+import CloseIcon from "~icons/solar/close-circle-bold";
 import { Preset } from "../../util/Preset";
 
 const props = defineProps({

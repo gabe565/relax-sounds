@@ -15,16 +15,14 @@
         <v-menu location="bottom right" transition="slide-y-transition">
           <template #activator="{ props }">
             <v-btn icon variant="plain" v-bind="props" aria-label="Menu">
-              <v-icon>fas fa-ellipsis-v</v-icon>
+              <v-icon :icon="MenuIcon" size="large" />
             </v-btn>
           </template>
 
           <v-list>
             <v-list-item v-for="(item, index) in actions" :key="index" v-on="item.on">
               <template #prepend>
-                <v-icon aria-hidden="true">
-                  {{ item.icon }}
-                </v-icon>
+                <v-icon :icon="item.icon" aria-hidden="true" />
               </template>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
@@ -48,6 +46,7 @@
 </template>
 
 <script setup>
+import MenuIcon from "~icons/solar/menu-dots-bold";
 import { useAlertStore } from "../plugins/store/alert";
 
 defineProps({

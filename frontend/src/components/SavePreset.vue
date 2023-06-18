@@ -8,7 +8,7 @@
         aria-label="Save Preset"
         @click="showDialog = !showDialog"
       >
-        <v-icon aria-hidden="true">fas fa-plus-circle</v-icon>
+        <v-icon :icon="AddIcon" aria-hidden="true" />
         <v-dialog v-model="showDialog" max-width="500">
           <v-card>
             <v-card-title class="text-h5">Preset Name</v-card-title>
@@ -20,11 +20,11 @@
             <v-card-actions>
               <v-spacer />
               <v-btn variant="text" @click="cancel">
-                <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+                <v-icon :icon="CloseIcon" aria-hidden="true" />
                 Cancel
               </v-btn>
               <v-btn color="green" variant="text" @click="save">
-                <v-icon aria-hidden="true">fal fa-save fa-fw</v-icon>
+                <v-icon :icon="SaveIcon" aria-hidden="true" />
                 Save Preset
               </v-btn>
             </v-card-actions>
@@ -39,6 +39,9 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import AddIcon from "~icons/solar/add-circle-bold";
+import CloseIcon from "~icons/solar/close-circle-bold";
+import SaveIcon from "~icons/solar/diskette-bold";
 import { wait } from "../util/helpers";
 import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";

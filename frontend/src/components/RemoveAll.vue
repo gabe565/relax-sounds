@@ -7,11 +7,11 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+            <v-icon :icon="CloseIcon" aria-hidden="true" />
             Close
           </v-btn>
           <v-btn variant="text" :disabled="countdown > 0" color="red" @click="remove">
-            <v-icon aria-hidden="true">fal fa-trash fa-fw</v-icon>
+            <v-icon :icon="RemoveAllIcon" aria-hidden="true" />
             Delete
             <template v-if="countdown > 0">({{ countdown }})</template>
           </v-btn>
@@ -31,6 +31,8 @@
 
 <script setup>
 import { computed, ref, watch } from "vue";
+import CloseIcon from "~icons/solar/close-circle-bold";
+import RemoveAllIcon from "~icons/solar/trash-bin-2-bold";
 import { wait } from "../util/helpers";
 import { usePresetsStore } from "../plugins/store/presets";
 

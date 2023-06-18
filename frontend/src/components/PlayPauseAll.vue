@@ -12,8 +12,8 @@
         :aria-label="player.isPlaying ? 'Pause' : 'Play'"
         @click="player.playPauseAll"
       >
-        <v-icon v-if="player.isPlaying" aria-hidden="true">fas fa-pause-circle</v-icon>
-        <v-icon v-else aria-hidden="true">fas fa-play-circle</v-icon>
+        <v-icon v-if="player.isPlaying" :icon="PauseIcon" aria-hidden="true" />
+        <v-icon v-else :icon="PlayIcon" aria-hidden="true" />
       </v-btn>
     </template>
     <span v-if="player.isPlaying">Pause</span>
@@ -22,6 +22,8 @@
 </template>
 
 <script setup>
+import PlayIcon from "~icons/solar/play-circle-bold";
+import PauseIcon from "~icons/solar/pause-circle-bold";
 import { usePlayerStore } from "../plugins/store/player";
 
 const player = usePlayerStore();

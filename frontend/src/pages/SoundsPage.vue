@@ -19,6 +19,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import PreloadAllIcon from "~icons/solar/download-twice-square-bold";
 import PageLayout from "../layouts/PageLayout.vue";
 import SoundCard from "../components/SoundCard.vue";
 import FilterSection from "../components/FilterSection.vue";
@@ -37,7 +38,7 @@ const loading = ref(true);
 const actions = [
   {
     title: "Preload All",
-    icon: "fas fa-sync",
+    icon: PreloadAllIcon,
     on: {
       click: () => {
         usePlayerStore().prefetch();

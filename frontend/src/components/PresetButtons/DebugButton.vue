@@ -1,7 +1,7 @@
 <template>
   <v-col class="flex-grow-0">
     <v-btn elevation="0" icon variant="plain" aria-label="Debug" @click.stop="show = true">
-      <v-icon aria-hidden="true">fas fa-fw fa-bug</v-icon>
+      <v-icon :icon="DebugIcon" aria-hidden="true" />
     </v-btn>
 
     <v-dialog v-model="show" max-width="400">
@@ -14,7 +14,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon aria-hidden="true">fal fa-times fa-fw</v-icon>
+            <v-icon :icon="CloseIcon" aria-hidden="true" />
             Close
           </v-btn>
         </v-card-actions>
@@ -25,6 +25,8 @@
 
 <script setup>
 import { ref } from "vue";
+import DebugIcon from "~icons/solar/bug-minimalistic-bold";
+import CloseIcon from "~icons/solar/close-circle-bold";
 import { Preset } from "../../util/Preset";
 
 defineProps({

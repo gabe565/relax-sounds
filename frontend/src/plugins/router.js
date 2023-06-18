@@ -2,6 +2,8 @@ import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import { Preset } from "../util/Preset";
 import { usePresetsStore } from "./store/presets";
+import SoundsIcon from "~icons/solar/soundwave-bold";
+import PresetsIcon from "~icons/solar/playlist-bold";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -12,7 +14,7 @@ const router = createRouter({
       component: () => import("../pages/SoundsPage.vue"),
       props: true,
       meta: {
-        icon: "fa-volume",
+        icon: SoundsIcon,
         showInNav: true,
       },
     },
@@ -22,7 +24,7 @@ const router = createRouter({
       component: () => import("../pages/PresetsPage.vue"),
       props: true,
       meta: {
-        icon: "fa-list-music",
+        icon: PresetsIcon,
         showInNav: true,
       },
     },

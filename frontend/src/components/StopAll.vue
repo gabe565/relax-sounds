@@ -8,7 +8,7 @@
         aria-label="Stop All"
         @click="stopAll"
       >
-        <v-icon aria-hidden="true">fas fa-stop-circle</v-icon>
+        <v-icon :icon="StopIcon" aria-hidden="true" />
       </v-btn>
     </template>
     <span>Stop All</span>
@@ -17,6 +17,7 @@
 
 <script setup>
 import { ref } from "vue";
+import StopIcon from "~icons/solar/stop-circle-bold";
 import { usePlayerStore } from "../plugins/store/player";
 
 const showTooltip = ref(false);
