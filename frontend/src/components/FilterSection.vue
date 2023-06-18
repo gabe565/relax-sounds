@@ -79,7 +79,7 @@ watch(
   () => filters.page,
   () => {
     filters.page = 1;
-  }
+  },
 );
 
 onMounted(async () => {

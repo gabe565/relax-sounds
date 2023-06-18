@@ -54,7 +54,7 @@ watch(
   () => props.modelValue,
   (val) => {
     show.value = val;
-  }
+  },
 );
 
 const doCountdown = () => {

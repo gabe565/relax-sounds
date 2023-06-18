@@ -73,7 +73,7 @@ export class Preset {
             sound.id = found.id;
           }
         }
-      })
+      }),
     );
   }
 }

@@ -1,9 +1,23 @@
-@use 'vuetify/settings' with (
-    $body-font-family: (-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", Helvetica, Arial,
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"),
-    $color-pack: false,
-    $card-title-font-weight: 400,
-    $overlay-scrim-background: #000,
-    $button-plain-opacity: 0.9,
+@use "vuetify/settings" with (
+  $body-font-family: (
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Fira Sans",
+    "Droid Sans",
+    Helvetica,
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+  ),
+  $color-pack: false,
+  $card-title-font-weight: 400,
+  $overlay-scrim-background: #000,
+  $button-plain-opacity: 0.9
 );
