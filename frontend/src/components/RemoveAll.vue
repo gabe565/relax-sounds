@@ -31,6 +31,7 @@
 
 <script>
 import { wait } from "../util/helpers";
+import { usePresetsStore } from "../plugins/store/presets";
 
 const Countdown = 5;
 
@@ -53,7 +54,7 @@ export default {
 
   computed: {
     count() {
-      return this.$store.state.presets.presets.length || 0;
+      return usePresetsStore().presets.length || 0;
     },
   },
 
@@ -76,7 +77,7 @@ export default {
     async remove() {
       this.show = false;
       await wait(300);
-      this.$store.commit("presets/removeAll");
+      usePresetsStore().removeAll();
       this.showSnackbar = true;
     },
     doCountdown() {

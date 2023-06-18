@@ -26,6 +26,7 @@
 
 <script>
 import { wait } from "../../util/helpers";
+import { usePresetsStore } from "../../plugins/store/presets";
 
 export default {
   name: "DeleteButton",
@@ -45,7 +46,7 @@ export default {
     async remove() {
       this.show = false;
       await wait(300);
-      this.$store.commit("presets/remove", { preset: this.preset });
+      usePresetsStore().remove({ preset: this.preset });
     },
   },
 };

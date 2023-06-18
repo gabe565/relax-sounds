@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "pinia";
+import { usePlayerStore } from "../plugins/store/player";
 
 export default {
   name: "StopAll",
@@ -19,12 +20,12 @@ export default {
     showTooltip: false,
   }),
 
-  computed: mapGetters("player", ["isStopped"]),
+  computed: mapState(usePlayerStore, ["isStopped"]),
 
   methods: {
     stopAll() {
       this.showTooltip = false;
-      this.$store.dispatch("player/stopAll", {});
+      usePlayerStore().stopAll({});
     },
   },
 };

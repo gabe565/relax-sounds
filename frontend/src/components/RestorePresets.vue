@@ -40,6 +40,7 @@
 
 <script>
 import { Preset } from "../util/Preset";
+import { usePresetsStore } from "../plugins/store/presets";
 
 export default {
   name: "RestorePresets",
@@ -75,7 +76,7 @@ export default {
           presets.map(async (preset) => {
             preset = new Preset(preset);
             await preset.migrate();
-            this.$store.commit("presets/add", { preset, playing: false });
+            usePresetsStore().add({ preset, playing: false });
           })
         );
         this.show = false;

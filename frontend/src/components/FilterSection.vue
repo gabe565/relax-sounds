@@ -65,7 +65,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapActions, mapState } from "pinia";
+import { useFiltersStore } from "../plugins/store/filters";
 import { getTags } from "../data/tags";
 
 export default {
@@ -77,13 +78,12 @@ export default {
   }),
 
   computed: {
-    ...mapState("filters", ["filters"]),
-    ...mapGetters("filters", ["pages"]),
+    ...mapState(useFiltersStore, ["filters", "pages"]),
   },
 
   watch: {
     pages() {
-      this.filters.page = 1;
+      useFiltersStore().page = 1;
     },
   },
 
@@ -92,7 +92,7 @@ export default {
     this.loading = false;
   },
 
-  methods: mapActions("filters", ["initSounds"]),
+  methods: mapActions(useFiltersStore, ["initSounds"]),
 };
 </script>
 

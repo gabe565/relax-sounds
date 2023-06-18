@@ -1,5 +1,7 @@
+import { defineStore } from "pinia";
 import Fuse from "fuse.js";
-import { reactive } from "vue";
+import { computed, reactive, ref, watch } from "vue";
+import { usePlayerStore } from "./player";
 
 const PER_PAGE = 48;
 
@@ -13,40 +15,47 @@ export const fuse = new Fuse([], {
   keys: ["name", "tags"],
 });
 
-export default {
-  namespaced: true,
-  state: {
-    filters: {
-      word: "",
-      playing: false,
-      page: 1,
-    },
-  },
-  getters: {
-    filteredSounds(state, _, rootState) {
-      let result;
-      if (state.filters.word) {
-        result = reactive(fuse.search(state.filters.word).map((e) => e.item));
-      } else {
-        result = rootState.player.sounds;
-      }
-      if (state.filters.playing) {
-        result = result.filter((e) => !e.isStopped);
-      }
-      return result;
-    },
-    sounds(state, getters) {
-      const result = getters.filteredSounds;
-      const offset = PER_PAGE * (state.filters.page - 1);
-      return result.slice(offset, offset + PER_PAGE);
-    },
-    pages(_, getters) {
-      return Math.max(Math.ceil(getters.filteredSounds.length / PER_PAGE), 1);
-    },
-  },
-  actions: {
-    initSounds(_, conf) {
-      fuse.setCollection(conf);
-    },
-  },
-};
+export const useFiltersStore = defineStore("filters", () => {
+  const filters = ref({
+    word: "",
+    playing: false,
+    page: 1,
+  });
+
+  const filteredSounds = computed(() => {
+    let result;
+    if (filters.value.word) {
+      result = reactive(fuse.search(filters.value.word).map((e) => e.item));
+    } else {
+      result = usePlayerStore().sounds;
+    }
+    if (filters.value.playing) {
+      result = result.filter((e) => !e.isStopped);
+    }
+    return result;
+  });
+
+  const sounds = computed(() => {
+    const result = filteredSounds.value;
+    const offset = PER_PAGE * (filters.value.page - 1);
+    return result?.slice(offset, offset + PER_PAGE);
+  });
+
+  const pages = computed(() => Math.max(Math.ceil(filteredSounds.value.length / PER_PAGE), 1));
+
+  const updateSounds = (val = null) => {
+    if (val === null) {
+      val = usePlayerStore().sounds;
+    }
+    fuse.setCollection(val);
+  };
+  watch(() => usePlayerStore().sounds, updateSounds);
+  updateSounds();
+
+  return {
+    filters,
+    filteredSounds,
+    sounds,
+    pages,
+  };
+});

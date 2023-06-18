@@ -18,10 +18,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "pinia";
 import PageLayout from "../layouts/PageLayout.vue";
 import SoundCard from "../components/SoundCard.vue";
 import FilterSection from "../components/FilterSection.vue";
+import { usePlayerStore } from "../plugins/store/player";
+import { useFiltersStore } from "../plugins/store/filters";
 
 export default {
   name: "SoundsPage",
@@ -53,19 +55,19 @@ export default {
           icon: "fas fa-sync",
           on: {
             click: () => {
-              this.$store.dispatch("player/prefetch");
+              usePlayerStore().prefetch();
             },
           },
         },
       ];
     },
-    ...mapGetters("filters", ["sounds"]),
+    ...mapState(useFiltersStore, ["sounds"]),
   },
 
   async created() {
     await this.initSounds();
     this.loading = false;
   },
-  methods: mapActions("player", ["initSounds"]),
+  methods: mapActions(usePlayerStore, ["initSounds"]),
 };
 </script>
