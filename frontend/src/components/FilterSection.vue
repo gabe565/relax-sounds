@@ -28,7 +28,9 @@
           class="ma-2"
           filter
         >
-          <v-icon v-if="tag.icon" size="x-small" class="mr-2">far {{ tag.icon }}</v-icon>
+          <v-icon v-if="tag.icon" size="x-small" class="mr-2">
+            <Icon :icon="tag.icon" />
+          </v-icon>
           {{ tag.name }}
         </v-chip>
       </v-chip-group>
@@ -69,6 +71,7 @@ import { onMounted, ref, watch } from "vue";
 import SearchIcon from "~icons/solar/magnifer-bold";
 import { useFiltersStore } from "../plugins/store/filters";
 import { getTags } from "../data/tags";
+import { Icon } from "@iconify/vue";
 
 const tags = ref(null);
 const loading = ref(true);
