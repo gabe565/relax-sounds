@@ -9,11 +9,6 @@
   </PageLayout>
 </template>
 
-<script>
+<script setup>
 import PageLayout from "../layouts/PageLayout.vue";
-
-export default {
-  name: "NotFoundPage",
-  components: { PageLayout },
-};
 </script>

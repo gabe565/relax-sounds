@@ -24,30 +24,23 @@
   </v-col>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import { wait } from "../../util/helpers";
 import { usePresetsStore } from "../../plugins/store/presets";
 
-export default {
-  name: "DeleteButton",
-
-  props: {
-    preset: {
-      type: Object,
-      required: true,
-    },
+const props = defineProps({
+  preset: {
+    type: Object,
+    required: true,
   },
+});
 
-  data: () => ({
-    show: false,
-  }),
+const show = ref(false);
 
-  methods: {
-    async remove() {
-      this.show = false;
-      await wait(300);
-      usePresetsStore().remove({ preset: this.preset });
-    },
-  },
+const remove = async () => {
+  show.value = false;
+  await wait(300);
+  usePresetsStore().remove({ preset: props.preset });
 };
 </script>

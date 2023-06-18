@@ -1,31 +1,28 @@
 <template>
-  <v-tooltip :key="isPlaying" location="bottom" :aria-label="isPlaying ? 'Pause' : 'Play'">
+  <v-tooltip
+    :key="player.isPlaying"
+    location="bottom"
+    :aria-label="player.isPlaying ? 'Pause' : 'Play'"
+  >
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
-        :disabled="isStopped"
+        :disabled="player.isStopped"
         icon
-        :aria-label="isPlaying ? 'Pause' : 'Play'"
-        @click="playPauseAll"
+        :aria-label="player.isPlaying ? 'Pause' : 'Play'"
+        @click="player.playPauseAll"
       >
-        <v-icon v-if="isPlaying" aria-hidden="true">fas fa-pause-circle</v-icon>
+        <v-icon v-if="player.isPlaying" aria-hidden="true">fas fa-pause-circle</v-icon>
         <v-icon v-else aria-hidden="true">fas fa-play-circle</v-icon>
       </v-btn>
     </template>
-    <span v-if="isPlaying">Pause</span>
+    <span v-if="player.isPlaying">Pause</span>
     <span v-else>Play</span>
   </v-tooltip>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
+<script setup>
 import { usePlayerStore } from "../plugins/store/player";
 
-export default {
-  name: "PlayPauseAll",
-
-  computed: mapState(usePlayerStore, ["isPlaying", "isStopped"]),
-
-  methods: mapActions(usePlayerStore, ["playPauseAll"]),
-};
+const player = usePlayerStore();
 </script>

@@ -29,63 +29,53 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, ref, watch } from "vue";
 import { wait } from "../util/helpers";
 import { usePresetsStore } from "../plugins/store/presets";
 
-const Countdown = 5;
-
 let timeout;
 
-export default {
-  name: "RemoveAll",
+const props = defineProps({
+  modelValue: Boolean,
+});
 
-  props: {
-    modelValue: Boolean,
-  },
+const emit = defineEmits(["update:modelValue"]);
 
-  emits: ["update:modelValue"],
+const show = ref(false);
+const showSnackbar = ref(false);
+const countdown = ref(0);
 
-  data: () => ({
-    show: false,
-    showSnackbar: false,
-    countdown: 0,
-  }),
+const count = computed(() => usePresetsStore().presets.length || 0);
 
-  computed: {
-    count() {
-      return usePresetsStore().presets.length || 0;
-    },
-  },
+watch(
+  () => props.modelValue,
+  (val) => {
+    show.value = val;
+  }
+);
 
-  watch: {
-    modelValue(val) {
-      this.show = val;
-    },
-    show(val) {
-      this.$emit("update:modelValue", val);
+const doCountdown = () => {
+  countdown.value -= 1;
+  if (countdown.value > 0) {
+    timeout = setTimeout(doCountdown, 1000);
+  }
+};
 
-      if (val) {
-        clearTimeout(timeout);
-        this.countdown = Countdown;
-        timeout = setTimeout(this.doCountdown, 1000);
-      }
-    },
-  },
+watch(show, (val) => {
+  emit("update:modelValue", val);
 
-  methods: {
-    async remove() {
-      this.show = false;
-      await wait(300);
-      usePresetsStore().removeAll();
-      this.showSnackbar = true;
-    },
-    doCountdown() {
-      this.countdown -= 1;
-      if (this.countdown > 0) {
-        timeout = setTimeout(this.doCountdown, 1000);
-      }
-    },
-  },
+  if (val) {
+    clearTimeout(timeout);
+    countdown.value = 5;
+    timeout = setTimeout(doCountdown, 1000);
+  }
+});
+
+const remove = async () => {
+  show.value = false;
+  await wait(300);
+  usePresetsStore().removeAll();
+  showSnackbar.value = true;
 };
 </script>

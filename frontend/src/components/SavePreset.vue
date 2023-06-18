@@ -3,7 +3,7 @@
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
-        :disabled="isStopped"
+        :disabled="player.isStopped"
         icon
         aria-label="Save Preset"
         @click="showDialog = !showDialog"
@@ -36,46 +36,41 @@
   </v-tooltip>
 </template>
 
-<script>
-import { mapState } from "pinia";
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { wait } from "../util/helpers";
 import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";
+import { useAlertStore } from "../plugins/store/alert";
 
-export default {
-  name: "SavePreset",
+const showDialog = ref(false);
+const name = ref("");
 
-  data: () => ({
-    showDialog: false,
-    name: "",
-  }),
+const player = usePlayerStore();
+const router = useRouter();
 
-  computed: {
-    ...mapState(usePlayerStore, ["isStopped"]),
-  },
+const cancel = () => {
+  showDialog.value = false;
+  name.value = "";
+};
 
-  methods: {
-    cancel() {
-      this.showDialog = false;
-      this.name = "";
-    },
-    async save() {
-      this.showDialog = false;
-      await wait(300);
+const save = async () => {
+  showDialog.value = false;
+  await wait(300);
 
-      let params;
-      try {
-        usePresetsStore().savePlaying({ name: this.name });
-        params = { alert: { type: "info", text: `Preset "${this.name}" saved successfully.` } };
-        this.name = "";
-      } catch (error) {
-        console.error(error);
-        params = {
-          alert: { type: "error", text: "Failed to save preset. Please try again later." },
-        };
-      }
-      return this.$router.push({ name: "Presets", params });
-    },
-  },
+  const alert = useAlertStore();
+  try {
+    usePresetsStore().savePlaying({ name: name.value });
+    alert.type = "info";
+    alert.message = `Preset "${name.value}" saved successfully.`;
+    name.value = "";
+  } catch (error) {
+    console.error(error);
+    alert.type = "error";
+    alert.message = "Failed to save preset. Please try again later.";
+  }
+  alert.show = true;
+  return router.push({ name: "Presets" });
 };
 </script>

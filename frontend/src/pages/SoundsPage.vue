@@ -8,7 +8,7 @@
           </v-overlay>
         </template>
         <template v-else>
-          <v-col v-for="(sound, key) of sounds" :key="key" cols="12" md="6" lg="4">
+          <v-col v-for="(sound, key) of filters.sounds" :key="key" cols="12" md="6" lg="4">
             <SoundCard :sound="sound" />
           </v-col>
         </template>
@@ -17,57 +17,39 @@
   </PageLayout>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
+<script setup>
+import { onMounted, ref } from "vue";
 import PageLayout from "../layouts/PageLayout.vue";
 import SoundCard from "../components/SoundCard.vue";
 import FilterSection from "../components/FilterSection.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { useFiltersStore } from "../plugins/store/filters";
 
-export default {
-  name: "SoundsPage",
-
-  components: {
-    FilterSection,
-    PageLayout,
-    SoundCard,
+defineProps({
+  alert: {
+    type: Object,
+    default: null,
   },
+});
 
-  props: {
-    alert: {
-      type: Object,
-      default: null,
+const loading = ref(true);
+
+const actions = [
+  {
+    title: "Preload All",
+    icon: "fas fa-sync",
+    on: {
+      click: () => {
+        usePlayerStore().prefetch();
+      },
     },
   },
+];
 
-  data: () => ({
-    loading: true,
-    error: null,
-    page: 1,
-  }),
+const filters = useFiltersStore();
 
-  computed: {
-    actions() {
-      return [
-        {
-          title: "Preload All",
-          icon: "fas fa-sync",
-          on: {
-            click: () => {
-              usePlayerStore().prefetch();
-            },
-          },
-        },
-      ];
-    },
-    ...mapState(useFiltersStore, ["sounds"]),
-  },
-
-  async created() {
-    await this.initSounds();
-    this.loading = false;
-  },
-  methods: mapActions(usePlayerStore, ["initSounds"]),
-};
+onMounted(async () => {
+  await usePlayerStore().initSounds();
+  loading.value = false;
+});
 </script>

@@ -46,58 +46,45 @@
   </v-card>
 </template>
 
-<script>
+<script setup>
+import { computed } from "vue";
 import { usePlayerStore } from "../plugins/store/player";
 
-export default {
-  name: "SoundCard",
-
-  props: {
-    sound: {
-      type: Object,
-      required: true,
-    },
+const props = defineProps({
+  sound: {
+    type: Object,
+    required: true,
   },
+});
 
-  computed: {
-    volumePercentage: {
-      get() {
-        return this.sound.volume * 100;
-      },
-      set(newValue) {
-        // eslint-disable-next-line vue/no-mutating-props
-        this.sound.volume = newValue / 100;
-        usePlayerStore().updateCast();
-      },
-    },
-
-    iconStyle() {
-      return this.sound.isStopped ? "fal" : "fas";
-    },
-
-    iconColor() {
-      return this.sound.isStopped ? "" : "primary";
-    },
-
-    icon() {
-      if (this.sound.isLoading) {
-        return "fa-spinner-third fa-spin-2x";
-      }
-      if (this.sound.isPlaying) {
-        return "fa-stop";
-      }
-      return "fa-play";
-    },
-
-    showProgress() {
-      return !this.sound.isStopped;
-    },
+const volumePercentage = computed({
+  get() {
+    return props.sound.volume * 100;
   },
-
-  methods: {
-    async playStop() {
-      return usePlayerStore().playStop({ sound: this.sound });
-    },
+  set(newValue) {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.sound.volume = newValue / 100;
+    usePlayerStore().updateCast();
   },
+});
+
+const iconStyle = computed(() => (props.sound.isStopped ? "fal" : "fas"));
+
+const iconColor = computed(() => (props.sound.isStopped ? "" : "primary"));
+
+const icon = computed(() => {
+  if (props.sound.isLoading) {
+    return "fa-spinner-third fa-spin-2x";
+  }
+  if (props.sound.isPlaying) {
+    return "fa-stop";
+  }
+  return "fa-play";
+});
+
+const showProgress = computed(() => !props.sound.isStopped);
+
+const playStop = async () => {
+  return usePlayerStore().playStop({ sound: props.sound });
 };
 </script>

@@ -38,55 +38,48 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, watch } from "vue";
 import { Preset } from "../util/Preset";
 import { usePresetsStore } from "../plugins/store/presets";
 
-export default {
-  name: "RestorePresets",
+const props = defineProps({
+  modelValue: Boolean,
+});
 
-  props: {
-    modelValue: Boolean,
-  },
+const emit = defineEmits(["update:modelValue"]);
 
-  emits: ["update:modelValue"],
+const show = ref(false);
+const file = ref(null);
+const error = ref(false);
+const showSnackbar = ref(false);
+const imported = ref(0);
 
-  data: () => ({
-    show: false,
-    file: null,
-    error: false,
-    showSnackbar: false,
-    imported: 0,
-  }),
+watch(
+  () => props.modelValue,
+  (val) => {
+    show.value = val;
+  }
+);
 
-  watch: {
-    modelValue(val) {
-      this.show = val;
-    },
-    show(val) {
-      this.$emit("update:modelValue", val);
-    },
-  },
+watch(show, (val) => emit("update:modelValue", val));
 
-  methods: {
-    async restore() {
-      try {
-        const presets = JSON.parse(await this.file[0].text());
-        await Promise.all(
-          presets.map(async (preset) => {
-            preset = new Preset(preset);
-            await preset.migrate();
-            usePresetsStore().add({ preset, playing: false });
-          })
-        );
-        this.show = false;
-        this.imported = presets.length;
-        this.showSnackbar = true;
-      } catch (error) {
-        console.error(error);
-        this.error = true;
-      }
-    },
-  },
+const restore = async () => {
+  try {
+    const presets = JSON.parse(await file.value[0].text());
+    await Promise.all(
+      presets.map(async (preset) => {
+        preset = new Preset(preset);
+        await preset.migrate();
+        usePresetsStore().add({ preset, playing: false });
+      })
+    );
+    show.value = false;
+    imported.value = presets.length;
+    showSnackbar.value = true;
+  } catch (e) {
+    console.error(e);
+    error.value = true;
+  }
 };
 </script>
