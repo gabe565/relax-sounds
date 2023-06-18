@@ -1,12 +1,13 @@
 <template>
   <v-col class="flex-grow-0 pr-4">
     <v-btn elevation="0" icon variant="plain" aria-label="Play" @click.stop="play">
-      <v-icon aria-hidden="true">fas fa-fw fa-play</v-icon>
+      <v-icon :icon="PlayButton" aria-hidden="true" />
     </v-btn>
   </v-col>
 </template>
 
 <script setup>
+import PlayButton from "~icons/solar/play-bold";
 import { usePresetsStore } from "../../plugins/store/presets";
 
 const props = defineProps({

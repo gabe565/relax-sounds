@@ -13,7 +13,7 @@
         <v-dialog location="bottom" location-strategy="connected" max-width="400">
           <template #activator="{ props }">
             <v-btn v-bind="props" elevation="0" icon variant="plain" aria-label="Volume">
-              <v-icon aria-hidden="true">fas fa-fw fa-volume</v-icon>
+              <v-icon :icon="VolumeIcon" aria-hidden="true" />
             </v-btn>
           </template>
 
@@ -37,9 +37,11 @@
           icon
           variant="plain"
           :aria-label="sound.isPlaying ? 'Stop' : 'Play'"
+          :loading="sound.isLoading"
           @click.stop="playStop"
         >
-          <v-icon aria-hidden="true">fas fa-fw {{ icon }}</v-icon>
+          <v-icon v-if="sound.isPlaying" :icon="PauseIcon" aria-hidden="true" />
+          <v-icon v-else :icon="PlayIcon" aria-hidden="true" />
         </v-btn>
       </v-col>
     </v-row>
@@ -48,6 +50,9 @@
 
 <script setup>
 import { computed } from "vue";
+import PlayIcon from "~icons/solar/play-bold";
+import PauseIcon from "~icons/solar/pause-bold";
+import VolumeIcon from "~icons/solar/volume-loud-bold";
 import { usePlayerStore } from "../plugins/store/player";
 
 const props = defineProps({
@@ -71,16 +76,6 @@ const volumePercentage = computed({
 const iconStyle = computed(() => (props.sound.isStopped ? "fal" : "fas"));
 
 const iconColor = computed(() => (props.sound.isStopped ? "" : "primary"));
-
-const icon = computed(() => {
-  if (props.sound.isLoading) {
-    return "fa-spinner-third fa-spin-2x";
-  }
-  if (props.sound.isPlaying) {
-    return "fa-stop";
-  }
-  return "fa-play";
-});
 
 const showProgress = computed(() => !props.sound.isStopped);
 

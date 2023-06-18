@@ -11,10 +11,7 @@
 
       <v-spacer />
 
-      <google-cast-launcher
-        v-pre
-        class="v-btn v-btn--icon v-theme--dark v-btn--density-default v-btn--size-x-small mr-4"
-      />
+      <CastIcon />
       <SavePreset />
       <PlayPauseAll />
       <StopAll />
@@ -22,7 +19,7 @@
       <template v-if="mdAndUp" #extension>
         <v-tabs align-tabs="center" class="w-100" color="primary">
           <v-tab v-for="route in routes" :key="route.path" :to="route.path" exact>
-            <v-icon class="pr-2">fas {{ route.meta.icon }} fa-fw</v-icon>
+            <v-icon v-if="route.meta.icon" :icon="route.meta.icon" class="pr-2" size="28" />
             {{ route.name }}
           </v-tab>
         </v-tabs>
@@ -48,7 +45,7 @@
       mode="shift"
     >
       <v-btn v-for="route in routes" :key="route.path" :to="route.path" :value="route.name">
-        <v-icon>fas {{ route.meta.icon }} fa-fw</v-icon>
+        <v-icon v-if="route.meta.icon" :icon="route.meta.icon" />
         <span>{{ route.name }}</span>
       </v-btn>
     </v-bottom-navigation>
@@ -64,6 +61,7 @@ import PlayPauseAll from "./components/PlayPauseAll.vue";
 import StopAll from "./components/StopAll.vue";
 import UpdateSnackbar from "./components/UpdateSnackbar.vue";
 import icon from "./assets/icon-white.svg";
+import CastIcon from "./components/CastIcon.vue";
 
 const { mdAndUp, smAndDown } = useDisplay();
 
@@ -87,14 +85,6 @@ onBeforeMount(() => {
 </script>
 
 <style lang="scss">
-html {
-  --disconnected-color: #fff;
-}
-
-.fa-spin-2x {
-  animation: fa-spin 750ms infinite linear;
-}
-
 .v-card--variant-outlined,
 .v-chip--variant-outlined,
 .v-btn--variant-outlined:not(.text-primary) {
