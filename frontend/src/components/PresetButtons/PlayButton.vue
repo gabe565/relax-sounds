@@ -6,23 +6,15 @@
   </v-col>
 </template>
 
-<script>
+<script setup>
 import { usePresetsStore } from "../../plugins/store/presets";
 
-export default {
-  name: "PlayButton",
-
-  props: {
-    preset: {
-      type: Object,
-      required: true,
-    },
+const props = defineProps({
+  preset: {
+    type: Object,
+    required: true,
   },
+});
 
-  methods: {
-    play() {
-      usePresetsStore().play({ preset: this.preset });
-    },
-  },
-};
+const play = () => usePresetsStore().play({ preset: props.preset });
 </script>

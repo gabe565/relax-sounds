@@ -21,33 +21,18 @@
   </v-fade-transition>
 </template>
 
-<script>
+<script setup>
 import ShareButton from "./PresetButtons/ShareButton.vue";
 import DeleteButton from "./PresetButtons/DeleteButton.vue";
 import DebugButton from "./PresetButtons/DebugButton.vue";
 import PlayButton from "./PresetButtons/PlayButton.vue";
 
-export default {
-  name: "PresetCard",
-
-  components: {
-    PlayButton,
-    DebugButton,
-    DeleteButton,
-    ShareButton,
+defineProps({
+  preset: {
+    type: Object,
+    required: true,
   },
+});
 
-  props: {
-    preset: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  data: () => ({
-    deleteDialog: false,
-    debugEnabled: import.meta.env.DEV,
-    debugDialog: false,
-  }),
-};
+const debugEnabled = import.meta.env.DEV;
 </script>

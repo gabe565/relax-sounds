@@ -23,35 +23,16 @@
   </v-col>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import { Preset } from "../../util/Preset";
 
-export default {
-  name: "DebugButton",
-
-  props: {
-    preset: {
-      type: Preset,
-      required: true,
-    },
+defineProps({
+  preset: {
+    type: Preset,
+    required: true,
   },
+});
 
-  emits: ["update:modelValue"],
-
-  data: () => ({
-    show: false,
-  }),
-
-  watch: {
-    value: {
-      handler(val) {
-        this.show = val;
-      },
-      immediate: true,
-    },
-    show(val) {
-      this.$emit("update:modelValue", val);
-    },
-  },
-};
+const show = ref(false);
 </script>

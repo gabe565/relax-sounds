@@ -34,10 +34,10 @@
     </v-row>
 
     <v-fade-transition>
-      <v-row v-if="showAlert">
+      <v-row v-if="alert.show">
         <v-col>
-          <v-alert v-model="showAlert" closable prominent text :type="alert.type">
-            {{ alert.text }}
+          <v-alert v-model="alert.show" closable prominent text :type="alert.type">
+            {{ alert.message }}
           </v-alert>
         </v-col>
       </v-row>
@@ -47,27 +47,15 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  name: "PageLayout",
+<script setup>
+import { useAlertStore } from "../plugins/store/alert";
 
-  props: {
-    alert: {
-      type: Object,
-      default: null,
-    },
-    actions: {
-      type: Array,
-      default: null,
-    },
+defineProps({
+  actions: {
+    type: Array,
+    default: null,
   },
+});
 
-  data: () => ({
-    showAlert: false,
-  }),
-
-  async created() {
-    if (this.alert) this.showAlert = true;
-  },
-};
+const alert = useAlertStore();
 </script>

@@ -12,8 +12,8 @@
             readonly
             :model-value="preset.shareUrl"
             label="Share URL"
-            @focus="select($event.target)"
-            @click="select($event.target)"
+            @focus="select"
+            @click="select"
           />
         </v-card-text>
         <v-card-actions>
@@ -44,71 +44,48 @@
   </v-col>
 </template>
 
-<script>
-import { wait } from "../../util/helpers";
+<script setup>
+import { computed, nextTick, ref } from "vue";
 import { Preset } from "../../util/Preset";
 
-export default {
-  name: "ShareButton",
-
-  props: {
-    preset: {
-      type: Preset,
-      required: true,
-    },
+const props = defineProps({
+  preset: {
+    type: Preset,
+    required: true,
   },
+});
 
-  emits: ["update:modelValue"],
+const show = ref(false);
+const showSnackbar = ref(false);
 
-  data: () => ({
-    show: false,
-    showSnackbar: false,
-  }),
+const shareData = computed(() => {
+  return {
+    title: "Relax Sounds",
+    text: `Import my Relax Sounds preset called "${props.preset.name}"`,
+    url: props.preset.shareUrl,
+  };
+});
 
-  computed: {
-    shareData() {
-      return {
-        title: "Relax Sounds",
-        text: `Import my Relax Sounds preset called "${this.preset.name}"`,
-        url: this.preset.shareUrl,
-      };
-    },
-    canShare() {
-      return navigator.canShare && navigator.canShare(this.shareData);
-    },
-  },
+const canShare = computed(() => navigator.canShare && navigator.canShare(shareData.value));
 
-  watch: {
-    value: {
-      handler(val) {
-        this.show = val;
-      },
-      immediate: true,
-    },
-    show(val) {
-      this.$emit("update:modelValue", val);
-    },
-  },
+const select = async (event) => {
+  await nextTick();
+  event.target.select();
+  event.target.scrollLeft = 0;
+};
 
-  methods: {
-    async select(e) {
-      await wait(0);
-      e.select();
-      e.scrollLeft = 0;
-    },
-    async copy() {
-      await navigator.clipboard.writeText(this.preset.shareUrl);
-      if (this.showSnackbar) {
-        this.showSnackbar = false;
-        await this.$nextTick();
-      }
-      this.showSnackbar = true;
-      this.show = false;
-    },
-    async share() {
-      await navigator.share(this.shareData);
-      this.show = false;
-    },
-  },
+const copy = async () => {
+  await navigator.clipboard.writeText(props.preset.shareUrl);
+  if (showSnackbar.value) {
+    showSnackbar.value = false;
+    await this.$nextTick();
+  }
+  showSnackbar.value = true;
+  show.value = false;
+};
+
+const share = async () => {
+  await navigator.share(shareData.value);
+  show.value = false;
 };
 </script>

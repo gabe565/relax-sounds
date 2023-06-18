@@ -6,7 +6,7 @@
     <v-row class="filters">
       <v-col class="pb-0">
         <v-text-field
-          v-model="filters.word"
+          v-model="filters.filters.word"
           label="Search"
           prepend-icon="fal fa-search"
           clearable
@@ -14,11 +14,11 @@
         />
       </v-col>
       <v-col class="flex-grow-0 pb-0">
-        <v-switch v-model="filters.playing" label="Playing" inset />
+        <v-switch v-model="filters.filters.playing" label="Playing" inset />
       </v-col>
     </v-row>
     <v-row class="pb-5">
-      <v-chip-group v-model="filters.word" column>
+      <v-chip-group v-model="filters.filters.word" column>
         <v-chip
           v-for="(tag, key) in tags"
           :key="key"
@@ -41,8 +41,8 @@
     <v-row>
       <v-col>
         <v-pagination
-          v-model="filters.page"
-          :length="pages"
+          v-model="filters.filters.page"
+          :length="filters.pages"
           variant="outlined"
           size="small"
           active-color="primary"
@@ -53,8 +53,8 @@
     <v-row>
       <v-col>
         <v-pagination
-          v-model="filters.page"
-          :length="pages"
+          v-model="filters.filters.page"
+          :length="filters.pages"
           variant="outlined"
           size="small"
           active-color="primary"
@@ -64,36 +64,27 @@
   </template>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
+<script setup>
+import { onMounted, ref, watch } from "vue";
 import { useFiltersStore } from "../plugins/store/filters";
 import { getTags } from "../data/tags";
 
-export default {
-  name: "FilterSection",
+const tags = ref(null);
+const loading = ref(true);
 
-  data: () => ({
-    tags: null,
-    loading: true,
-  }),
+const filters = useFiltersStore();
 
-  computed: {
-    ...mapState(useFiltersStore, ["filters", "pages"]),
-  },
+watch(
+  () => filters.page,
+  () => {
+    filters.page = 1;
+  }
+);
 
-  watch: {
-    pages() {
-      useFiltersStore().page = 1;
-    },
-  },
-
-  async created() {
-    this.tags = await getTags();
-    this.loading = false;
-  },
-
-  methods: mapActions(useFiltersStore, ["initSounds"]),
-};
+onMounted(async () => {
+  tags.value = await getTags();
+  loading.value = false;
+});
 </script>
 
 <style scoped>

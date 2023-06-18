@@ -55,52 +55,35 @@
   </v-app>
 </template>
 
-<script>
-import { useDisplay } from "vuetify";
+<script setup>
+import { useDisplay, useTheme } from "vuetify";
+import { computed, onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 import SavePreset from "./components/SavePreset.vue";
 import PlayPauseAll from "./components/PlayPauseAll.vue";
 import StopAll from "./components/StopAll.vue";
 import UpdateSnackbar from "./components/UpdateSnackbar.vue";
 import icon from "./assets/icon-white.svg";
 
-export default {
-  name: "App",
+const { mdAndUp, smAndDown } = useDisplay();
 
-  components: {
-    SavePreset,
-    StopAll,
-    PlayPauseAll,
-    UpdateSnackbar,
-  },
+const routes = computed(() => {
+  return useRouter().options.routes.filter((route) => route.meta?.showInNav);
+});
 
-  setup() {
-    const { mdAndUp, smAndDown } = useDisplay();
-    return { mdAndUp, smAndDown };
-  },
-
-  data: () => ({
-    icon,
-  }),
-
-  computed: {
-    routes() {
-      return this.$router.options.routes.filter((route) => route.meta?.showInNav);
-    },
-  },
-
-  beforeMount() {
-    // check for browser support
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme)").media !== "not all") {
-      // set to preferred scheme
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      this.$vuetify.theme.dark = mediaQuery.matches;
-      // react to changes
-      mediaQuery.addEventListener("change", (e) => {
-        this.$vuetify.theme.dark = e.matches;
-      });
-    }
-  },
-};
+onBeforeMount(() => {
+  // check for browser support
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme)").media !== "not all") {
+    // set to preferred scheme
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const theme = useTheme();
+    theme.name.value = mediaQuery.matches ? "dark" : "light";
+    // react to changes
+    mediaQuery.addEventListener("change", (e) => {
+      theme.name.value = e.matches ? "dark" : "light";
+    });
+  }
+});
 </script>
 
 <style lang="scss">
