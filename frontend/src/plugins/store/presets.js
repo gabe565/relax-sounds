@@ -108,7 +108,7 @@ export const usePresetsStore = defineStore("presets", () => {
         sound.volume = savedSound.volume;
         const fade = playerStore.state === SoundState.STOPPED ? 500 : false;
         return playerStore.playStop({ sound, fade, local: true });
-      })
+      }),
     );
     playerStore.currentName = preset.name;
     if (preset.new) {

@@ -61,7 +61,7 @@ watch(
   () => props.modelValue,
   (val) => {
     show.value = val;
-  }
+  },
 );
 
 watch(show, (val) => emit("update:modelValue", val));
@@ -74,7 +74,7 @@ const restore = async () => {
         preset = new Preset(preset);
         await preset.migrate();
         usePresetsStore().add({ preset, playing: false });
-      })
+      }),
     );
     show.value = false;
     imported.value = presets.length;

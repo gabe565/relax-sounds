@@ -145,7 +145,7 @@ export const usePlayerStore = defineStore("player", () => {
           }
           play({ sound, fade: 0 });
         }
-      })
+      }),
     );
     if (!local && castConnected) {
       remotePlayerController.playOrPause();
@@ -195,7 +195,7 @@ export const usePlayerStore = defineStore("player", () => {
           await playPauseAll();
           await updateCast();
         }
-      }
+      },
     );
 
     remotePlayerController.addEventListener(
@@ -209,7 +209,7 @@ export const usePlayerStore = defineStore("player", () => {
           // required if the state is changed remotely.
           await playPauseAll({ local: true });
         }
-      }
+      },
     );
 
     remotePlayerController.addEventListener(
@@ -235,10 +235,10 @@ export const usePlayerStore = defineStore("player", () => {
                 fade,
                 local: true,
               });
-            })
+            }),
           );
         }
-      }
+      },
     );
   };
 
@@ -253,7 +253,7 @@ export const usePlayerStore = defineStore("player", () => {
           console.error(error);
         }
         sound.isLoading = false;
-      })
+      }),
     );
   };
 
