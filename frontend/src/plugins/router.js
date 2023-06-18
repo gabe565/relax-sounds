@@ -1,7 +1,7 @@
 import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import store from "./store/main";
 import { Preset } from "../util/Preset";
+import { usePresetsStore } from "./store/presets";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -34,7 +34,7 @@ const router = createRouter({
           const preset = new Preset({ new: true });
           preset.encodedName = params.name;
           preset.encodedShorthand = params.songs;
-          store.commit("presets/add", { preset });
+          usePresetsStore().add({ preset });
         } catch (error) {
           console.error(error);
           redirectParams = {

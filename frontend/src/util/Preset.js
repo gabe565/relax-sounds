@@ -3,8 +3,9 @@ import { nanoid } from "nanoid";
 import { Filetype } from "./filetype";
 import { getSounds } from "../data/sounds";
 
-export const toShorthand = (sounds) =>
-  sounds.map((sound) => [sound.id, Math.round(sound.volume * 1000) / 1000]);
+export const toShorthand = (sounds) => {
+  return sounds.map((sound) => [sound.id, Math.round(sound.volume * 1000) / 1000]);
+};
 
 export const fromShorthand = (shorthand) =>
   shorthand.map((song) => ({ id: song[0], volume: song[1] }));
@@ -59,7 +60,7 @@ export class Preset {
   }
 
   set mixUrl(val) {
-    [, this.encodedShorthand] = val.match(/\/api\/mix\/(.+?)(\..+)?$/);
+    [, this.encodedShorthand] = val.match(/\/api\/mix\/.+?\/(.+?)(\..+)?$/);
   }
 
   async migrate() {

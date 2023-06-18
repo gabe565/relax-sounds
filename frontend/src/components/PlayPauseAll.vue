@@ -18,13 +18,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "pinia";
+import { usePlayerStore } from "../plugins/store/player";
 
 export default {
   name: "PlayPauseAll",
 
-  computed: mapGetters("player", ["isPlaying", "isStopped"]),
+  computed: mapState(usePlayerStore, ["isPlaying", "isStopped"]),
 
-  methods: mapActions("player", ["playPauseAll"]),
+  methods: mapActions(usePlayerStore, ["playPauseAll"]),
 };
 </script>

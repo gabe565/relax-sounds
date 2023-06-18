@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { usePresetsStore } from "../../plugins/store/presets";
+
 export default {
   name: "PlayButton",
 
@@ -19,7 +21,7 @@ export default {
 
   methods: {
     play() {
-      this.$store.dispatch("presets/play", { preset: this.preset });
+      usePresetsStore().play({ preset: this.preset });
     },
   },
 };

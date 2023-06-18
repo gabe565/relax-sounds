@@ -17,12 +17,14 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState } from "pinia";
 import { saveAs } from "file-saver/src/FileSaver";
 import PresetCard from "../components/PresetCard.vue";
 import PageLayout from "../layouts/PageLayout.vue";
 import RestorePresets from "../components/RestorePresets.vue";
 import RemoveAll from "../components/RemoveAll.vue";
+import { usePlayerStore } from "../plugins/store/player";
+import { usePresetsStore } from "../plugins/store/presets";
 
 export default {
   name: "PresetsPage",
@@ -76,12 +78,12 @@ export default {
         },
       ];
     },
-    ...mapState("presets", ["presets"]),
+    ...mapState(usePresetsStore, ["presets"]),
   },
 
   async created() {
     await this.initSounds();
-    await this.$store.dispatch("presets/migrate");
+    await usePresetsStore().migrate();
   },
 
   methods: {
@@ -96,7 +98,7 @@ export default {
         .replaceAll(":", "");
       saveAs(blob, `relax-sounds-presets-${localISOTime}.json`);
     },
-    ...mapActions("player", ["initSounds"]),
+    ...mapActions(usePlayerStore, ["initSounds"]),
   },
 };
 </script>

@@ -1,10 +1,13 @@
+import { defineStore } from "pinia";
+import { ref } from "vue";
 import { SoundState } from "../../util/Sound";
 import { Preset } from "../../util/Preset";
+import { usePlayerStore } from "./player";
 
 let stateVersion = 0;
 const version = 3;
 
-const saveState = ({ presets }) => {
+const saveState = (presets) => {
   const state = { version, presets };
   localStorage.setItem("presets", JSON.stringify(state));
 };
@@ -51,94 +54,84 @@ const loadState = () => {
   return [];
 };
 
-export default {
-  namespaced: true,
-  state: {
-    presets: loadState(),
-    currentName: null,
-  },
+export const usePresetsStore = defineStore("presets", () => {
+  const presets = ref(loadState());
 
-  mutations: {
-    add(state, { preset, playing = true }) {
-      for (const sound of preset.sounds) {
-        if (typeof sound.id === "number") {
-          sound.id = sound.id.toString();
-        }
+  const add = ({ preset, playing = true }) => {
+    for (const sound of preset.sounds) {
+      if (typeof sound.id === "number") {
+        sound.id = sound.id.toString();
       }
-      state.presets.push(new Preset(preset));
-      if (playing) {
-        state.currentName = preset.name;
-      }
-      saveState(state);
-    },
-    remove(state, { preset }) {
-      const index = state.presets.indexOf(preset);
-      state.presets.splice(index, 1);
-      saveState(state);
-    },
-    play(state, { preset }) {
-      state.currentName = preset.name;
-      if (preset.new) {
-        preset.new = false;
-        saveState(state);
-      }
-    },
-    disableCurrent(state) {
-      state.currentName = null;
-    },
-    removeAll(state) {
-      state.presets = [];
-      state.currentName = null;
-      saveState(state);
-    },
-  },
+    }
+    presets.value.push(new Preset(preset));
+    if (playing) {
+      usePlayerStore().currentName = preset.name;
+    }
+    saveState(presets.value);
+  };
 
-  actions: {
-    savePlaying({ commit, rootGetters }, { name }) {
-      const sounds = rootGetters["player/soundsPlaying"].map((sound) => ({
-        id: sound.id,
-        volume: sound.volume,
-      }));
+  const remove = ({ preset }) => {
+    const index = presets.value.indexOf(preset);
+    presets.value.splice(index, 1);
+    saveState(presets.value);
+  };
 
-      commit("add", {
-        preset: {
-          name,
-          sounds,
-          new: true,
-        },
-      });
-    },
+  const removeAll = () => {
+    presets.value = [];
+    usePlayerStore().currentName = null;
+    saveState(presets.value);
+  };
 
-    load({ dispatch, rootGetters }, { preset }) {
-      return Promise.all(
-        preset.sounds.map((savedSound) => {
-          const sound = rootGetters["player/soundById"](savedSound.id);
-          return dispatch("player/load", { sound }, { root: true });
-        })
-      );
-    },
+  const savePlaying = ({ name }) => {
+    const sounds = usePlayerStore().soundsPlaying.map((sound) => ({
+      id: sound.id,
+      volume: sound.volume,
+    }));
 
-    async play({ commit, dispatch, rootGetters }, { preset }) {
-      if (rootGetters["player/state"] !== SoundState.STOPPED) {
-        dispatch("player/stopAll", { fade: 0, local: true }, { root: true });
-      }
-      await Promise.all(
-        preset.sounds.map((savedSound) => {
-          const sound = rootGetters["player/soundById"](savedSound.id);
-          sound.volume = savedSound.volume;
-          const fade = rootGetters["player/state"] === SoundState.STOPPED ? 500 : false;
-          return dispatch("player/playStop", { sound, fade, local: true }, { root: true });
-        })
-      );
-      commit("play", { preset });
-      await dispatch("player/updateCast", null, { root: true });
-    },
+    add({
+      preset: {
+        name,
+        sounds,
+        new: true,
+      },
+    });
+  };
 
-    async migrate({ state }) {
-      if (stateVersion === 2) {
-        await Promise.all(state.presets.map((preset) => preset.migrate()));
-        saveState(state);
-      }
-    },
-  },
-};
+  const play = async ({ preset }) => {
+    const playerStore = usePlayerStore();
+    if (playerStore.state !== SoundState.STOPPED) {
+      playerStore.stopAll({ fade: 0, local: true });
+    }
+    await Promise.all(
+      preset.sounds.map((savedSound) => {
+        const sound = playerStore.soundById(savedSound.id);
+        sound.volume = savedSound.volume;
+        const fade = playerStore.state === SoundState.STOPPED ? 500 : false;
+        return playerStore.playStop({ sound, fade, local: true });
+      })
+    );
+    playerStore.currentName = preset.name;
+    if (preset.new) {
+      preset.new = false;
+      saveState(presets.value);
+    }
+    await playerStore.updateCast();
+  };
+
+  const migrate = async () => {
+    if (stateVersion === 2) {
+      await Promise.all(presets.value.map((preset) => preset.migrate()));
+      saveState(presets.value);
+    }
+  };
+
+  return {
+    presets,
+    add,
+    remove,
+    removeAll,
+    savePlaying,
+    play,
+    migrate,
+  };
+});

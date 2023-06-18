@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { usePlayerStore } from "../plugins/store/player";
+
 export default {
   name: "SoundCard",
 
@@ -65,7 +67,7 @@ export default {
       set(newValue) {
         // eslint-disable-next-line vue/no-mutating-props
         this.sound.volume = newValue / 100;
-        this.$store.dispatch("player/updateCast");
+        usePlayerStore().updateCast();
       },
     },
 
@@ -94,7 +96,7 @@ export default {
 
   methods: {
     async playStop() {
-      return this.$store.dispatch("player/playStop", { sound: this.sound });
+      return usePlayerStore().playStop({ sound: this.sound });
     },
   },
 };

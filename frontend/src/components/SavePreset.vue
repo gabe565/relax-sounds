@@ -37,8 +37,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "pinia";
 import { wait } from "../util/helpers";
+import { usePlayerStore } from "../plugins/store/player";
+import { usePresetsStore } from "../plugins/store/presets";
 
 export default {
   name: "SavePreset",
@@ -48,7 +50,9 @@ export default {
     name: "",
   }),
 
-  computed: mapGetters("player", ["isStopped"]),
+  computed: {
+    ...mapState(usePlayerStore, ["isStopped"]),
+  },
 
   methods: {
     cancel() {
@@ -61,7 +65,7 @@ export default {
 
       let params;
       try {
-        this.$store.dispatch("presets/savePlaying", { name: this.name });
+        usePresetsStore().savePlaying({ name: this.name });
         params = { alert: { type: "info", text: `Preset "${this.name}" saved successfully.` } };
         this.name = "";
       } catch (error) {
