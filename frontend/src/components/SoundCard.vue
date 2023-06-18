@@ -4,7 +4,7 @@
       <v-col class="text-truncate">
         <v-card-title class="text-h5">
           <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
-            {{ iconStyle }} {{ sound.icon }} fa-fw
+            <Icon :icon="sound.icon" />
           </v-icon>
           {{ sound.name }}
         </v-card-title>
@@ -50,6 +50,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { Icon } from "@iconify/vue";
 import PlayIcon from "~icons/solar/play-bold";
 import PauseIcon from "~icons/solar/pause-bold";
 import VolumeIcon from "~icons/solar/volume-loud-bold";
@@ -72,8 +73,6 @@ const volumePercentage = computed({
     usePlayerStore().updateCast();
   },
 });
-
-const iconStyle = computed(() => (props.sound.isStopped ? "fal" : "fas"));
 
 const iconColor = computed(() => (props.sound.isStopped ? "" : "primary"));
 
