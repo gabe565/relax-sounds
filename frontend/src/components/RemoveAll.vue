@@ -7,7 +7,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon :icon="CloseIcon" aria-hidden="true" />
+            <v-icon aria-hidden="true">$close</v-icon>
             Close
           </v-btn>
           <v-btn variant="text" :disabled="countdown > 0" color="red" @click="remove">
@@ -31,7 +31,6 @@
 
 <script setup>
 import { computed, ref, watch } from "vue";
-import CloseIcon from "~icons/solar/close-circle-bold";
 import RemoveAllIcon from "~icons/solar/trash-bin-2-bold";
 import { wait } from "../util/helpers";
 import { usePresetsStore } from "../plugins/store/presets";

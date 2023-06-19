@@ -19,7 +19,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon :icon="CloseIcon" aria-hidden="true" />
+            <v-icon aria-hidden="true">$close</v-icon>
             Close
           </v-btn>
           <v-btn variant="text" @click="copy">
@@ -48,7 +48,6 @@
 import { computed, nextTick, ref } from "vue";
 import ShareIcon from "~icons/solar/share-bold";
 import CopyIcon from "~icons/solar/copy-bold";
-import CloseIcon from "~icons/solar/close-circle-bold";
 import { Preset } from "../../util/Preset";
 
 const props = defineProps({

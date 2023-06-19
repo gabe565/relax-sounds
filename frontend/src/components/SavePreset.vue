@@ -20,7 +20,7 @@
             <v-card-actions>
               <v-spacer />
               <v-btn variant="text" @click="cancel">
-                <v-icon :icon="CloseIcon" aria-hidden="true" />
+                <v-icon aria-hidden="true">$close</v-icon>
                 Cancel
               </v-btn>
               <v-btn color="green" variant="text" @click="save">
@@ -40,7 +40,6 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import AddIcon from "~icons/solar/add-circle-bold";
-import CloseIcon from "~icons/solar/close-circle-bold";
 import SaveIcon from "~icons/solar/diskette-bold";
 import { wait } from "../util/helpers";
 import { usePlayerStore } from "../plugins/store/player";

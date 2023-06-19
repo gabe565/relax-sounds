@@ -11,7 +11,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon :icon="CloseIcon" aria-hidden="true" />
+            <v-icon aria-hidden="true">$close</v-icon>
             Close
           </v-btn>
           <v-btn color="red" variant="text" @click="remove">
@@ -27,7 +27,6 @@
 <script setup>
 import { ref } from "vue";
 import TrashIcon from "~icons/solar/trash-bin-2-bold";
-import CloseIcon from "~icons/solar/close-circle-bold";
 import { wait } from "../../util/helpers";
 import { usePresetsStore } from "../../plugins/store/presets";
 

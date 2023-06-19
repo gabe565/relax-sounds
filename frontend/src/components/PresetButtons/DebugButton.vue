@@ -14,7 +14,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon :icon="CloseIcon" aria-hidden="true" />
+            <v-icon aria-hidden="true">$close</v-icon>
             Close
           </v-btn>
         </v-card-actions>
@@ -26,7 +26,6 @@
 <script setup>
 import { ref } from "vue";
 import DebugIcon from "~icons/solar/bug-minimalistic-bold";
-import CloseIcon from "~icons/solar/close-circle-bold";
 import { Preset } from "../../util/Preset";
 
 defineProps({

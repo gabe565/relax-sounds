@@ -17,7 +17,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon :icon="CloseIcon" aria-hidden="true" />
+            <v-icon aria-hidden="true">$close</v-icon>
             Close
           </v-btn>
           <v-btn variant="text" :disabled="!file" @click="restore">
@@ -41,7 +41,6 @@
 <script setup>
 import { ref, watch } from "vue";
 import RestoreIcon from "~icons/solar/upload-square-bold";
-import CloseIcon from "~icons/solar/close-circle-bold";
 import { Preset } from "../util/Preset";
 import { usePresetsStore } from "../plugins/store/presets";
 
