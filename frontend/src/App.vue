@@ -11,10 +11,10 @@
 
       <v-spacer />
 
-      <CastIcon />
       <PlayPauseAll />
       <StopAll />
       <SavePreset />
+      <CastIcon />
 
       <template v-if="mdAndUp" #extension>
         <v-tabs align-tabs="center" class="w-100" color="primary">
