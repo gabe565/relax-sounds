@@ -18,7 +18,7 @@ COPY migrations/ migrations/
 COPY internal/ internal/
 
 RUN --mount=type=cache,target=/root/.cache \
-    go build -ldflags="-w -s" -trimpath
+    go build -ldflags="-w -s" -trimpath -tags disable_automigrate
 
 
 FROM --platform=$BUILDPLATFORM node:18-alpine AS node-builder
