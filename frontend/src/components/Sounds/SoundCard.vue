@@ -40,8 +40,8 @@
           :loading="sound.isLoading"
           @click.stop="playStop"
         >
-          <v-icon v-if="sound.isPlaying" :icon="PauseIcon" aria-hidden="true" />
-          <v-icon v-else :icon="PlayIcon" aria-hidden="true" />
+          <v-icon v-if="sound.isPlaying" :icon="PauseIcon" aria-hidden="true" size="large" />
+          <v-icon v-else :icon="PlayIcon" aria-hidden="true" size="x-large" />
         </v-btn>
       </v-col>
     </v-row>
