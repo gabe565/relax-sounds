@@ -6,7 +6,7 @@
           <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
             <Icon :icon="sound.icon" />
           </v-icon>
-          {{ sound.name }}
+          <span>{{ sound.name }}</span>
         </v-card-title>
       </div>
 
