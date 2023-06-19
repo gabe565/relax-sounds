@@ -69,8 +69,8 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import SearchIcon from "~icons/material-symbols/search-rounded";
-import { useFiltersStore } from "../plugins/store/filters";
-import { getTags } from "../data/tags";
+import { useFiltersStore } from "../../plugins/store/filters";
+import { getTags } from "../../data/tags";
 import { Icon } from "@iconify/vue";
 
 const tags = ref(null);

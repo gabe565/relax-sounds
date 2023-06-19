@@ -26,7 +26,7 @@
 <script setup>
 import { ref } from "vue";
 import DebugIcon from "~icons/material-symbols/bug-report-rounded";
-import { Preset } from "../../util/Preset";
+import { Preset } from "../../../util/Preset";
 
 defineProps({
   preset: {

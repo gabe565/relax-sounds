@@ -22,10 +22,10 @@
 </template>
 
 <script setup>
-import ShareButton from "./PresetButtons/ShareButton.vue";
-import DeleteButton from "./PresetButtons/DeleteButton.vue";
-import DebugButton from "./PresetButtons/DebugButton.vue";
-import PlayButton from "./PresetButtons/PlayButton.vue";
+import ShareButton from "./Buttons/ShareButton.vue";
+import DeleteButton from "./Buttons/DeleteButton.vue";
+import DebugButton from "./Buttons/DebugButton.vue";
+import PlayButton from "./Buttons/PlayButton.vue";
 
 defineProps({
   preset: {

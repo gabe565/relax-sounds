@@ -8,7 +8,7 @@
 
 <script setup>
 import PlayButton from "~icons/material-symbols/play-arrow-rounded";
-import { usePresetsStore } from "../../plugins/store/presets";
+import { usePresetsStore } from "../../../plugins/store/presets";
 
 const props = defineProps({
   preset: {

@@ -54,7 +54,7 @@ import { Icon } from "@iconify/vue";
 import PlayIcon from "~icons/material-symbols/play-arrow-rounded";
 import PauseIcon from "~icons/material-symbols/pause-rounded";
 import VolumeIcon from "~icons/material-symbols/volume-up-rounded";
-import { usePlayerStore } from "../plugins/store/player";
+import { usePlayerStore } from "../../plugins/store/player";
 
 const props = defineProps({
   sound: {

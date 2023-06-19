@@ -27,8 +27,8 @@
 <script setup>
 import { ref } from "vue";
 import TrashIcon from "~icons/material-symbols/delete-rounded";
-import { wait } from "../../util/helpers";
-import { usePresetsStore } from "../../plugins/store/presets";
+import { wait } from "../../../util/helpers";
+import { usePresetsStore } from "../../../plugins/store/presets";
 
 const props = defineProps({
   preset: {

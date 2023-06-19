@@ -21,8 +21,8 @@
 import { onMounted, ref } from "vue";
 import PreloadAllIcon from "~icons/material-symbols/cloud-sync-rounded";
 import PageLayout from "../layouts/PageLayout.vue";
-import SoundCard from "../components/SoundCard.vue";
-import FilterSection from "../components/FilterSection.vue";
+import SoundCard from "../components/Sounds/SoundCard.vue";
+import FilterSection from "../components/Sounds/FilterSection.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { useFiltersStore } from "../plugins/store/filters";
 

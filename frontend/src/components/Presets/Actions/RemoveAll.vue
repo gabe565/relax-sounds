@@ -31,8 +31,8 @@
 
 <script setup>
 import { computed, ref, watch } from "vue";
-import { wait } from "../util/helpers";
-import { usePresetsStore } from "../plugins/store/presets";
+import { wait } from "../../../util/helpers";
+import { usePresetsStore } from "../../../plugins/store/presets";
 
 let timeout;
 

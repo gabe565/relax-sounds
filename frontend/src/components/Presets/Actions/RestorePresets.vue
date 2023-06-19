@@ -40,8 +40,8 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { Preset } from "../util/Preset";
-import { usePresetsStore } from "../plugins/store/presets";
+import { Preset } from "../../../util/Preset";
+import { usePresetsStore } from "../../../plugins/store/presets";
 
 const props = defineProps({
   modelValue: Boolean,

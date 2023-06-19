@@ -18,7 +18,7 @@
 <script setup>
 import { ref } from "vue";
 import StopIcon from "~icons/material-symbols/stop-circle-rounded";
-import { usePlayerStore } from "../plugins/store/player";
+import { usePlayerStore } from "../../plugins/store/player";
 
 const showTooltip = ref(false);
 

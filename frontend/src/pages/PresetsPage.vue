@@ -20,10 +20,10 @@ import { onMounted, ref } from "vue";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
 import RestoreIcon from "~icons/material-symbols/backup";
 import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
-import PresetCard from "../components/PresetCard.vue";
+import PresetCard from "../components/Presets/PresetCard.vue";
 import PageLayout from "../layouts/PageLayout.vue";
-import RestorePresets from "../components/RestorePresets.vue";
-import RemoveAll from "../components/RemoveAll.vue";
+import RestorePresets from "../components/Presets/Actions/RestorePresets.vue";
+import RemoveAll from "../components/Presets/Actions/RemoveAll.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";
 

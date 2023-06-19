@@ -56,12 +56,12 @@
 import { useDisplay, useTheme } from "vuetify";
 import { computed, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
-import SavePreset from "./components/SavePreset.vue";
-import PlayPauseAll from "./components/PlayPauseAll.vue";
-import StopAll from "./components/StopAll.vue";
+import SavePreset from "./components/NavButtons/SavePreset.vue";
+import PlayPauseAll from "./components/NavButtons/PlayPauseAll.vue";
+import StopAll from "./components/NavButtons/StopAll.vue";
 import UpdateSnackbar from "./components/UpdateSnackbar.vue";
 import icon from "./assets/icon-white.svg";
-import CastIcon from "./components/CastIcon.vue";
+import CastIcon from "./components/NavButtons/CastIcon.vue";
 
 const { mdAndUp, smAndDown } = useDisplay();
 

@@ -40,10 +40,10 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import AddIcon from "~icons/material-symbols/add-circle-rounded";
-import { wait } from "../util/helpers";
-import { usePlayerStore } from "../plugins/store/player";
-import { usePresetsStore } from "../plugins/store/presets";
-import { useAlertStore } from "../plugins/store/alert";
+import { wait } from "../../util/helpers";
+import { usePlayerStore } from "../../plugins/store/player";
+import { usePresetsStore } from "../../plugins/store/presets";
+import { useAlertStore } from "../../plugins/store/alert";
 
 const showDialog = ref(false);
 const name = ref("");
