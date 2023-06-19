@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip v-model="showTooltip" location="bottom" aria-label="Cast">
+  <v-tooltip v-if="castEnabled" v-model="showTooltip" location="bottom" aria-label="Cast">
     <template #activator="{ props }">
       <v-btn elevation="0" icon variant="plain" aria-label="Cast" @click.stop="element.click()">
         <v-icon v-bind="props">
@@ -13,6 +13,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { castEnabled } from "../../cast";
 
 const showTooltip = ref(false);
 const element = ref();
