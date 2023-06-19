@@ -17,9 +17,9 @@
 <script setup>
 import { saveAs } from "file-saver/src/FileSaver";
 import { onMounted, ref } from "vue";
-import BackupIcon from "~icons/solar/download-square-bold";
-import RestoreIcon from "~icons/solar/upload-square-bold";
-import RemoveAllIcon from "~icons/solar/trash-bin-2-bold";
+import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
+import RestoreIcon from "~icons/material-symbols/backup";
+import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
 import PresetCard from "../components/PresetCard.vue";
 import PageLayout from "../layouts/PageLayout.vue";
 import RestorePresets from "../components/RestorePresets.vue";

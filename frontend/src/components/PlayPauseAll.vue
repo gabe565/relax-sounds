@@ -22,8 +22,8 @@
 </template>
 
 <script setup>
-import PlayIcon from "~icons/solar/play-circle-bold";
-import PauseIcon from "~icons/solar/pause-circle-bold";
+import PlayIcon from "~icons/material-symbols/play-circle-rounded";
+import PauseIcon from "~icons/material-symbols/pause-circle-rounded";
 import { usePlayerStore } from "../plugins/store/player";
 
 const player = usePlayerStore();

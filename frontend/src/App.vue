@@ -19,7 +19,7 @@
       <template v-if="mdAndUp" #extension>
         <v-tabs align-tabs="center" class="w-100" color="primary">
           <v-tab v-for="route in routes" :key="route.path" :to="route.path" exact>
-            <v-icon v-if="route.meta.icon" :icon="route.meta.icon" class="pr-2" size="28" />
+            <v-icon v-if="route.meta.icon" :icon="route.meta.icon" class="pr-2" size="32" />
             {{ route.name }}
           </v-tab>
         </v-tabs>

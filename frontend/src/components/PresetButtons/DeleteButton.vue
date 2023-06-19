@@ -15,7 +15,7 @@
             Close
           </v-btn>
           <v-btn color="red" variant="text" @click="remove">
-            <v-icon :icon="TrashIcon" aria-hidden="true" />
+            <v-icon aria-hidden="true">$complete</v-icon>
             Delete
           </v-btn>
         </v-card-actions>
@@ -26,7 +26,7 @@
 
 <script setup>
 import { ref } from "vue";
-import TrashIcon from "~icons/solar/trash-bin-2-bold";
+import TrashIcon from "~icons/material-symbols/delete-rounded";
 import { wait } from "../../util/helpers";
 import { usePresetsStore } from "../../plugins/store/presets";
 

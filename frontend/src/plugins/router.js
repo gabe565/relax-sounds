@@ -2,8 +2,8 @@ import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import { Preset } from "../util/Preset";
 import { usePresetsStore } from "./store/presets";
-import SoundsIcon from "~icons/solar/soundwave-bold";
-import PresetsIcon from "~icons/solar/playlist-bold";
+import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
+import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
 
 const router = createRouter({
   history: createWebHistory(),

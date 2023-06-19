@@ -11,7 +11,7 @@
             Close
           </v-btn>
           <v-btn variant="text" :disabled="countdown > 0" color="red" @click="remove">
-            <v-icon :icon="RemoveAllIcon" aria-hidden="true" />
+            <v-icon aria-hidden="true">$complete</v-icon>
             Delete
             <template v-if="countdown > 0">({{ countdown }})</template>
           </v-btn>
@@ -31,7 +31,6 @@
 
 <script setup>
 import { computed, ref, watch } from "vue";
-import RemoveAllIcon from "~icons/solar/trash-bin-2-bold";
 import { wait } from "../util/helpers";
 import { usePresetsStore } from "../plugins/store/presets";
 

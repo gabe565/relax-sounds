@@ -25,7 +25,7 @@
 
 <script setup>
 import { ref } from "vue";
-import DebugIcon from "~icons/solar/bug-minimalistic-bold";
+import DebugIcon from "~icons/material-symbols/bug-report-rounded";
 import { Preset } from "../../util/Preset";
 
 defineProps({

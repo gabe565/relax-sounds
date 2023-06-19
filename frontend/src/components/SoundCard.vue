@@ -51,9 +51,9 @@
 <script setup>
 import { computed } from "vue";
 import { Icon } from "@iconify/vue";
-import PlayIcon from "~icons/solar/play-bold";
-import PauseIcon from "~icons/solar/pause-bold";
-import VolumeIcon from "~icons/solar/volume-loud-bold";
+import PlayIcon from "~icons/material-symbols/play-arrow-rounded";
+import PauseIcon from "~icons/material-symbols/pause-rounded";
+import VolumeIcon from "~icons/material-symbols/volume-up-rounded";
 import { usePlayerStore } from "../plugins/store/player";
 
 const props = defineProps({

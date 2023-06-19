@@ -46,8 +46,8 @@
 
 <script setup>
 import { computed, nextTick, ref } from "vue";
-import ShareIcon from "~icons/solar/share-bold";
-import CopyIcon from "~icons/solar/copy-bold";
+import ShareIcon from "~icons/material-symbols/share";
+import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import { Preset } from "../../util/Preset";
 
 const props = defineProps({

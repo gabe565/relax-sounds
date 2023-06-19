@@ -21,7 +21,7 @@
             Close
           </v-btn>
           <v-btn variant="text" :disabled="!file" @click="restore">
-            <v-icon :icon="RestoreIcon" aria-hidden="true" />
+            <v-icon aria-hidden="true">$complete</v-icon>
             Import
           </v-btn>
         </v-card-actions>
@@ -40,7 +40,6 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import RestoreIcon from "~icons/solar/upload-square-bold";
 import { Preset } from "../util/Preset";
 import { usePresetsStore } from "../plugins/store/presets";
 

@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import MenuIcon from "~icons/solar/menu-dots-bold";
+import MenuIcon from "~icons/material-symbols/more-horiz";
 import { useAlertStore } from "../plugins/store/alert";
 
 defineProps({

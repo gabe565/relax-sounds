@@ -19,7 +19,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import PreloadAllIcon from "~icons/solar/download-twice-square-bold";
+import PreloadAllIcon from "~icons/material-symbols/cloud-sync-rounded";
 import PageLayout from "../layouts/PageLayout.vue";
 import SoundCard from "../components/SoundCard.vue";
 import FilterSection from "../components/FilterSection.vue";
