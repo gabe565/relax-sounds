@@ -1,9 +1,7 @@
 <template>
-  <v-col class="flex-grow-0 pr-4">
-    <v-btn elevation="0" icon variant="plain" aria-label="Play" @click.stop="play">
-      <v-icon :icon="PlayButton" aria-hidden="true" size="x-large" />
-    </v-btn>
-  </v-col>
+  <v-btn elevation="0" icon variant="plain" aria-label="Play" @click.stop="play">
+    <v-icon :icon="PlayButton" aria-hidden="true" size="x-large" />
+  </v-btn>
 </template>
 
 <script setup>

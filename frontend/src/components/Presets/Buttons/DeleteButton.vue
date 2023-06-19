@@ -1,27 +1,25 @@
 <template>
-  <v-col class="flex-grow-0">
-    <v-btn elevation="0" icon variant="plain" aria-label="Share" @click.stop="show = true">
-      <v-icon :icon="TrashIcon" aria-hidden="true" />
-    </v-btn>
+  <v-btn elevation="0" icon variant="plain" aria-label="Share" @click.stop="show = true">
+    <v-icon :icon="TrashIcon" aria-hidden="true" />
+  </v-btn>
 
-    <v-dialog v-model="show" width="400">
-      <v-card>
-        <v-card-title class="text-h5">Confirm</v-card-title>
-        <v-card-text>Delete the preset "{{ preset.name }}"?</v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn variant="text" @click="show = false">
-            <v-icon aria-hidden="true">$close</v-icon>
-            Close
-          </v-btn>
-          <v-btn color="red" variant="text" @click="remove">
-            <v-icon aria-hidden="true">$complete</v-icon>
-            Delete
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-col>
+  <v-dialog v-model="show" width="400">
+    <v-card>
+      <v-card-title class="text-h5">Confirm</v-card-title>
+      <v-card-text>Delete the preset "{{ preset.name }}"?</v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn variant="text" @click="show = false">
+          <v-icon aria-hidden="true">$close</v-icon>
+          Close
+        </v-btn>
+        <v-btn color="red" variant="text" @click="remove">
+          <v-icon aria-hidden="true">$complete</v-icon>
+          Delete
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>

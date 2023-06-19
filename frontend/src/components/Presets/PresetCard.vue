@@ -6,17 +6,17 @@
       :color="preset.new ? 'deep-purple darken-2' : ''"
       transition="fade-transition"
     >
-      <v-row align="center" dense>
-        <v-col class="overflow-hidden">
+      <div class="d-flex flex-row flex-nowrap align-center">
+        <div class="text-truncate flex-grow-1">
           <v-card-title class="text-h5 pa-4 d-block text-truncate">
             {{ preset.name }}
           </v-card-title>
-        </v-col>
+        </div>
         <debug-button v-if="debugEnabled" :preset="preset" />
         <share-button :preset="preset" />
         <delete-button :preset="preset" />
         <play-button :preset="preset" />
-      </v-row>
+      </div>
     </v-card>
   </v-fade-transition>
 </template>

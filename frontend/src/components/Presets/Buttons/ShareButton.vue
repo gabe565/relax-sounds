@@ -1,47 +1,40 @@
 <template>
-  <v-col class="flex-grow-0">
-    <v-btn elevation="0" icon variant="plain" aria-label="Share" @click.stop="show = true">
-      <v-icon :icon="ShareIcon" aria-hidden="true" />
-    </v-btn>
+  <v-btn elevation="0" icon variant="plain" aria-label="Share" @click.stop="show = true">
+    <v-icon :icon="ShareIcon" aria-hidden="true" />
+  </v-btn>
 
-    <v-dialog v-model="show" width="400">
-      <v-card>
-        <v-card-title class="text-h5">Share</v-card-title>
-        <v-card-text>
-          <v-text-field
-            readonly
-            :model-value="preset.shareUrl"
-            label="Share URL"
-            @focus="select"
-            @click="select"
-          />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn variant="text" @click="show = false">
-            <v-icon aria-hidden="true">$close</v-icon>
-            Close
-          </v-btn>
-          <v-btn variant="text" @click="copy">
-            <v-icon :icon="CopyIcon" aria-hidden="true" />
-            Copy
-          </v-btn>
-          <v-btn v-if="canShare" variant="text" @click="share">
-            <v-icon :icon="ShareIcon" aria-hidden="true" />
-            Share
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-snackbar
-      v-model="showSnackbar"
-      timeout="5000"
-      location="bottom"
-      content-class="mb-14 mb-md-0"
-    >
-      Copied to clipboard.
-    </v-snackbar>
-  </v-col>
+  <v-dialog v-model="show" width="400">
+    <v-card>
+      <v-card-title class="text-h5">Share</v-card-title>
+      <v-card-text>
+        <v-text-field
+          readonly
+          :model-value="preset.shareUrl"
+          label="Share URL"
+          @focus="select"
+          @click="select"
+        />
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn variant="text" @click="show = false">
+          <v-icon aria-hidden="true">$close</v-icon>
+          Close
+        </v-btn>
+        <v-btn variant="text" @click="copy">
+          <v-icon :icon="CopyIcon" aria-hidden="true" />
+          Copy
+        </v-btn>
+        <v-btn v-if="canShare" variant="text" @click="share">
+          <v-icon :icon="ShareIcon" aria-hidden="true" />
+          Share
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <v-snackbar v-model="showSnackbar" timeout="5000" location="bottom" content-class="mb-14 mb-md-0">
+    Copied to clipboard.
+  </v-snackbar>
 </template>
 
 <script setup>
