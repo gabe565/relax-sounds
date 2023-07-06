@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gabe565/relax-sounds/internal/handlers"
+	"github.com/gabe565/relax-sounds/internal/metrics"
 	_ "github.com/gabe565/relax-sounds/migrations"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
@@ -21,6 +22,12 @@ func main() {
 		e.Router.GET("/api/mix/:uuid/:query", handlers.Mix(app))
 		return nil
 	})
+
+	go func() {
+		if err := metrics.Serve(); err != nil {
+			log.Error(err)
+		}
+	}()
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
