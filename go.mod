@@ -8,7 +8,7 @@ require (
 	github.com/labstack/echo/v5 v5.0.0-20220201181537-ed2888cfa198
 	github.com/pocketbase/dbx v1.10.0
 	github.com/pocketbase/pocketbase v0.16.7
-	github.com/prometheus/client_golang v1.15.0
+	github.com/prometheus/client_golang v1.16.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/pflag v1.0.5
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
@@ -70,7 +70,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect
-	github.com/prometheus/procfs v0.9.0 // indirect
+	github.com/prometheus/procfs v0.10.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/cobra v1.7.0 // indirect
