@@ -9,7 +9,21 @@ import (
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/stream"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 )
+
+var activeStreamMetrics = promauto.NewGauge(prometheus.GaugeOpts{
+	Name:        "relax_sounds_active_streams",
+	Help:        "Active stream count",
+	ConstLabels: nil,
+})
+
+var totalStreamMetrics = promauto.NewCounter(prometheus.CounterOpts{
+	Name:        "relax_sounds_total_streams",
+	Help:        "Total stream count",
+	ConstLabels: nil,
+})
 
 type Entry struct {
 	RemoteAddr string
@@ -36,12 +50,18 @@ func NewEntry(remoteAddr, preset string) *Entry {
 		Created:    time.Now(),
 	}
 	entry.Accessed = entry.Created
+
+	activeStreamMetrics.Inc()
+	totalStreamMetrics.Inc()
+
 	return entry
 }
 
 func (e *Entry) Close() error {
 	e.Mu.Lock()
 	defer e.Mu.Unlock()
+
+	activeStreamMetrics.Dec()
 
 	return errors.Join(
 		e.Streams.Close(),
