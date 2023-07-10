@@ -52,7 +52,8 @@ export class Preset {
       uuid = nanoid();
       sessionStorage.setItem("uuid", uuid);
     }
-    return `${window.location.origin}/api/mix/${uuid}/${this.encodedShorthand}.${filetype}`;
+    const apiAddress = import.meta.env.VITE_API_ADDRESS || window.location.origin;
+    return `${apiAddress}/api/mix/${uuid}/${this.encodedShorthand}.${filetype}`;
   }
 
   get mixUrl() {
