@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gabe565/relax-sounds/internal/debug"
 	"github.com/gabe565/relax-sounds/internal/handlers"
 	"github.com/gabe565/relax-sounds/internal/metrics"
 	_ "github.com/gabe565/relax-sounds/migrations"
@@ -25,6 +26,12 @@ func main() {
 
 	go func() {
 		if err := metrics.Serve(); err != nil {
+			log.Error(err)
+		}
+	}()
+
+	go func() {
+		if err := debug.Serve(); err != nil {
 			log.Error(err)
 		}
 	}()
