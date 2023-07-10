@@ -41,11 +41,6 @@ func NewStreamer(rawFile fs.File, entry preset.Track) (streamer Streamer, err er
 		}
 	}
 
-	if format.NumChannels < 2 {
-		// Fix mono streams playing at 2x speed
-		beepStreamer = beep.ResampleRatio(3, 0.5, beepStreamer)
-	}
 	streamer.Streamer = beepStreamer
-
 	return streamer, nil
 }

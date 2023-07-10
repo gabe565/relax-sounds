@@ -56,7 +56,7 @@ require (
 	github.com/hajimehoshi/go-mp3 v0.3.3 // indirect
 	github.com/icza/bitio v1.1.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/jfreymuth/oggvorbis v1.0.3 // indirect
+	github.com/jfreymuth/oggvorbis v1.0.5 // indirect
 	github.com/jfreymuth/vorbis v1.0.2 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
@@ -108,4 +108,4 @@ require (
 
 replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1
 
-replace github.com/faiface/beep => github.com/gabe565/beep v1.2.0
+replace github.com/faiface/beep => github.com/gabe565/beep v1.1.1-0.20230710082849-74dbd70477f4
