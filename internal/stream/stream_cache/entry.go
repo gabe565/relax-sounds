@@ -14,15 +14,15 @@ import (
 )
 
 var activeStreamMetrics = promauto.NewGauge(prometheus.GaugeOpts{
-	Name:        "relax_sounds_active_streams",
-	Help:        "Active stream count",
-	ConstLabels: nil,
+	Namespace: "relax_sounds",
+	Name:      "active_streams",
+	Help:      "Active stream count",
 })
 
 var totalStreamMetrics = promauto.NewCounter(prometheus.CounterOpts{
-	Name:        "relax_sounds_total_streams",
-	Help:        "Total stream count",
-	ConstLabels: nil,
+	Namespace: "relax_sounds",
+	Name:      "total_streams",
+	Help:      "Total stream count",
 })
 
 type Entry struct {
