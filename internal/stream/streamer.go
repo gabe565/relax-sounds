@@ -22,9 +22,7 @@ func (s Streamer) Close() error {
 }
 
 func NewStreamer(rawFile fs.File, entry preset.Track) (streamer Streamer, err error) {
-	f := File{File: rawFile}
-
-	closer, format, err := f.Decode()
+	closer, format, err := Decode(rawFile)
 	if err != nil {
 		return streamer, err
 	}
