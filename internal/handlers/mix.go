@@ -101,7 +101,7 @@ func Mix(app core.App) echo.HandlerFunc {
 			}
 
 			// Get current filetype encoder
-			entry.Encoder, err = fileType.NewEncoder(&entry.Buffer, entry.Format)
+			entry.Encoder, err = fileType.NewEncoder(entry.Buffer, entry.Format)
 			if err != nil {
 				panic(err)
 			}
@@ -168,7 +168,7 @@ func Mix(app core.App) echo.HandlerFunc {
 
 		// Write buffered stream data to client
 		c.Response().WriteHeader(http.StatusPartialContent)
-		if _, err := io.Copy(c.Response(), &entry.Buffer); err != nil {
+		if _, err := io.Copy(c.Response(), entry.Buffer); err != nil {
 			if !errors.Is(err, syscall.EPIPE) && !errors.Is(err, syscall.ECONNRESET) {
 				panic(err)
 			}

@@ -33,7 +33,7 @@ type Entry struct {
 	Mix     beep.Streamer
 	Format  beep.Format
 
-	Buffer  bytes.Buffer
+	Buffer  *bytes.Buffer
 	Encoder encoder.Encoder
 
 	Mu        sync.Mutex
@@ -47,6 +47,7 @@ func NewEntry(remoteAddr, preset string) *Entry {
 	entry := &Entry{
 		RemoteAddr: remoteAddr,
 		Preset:     preset,
+		Buffer:     bytes.NewBuffer(make([]byte, 0, 3*1024*1024)),
 		Created:    time.Now(),
 	}
 	entry.Accessed = entry.Created
