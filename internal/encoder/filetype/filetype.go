@@ -8,7 +8,6 @@ import (
 	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/encoder/mp3"
-	"github.com/gabe565/relax-sounds/internal/encoder/wav"
 )
 
 //go:generate stringer -type FileType -linecomment
@@ -16,8 +15,7 @@ import (
 type FileType uint8
 
 const (
-	Wav FileType = iota // wav
-	Mp3                 // mp3
+	Mp3 FileType = iota // mp3
 )
 
 var ErrInvalidFileType = errors.New("invalid file type")
@@ -39,8 +37,6 @@ func (i *FileType) UnmarshalText(b []byte) error {
 
 func (i FileType) ContentType() string {
 	switch i {
-	case Wav:
-		return "audio/wav"
 	case Mp3:
 		return "audio/mp3"
 	}
@@ -49,8 +45,6 @@ func (i FileType) ContentType() string {
 
 func (i FileType) NewEncoder(w io.Writer, format beep.Format) (encoder.Encoder, error) {
 	switch i {
-	case Wav:
-		return wav.NewEncoder(w, format)
 	case Mp3:
 		return mp3.NewEncoder(w, format)
 	}

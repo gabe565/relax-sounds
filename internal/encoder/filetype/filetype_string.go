@@ -8,13 +8,12 @@ func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
-	_ = x[Wav-0]
-	_ = x[Mp3-1]
+	_ = x[Mp3-0]
 }
 
-const _FileType_name = "wavmp3"
+const _FileType_name = "mp3"
 
-var _FileType_index = [...]uint8{0, 3, 6}
+var _FileType_index = [...]uint8{0, 3}
 
 func (i FileType) String() string {
 	if i >= FileType(len(_FileType_index)-1) {
