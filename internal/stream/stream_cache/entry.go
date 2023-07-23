@@ -64,6 +64,10 @@ func (e *Entry) Close() error {
 
 	activeStreamMetrics.Dec()
 
+	defer func() {
+		e.Buffer = nil
+	}()
+
 	return errors.Join(
 		e.Streams.Close(),
 		e.Encoder.Close(),
