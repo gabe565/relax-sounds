@@ -154,9 +154,9 @@ func Mix(app core.App) echo.HandlerFunc {
 		}
 
 		if entry.TotalSize == 0 {
-			// Set total length to ~16 hours
+			// Set total length to ~24 hours
 			// Actual length will vary when using VBR
-			entry.TotalSize = entry.Buffer.Len() * int(16*time.Hour/chunkSize)
+			entry.TotalSize = entry.Buffer.Len() * int(24*time.Hour/chunkSize)
 		}
 
 		c.Response().Header().Set("Content-Length", strconv.Itoa(entry.Buffer.Len()))
