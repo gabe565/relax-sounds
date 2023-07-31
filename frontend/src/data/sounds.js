@@ -11,13 +11,13 @@ export const getSounds = async (force = false) => {
   const data = await pb.collection("sounds").getFullList({
     fields: "collectionId,id,old_id,name,icon,file,expand.tags.name",
     expand: "tags",
+    sort: "name",
   });
   sounds = data
     .map((sound) => ({
       ...sound,
       tags: sound.expand.tags?.map((tag) => tag.name),
     }))
-    .sort((left, right) => left.name.localeCompare(right.name))
     .map((sound) => new Sound(sound));
   return sounds;
 };
