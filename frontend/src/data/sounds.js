@@ -13,11 +13,12 @@ export const getSounds = async (force = false) => {
     expand: "tags",
     sort: "name",
   });
-  sounds = data
-    .map((sound) => ({
-      ...sound,
-      tags: sound.expand.tags?.map((tag) => tag.name),
-    }))
-    .map((sound) => new Sound(sound));
+  sounds = data.map(
+    (sound) =>
+      new Sound({
+        ...sound,
+        tags: sound.expand.tags?.map((tag) => tag.name),
+      }),
+  );
   return sounds;
 };
