@@ -68,7 +68,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=ref,event=branch
+            type=ref,event=branch,enable=${{ github.ref_name == 'main' }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Buildx
@@ -85,7 +85,7 @@ jobs:
         with:
           context: .
           pull: true
-          push: ${{ github.secret_source == 'Actions' }}
+          push: ${{ github.secret_source == 'Actions' && steps.meta.outputs.tags != '' }}
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
