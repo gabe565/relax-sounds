@@ -8,7 +8,10 @@ export const getSounds = async (force = false) => {
     return sounds;
   }
 
-  const data = await pb.collection("sounds").getFullList({ expand: "tags" });
+  const data = await pb.collection("sounds").getFullList({
+    fields: "collectionId,id,old_id,name,icon,file,expand.tags.name",
+    expand: "tags",
+  });
   sounds = data
     .map((sound) => ({
       ...sound,

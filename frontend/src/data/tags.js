@@ -7,6 +7,8 @@ export const getTags = async (force = false) => {
     return tags;
   }
 
-  tags = await pb.collection("tags").getFullList();
+  tags = await pb.collection("tags").getFullList({
+    fields: "icon,name",
+  });
   return tags;
 };
