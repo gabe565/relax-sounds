@@ -1,6 +1,6 @@
 module github.com/gabe565/relax-sounds
 
-go 1.20
+go 1.21
 
 require (
 	github.com/aofei/mimesniffer v1.2.1
