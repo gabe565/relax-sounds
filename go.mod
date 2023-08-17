@@ -6,7 +6,7 @@ require (
 	github.com/aofei/mimesniffer v1.2.1
 	github.com/faiface/beep v1.1.0
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
-	github.com/pocketbase/dbx v1.10.0
+	github.com/pocketbase/dbx v1.10.1
 	github.com/pocketbase/pocketbase v0.17.4
 	github.com/prometheus/client_golang v1.16.0
 	github.com/sirupsen/logrus v1.9.3
