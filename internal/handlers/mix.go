@@ -22,7 +22,22 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	log "github.com/sirupsen/logrus"
+	flag "github.com/spf13/pflag"
 )
+
+var chunkLength time.Duration
+
+func init() {
+	chunkLengthDefault := 2 * time.Minute
+	if env := os.Getenv("STREAM_CHUNK_LENGTH"); env != "" {
+		var err error
+		chunkLengthDefault, err = time.ParseDuration(env)
+		if err != nil {
+			log.WithError(err).Warn("Failed to parse STREAM_CHUNK_LENGTH")
+		}
+	}
+	flag.DurationVar(&chunkLength, "stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
+}
 
 func Mix(app core.App) echo.HandlerFunc {
 	cache := stream_cache.New()
@@ -135,13 +150,15 @@ func Mix(app core.App) echo.HandlerFunc {
 			}
 		}
 
-		chunkSize := 2 * time.Minute
+		var currChunkLength time.Duration
 		// First chunks will be smaller to minimize delay
 		switch entry.ChunkNum {
 		case 0:
-			chunkSize = 15 * time.Second
+			currChunkLength = 15 * time.Second
 		case 1:
-			chunkSize = time.Minute
+			currChunkLength = time.Minute
+		default:
+			currChunkLength = chunkLength
 		}
 
 		// Ensure a single stream isn't fetched in parallel
@@ -149,14 +166,14 @@ func Mix(app core.App) echo.HandlerFunc {
 		defer entry.Mu.Unlock()
 
 		// Mux streams to encoder
-		if err = encode.Encode(c.Request().Context(), chunkSize, entry); err != nil {
+		if err = encode.Encode(c.Request().Context(), currChunkLength, entry); err != nil {
 			panic(err)
 		}
 
 		if entry.TotalSize == 0 {
 			// Set total length to ~24 hours
 			// Actual length will vary when using VBR
-			entry.TotalSize = entry.Buffer.Len() * int(24*time.Hour/chunkSize)
+			entry.TotalSize = entry.Buffer.Len() * int(24*time.Hour/currChunkLength)
 		}
 
 		c.Response().Header().Set("Content-Length", strconv.Itoa(entry.Buffer.Len()))
