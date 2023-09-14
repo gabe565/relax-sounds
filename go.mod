@@ -2,6 +2,10 @@ module github.com/gabe565/relax-sounds
 
 go 1.21
 
+replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1
+
+replace github.com/faiface/beep => github.com/gabe565/beep v1.1.1-0.20230710082849-74dbd70477f4
+
 require (
 	github.com/aofei/mimesniffer v1.2.1
 	github.com/faiface/beep v1.1.0
@@ -105,7 +109,3 @@ require (
 	modernc.org/strutil v1.2.0 // indirect
 	modernc.org/token v1.1.0 // indirect
 )
-
-replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1
-
-replace github.com/faiface/beep => github.com/gabe565/beep v1.1.1-0.20230710082849-74dbd70477f4
