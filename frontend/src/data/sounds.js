@@ -15,7 +15,7 @@ export const getSounds = async (force = false) => {
   });
 
   sounds = data.map((sound) => {
-    sound.tags = sound.expand.tags?.map((tag) => tag.name);
+    sound.tags = sound.expand?.tags?.map((tag) => tag.name);
     delete sound.expand;
     return new Sound(sound);
   });
