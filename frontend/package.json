@@ -19,7 +19,7 @@
     "buffer": "6.0.3",
     "file-saver": "2.0.5",
     "fuse.js": "6.6.2",
-    "howler": "2.2.3",
+    "howler": "2.2.4",
     "nanoid": "5.0.1",
     "pinia": "2.1.6",
     "pocketbase": "0.18.0",
