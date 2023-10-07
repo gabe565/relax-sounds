@@ -22,7 +22,7 @@
     "howler": "2.2.3",
     "nanoid": "5.0.1",
     "pinia": "2.1.6",
-    "pocketbase": "0.18.0",
+    "pocketbase": "0.18.2",
     "register-service-worker": "1.7.2",
     "sass": "1.67.0",
     "unplugin-icons": "0.17.0",
