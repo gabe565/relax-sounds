@@ -9,7 +9,14 @@
         </template>
         <template v-else>
           <v-fade-transition group leave-absolute hide-on-leave>
-            <v-col v-for="sound of filters.sounds" :key="sound.id" cols="12" sm="6" md="4" lg="3">
+            <v-col
+              v-for="sound of filters.filteredSounds"
+              :key="sound.id"
+              cols="12"
+              sm="6"
+              md="4"
+              lg="3"
+            >
               <SoundCard :sound="sound" />
             </v-col>
           </v-fade-transition>

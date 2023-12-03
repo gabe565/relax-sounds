@@ -39,32 +39,12 @@
         <v-divider />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col>
-        <v-pagination
-          v-model="filters.filters.page"
-          :length="filters.pages"
-          size="small"
-          active-color="primary"
-        />
-      </v-col>
-    </v-row>
     <slot />
-    <v-row>
-      <v-col>
-        <v-pagination
-          v-model="filters.filters.page"
-          :length="filters.pages"
-          size="small"
-          active-color="primary"
-        />
-      </v-col>
-    </v-row>
   </template>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import SearchIcon from "~icons/material-symbols/search-rounded";
 import { useFiltersStore } from "../../plugins/store/filters";
 import { getTags } from "../../data/tags";
@@ -74,13 +54,6 @@ const tags = ref(null);
 const loading = ref(true);
 
 const filters = useFiltersStore();
-
-watch(
-  () => filters.page,
-  () => {
-    filters.page = 1;
-  },
-);
 
 onMounted(async () => {
   tags.value = await getTags();

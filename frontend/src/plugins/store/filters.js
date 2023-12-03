@@ -3,8 +3,6 @@ import Fuse from "fuse.js";
 import { computed, reactive, ref, watch } from "vue";
 import { usePlayerStore } from "./player";
 
-const PER_PAGE = 48;
-
 export const fuse = new Fuse([], {
   shouldSort: true,
   threshold: 0.3,
@@ -35,14 +33,6 @@ export const useFiltersStore = defineStore("filters", () => {
     return result;
   });
 
-  const sounds = computed(() => {
-    const result = filteredSounds.value;
-    const offset = PER_PAGE * (filters.value.page - 1);
-    return result?.slice(offset, offset + PER_PAGE);
-  });
-
-  const pages = computed(() => Math.max(Math.ceil(filteredSounds.value.length / PER_PAGE), 1));
-
   const updateSounds = (val = null) => {
     if (val === null) {
       val = usePlayerStore().sounds;
@@ -55,7 +45,5 @@ export const useFiltersStore = defineStore("filters", () => {
   return {
     filters,
     filteredSounds,
-    sounds,
-    pages,
   };
 });
