@@ -1,7 +1,7 @@
 <template>
   <PageLayout :alert="alert" :actions="actions">
     <v-row>
-      <v-col v-for="(preset, key) of presets.presets" :key="key" cols="12" md="6" xl="4">
+      <v-col v-for="(preset, key) of presets.presets" :key="key" cols="12" md="6" lg="4" xl="3">
         <PresetCard :preset="preset" />
       </v-col>
       <v-col v-if="presets.presets.length === 0">
