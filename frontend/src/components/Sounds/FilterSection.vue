@@ -7,6 +7,7 @@
         :prepend-inner-icon="SearchIcon"
         :loading="loading"
         clearable
+        persistent-clear
         rounded
         density="comfortable"
         hide-details
