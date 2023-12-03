@@ -4,11 +4,9 @@ go 1.21.4
 
 replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1
 
-replace github.com/faiface/beep => github.com/gabe565/beep v1.1.1-0.20230710082849-74dbd70477f4
-
 require (
 	github.com/aofei/mimesniffer v1.2.1
-	github.com/faiface/beep v1.1.0
+	github.com/gopxl/beep v1.3.0
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
 	github.com/pocketbase/dbx v1.10.1
 	github.com/pocketbase/pocketbase v0.19.4
@@ -58,7 +56,7 @@ require (
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/google/wire v0.5.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
-	github.com/hajimehoshi/go-mp3 v0.3.3 // indirect
+	github.com/hajimehoshi/go-mp3 v0.3.4 // indirect
 	github.com/icza/bitio v1.1.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jfreymuth/oggvorbis v1.0.5 // indirect
@@ -69,8 +67,8 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-sqlite3 v1.14.17 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
-	github.com/mewkiz/flac v1.0.7 // indirect
-	github.com/mewkiz/pkg v0.0.0-20211102230744-16a6ce8f1b77 // indirect
+	github.com/mewkiz/flac v1.0.8 // indirect
+	github.com/mewkiz/pkg v0.0.0-20230226050401-4010bf0fec14 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_model v0.4.1-0.20230718164431-9a2bf3000d16 // indirect

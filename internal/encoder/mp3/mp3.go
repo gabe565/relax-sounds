@@ -3,7 +3,7 @@ package mp3
 import (
 	"io"
 
-	"github.com/faiface/beep"
+	"github.com/gopxl/beep"
 	flag "github.com/spf13/pflag"
 	"github.com/viert/go-lame"
 )

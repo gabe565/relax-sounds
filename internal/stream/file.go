@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"io/fs"
 
-	"github.com/faiface/beep"
-	"github.com/faiface/beep/flac"
-	"github.com/faiface/beep/mp3"
-	"github.com/faiface/beep/vorbis"
-	"github.com/faiface/beep/wav"
 	"github.com/gabe565/relax-sounds/internal/util"
+	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/flac"
+	"github.com/gopxl/beep/mp3"
+	"github.com/gopxl/beep/vorbis"
+	"github.com/gopxl/beep/wav"
 )
 
 var ErrUnsupportedFileType = errors.New("unsupported file type")

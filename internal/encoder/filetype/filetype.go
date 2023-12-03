@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/encoder/mp3"
+	"github.com/gopxl/beep"
 )
 
 //go:generate stringer -type FileType -linecomment

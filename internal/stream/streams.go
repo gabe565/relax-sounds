@@ -5,8 +5,8 @@ import (
 	"io/fs"
 	"sync"
 
-	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/preset"
+	"github.com/gopxl/beep"
 )
 
 type Streams []Streamer

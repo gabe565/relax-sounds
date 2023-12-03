@@ -12,12 +12,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/faiface/beep"
 	"github.com/gabe565/relax-sounds/internal/encoder/encode"
 	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	"github.com/gabe565/relax-sounds/internal/stream/stream_cache"
+	"github.com/gopxl/beep"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"

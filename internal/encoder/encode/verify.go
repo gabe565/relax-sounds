@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/faiface/beep"
+	"github.com/gopxl/beep"
 )
 
 var (

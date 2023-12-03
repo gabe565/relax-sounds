@@ -3,9 +3,9 @@ package stream
 import (
 	"io/fs"
 
-	"github.com/faiface/beep"
-	"github.com/faiface/beep/effects"
 	"github.com/gabe565/relax-sounds/internal/preset"
+	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/effects"
 )
 
 type Streamer struct {
