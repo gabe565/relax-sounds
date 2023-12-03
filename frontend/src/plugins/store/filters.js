@@ -15,7 +15,7 @@ export const fuse = new Fuse([], {
 
 export const useFiltersStore = defineStore("filters", () => {
   const filters = ref({
-    word: "",
+    word: null,
     page: 1,
   });
 
