@@ -16,7 +16,6 @@ export const fuse = new Fuse([], {
 export const useFiltersStore = defineStore("filters", () => {
   const filters = ref({
     word: "",
-    playing: false,
     page: 1,
   });
 
@@ -26,9 +25,6 @@ export const useFiltersStore = defineStore("filters", () => {
       result = reactive(fuse.search(filters.value.word).map((e) => e.item));
     } else {
       result = usePlayerStore().sounds;
-    }
-    if (filters.value.playing) {
-      result = result.filter((e) => !e.isStopped);
     }
     return result;
   });

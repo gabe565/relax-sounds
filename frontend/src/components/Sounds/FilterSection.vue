@@ -13,9 +13,6 @@
           variant="underlined"
         />
       </v-col>
-      <v-col class="flex-grow-0 pb-0">
-        <v-switch v-model="filters.filters.playing" label="Playing" inset />
-      </v-col>
     </v-row>
     <v-row class="pb-5">
       <v-chip-group v-model="filters.filters.word" column>
@@ -60,9 +57,3 @@ onMounted(async () => {
   loading.value = false;
 });
 </script>
-
-<style scoped>
-.filters :deep(.v-input__control) {
-  grid-area: auto;
-}
-</style>
