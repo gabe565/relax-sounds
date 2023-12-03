@@ -40,7 +40,6 @@
       </v-combobox>
     </v-col>
   </v-row>
-  <slot />
 </template>
 
 <script setup>
