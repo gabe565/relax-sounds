@@ -83,15 +83,3 @@ onBeforeMount(() => {
   }
 });
 </script>
-
-<style lang="scss">
-.v-card--variant-outlined,
-.v-chip--variant-outlined,
-.v-btn--variant-outlined:not(.text-primary) {
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.v-card--variant-flat {
-  border: thin solid rgba(0, 0, 0, 0);
-}
-</style>

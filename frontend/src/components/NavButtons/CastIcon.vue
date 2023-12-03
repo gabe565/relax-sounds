@@ -1,7 +1,7 @@
 <template>
   <v-tooltip v-if="castEnabled" v-model="showTooltip" location="bottom" aria-label="Cast">
     <template #activator="{ props }">
-      <v-btn elevation="0" icon variant="plain" aria-label="Cast" @click.stop="element.click()">
+      <v-btn elevation="0" icon aria-label="Cast" @click.stop="element.click()">
         <v-icon v-bind="props">
           <google-cast-launcher ref="element" />
         </v-icon>

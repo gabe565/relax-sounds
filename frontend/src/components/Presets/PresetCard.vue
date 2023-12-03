@@ -1,9 +1,9 @@
 <template>
   <v-fade-transition>
     <v-card
-      :variant="preset.new ? 'flat' : 'outlined'"
+      variant="flat"
       :dark="preset.new"
-      :color="preset.new ? 'deep-purple darken-2' : ''"
+      :color="preset.new ? 'newPresetCardBackground' : 'cardBackground'"
       transition="fade-transition"
     >
       <div class="d-flex flex-row flex-nowrap align-center">

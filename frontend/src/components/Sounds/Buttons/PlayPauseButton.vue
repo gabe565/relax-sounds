@@ -2,7 +2,7 @@
   <v-btn
     elevation="0"
     icon
-    variant="plain"
+    color="transparent"
     :aria-label="sound.isPlaying ? 'Stop' : 'Play'"
     :loading="sound.isLoading"
     @click.stop="playStop"

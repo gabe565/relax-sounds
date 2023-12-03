@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-if="show" location="bottom" location-strategy="connected" max-width="400">
     <template #activator="{ props }">
-      <v-btn v-bind="props" elevation="0" icon variant="plain" aria-label="Volume">
+      <v-btn v-bind="props" elevation="0" icon color="transparent" aria-label="Volume">
         <v-icon :icon="VolumeIcon" aria-hidden="true" />
       </v-btn>
     </template>

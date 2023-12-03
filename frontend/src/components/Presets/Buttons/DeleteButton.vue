@@ -1,5 +1,5 @@
 <template>
-  <v-btn elevation="0" icon variant="plain" aria-label="Share" @click.stop="show = true">
+  <v-btn elevation="0" icon color="transparent" aria-label="Share" @click.stop="show = true">
     <v-icon :icon="TrashIcon" aria-hidden="true" />
   </v-btn>
 
