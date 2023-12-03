@@ -20,7 +20,7 @@
     "file-saver": "2.0.5",
     "fuse.js": "6.6.2",
     "howler": "2.2.4",
-    "nanoid": "5.0.1",
+    "nanoid": "5.0.4",
     "pinia": "2.1.7",
     "pocketbase": "0.18.2",
     "register-service-worker": "1.7.2",
