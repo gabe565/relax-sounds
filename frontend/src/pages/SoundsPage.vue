@@ -8,7 +8,7 @@
           </v-overlay>
         </template>
         <template v-else>
-          <v-col v-for="(sound, key) of filters.sounds" :key="key" cols="12" md="6" lg="4">
+          <v-col v-for="(sound, key) of filters.sounds" :key="key" cols="12" sm="6" md="4" lg="3">
             <SoundCard :sound="sound" />
           </v-col>
         </template>

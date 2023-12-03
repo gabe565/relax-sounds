@@ -4,6 +4,7 @@ import { Preset } from "../util/Preset";
 import { usePresetsStore } from "./store/presets";
 import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
 import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
+import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,6 +16,16 @@ const router = createRouter({
       props: true,
       meta: {
         icon: SoundsIcon,
+        showInNav: true,
+      },
+    },
+    {
+      path: "/mixer",
+      name: "Mixer",
+      component: () => import("../pages/MixerPage.vue"),
+      props: true,
+      meta: {
+        icon: MixerIcon,
         showInNav: true,
       },
     },

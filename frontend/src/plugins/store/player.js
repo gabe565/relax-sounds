@@ -123,6 +123,24 @@ export const usePlayerStore = defineStore("player", () => {
     }
   };
 
+  const playPause = async ({ sound, fade = 250, local = false }) => {
+    if (sound.state === SoundState.PLAYING) {
+      pause({ sound, fade });
+    } else {
+      if (!castConnected.value && sound.isUnloaded) {
+        await sound.load();
+      }
+      if (sound.isPaused) {
+        fade = false;
+      }
+      play({ sound, fade });
+    }
+    currentName.value = null;
+    if (!local && castConnected) {
+      await updateCast();
+    }
+  };
+
   const pauseAll = ({ local = false } = {}) => {
     soundsPlaying.value.forEach((sound) => {
       pause({ sound });
@@ -274,6 +292,7 @@ export const usePlayerStore = defineStore("player", () => {
     volume,
     castConnectedChanged,
     playStop,
+    playPause,
     pauseAll,
     playPauseAll,
     stopAll,
