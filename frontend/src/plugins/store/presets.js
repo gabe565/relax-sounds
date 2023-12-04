@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { SoundState } from "../../util/Sound";
 import { Preset } from "../../util/Preset";
 import { usePlayerStore } from "./player";
@@ -49,7 +49,7 @@ const loadState = () => {
       saveState(state);
     }
 
-    return state.presets.map((preset) => new Preset(preset));
+    return state.presets.map((preset) => new Preset(preset)).filter((preset) => !preset.hidden);
   }
   return [];
 };
@@ -70,15 +70,42 @@ export const usePresetsStore = defineStore("presets", () => {
     saveState(presets.value);
   };
 
+  const active = computed(() => {
+    return presets.value.filter((preset) => !preset.hidden);
+  });
+
+  const hide = ({ preset }) => {
+    preset.hidden = true;
+    saveState(presets.value);
+  };
+
+  const hideAll = () => {
+    for (const preset of presets.value) {
+      preset.hidden = true;
+    }
+    saveState(presets.value);
+  };
+
+  const unhide = ({ preset }) => {
+    delete preset.hidden;
+    saveState(presets.value);
+  };
+
+  const unhideAll = () => {
+    for (const preset of presets.value) {
+      delete preset.hidden;
+    }
+    saveState(presets.value);
+  };
+
   const remove = ({ preset }) => {
     const index = presets.value.indexOf(preset);
     presets.value.splice(index, 1);
     saveState(presets.value);
   };
 
-  const removeAll = () => {
-    presets.value = [];
-    usePlayerStore().currentName = null;
+  const removeHidden = () => {
+    presets.value = presets.value.filter((preset) => !preset.hidden);
     saveState(presets.value);
   };
 
@@ -132,8 +159,13 @@ export const usePresetsStore = defineStore("presets", () => {
   return {
     presets,
     add,
+    active,
+    hide,
+    hideAll,
+    unhide,
+    unhideAll,
     remove,
-    removeAll,
+    removeHidden,
     savePlaying,
     play,
     migrate,

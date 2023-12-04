@@ -1,33 +1,14 @@
 <template>
-  <v-btn elevation="0" icon color="transparent" aria-label="Share" @click.stop="show = true">
+  <v-btn elevation="0" icon color="transparent" aria-label="Share" @click.stop="remove">
     <v-icon :icon="TrashIcon" aria-hidden="true" />
   </v-btn>
-
-  <v-dialog v-model="show" width="400">
-    <v-card>
-      <v-card-title class="text-h5">Confirm</v-card-title>
-      <v-card-text>Delete the preset "{{ preset.name }}"?</v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn variant="text" @click="show = false">
-          <v-icon aria-hidden="true">$close</v-icon>
-          Close
-        </v-btn>
-        <v-btn color="red" variant="text" @click="remove">
-          <v-icon aria-hidden="true">$complete</v-icon>
-          Delete
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import TrashIcon from "~icons/material-symbols/delete-rounded";
-import { wait } from "../../../util/helpers";
 import { usePresetsStore } from "../../../plugins/store/presets";
 import { useToast } from "vue-toastification";
+import DeleteToast from "./DeleteToast.vue";
 
 const props = defineProps({
   preset: {
@@ -36,13 +17,28 @@ const props = defineProps({
   },
 });
 
+const presets = usePresetsStore();
 const toast = useToast();
-const show = ref(false);
 
 const remove = async () => {
-  show.value = false;
-  await wait(300);
-  usePresetsStore().remove({ preset: props.preset });
-  toast.success(`Removed "${props.preset.name}".`, { icon: TrashIcon });
+  presets.hide({ preset: props.preset });
+  toast.success(
+    {
+      component: DeleteToast,
+      props: {
+        preset: props.preset,
+      },
+    },
+    {
+      icon: TrashIcon,
+      timeout: 10000,
+      closeOnClick: false,
+      onClose: () => {
+        if (props.preset.hidden) {
+          presets.remove({ preset: props.preset });
+        }
+      },
+    },
+  );
 };
 </script>

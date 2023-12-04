@@ -2,17 +2,16 @@
   <PageLayout :actions="actions">
     <v-row>
       <v-fade-transition group leave-absolute>
-        <v-col v-for="preset of presets.presets" :key="preset.name" cols="12" md="6" lg="4" xl="3">
+        <v-col v-for="preset of presets.active" :key="preset.name" cols="12" md="6" lg="4" xl="3">
           <PresetCard :preset="preset" />
         </v-col>
-        <v-col v-if="presets.presets.length === 0">
+        <v-col v-if="presets.active.length === 0">
           <v-alert prominent text type="info">No Presets Saved Yet!</v-alert>
         </v-col>
       </v-fade-transition>
     </v-row>
 
     <restore-presets v-model="showRestore" />
-    <remove-all v-model="showRemoveAll" />
   </PageLayout>
 </template>
 
@@ -25,14 +24,13 @@ import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
 import PresetCard from "../components/Presets/PresetCard.vue";
 import PageLayout from "../layouts/PageLayout.vue";
 import RestorePresets from "../components/Presets/Actions/RestorePresets.vue";
-import RemoveAll from "../components/Presets/Actions/RemoveAll.vue";
+import RemoveAllToast from "../components/Presets/Actions/RemoveAllToast.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";
 import { useToast } from "vue-toastification";
 
 const toast = useToast();
 const showRestore = ref(false);
-const showRemoveAll = ref(false);
 
 const presets = usePresetsStore();
 
@@ -71,7 +69,13 @@ const actions = [
     icon: RemoveAllIcon,
     on: {
       click: () => {
-        showRemoveAll.value = true;
+        presets.hideAll();
+        toast.success(RemoveAllToast, {
+          icon: RemoveAllIcon,
+          timeout: 10000,
+          closeOnClick: false,
+          onClose: presets.removeHidden,
+        });
       },
     },
   },
