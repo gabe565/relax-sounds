@@ -44,6 +44,8 @@ const openUrl = async () => {
   let preset;
   if (props.preset) {
     preset = props.preset;
+  } else if (player.isPaused) {
+    preset = new Preset({ sounds: player.soundsNotStopped });
   } else {
     preset = new Preset({ sounds: player.soundsPlaying });
   }
