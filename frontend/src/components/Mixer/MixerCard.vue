@@ -11,17 +11,19 @@
       <v-row no-gutters dense class="pr-2">
         <v-col cols="12">
           <v-slider
-            v-model="volumePercentage"
+            v-model="volume"
             :prepend-icon="VolumeIcon"
             :min="0"
-            :max="100"
-            :step="1"
+            :max="1"
+            :step="0.01"
             thumb-size="12"
             thumb-label
             track-size="1"
             hide-details
             aria-label="Volume"
-          />
+          >
+            <template #thumb-label>{{ Math.round(volume * 100) }}%</template>
+          </v-slider>
         </v-col>
         <v-col cols="12">
           <v-slider
@@ -35,7 +37,9 @@
             track-size="1"
             hide-details
             aria-label="Speed"
-          />
+          >
+            <template #thumb-label>{{ Math.round(rate * 100) }}%</template>
+          </v-slider>
         </v-col>
       </v-row>
 
@@ -76,23 +80,16 @@ const props = defineProps({
 const player = usePlayerStore();
 const iconColor = computed(() => (props.sound.isPlaying ? "primary" : ""));
 
-// const showVolume = computed(() => !props.sound.isStopped);
-
-const volumePercentage = computed({
-  get() {
-    return props.sound.volume * 100;
-  },
+const volume = computed({
+  get: () => props.sound.volume,
   set(value) {
-    value /= 100;
     player.volume({ sound: props.sound, value });
     usePlayerStore().updateCast();
   },
 });
 
 const rate = computed({
-  get() {
-    return props.sound.rate;
-  },
+  get: () => props.sound.rate,
   set(value) {
     player.rate({ sound: props.sound, value });
     usePlayerStore().updateCast();
