@@ -49,8 +49,9 @@ import SearchIcon from "~icons/material-symbols/search-rounded";
 import { useFiltersStore } from "../../plugins/store/filters";
 import { getTags } from "../../data/tags";
 import { Icon } from "@iconify/vue";
-import { toast } from "vue3-toastify";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
 const tags = ref([]);
 const loading = ref(true);
 

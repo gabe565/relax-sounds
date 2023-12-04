@@ -34,7 +34,7 @@ import SoundCard from "../components/Sounds/SoundCard.vue";
 import FilterSection from "../components/Sounds/FilterSection.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { useFiltersStore } from "../plugins/store/filters";
-import { toast } from "vue3-toastify";
+import { useToast } from "vue-toastification";
 
 const loading = ref(true);
 
@@ -50,6 +50,7 @@ const actions = [
   },
 ];
 
+const toast = useToast();
 const filters = useFiltersStore();
 
 onMounted(async () => {

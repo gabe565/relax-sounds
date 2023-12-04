@@ -27,7 +27,7 @@ import { ref } from "vue";
 import TrashIcon from "~icons/material-symbols/delete-rounded";
 import { wait } from "../../../util/helpers";
 import { usePresetsStore } from "../../../plugins/store/presets";
-import { toast } from "vue3-toastify";
+import { useToast } from "vue-toastification";
 
 const props = defineProps({
   preset: {
@@ -36,6 +36,7 @@ const props = defineProps({
   },
 });
 
+const toast = useToast();
 const show = ref(false);
 
 const remove = async () => {

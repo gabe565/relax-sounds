@@ -1,8 +1,8 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import Vue3Toastify, { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+import Toast, { POSITION } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 import vuetify from "./plugins/vuetify";
 import router from "./plugins/router";
 import App from "./App.vue";
@@ -14,7 +14,9 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 const toastOptions = {
-  position: toast.POSITION.BOTTOM_RIGHT,
+  position: POSITION.BOTTOM_RIGHT,
+  showCloseButtonOnHover: true,
+  transition: "Vue-Toastification__fade",
 };
 
-createApp(App).use(pinia).use(vuetify).use(router).use(Vue3Toastify, toastOptions).mount("#app");
+createApp(App).use(pinia).use(vuetify).use(router).use(Toast, toastOptions).mount("#app");

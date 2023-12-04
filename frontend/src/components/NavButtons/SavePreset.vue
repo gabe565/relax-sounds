@@ -43,8 +43,8 @@ import { wait } from "../../util/helpers";
 import { usePlayerStore } from "../../plugins/store/player";
 import { usePresetsStore } from "../../plugins/store/presets";
 import { VBtn, VListItem } from "vuetify/components";
+import { useToast } from "vue-toastification";
 import SaveIcon from "~icons/material-symbols/save-rounded";
-import { toast } from "vue3-toastify";
 
 defineProps({
   button: {
@@ -53,6 +53,7 @@ defineProps({
   },
 });
 
+const toast = useToast();
 const showDialog = ref(false);
 const name = ref("");
 const player = usePlayerStore();

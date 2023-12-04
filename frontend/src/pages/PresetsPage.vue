@@ -28,8 +28,9 @@ import RestorePresets from "../components/Presets/Actions/RestorePresets.vue";
 import RemoveAll from "../components/Presets/Actions/RemoveAll.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";
-import { toast } from "vue3-toastify";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
 const showRestore = ref(false);
 const showRemoveAll = ref(false);
 

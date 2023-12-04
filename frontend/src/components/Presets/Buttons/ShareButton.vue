@@ -35,7 +35,7 @@ import { computed, nextTick, ref } from "vue";
 import ShareIcon from "~icons/material-symbols/share";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import { Preset } from "../../../util/Preset";
-import { toast } from "vue3-toastify";
+import { useToast } from "vue-toastification";
 
 const props = defineProps({
   preset: {
@@ -44,6 +44,7 @@ const props = defineProps({
   },
 });
 
+const toast = useToast();
 const show = ref(false);
 
 const shareData = computed(() => {

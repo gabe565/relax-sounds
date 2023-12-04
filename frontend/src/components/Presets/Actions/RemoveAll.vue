@@ -24,9 +24,9 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import { usePresetsStore } from "../../../plugins/store/presets";
+import { useToast } from "vue-toastification";
 import { wait } from "../../../util/helpers";
 import TrashIcon from "~icons/material-symbols/delete-rounded";
-import { toast } from "vue3-toastify";
 
 let timeout;
 
@@ -36,6 +36,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
+const toast = useToast();
 const presets = usePresetsStore();
 const show = ref(false);
 const countdown = ref(0);

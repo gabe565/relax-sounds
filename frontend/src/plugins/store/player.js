@@ -6,7 +6,9 @@ import { formatError, getCastSession } from "../../util/googleCast";
 import { Preset } from "../../util/Preset";
 import pb from "../pocketbase";
 import { wait } from "../../util/helpers";
-import { toast } from "vue3-toastify";
+import { TYPE, useToast } from "vue-toastification";
+
+const toast = useToast();
 
 export const usePlayerStore = defineStore("player", () => {
   const sounds = ref([]);
@@ -282,8 +284,9 @@ export const usePlayerStore = defineStore("player", () => {
   };
 
   const prefetch = async () => {
+    const id = toast.info("Preloading sounds...");
     try {
-      const promise = Promise.all(
+      await Promise.all(
         sounds.value.map(async (sound) => {
           sound.isLoading = true;
           const url = pb.getFileUrl(sound, sound.file);
@@ -291,13 +294,24 @@ export const usePlayerStore = defineStore("player", () => {
           sound.isLoading = false;
         }),
       );
-      await toast.promise(promise, {
-        pending: "Preloading sounds",
-        success: "Sounds preloaded successfully.",
-        error: "Failed to preload sounds.",
-      });
+      toast.update(
+        id,
+        {
+          content: "Preloaded all sounds.",
+          options: { type: TYPE.SUCCESS },
+        },
+        true,
+      );
     } catch (err) {
       console.error(err);
+      toast.update(
+        id,
+        {
+          content: "Failed to preload sounds.",
+          options: { type: TYPE.ERROR },
+        },
+        true,
+      );
     }
   };
 
