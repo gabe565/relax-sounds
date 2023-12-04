@@ -1,5 +1,5 @@
 <template>
-  <PageLayout :alert="alert" :actions="actions">
+  <PageLayout :actions="actions">
     <filter-section />
 
     <v-row>
@@ -34,13 +34,7 @@ import SoundCard from "../components/Sounds/SoundCard.vue";
 import FilterSection from "../components/Sounds/FilterSection.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { useFiltersStore } from "../plugins/store/filters";
-
-defineProps({
-  alert: {
-    type: Object,
-    default: null,
-  },
-});
+import { toast } from "vue3-toastify";
 
 const loading = ref(true);
 
@@ -59,7 +53,13 @@ const actions = [
 const filters = useFiltersStore();
 
 onMounted(async () => {
-  await usePlayerStore().initSounds();
-  loading.value = false;
+  try {
+    await usePlayerStore().initSounds();
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to fetch sounds.");
+  } finally {
+    loading.value = false;
+  }
 });
 </script>

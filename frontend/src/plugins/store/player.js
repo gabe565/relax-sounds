@@ -6,6 +6,7 @@ import { formatError, getCastSession } from "../../util/googleCast";
 import { Preset } from "../../util/Preset";
 import pb from "../pocketbase";
 import { wait } from "../../util/helpers";
+import { toast } from "vue3-toastify";
 
 export const usePlayerStore = defineStore("player", () => {
   const sounds = ref([]);
@@ -98,6 +99,8 @@ export const usePlayerStore = defineStore("player", () => {
           await castSession.loadMedia(request);
         } catch (error) {
           console.error(`Remote media load error: ${formatError(error)}`);
+          toast.error("Failed to cast");
+          return;
         }
       }
     } else if (remotePlayerController) {
@@ -110,7 +113,13 @@ export const usePlayerStore = defineStore("player", () => {
       stop({ sound, fade });
     } else {
       if (!castConnected.value && sound.isUnloaded) {
-        await sound.load();
+        try {
+          await sound.load();
+        } catch (err) {
+          console.error(err);
+          toast.error(`Failed to load ${sound.name}.`);
+          return;
+        }
       }
       if (sound.isPaused) {
         fade = false;
@@ -128,7 +137,13 @@ export const usePlayerStore = defineStore("player", () => {
       pause({ sound, fade });
     } else {
       if (!castConnected.value && sound.isUnloaded) {
-        await sound.load();
+        try {
+          await sound.load();
+        } catch (err) {
+          console.error(err);
+          toast.error(`Failed to load ${sound.name}.`);
+          return;
+        }
       }
       if (sound.isPaused) {
         fade = false;
@@ -159,7 +174,13 @@ export const usePlayerStore = defineStore("player", () => {
           pause({ sound });
         } else {
           if (!castConnected.value && sound.isUnloaded) {
-            await sound.load();
+            try {
+              await sound.load();
+            } catch (err) {
+              console.error(err);
+              toast.error(`Failed to load ${sound.name}.`);
+              return;
+            }
           }
           play({ sound, fade: 0 });
         }
@@ -261,18 +282,23 @@ export const usePlayerStore = defineStore("player", () => {
   };
 
   const prefetch = async () => {
-    return Promise.all(
-      sounds.value.map(async (sound) => {
-        sound.isLoading = true;
-        try {
+    try {
+      const promise = Promise.all(
+        sounds.value.map(async (sound) => {
+          sound.isLoading = true;
           const url = pb.getFileUrl(sound, sound.file);
           await fetch(url);
-        } catch (error) {
-          console.error(error);
-        }
-        sound.isLoading = false;
-      }),
-    );
+          sound.isLoading = false;
+        }),
+      );
+      await toast.promise(promise, {
+        pending: "Preloading sounds",
+        success: "Sounds preloaded successfully.",
+        error: "Failed to preload sounds.",
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return {

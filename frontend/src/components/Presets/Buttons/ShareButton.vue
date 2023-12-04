@@ -28,9 +28,6 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-snackbar v-model="showSnackbar" timeout="5000" location="bottom" content-class="mb-14 mb-md-0">
-    Copied to clipboard.
-  </v-snackbar>
 </template>
 
 <script setup>
@@ -38,6 +35,7 @@ import { computed, nextTick, ref } from "vue";
 import ShareIcon from "~icons/material-symbols/share";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import { Preset } from "../../../util/Preset";
+import { toast } from "vue3-toastify";
 
 const props = defineProps({
   preset: {
@@ -47,7 +45,6 @@ const props = defineProps({
 });
 
 const show = ref(false);
-const showSnackbar = ref(false);
 
 const shareData = computed(() => {
   return {
@@ -74,17 +71,24 @@ const select = async (event) => {
 };
 
 const copy = async () => {
-  await navigator.clipboard.writeText(props.preset.shareUrl);
-  if (showSnackbar.value) {
-    showSnackbar.value = false;
-    await this.$nextTick();
+  try {
+    await navigator.clipboard.writeText(props.preset.shareUrl);
+    toast.success("Copied to clipboard.", { icon: CopyIcon });
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to copy to clipboard.");
+  } finally {
+    show.value = false;
   }
-  showSnackbar.value = true;
-  show.value = false;
 };
 
 const share = async () => {
-  await navigator.share(shareData.value);
-  show.value = false;
+  try {
+    await navigator.share(shareData.value);
+    show.value = false;
+  } catch (err) {
+    console.error(err);
+    show.value = true;
+  }
 };
 </script>

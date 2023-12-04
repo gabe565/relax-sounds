@@ -42,8 +42,9 @@ import AddIcon from "~icons/material-symbols/add-circle-rounded";
 import { wait } from "../../util/helpers";
 import { usePlayerStore } from "../../plugins/store/player";
 import { usePresetsStore } from "../../plugins/store/presets";
-import { useAlertStore } from "../../plugins/store/alert";
 import { VBtn, VListItem } from "vuetify/components";
+import SaveIcon from "~icons/material-symbols/save-rounded";
+import { toast } from "vue3-toastify";
 
 defineProps({
   button: {
@@ -66,18 +67,14 @@ const save = async () => {
   showDialog.value = false;
   await wait(300);
 
-  const alert = useAlertStore();
   try {
     usePresetsStore().savePlaying({ name: name.value });
-    alert.type = "info";
-    alert.message = `Preset "${name.value}" saved successfully.`;
+    toast.success(`Saved "${name.value}".`, { icon: SaveIcon });
     name.value = "";
+    return router.push({ name: "Presets" });
   } catch (error) {
     console.error(error);
-    alert.type = "error";
-    alert.message = "Failed to save preset. Please try again later.";
+    toast.error("Failed to save preset.");
   }
-  alert.show = true;
-  return router.push({ name: "Presets" });
 };
 </script>

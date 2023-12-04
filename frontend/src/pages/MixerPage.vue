@@ -1,5 +1,5 @@
 <template>
-  <PageLayout :alert="alert">
+  <PageLayout>
     <v-row>
       <v-fade-transition group leave-absolute>
         <v-col
@@ -24,13 +24,6 @@
 import PageLayout from "../layouts/PageLayout.vue";
 import MixerCard from "../components/Mixer/MixerCard.vue";
 import { usePlayerStore } from "../plugins/store/player";
-
-defineProps({
-  alert: {
-    type: Object,
-    default: null,
-  },
-});
 
 const player = usePlayerStore();
 </script>

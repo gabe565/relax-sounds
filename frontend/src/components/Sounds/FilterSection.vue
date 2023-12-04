@@ -49,6 +49,7 @@ import SearchIcon from "~icons/material-symbols/search-rounded";
 import { useFiltersStore } from "../../plugins/store/filters";
 import { getTags } from "../../data/tags";
 import { Icon } from "@iconify/vue";
+import { toast } from "vue3-toastify";
 
 const tags = ref([]);
 const loading = ref(true);
@@ -56,7 +57,13 @@ const loading = ref(true);
 const filters = useFiltersStore();
 
 onMounted(async () => {
-  tags.value = await getTags();
-  loading.value = false;
+  try {
+    tags.value = await getTags();
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to fetch tags.");
+  } finally {
+    loading.value = false;
+  }
 });
 </script>

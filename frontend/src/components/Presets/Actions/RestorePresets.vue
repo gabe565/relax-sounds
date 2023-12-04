@@ -27,14 +27,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar
-      v-model="showSnackbar"
-      timeout="5000"
-      location="bottom"
-      content-class="mb-14 mb-md-0"
-    >
-      Imported {{ imported }} preset{{ imported !== 1 ? "s" : "" }}.
-    </v-snackbar>
   </div>
 </template>
 
@@ -42,6 +34,8 @@
 import { ref, watch } from "vue";
 import { Preset } from "../../../util/Preset";
 import { usePresetsStore } from "../../../plugins/store/presets";
+import RestoreIcon from "~icons/material-symbols/backup";
+import { toast } from "vue3-toastify";
 
 const props = defineProps({
   modelValue: Boolean,
@@ -52,8 +46,6 @@ const emit = defineEmits(["update:modelValue"]);
 const show = ref(false);
 const file = ref(null);
 const error = ref(false);
-const showSnackbar = ref(false);
-const imported = ref(0);
 
 watch(
   () => props.modelValue,
@@ -67,16 +59,23 @@ watch(show, (val) => emit("update:modelValue", val));
 const restore = async () => {
   try {
     const presets = JSON.parse(await file.value[0].text());
-    await Promise.all(
-      presets.map(async (preset) => {
-        preset = new Preset(preset);
-        await preset.migrate();
-        usePresetsStore().add({ preset, playing: false });
-      }),
-    );
-    show.value = false;
-    imported.value = presets.length;
-    showSnackbar.value = true;
+    try {
+      await Promise.all(
+        presets.map(async (preset) => {
+          preset = new Preset(preset);
+          await preset.migrate();
+          usePresetsStore().add({ preset, playing: false });
+        }),
+      );
+      toast.success(`Imported ${presets.length} preset${presets.length !== 1 ? "s" : ""}.`, {
+        icon: RestoreIcon,
+      });
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to import presets.");
+    } finally {
+      show.value = false;
+    }
   } catch (e) {
     console.error(e);
     error.value = true;

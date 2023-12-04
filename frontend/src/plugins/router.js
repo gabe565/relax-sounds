@@ -5,6 +5,8 @@ import { usePresetsStore } from "./store/presets";
 import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
 import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
 import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
+import { wait } from "../util/helpers";
+import { toast } from "vue3-toastify";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -42,22 +44,23 @@ const router = createRouter({
     {
       path: "/import/:name/:songs",
       redirect: ({ params }) => {
-        let redirectParams;
         try {
           const preset = new Preset({ new: true });
           preset.encodedName = params.name;
           preset.encodedShorthand = params.songs;
           usePresetsStore().add({ preset });
+          (async () => {
+            await wait(500);
+            toast.success(`Imported ${preset.name}.`);
+          })();
         } catch (error) {
           console.error(error);
-          redirectParams = {
-            alert: {
-              type: "error",
-              text: "Could not import preset. Please try again later.",
-            },
-          };
+          (async () => {
+            await wait(500);
+            toast.error("Failed to import preset.");
+          })();
         }
-        return { name: "Presets", params: redirectParams };
+        return { name: "Presets" };
       },
     },
     {

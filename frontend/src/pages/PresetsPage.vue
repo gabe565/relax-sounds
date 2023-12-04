@@ -1,5 +1,5 @@
 <template>
-  <PageLayout :alert="alert" :actions="actions">
+  <PageLayout :actions="actions">
     <v-row>
       <v-fade-transition group leave-absolute>
         <v-col v-for="preset of presets.presets" :key="preset.name" cols="12" md="6" lg="4" xl="3">
@@ -28,13 +28,7 @@ import RestorePresets from "../components/Presets/Actions/RestorePresets.vue";
 import RemoveAll from "../components/Presets/Actions/RemoveAll.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";
-
-defineProps({
-  alert: {
-    type: Object,
-    default: null,
-  },
-});
+import { toast } from "vue3-toastify";
 
 const showRestore = ref(false);
 const showRemoveAll = ref(false);
@@ -51,6 +45,7 @@ const exportPresets = () => {
     .slice(0, -5) // Remove ".000Z"
     .replaceAll(":", "");
   saveAs(blob, `relax-sounds-presets-${localISOTime}.json`);
+  toast.success(`Downloaded ${presets.presets.length} presets.`, { icon: BackupIcon });
 };
 
 const actions = [
@@ -82,7 +77,17 @@ const actions = [
 ];
 
 onMounted(async () => {
-  await usePlayerStore().initSounds();
-  await usePresetsStore().migrate();
+  try {
+    await usePlayerStore().initSounds();
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to fetch sounds.");
+  }
+  try {
+    await usePresetsStore().migrate();
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to migrate presets.");
+  }
 });
 </script>

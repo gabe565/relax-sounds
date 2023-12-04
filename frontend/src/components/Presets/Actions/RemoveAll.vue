@@ -18,21 +18,15 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar
-      v-model="showSnackbar"
-      timeout="5000"
-      location="bottom"
-      content-class="mb-14 mb-md-0"
-    >
-      All presets have been removed.
-    </v-snackbar>
   </div>
 </template>
 
 <script setup>
 import { computed, ref, watch } from "vue";
-import { wait } from "../../../util/helpers";
 import { usePresetsStore } from "../../../plugins/store/presets";
+import { wait } from "../../../util/helpers";
+import TrashIcon from "~icons/material-symbols/delete-rounded";
+import { toast } from "vue3-toastify";
 
 let timeout;
 
@@ -42,11 +36,10 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
+const presets = usePresetsStore();
 const show = ref(false);
-const showSnackbar = ref(false);
 const countdown = ref(0);
-
-const count = computed(() => usePresetsStore().presets.length || 0);
+const count = computed(() => presets.presets.length || 0);
 
 watch(
   () => props.modelValue,
@@ -75,7 +68,8 @@ watch(show, (val) => {
 const remove = async () => {
   show.value = false;
   await wait(300);
-  usePresetsStore().removeAll();
-  showSnackbar.value = true;
+  const prevCount = count.value;
+  presets.removeAll();
+  toast.success(`Removed ${prevCount} presets.`, { icon: TrashIcon });
 };
 </script>

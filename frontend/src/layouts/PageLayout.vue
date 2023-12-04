@@ -38,23 +38,12 @@
       </v-col>
     </v-row>
 
-    <v-fade-transition>
-      <v-row v-if="alert.show">
-        <v-col>
-          <v-alert v-model="alert.show" closable prominent text :type="alert.type">
-            {{ alert.message }}
-          </v-alert>
-        </v-col>
-      </v-row>
-    </v-fade-transition>
-
     <slot />
   </v-container>
 </template>
 
 <script setup>
 import MenuIcon from "~icons/material-symbols/more-horiz";
-import { useAlertStore } from "../plugins/store/alert";
 
 defineProps({
   actions: {
@@ -62,6 +51,4 @@ defineProps({
     default: null,
   },
 });
-
-const alert = useAlertStore();
 </script>
