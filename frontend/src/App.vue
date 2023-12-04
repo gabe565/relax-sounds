@@ -46,6 +46,7 @@
         <StopAll />
         <SavePreset />
         <CastIcon />
+        <debug-button v-if="debugEnabled" list-item />
       </v-list>
 
       <template #append>
@@ -103,9 +104,11 @@ import CastIcon from "./components/NavButtons/CastIcon.vue";
 import LeftPanelCloseIcon from "~icons/material-symbols/left-panel-close-rounded";
 import LeftPanelOpenIcon from "~icons/material-symbols/left-panel-open-rounded";
 import { usePreferencesStore } from "./plugins/store/preferences";
+import DebugButton from "./components/Presets/Buttons/DebugButton.vue";
 
 const { smAndDown: isMobile } = useDisplay();
 const preferences = usePreferencesStore();
+const debugEnabled = import.meta.env.DEV;
 
 const routes = computed(() => {
   return useRouter().options.routes.filter((route) => route.meta?.showInNav);

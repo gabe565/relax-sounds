@@ -1,36 +1,55 @@
 <template>
-  <v-btn elevation="0" icon color="transparent" aria-label="Debug" @click.stop="show = true">
+  <v-list-item
+    v-if="listItem"
+    :prepend-icon="DebugIcon"
+    title="Debug"
+    target="_blank"
+    :disabled="disabled"
+    @click="openUrl"
+  />
+  <v-btn
+    v-else
+    icon
+    variant="flat"
+    color="transparent"
+    target="_blank"
+    :disabled="disabled"
+    @click="openUrl"
+  >
     <v-icon :icon="DebugIcon" aria-hidden="true" />
   </v-btn>
-
-  <v-dialog v-model="show" max-width="400">
-    <v-card>
-      <v-card-title class="text-h5">Debug</v-card-title>
-      <v-card-text>
-        <v-btn :href="preset.mixUrlAs('mp3')" target="_blank" class="mr-2">Mix MP3</v-btn>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn variant="text" @click="show = false">
-          <v-icon aria-hidden="true">$close</v-icon>
-          Close
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import DebugIcon from "~icons/material-symbols/bug-report-rounded";
 import { Preset } from "../../../util/Preset";
+import { VBtn, VListItem } from "vuetify/components";
+import { usePlayerStore } from "../../../plugins/store/player";
+import { computed } from "vue";
 
-defineProps({
+const props = defineProps({
+  listItem: {
+    type: Boolean,
+    default: false,
+  },
   preset: {
     type: Preset,
-    required: true,
+    default: null,
   },
 });
 
-const show = ref(false);
+const player = usePlayerStore();
+
+const openUrl = () => {
+  let preset;
+  if (props.preset) {
+    preset = props.preset;
+  } else {
+    preset = new Preset({ sounds: player.soundsPlaying });
+  }
+  player.pauseAll();
+  window.open(preset.mixUrlAs("mp3"), "_blank");
+};
+
+const disabled = computed(() => !props.preset && player.isStopped);
 </script>
