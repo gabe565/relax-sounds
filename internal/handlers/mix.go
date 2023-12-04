@@ -93,6 +93,9 @@ func Mix(app core.App) echo.HandlerFunc {
 			if err != nil {
 				return apis.NewBadRequestError("", nil)
 			}
+			if len(presetDecoded.Tracks) == 0 {
+				return apis.NewNotFoundError("", nil)
+			}
 
 			// Set up stream
 			if entry.Streams, err = stream.New(dataFs, app.Dao(), presetDecoded); err != nil {
