@@ -61,9 +61,9 @@ const volumePercentage = computed({
   get() {
     return props.sound.volume * 100;
   },
-  set(newValue) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.sound.volume = newValue / 100;
+  set(value) {
+    value /= 100;
+    player.volume({ sound: props.sound, value });
     usePlayerStore().updateCast();
   },
 });
