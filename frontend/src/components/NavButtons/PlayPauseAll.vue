@@ -3,6 +3,7 @@
     :is="component"
     :prepend-icon="player.isPlaying ? PauseIcon : PlayIcon"
     :disabled="player.isStopped"
+    :aria-label="player.isPlaying ? 'Pause All' : 'Play All'"
     @click="player.playPauseAll"
   >
     <span v-if="player.isPlaying">Pause</span>

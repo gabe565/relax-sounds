@@ -5,7 +5,8 @@
     title="Debug"
     target="_blank"
     :disabled="disabled"
-    @click="openUrl"
+    aria-label="Debug"
+    @click.stop="openUrl"
   />
   <v-btn
     v-else
@@ -14,7 +15,8 @@
     color="transparent"
     target="_blank"
     :disabled="disabled"
-    @click="openUrl"
+    aria-label="Debug"
+    @click.stop="openUrl"
   >
     <v-icon :icon="DebugIcon" aria-hidden="true" />
   </v-btn>

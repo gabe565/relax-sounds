@@ -5,6 +5,7 @@
     :disabled="player.isStopped"
     title="Stop All"
     text="Stop All"
+    aria-label="Stop All"
     @click="player.stopAll({})"
   />
 </template>

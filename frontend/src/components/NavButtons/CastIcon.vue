@@ -1,11 +1,11 @@
 <template>
   <template v-if="castEnabled">
-    <v-btn v-if="button" icon title="Cast" @click.stop="castLauncher.click()">
+    <v-btn v-if="button" icon title="Cast" aria-label="Cast" @click.stop="castLauncher.click()">
       <v-icon v-bind="props">
         <google-cast-launcher ref="castLauncher" />
       </v-icon>
     </v-btn>
-    <v-list-item v-else title="Cast" @click.stop="castLauncher.click()">
+    <v-list-item v-else title="Cast" aria-label="Cast" @click.stop="castLauncher.click()">
       <template #prepend>
         <v-icon v-bind="props">
           <google-cast-launcher ref="castLauncher" />

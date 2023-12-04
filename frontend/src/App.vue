@@ -55,6 +55,7 @@
           :icon="preferences.shrinkLeftPanel ? LeftPanelOpenIcon : LeftPanelCloseIcon"
           color="transparent"
           variant="flat"
+          :aria-label="preferences.shrinkLeftPanel ? 'Expand Left Panel' : 'Shrink Left Panel'"
           @click="preferences.shrinkLeftPanel = !preferences.shrinkLeftPanel"
         />
       </template>

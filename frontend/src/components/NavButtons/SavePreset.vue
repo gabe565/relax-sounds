@@ -1,7 +1,14 @@
 <template>
   <v-dialog v-model="showDialog" max-width="500">
     <template #activator="{ props }">
-      <v-btn v-if="button" v-bind="props" icon title="Save Preset" :disabled="player.isStopped">
+      <v-btn
+        v-if="button"
+        v-bind="props"
+        icon
+        title="Save Preset"
+        :disabled="player.isStopped"
+        aria-label="Save Preset"
+      >
         <v-icon :icon="AddIcon" aria-hidden="true" />
       </v-btn>
       <v-list-item
@@ -10,6 +17,7 @@
         :prepend-icon="AddIcon"
         title="Save Preset"
         :disabled="player.isStopped"
+        aria-label="Save Preset"
       />
     </template>
 
