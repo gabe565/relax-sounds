@@ -5,10 +5,10 @@
         <v-col v-for="preset of presets.presets" :key="preset.name" cols="12" md="6" lg="4" xl="3">
           <PresetCard :preset="preset" />
         </v-col>
+        <v-col v-if="presets.presets.length === 0">
+          <v-alert prominent text type="info">No Presets Saved Yet!</v-alert>
+        </v-col>
       </v-fade-transition>
-      <v-col v-if="presets.presets.length === 0">
-        <v-alert prominent text type="info"> No Presets Saved Yet! </v-alert>
-      </v-col>
     </v-row>
 
     <restore-presets v-model="showRestore" />

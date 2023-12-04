@@ -12,10 +12,10 @@
         >
           <MixerCard :sound="sound" />
         </v-col>
+        <v-col v-if="player.soundsNotStopped.length === 0">
+          <v-alert prominent text type="info">No sounds are playing</v-alert>
+        </v-col>
       </v-fade-transition>
-      <v-col v-if="player.soundsNotStopped.length === 0">
-        <v-alert prominent text type="info">No sounds are playing</v-alert>
-      </v-col>
     </v-row>
   </PageLayout>
 </template>
