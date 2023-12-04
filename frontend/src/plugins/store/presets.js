@@ -119,7 +119,7 @@ export const usePresetsStore = defineStore("presets", () => {
       preset.new = false;
       saveState(presets.value);
     }
-    await playerStore.updateCast();
+    playerStore.updateCast();
   };
 
   const migrate = async () => {

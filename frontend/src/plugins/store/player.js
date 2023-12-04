@@ -5,7 +5,7 @@ import { getSounds } from "../../data/sounds";
 import { formatError, getCastSession } from "../../util/googleCast";
 import { Preset } from "../../util/Preset";
 import pb from "../pocketbase";
-import { wait } from "../../util/helpers";
+import { debounce, wait } from "../../util/helpers";
 import { TYPE, useToast } from "vue-toastification";
 import { Filetype } from "../../util/filetype";
 
@@ -79,7 +79,7 @@ export const usePlayerStore = defineStore("player", () => {
     castConnected.value = value;
   };
 
-  const updateCast = async () => {
+  const updateCast = debounce(async () => {
     if (isPlaying.value) {
       const castSession = getCastSession();
       if (castSession) {
@@ -118,7 +118,7 @@ export const usePlayerStore = defineStore("player", () => {
     } else if (remotePlayerController) {
       remotePlayerController.stop();
     }
-  };
+  }, 250);
 
   const playStop = async ({ sound, fade = 250, local = false }) => {
     if (sound.state === SoundState.PLAYING) {
@@ -140,7 +140,7 @@ export const usePlayerStore = defineStore("player", () => {
     }
     currentName.value = null;
     if (!local && castConnected) {
-      await updateCast();
+      updateCast();
     }
   };
 
@@ -164,7 +164,7 @@ export const usePlayerStore = defineStore("player", () => {
     }
     currentName.value = null;
     if (!local && castConnected) {
-      await updateCast();
+      updateCast();
     }
   };
 
@@ -244,7 +244,7 @@ export const usePlayerStore = defineStore("player", () => {
         castConnectedChanged({ value });
         if (shouldPlay) {
           await playPauseAll();
-          await updateCast();
+          updateCast();
         }
       },
     );
