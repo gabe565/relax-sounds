@@ -1,5 +1,5 @@
 <template>
-  <v-btn elevation="0" icon color="transparent" aria-label="Share" @click.stop="show = true">
+  <v-btn elevation="0" icon color="transparent" aria-label="Share" @click.stop="shareOrShow">
     <v-icon :icon="ShareIcon" aria-hidden="true" />
   </v-btn>
 
@@ -24,10 +24,6 @@
         <v-btn variant="text" @click="copy">
           <v-icon :icon="CopyIcon" aria-hidden="true" />
           Copy
-        </v-btn>
-        <v-btn v-if="canShare" variant="text" @click="share">
-          <v-icon :icon="ShareIcon" aria-hidden="true" />
-          Share
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -62,6 +58,14 @@ const shareData = computed(() => {
 });
 
 const canShare = computed(() => navigator.canShare && navigator.canShare(shareData.value));
+
+const shareOrShow = async () => {
+  if (canShare.value) {
+    return share();
+  } else {
+    show.value = true;
+  }
+};
 
 const select = async (event) => {
   await nextTick();
