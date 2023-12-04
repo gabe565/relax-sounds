@@ -5,7 +5,7 @@ import { getSounds } from "../data/sounds";
 
 export const toShorthand = (sounds) => {
   return sounds.map((sound) => {
-    const entry = [sound.id, Math.round(sound.volume * 1000) / 1000];
+    const entry = [sound.id, Math.round(sound.volume * 100) / 100];
     if (sound.rate && sound.rate !== 1) {
       entry.push(sound.rate);
     }
