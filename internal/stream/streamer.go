@@ -39,6 +39,10 @@ func NewStreamer(rawFile fs.File, entry preset.Track) (streamer Streamer, err er
 		}
 	}
 
+	if entry.Rate != 1 {
+		beepStreamer = beep.ResampleRatio(resampleQuality, entry.Rate, beepStreamer)
+	}
+
 	streamer.Streamer = beepStreamer
 	return streamer, nil
 }

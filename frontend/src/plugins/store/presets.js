@@ -86,6 +86,7 @@ export const usePresetsStore = defineStore("presets", () => {
     const sounds = usePlayerStore().soundsPlaying.map((sound) => ({
       id: sound.id,
       volume: sound.volume,
+      rate: sound.rate,
     }));
 
     add({
@@ -106,6 +107,7 @@ export const usePresetsStore = defineStore("presets", () => {
       preset.sounds.map((savedSound) => {
         const sound = playerStore.soundById(savedSound.id);
         sound.volume = savedSound.volume;
+        sound.rate = savedSound.rate || 1;
         const fade = playerStore.state === SoundState.STOPPED ? 500 : false;
         return playerStore.playStop({ sound, fade, local: true });
       }),

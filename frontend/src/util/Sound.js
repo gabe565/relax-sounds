@@ -13,6 +13,7 @@ export class Sound {
     Object.assign(this, obj);
     this.state = SoundState.STOPPED;
     this._volume = 1;
+    this._rate = 1;
     this.isLoading = false;
     this.howl = new Howl({
       src: [this.src],
@@ -70,11 +71,13 @@ export class Sound {
       if (fade) {
         this.howl.once("fade", () => {
           this.howl.stop();
+          this.rate = 1;
           this.howl.unload();
         });
         this.howl.fade(this.howl.volume(), 0, fade);
       } else {
         this.howl.stop();
+        this.rate = 1;
         this.howl.unload();
       }
     }
@@ -87,6 +90,15 @@ export class Sound {
 
   get volume() {
     return this._volume;
+  }
+
+  set rate(v) {
+    this.howl.rate(v);
+    this._rate = v;
+  }
+
+  get rate() {
+    return this._rate;
   }
 
   get isPlaying() {

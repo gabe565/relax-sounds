@@ -66,6 +66,10 @@ export const usePlayerStore = defineStore("player", () => {
     sound.volume = value;
   };
 
+  const rate = ({ sound, value }) => {
+    sound.rate = value;
+  };
+
   const castConnectedChanged = ({ value }) => {
     castConnected.value = value;
   };
@@ -270,6 +274,7 @@ export const usePlayerStore = defineStore("player", () => {
             preset.sounds.map((savedSound) => {
               const sound = soundById(savedSound.id);
               sound.volume = savedSound.volume;
+              sound.rate = savedSound.rate || 1;
               const fade = state.value === SoundState.STOPPED ? 250 : false;
               return playStop({
                 sound,
@@ -330,6 +335,7 @@ export const usePlayerStore = defineStore("player", () => {
     pause,
     stop,
     volume,
+    rate,
     castConnectedChanged,
     playStop,
     playPause,

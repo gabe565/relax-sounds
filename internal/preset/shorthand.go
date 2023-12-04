@@ -10,7 +10,7 @@ var (
 	ErrInvalidVolume = errors.New("invalid volume")
 )
 
-type ShorthandTrack [2]any
+type ShorthandTrack [3]any
 
 type Shorthand []ShorthandTrack
 
@@ -27,9 +27,15 @@ func (shorthand Shorthand) ToPreset() (Preset, error) {
 			return preset, fmt.Errorf("%w: %#v", ErrInvalidVolume, value[1])
 		}
 
+		rate, ok := value[2].(float64)
+		if !ok && rate < 0.4 || rate > 1.6 {
+			rate = 1
+		}
+
 		track := Track{
 			Id:     id,
 			Volume: volume,
+			Rate:   rate,
 		}
 		preset.Add(track)
 	}

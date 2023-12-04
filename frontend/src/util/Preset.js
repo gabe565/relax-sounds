@@ -4,11 +4,23 @@ import { Filetype } from "./filetype";
 import { getSounds } from "../data/sounds";
 
 export const toShorthand = (sounds) => {
-  return sounds.map((sound) => [sound.id, Math.round(sound.volume * 1000) / 1000]);
+  return sounds.map((sound) => {
+    const entry = [sound.id, Math.round(sound.volume * 1000) / 1000];
+    if (sound.rate && sound.rate !== 1) {
+      entry.push(sound.rate);
+    }
+    return entry;
+  });
 };
 
 export const fromShorthand = (shorthand) =>
-  shorthand.map((song) => ({ id: song[0], volume: song[1] }));
+  shorthand.map((song) => {
+    const entry = { id: song[0], volume: song[1] };
+    if (song.length === 3) {
+      entry.rate = song[3];
+    }
+    return entry;
+  });
 
 export class Preset {
   constructor(obj) {
