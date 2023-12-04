@@ -1,18 +1,19 @@
 <template>
-  <v-card
-    variant="flat"
+  <v-btn
     :color="props.sound.isStopped ? 'cardBackground' : 'accent'"
-    class="px-1 py-2"
     :loading="sound.isLoading"
+    size="x-large"
+    class="w-100 justify-start text-none font-weight-regular"
+    :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
     @click="player.playStop({ sound })"
   >
-    <v-card-title class="text-h5">
-      <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
+    <template #prepend>
+      <v-icon aria-hidden="true" class="mr-4" size="x-large" :color="iconColor">
         <Icon :icon="sound.icon" />
       </v-icon>
-      <span>{{ sound.name }}</span>
-    </v-card-title>
-  </v-card>
+    </template>
+    {{ sound.name }}
+  </v-btn>
 </template>
 
 <script setup>
@@ -31,3 +32,9 @@ const iconColor = computed(() => (props.sound.isPlaying ? "primary" : ""));
 
 const player = usePlayerStore();
 </script>
+
+<style scoped>
+.v-btn {
+  letter-spacing: initial;
+}
+</style>
