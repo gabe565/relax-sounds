@@ -1,4 +1,7 @@
 export function getCastSession() {
+  if (!window.cast) {
+    return undefined;
+  }
   return window.cast.framework.CastContext.getInstance().getCurrentSession();
 }
 

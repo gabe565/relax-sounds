@@ -100,7 +100,7 @@ export const usePlayerStore = defineStore("player", () => {
           console.error(`Remote media load error: ${formatError(error)}`);
         }
       }
-    } else {
+    } else if (remotePlayerController) {
       remotePlayerController.stop();
     }
   };
@@ -145,7 +145,7 @@ export const usePlayerStore = defineStore("player", () => {
     soundsPlaying.value.forEach((sound) => {
       pause({ sound });
     });
-    if (!local && castConnected) {
+    if (!local && castConnected && remotePlayerController) {
       remotePlayerController.playOrPause();
     }
   };
@@ -165,7 +165,7 @@ export const usePlayerStore = defineStore("player", () => {
         }
       }),
     );
-    if (!local && castConnected) {
+    if (!local && castConnected && remotePlayerController) {
       remotePlayerController.playOrPause();
     }
   };
