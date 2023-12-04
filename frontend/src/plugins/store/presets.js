@@ -134,7 +134,7 @@ export const usePresetsStore = defineStore("presets", () => {
     await Promise.all(
       preset.sounds.map((savedSound) => {
         const sound = playerStore.soundById(savedSound.id);
-        sound.volume = savedSound.volume;
+        sound.volume = savedSound.volume || 1;
         sound.rate = savedSound.rate || 1;
         sound.pan = savedSound.pan || 0;
         const fade = playerStore.state === SoundState.STOPPED ? 500 : false;
