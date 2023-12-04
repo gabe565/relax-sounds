@@ -30,6 +30,9 @@ export class Preset {
       if (sound.rate && sound.rate !== 1) {
         entry.rate = sound.rate;
       }
+      if (sound.pan !== 0) {
+        entry.pan = sound.pan;
+      }
       return entry;
     });
   }

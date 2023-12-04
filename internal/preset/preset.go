@@ -4,6 +4,7 @@ type Track struct {
 	Id     string
 	Volume *float64
 	Rate   *float64
+	Pan    *float64
 }
 
 func (t Track) GetVolume() float64 {
@@ -25,6 +26,20 @@ func (t Track) GetRate() float64 {
 		return 1.5
 	}
 	return rate
+}
+
+func (t Track) GetPan() float64 {
+	if t.Pan == nil {
+		return 0
+	}
+	pan := *t.Pan
+	if pan < -1 {
+		return -1
+	}
+	if pan > 1 {
+		return 1
+	}
+	return pan
 }
 
 type Preset struct {

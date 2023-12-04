@@ -44,6 +44,13 @@ func NewStreamer(rawFile fs.File, entry preset.Track) (streamer Streamer, err er
 		beepStreamer = beep.ResampleRatio(resampleQuality, rate, beepStreamer)
 	}
 
+	if pan := entry.GetPan(); pan != 0 {
+		beepStreamer = &effects.Pan{
+			Streamer: beepStreamer,
+			Pan:      pan,
+		}
+	}
+
 	streamer.Streamer = beepStreamer
 	return streamer, nil
 }

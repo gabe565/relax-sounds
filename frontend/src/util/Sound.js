@@ -14,6 +14,7 @@ export class Sound {
     this.state = SoundState.STOPPED;
     this._volume = 1;
     this._rate = 1;
+    this._pan = 0;
     this.isLoading = false;
     this.howl = new Howl({
       src: [this.src],
@@ -72,12 +73,14 @@ export class Sound {
         this.howl.once("fade", () => {
           this.howl.stop();
           this.rate = 1;
+          this.pan = 0;
           this.howl.unload();
         });
         this.howl.fade(this.howl.volume(), 0, fade);
       } else {
         this.howl.stop();
         this.rate = 1;
+        this.pan = 0;
         this.howl.unload();
       }
     }
@@ -99,6 +102,15 @@ export class Sound {
 
   get rate() {
     return this._rate;
+  }
+
+  set pan(v) {
+    this.howl.stereo(v);
+    this._pan = v;
+  }
+
+  get pan() {
+    return this._pan;
   }
 
   get isPlaying() {

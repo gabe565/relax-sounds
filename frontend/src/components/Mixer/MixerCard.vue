@@ -41,6 +41,22 @@
             <template #thumb-label>{{ Math.round(rate * 100) }}%</template>
           </v-slider>
         </v-col>
+        <v-col cols="12">
+          <v-slider
+            v-model="pan"
+            :prepend-icon="WidthIcon"
+            :min="-1"
+            :max="1"
+            :step="0.05"
+            thumb-size="12"
+            thumb-label
+            track-size="1"
+            hide-details
+            aria-label="Pan"
+          >
+            <template #thumb-label>{{ Math.round(pan * 100) }}%</template>
+          </v-slider>
+        </v-col>
       </v-row>
 
       <v-btn
@@ -68,6 +84,7 @@ import PauseIcon from "~icons/material-symbols/pause-rounded";
 import StopIcon from "~icons/material-symbols/stop-rounded";
 import VolumeIcon from "~icons/material-symbols/volume-up-rounded";
 import SpeedIcon from "~icons/material-symbols/speed-rounded";
+import WidthIcon from "~icons/material-symbols/width-rounded";
 import { usePlayerStore } from "../../plugins/store/player";
 
 const props = defineProps({
@@ -92,6 +109,14 @@ const rate = computed({
   get: () => props.sound.rate,
   set(value) {
     player.rate({ sound: props.sound, value });
+    usePlayerStore().updateCast();
+  },
+});
+
+const pan = computed({
+  get: () => props.sound.pan,
+  set(value) {
+    player.pan({ sound: props.sound, value });
     usePlayerStore().updateCast();
   },
 });

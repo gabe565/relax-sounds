@@ -71,6 +71,10 @@ export const usePlayerStore = defineStore("player", () => {
     sound.rate = value;
   };
 
+  const pan = ({ sound, value }) => {
+    sound.pan = value;
+  };
+
   const castConnectedChanged = ({ value }) => {
     castConnected.value = value;
   };
@@ -277,6 +281,7 @@ export const usePlayerStore = defineStore("player", () => {
               const sound = soundById(savedSound.id);
               sound.volume = savedSound.volume;
               sound.rate = savedSound.rate || 1;
+              sound.pan = savedSound.pan || 0;
               const fade = state.value === SoundState.STOPPED ? 250 : false;
               return playStop({
                 sound,
@@ -338,6 +343,7 @@ export const usePlayerStore = defineStore("player", () => {
     stop,
     volume,
     rate,
+    pan,
     castConnectedChanged,
     playStop,
     playPause,
