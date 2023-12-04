@@ -3,10 +3,10 @@
     :is="component"
     :prepend-icon="StopIcon"
     :disabled="player.isStopped"
+    title="Stop All"
+    text="Stop All"
     @click="player.stopAll({})"
-  >
-    <span>Stop All</span>
-  </component>
+  />
 </template>
 
 <script setup>
