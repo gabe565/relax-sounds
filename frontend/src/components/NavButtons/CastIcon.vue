@@ -1,22 +1,33 @@
 <template>
-  <v-tooltip v-if="castEnabled" v-model="showTooltip" location="bottom" aria-label="Cast">
-    <template #activator="{ props }">
-      <v-btn elevation="0" icon aria-label="Cast" @click.stop="element.click()">
+  <template v-if="castEnabled">
+    <v-btn v-if="button" icon title="Cast" @click.stop="castLauncher.click()">
+      <v-icon v-bind="props">
+        <google-cast-launcher ref="castLauncher" />
+      </v-icon>
+    </v-btn>
+    <v-list-item v-else title="Cast" @click.stop="castLauncher.click()">
+      <template #prepend>
         <v-icon v-bind="props">
-          <google-cast-launcher ref="element" />
+          <google-cast-launcher ref="castLauncher" />
         </v-icon>
-      </v-btn>
-    </template>
-    <span>Cast</span>
-  </v-tooltip>
+      </template>
+    </v-list-item>
+  </template>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { castEnabled } from "../../cast";
+import { VBtn, VListItem } from "vuetify/components";
 
-const showTooltip = ref(false);
-const element = ref();
+const castLauncher = ref();
+
+const props = defineProps({
+  button: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 
 <style scoped lang="scss">

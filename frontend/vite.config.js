@@ -4,6 +4,7 @@ import { defineConfig } from "vite";
 import Icons from "unplugin-icons/vite";
 import { VitePWA } from "vite-plugin-pwa";
 import autoprefixer from "autoprefixer";
+import { promises as fs } from "node:fs";
 
 export default defineConfig({
   plugins: [
@@ -22,6 +23,11 @@ export default defineConfig({
     Icons({
       compiler: "vue3",
       autoInstall: true,
+      customCollections: {
+        "relax-sounds": {
+          "icon-white": () => fs.readFile("./src/assets/icon-white.svg", "utf-8"),
+        },
+      },
     }),
     VitePWA({
       devOptions: {

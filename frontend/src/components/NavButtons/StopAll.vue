@@ -1,31 +1,26 @@
 <template>
-  <v-tooltip v-model="showTooltip" location="bottom" aria-label="Stop All">
-    <template #activator="{ props }">
-      <v-btn
-        v-bind="props"
-        :disabled="player.isStopped"
-        icon
-        aria-label="Stop All"
-        @click="stopAll"
-      >
-        <v-icon :icon="StopIcon" aria-hidden="true" />
-      </v-btn>
-    </template>
+  <component
+    :is="component"
+    :prepend-icon="StopIcon"
+    :disabled="player.isStopped"
+    @click="player.stopAll({})"
+  >
     <span>Stop All</span>
-  </v-tooltip>
+  </component>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import StopIcon from "~icons/material-symbols/stop-circle-rounded";
 import { usePlayerStore } from "../../plugins/store/player";
+import { VBtn, VListItem } from "vuetify/components";
 
-const showTooltip = ref(false);
+const props = defineProps({
+  button: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const player = usePlayerStore();
-
-const stopAll = () => {
-  showTooltip.value = false;
-  usePlayerStore().stopAll({});
-};
+const component = props.button ? VBtn : VListItem;
 </script>

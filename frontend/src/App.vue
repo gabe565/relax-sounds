@@ -1,30 +1,63 @@
 <template>
   <v-app>
-    <v-app-bar theme="dark" color="accent" flat>
+    <v-app-bar v-if="isMobile" theme="dark" color="accent" flat>
       <v-btn to="/" class="text-body-2 text-none px-2">
         <template #prepend>
-          <img alt="Relax Sounds Logo" :src="icon" style="height: 30px" />
+          <v-icon :icon="AppIcon" aria-hidden="true" size="28" />
         </template>
-
         <v-app-bar-title>Relax Sounds</v-app-bar-title>
       </v-btn>
 
       <v-spacer />
-
-      <PlayPauseAll />
-      <StopAll />
-      <SavePreset />
-      <CastIcon />
-
-      <template v-if="mdAndUp" #extension>
-        <v-tabs align-tabs="center" class="w-100" color="primary">
-          <v-tab v-for="route in routes" :key="route.path" :to="route.path" exact>
-            <v-icon v-if="route.meta.icon" :icon="route.meta.icon" class="pr-2" size="32" />
-            {{ route.name }}
-          </v-tab>
-        </v-tabs>
-      </template>
+      <SavePreset button />
+      <CastIcon button />
     </v-app-bar>
+
+    <v-navigation-drawer
+      v-else
+      :rail="preferences.shrinkLeftPanel"
+      color="accent"
+      width="200"
+      :location="isMobile ? 'bottom' : 'left'"
+    >
+      <template #prepend>
+        <v-list v-if="!isMobile">
+          <v-list-item to="/" title="Relax Sounds" :prepend-icon="AppIcon" />
+        </v-list>
+        <v-divider />
+      </template>
+
+      <v-list nav>
+        <v-list-item
+          v-for="route in routes"
+          :key="route.path"
+          :to="route.path"
+          exact
+          link
+          :title="route.name"
+          :prepend-icon="route.meta.icon"
+        />
+      </v-list>
+
+      <v-divider />
+
+      <v-list>
+        <PlayPauseAll />
+        <StopAll />
+        <SavePreset />
+        <CastIcon />
+      </v-list>
+
+      <template #append>
+        <v-divider />
+        <v-btn
+          :icon="preferences.shrinkLeftPanel ? LeftPanelOpenIcon : LeftPanelCloseIcon"
+          color="transparent"
+          variant="flat"
+          @click="preferences.shrinkLeftPanel = !preferences.shrinkLeftPanel"
+        />
+      </template>
+    </v-navigation-drawer>
 
     <UpdateSnackbar />
 
@@ -34,20 +67,25 @@
           <component :is="Component" />
         </keep-alive>
       </router-view>
-      <v-spacer :style="{ height: smAndDown ? '56px' : '28px' }" />
+      <v-spacer style="height: 28px" />
     </v-main>
 
     <v-bottom-navigation
-      v-if="smAndDown"
+      v-if="isMobile"
+      v-model="botnav"
       bg-color="accent"
       color="primary"
       theme="dark"
-      mode="shift"
+      :model-value="null"
     >
       <v-btn v-for="route in routes" :key="route.path" :to="route.path" :value="route.name">
         <v-icon v-if="route.meta.icon" :icon="route.meta.icon" />
         <span>{{ route.name }}</span>
       </v-btn>
+
+      <v-divider vertical />
+      <PlayPauseAll button />
+      <StopAll button />
     </v-bottom-navigation>
   </v-app>
 </template>
@@ -60,10 +98,14 @@ import SavePreset from "./components/NavButtons/SavePreset.vue";
 import PlayPauseAll from "./components/NavButtons/PlayPauseAll.vue";
 import StopAll from "./components/NavButtons/StopAll.vue";
 import UpdateSnackbar from "./components/UpdateSnackbar.vue";
-import icon from "./assets/icon-white.svg";
+import AppIcon from "~icons/relax-sounds/icon-white";
 import CastIcon from "./components/NavButtons/CastIcon.vue";
+import LeftPanelCloseIcon from "~icons/material-symbols/left-panel-close-rounded";
+import LeftPanelOpenIcon from "~icons/material-symbols/left-panel-open-rounded";
+import { usePreferencesStore } from "./plugins/store/preferences";
 
-const { mdAndUp, smAndDown } = useDisplay();
+const { smAndDown: isMobile } = useDisplay();
+const preferences = usePreferencesStore();
 
 const routes = computed(() => {
   return useRouter().options.routes.filter((route) => route.meta?.showInNav);
