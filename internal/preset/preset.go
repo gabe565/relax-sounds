@@ -1,15 +1,34 @@
 package preset
 
-type Preset struct {
-	Tracks []Track
+type Track struct {
+	Id     string
+	Volume *float64
+	Rate   *float64
 }
 
-func (preset Preset) ToShorthand() Shorthand {
-	shorthand := Shorthand{}
-	for _, track := range preset.Tracks {
-		shorthand = append(shorthand, track.ToShorthand())
+func (t Track) GetVolume() float64 {
+	if t.Volume == nil {
+		return 1
 	}
-	return shorthand
+	return *t.Volume
+}
+
+func (t Track) GetRate() float64 {
+	if t.Rate == nil {
+		return 1
+	}
+	rate := *t.Rate
+	if rate < 0.5 {
+		return 0.5
+	}
+	if rate > 1.5 {
+		return 1.5
+	}
+	return rate
+}
+
+type Preset struct {
+	Tracks []Track
 }
 
 func (preset *Preset) Add(tracks ...Track) {

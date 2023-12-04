@@ -44,23 +44,20 @@ const router = createRouter({
     {
       path: "/import/:name/:songs",
       redirect: ({ params }) => {
-        const toast = useToast();
-        try {
-          const preset = new Preset({ new: true });
-          preset.encodedName = params.name;
-          preset.encodedShorthand = params.songs;
-          usePresetsStore().add({ preset });
-          (async () => {
-            await wait(0);
+        (async () => {
+          const toast = useToast();
+          try {
+            await wait(500);
+            const preset = new Preset({ new: true });
+            preset.encodedName = params.name;
+            await preset.setEncodedShorthand(params.songs);
+            usePresetsStore().add({ preset });
             toast.success(`Imported ${preset.name}.`);
-          })();
-        } catch (error) {
-          console.error(error);
-          (async () => {
-            await wait(0);
+          } catch (error) {
+            console.error(error);
             toast.error("Failed to import preset.");
-          })();
-        }
+          }
+        })();
         return { name: "Presets" };
       },
     },

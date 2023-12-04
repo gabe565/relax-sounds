@@ -1,19 +1,10 @@
-import base64 from "base64-url";
 import { nanoid } from "nanoid";
 import { Filetype } from "./filetype";
 import { getSounds } from "../data/sounds";
+import { compress, decompress } from "./helpers";
+import base64 from "base64-url";
 
-export const toShorthand = (sounds) => {
-  return sounds.map((sound) => {
-    const entry = [sound.id, Math.round(sound.volume * 100) / 100];
-    if (sound.rate && sound.rate !== 1) {
-      entry.push(sound.rate);
-    }
-    return entry;
-  });
-};
-
-export const fromShorthand = (shorthand) =>
+export const legacyFromShorthand = (shorthand) =>
   shorthand.map((song) => {
     const entry = { id: song[0], volume: song[1] };
     if (song.length === 3) {
@@ -31,11 +22,20 @@ export class Preset {
   }
 
   get shorthand() {
-    return toShorthand(this.sounds);
+    return this.sounds.map((sound) => {
+      const entry = { id: sound.id };
+      if (sound.volume !== 1) {
+        entry.volume = sound.volume;
+      }
+      if (sound.rate && sound.rate !== 1) {
+        entry.rate = sound.rate;
+      }
+      return entry;
+    });
   }
 
   set shorthand(val) {
-    this.sounds = fromShorthand(val);
+    this.sounds = val;
   }
 
   get encodedName() {
@@ -46,34 +46,39 @@ export class Preset {
     this.name = val.replace(/\+/g, " ");
   }
 
-  get encodedShorthand() {
-    return base64.encode(JSON.stringify(this.shorthand));
+  async getEncodedShorthand() {
+    return await compress(JSON.stringify(this.shorthand));
   }
 
-  set encodedShorthand(val) {
-    this.shorthand = JSON.parse(base64.decode(val));
+  async setEncodedShorthand(val) {
+    let raw;
+    try {
+      raw = await decompress(val);
+      this.shorthand = JSON.parse(raw);
+    } catch (err) {
+      this.shorthand = legacyFromShorthand(JSON.parse(base64.decode(val)));
+    }
   }
 
-  get shareUrl() {
-    return `${window.location.origin}/import/${this.encodedName}/${this.encodedShorthand}`;
+  async getShareUrl() {
+    const shorthand = await this.getEncodedShorthand();
+    return `${window.location.origin}/import/${this.encodedName}/${shorthand}`;
   }
 
-  mixUrlAs(filetype = Filetype.Mp3) {
+  async mixUrlAs(filetype = Filetype.Mp3) {
     let uuid = sessionStorage.getItem("uuid");
     if (!uuid) {
       uuid = nanoid();
       sessionStorage.setItem("uuid", uuid);
     }
     const apiAddress = import.meta.env.VITE_API_ADDRESS || window.location.origin;
-    return `${apiAddress}/api/mix/${uuid}/${this.encodedShorthand}.${filetype}`;
+    const encoded = await this.getEncodedShorthand();
+    return `${apiAddress}/api/mix/${uuid}/${encoded}.${filetype}`;
   }
 
-  get mixUrl() {
-    return this.mixUrlAs(Filetype.Mp3);
-  }
-
-  set mixUrl(val) {
-    [, this.encodedShorthand] = val.match(/\/api\/mix\/.+?\/(.+?)(\..+)?$/);
+  async setMixUrl(val) {
+    const [, encoded] = val.match(/\/api\/mix\/.+?\/(.+?)(\..+)?$/);
+    await this.setEncodedShorthand(encoded);
   }
 
   async migrate() {

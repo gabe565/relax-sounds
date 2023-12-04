@@ -20,7 +20,7 @@ func (stream Streams) Close() error {
 }
 
 func (stream *Streams) Add(f fs.File, entry preset.Track, mu *sync.Mutex) error {
-	if entry.Volume == 0 {
+	if entry.GetVolume() == 0 {
 		return nil
 	}
 

@@ -1,6 +1,8 @@
 package preset
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/base64"
 	"encoding/json"
 
@@ -13,13 +15,20 @@ func FromParam(encoded string) (Preset, error) {
 		return Preset{}, apis.NewBadRequestError("", nil)
 	}
 
-	var entries Shorthand
-	if err = json.Unmarshal(data, &entries); err != nil {
+	r, err := gzip.NewReader(bytes.NewReader(data))
+	if err != nil {
+		return Preset{}, apis.NewBadRequestError("", nil)
+	}
+	defer func(r *gzip.Reader) {
+		_ = r.Close()
+	}(r)
+
+	var preset Preset
+	if err = json.NewDecoder(r).Decode(&preset.Tracks); err != nil {
 		return Preset{}, apis.NewBadRequestError("", nil)
 	}
 
-	preset, err := entries.ToPreset()
-	if err != nil {
+	if err := r.Close(); err != nil {
 		return Preset{}, apis.NewBadRequestError("", nil)
 	}
 

@@ -31,17 +31,17 @@ func NewStreamer(rawFile fs.File, entry preset.Track) (streamer Streamer, err er
 
 	beepStreamer := beep.Loop(-1, closer)
 
-	if entry.Volume != 1 {
+	if volume := entry.GetVolume(); volume != 1 {
 		beepStreamer = &effects.Volume{
 			Streamer: beepStreamer,
 			Base:     10,
-			Volume:   entry.Volume - 1,
-			Silent:   entry.Volume == 0,
+			Volume:   volume - 1,
+			Silent:   volume == 0,
 		}
 	}
 
-	if entry.Rate != 1 {
-		beepStreamer = beep.ResampleRatio(resampleQuality, entry.Rate, beepStreamer)
+	if rate := entry.GetRate(); rate != 1 {
+		beepStreamer = beep.ResampleRatio(resampleQuality, rate, beepStreamer)
 	}
 
 	streamer.Streamer = beepStreamer

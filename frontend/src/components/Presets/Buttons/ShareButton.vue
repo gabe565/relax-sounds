@@ -9,7 +9,7 @@
       <v-card-text>
         <v-text-field
           readonly
-          :model-value="preset.shareUrl"
+          :model-value="url"
           label="Share URL"
           @focus="select"
           @click="select"
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import ShareIcon from "~icons/material-symbols/share";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import { Preset } from "../../../util/Preset";
@@ -73,7 +73,7 @@ const select = async (event) => {
 
 const copy = async () => {
   try {
-    await navigator.clipboard.writeText(props.preset.shareUrl);
+    await navigator.clipboard.writeText(url.value);
     toast.success("Copied to clipboard.", { icon: CopyIcon });
   } catch (err) {
     console.error(err);
@@ -92,4 +92,13 @@ const share = async () => {
     show.value = true;
   }
 };
+
+const url = ref("");
+watch(
+  props.preset,
+  async () => {
+    url.value = await props.preset.getShareUrl();
+  },
+  { immediate: true },
+);
 </script>

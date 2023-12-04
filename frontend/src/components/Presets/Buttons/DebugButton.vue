@@ -40,7 +40,7 @@ const props = defineProps({
 
 const player = usePlayerStore();
 
-const openUrl = () => {
+const openUrl = async () => {
   let preset;
   if (props.preset) {
     preset = props.preset;
@@ -48,7 +48,8 @@ const openUrl = () => {
     preset = new Preset({ sounds: player.soundsPlaying });
   }
   player.pauseAll();
-  window.open(preset.mixUrlAs("mp3"), "_blank");
+  const url = await preset.mixUrlAs("mp3");
+  window.open(url, "_blank");
 };
 
 const disabled = computed(() => !props.preset && player.isStopped);

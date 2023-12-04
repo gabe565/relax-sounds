@@ -7,6 +7,7 @@ import { Preset } from "../../util/Preset";
 import pb from "../pocketbase";
 import { wait } from "../../util/helpers";
 import { TYPE, useToast } from "vue-toastification";
+import { Filetype } from "../../util/filetype";
 
 const toast = useToast();
 
@@ -81,7 +82,8 @@ export const usePlayerStore = defineStore("player", () => {
         const { cast } = window.chrome;
         const preset = new Preset({ sounds: soundsPlaying.value });
 
-        const mediaInfo = new cast.media.MediaInfo(preset.mixUrl, "music");
+        const mixUrl = await preset.mixUrlAs(Filetype.Mp3);
+        const mediaInfo = new cast.media.MediaInfo(mixUrl, "music");
         mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
         mediaInfo.metadata.title = currentName.value;
         if (!mediaInfo.metadata.title) {
@@ -269,7 +271,7 @@ export const usePlayerStore = defineStore("player", () => {
             waitMs *= 2;
           }
           const preset = new Preset();
-          preset.mixUrl = value.contentId;
+          await preset.setMixUrl(value.contentId);
           await Promise.all(
             preset.sounds.map((savedSound) => {
               const sound = soundById(savedSound.id);
