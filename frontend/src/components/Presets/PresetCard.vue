@@ -1,24 +1,23 @@
 <template>
   <v-fade-transition>
-    <v-card
+    <v-btn
       variant="flat"
-      :dark="preset.new"
       :color="preset.new ? 'newPresetCardBackground' : 'cardBackground'"
       transition="fade-transition"
+      size="x-large"
+      class="w-100 d-flex justify-space-between text-none font-weight-regular"
+      :aria-label="`Play ${preset.name}`"
       @click="presets.play({ preset })"
     >
-      <div class="d-flex flex-row flex-nowrap align-center">
-        <div class="text-truncate flex-grow-1">
-          <v-card-title class="text-h5 pa-4 d-block text-truncate">
-            {{ preset.name }}
-          </v-card-title>
-        </div>
+      <span class="text-truncate">
+        {{ preset.name }}
+      </span>
+      <template #append>
         <debug-button v-if="debugEnabled" :preset="preset" />
         <share-button :preset="preset" />
         <delete-button :preset="preset" />
-        <play-button :preset="preset" class="d-sr-only" />
-      </div>
-    </v-card>
+      </template>
+    </v-btn>
   </v-fade-transition>
 </template>
 
@@ -26,7 +25,6 @@
 import ShareButton from "./Buttons/ShareButton.vue";
 import DeleteButton from "./Buttons/DeleteButton.vue";
 import DebugButton from "./Buttons/DebugButton.vue";
-import PlayButton from "./Buttons/PlayButton.vue";
 import { usePresetsStore } from "../../plugins/store/presets";
 
 defineProps({
@@ -39,3 +37,15 @@ defineProps({
 const debugEnabled = import.meta.env.DEV;
 const presets = usePresetsStore();
 </script>
+
+<style scoped lang="scss">
+.v-btn {
+  letter-spacing: initial;
+}
+.v-btn::v-deep .v-btn__content {
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+</style>
