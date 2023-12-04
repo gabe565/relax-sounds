@@ -14,7 +14,8 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 const toastOptions = {
-  position: POSITION.BOTTOM_RIGHT,
+  position: POSITION.TOP_RIGHT,
+  containerClassName: "mt-16 pt-3 mt-sm-0 pt-sm-0",
   showCloseButtonOnHover: true,
   transition: "Vue-Toastification__fade",
 };
