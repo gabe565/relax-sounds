@@ -1,24 +1,21 @@
 <template>
-  <v-fade-transition>
-    <v-btn
-      variant="flat"
-      :color="preset.new ? 'newPresetCardBackground' : 'cardBackground'"
-      transition="fade-transition"
-      size="x-large"
-      class="w-100 d-flex justify-space-between text-none font-weight-regular"
-      :aria-label="`Play ${preset.name}`"
-      @click="presets.play({ preset })"
-    >
-      <span class="text-truncate">
-        {{ preset.name }}
-      </span>
-      <template #append>
-        <debug-button v-if="debugEnabled" :preset="preset" />
-        <share-button :preset="preset" />
-        <delete-button :preset="preset" />
-      </template>
-    </v-btn>
-  </v-fade-transition>
+  <v-btn
+    variant="flat"
+    :color="preset.new ? 'newPresetCardBackground' : 'cardBackground'"
+    size="x-large"
+    class="w-100 d-flex justify-space-between text-none font-weight-regular"
+    :aria-label="`Play ${preset.name}`"
+    @click="presets.play({ preset })"
+  >
+    <span class="text-truncate">
+      {{ preset.name }}
+    </span>
+    <template #append>
+      <debug-button v-if="debugEnabled" :preset="preset" />
+      <share-button :preset="preset" />
+      <delete-button :preset="preset" />
+    </template>
+  </v-btn>
 </template>
 
 <script setup>
