@@ -106,6 +106,9 @@ func Mix(app core.App) echo.HandlerFunc {
 				// Other errors return 500
 				panic(err)
 			}
+			if len(entry.Streams) == 0 {
+				return apis.NewNotFoundError("", nil)
+			}
 			entry.Mix = entry.Streams.Mix()
 
 			entry.Format = beep.Format{

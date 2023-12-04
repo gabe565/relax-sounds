@@ -36,6 +36,7 @@ func NewStreamer(rawFile fs.File, entry preset.Track) (streamer Streamer, err er
 			Streamer: beepStreamer,
 			Base:     10,
 			Volume:   entry.Volume - 1,
+			Silent:   entry.Volume == 0,
 		}
 	}
 
