@@ -65,6 +65,7 @@ export class Sound {
 
   stop(local = true, fade = 250) {
     this.state = SoundState.STOPPED;
+    this._volume = 1;
     if (local) {
       if (fade) {
         this.howl.once("fade", () => {
