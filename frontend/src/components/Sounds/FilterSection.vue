@@ -13,7 +13,6 @@
         hide-details
         chips
         hide-no-data
-        auto-select-first
         :items="tags"
         item-title="name"
         item-value="name"
