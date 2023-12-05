@@ -5,7 +5,7 @@
     size="x-large"
     class="w-100 justify-start text-none font-weight-regular"
     :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
-    @click="player.playStop({ sound })"
+    @click="playStop"
   >
     <template #prepend>
       <v-icon aria-hidden="true" class="mr-4" size="x-large" :color="iconColor">
@@ -20,6 +20,7 @@
 import { Icon } from "@iconify/vue";
 import { usePlayerStore } from "../../plugins/store/player";
 import { computed } from "vue";
+import { useToast } from "vue-toastification";
 
 const props = defineProps({
   sound: {
@@ -29,8 +30,16 @@ const props = defineProps({
 });
 
 const iconColor = computed(() => (props.sound.isPlaying ? "primary" : ""));
-
+const toast = useToast();
 const player = usePlayerStore();
+
+const playStop = async () => {
+  try {
+    await player.playStop({ sound: props.sound });
+  } catch (err) {
+    toast.error("Failed to load sound");
+  }
+};
 </script>
 
 <style scoped>
