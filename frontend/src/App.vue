@@ -61,8 +61,6 @@
       </template>
     </v-navigation-drawer>
 
-    <update-snackbar />
-
     <v-main>
       <router-view v-slot="{ Component }">
         <keep-alive>
@@ -99,13 +97,13 @@ import { useRouter } from "vue-router";
 import SavePreset from "./components/NavButtons/SavePreset.vue";
 import PlayPauseAll from "./components/NavButtons/PlayPauseAll.vue";
 import StopAll from "./components/NavButtons/StopAll.vue";
-import UpdateSnackbar from "./components/UpdateSnackbar.vue";
 import AppIcon from "~icons/relax-sounds/icon-white";
 import CastIcon from "./components/NavButtons/CastIcon.vue";
 import LeftPanelCloseIcon from "~icons/material-symbols/left-panel-close-rounded";
 import LeftPanelOpenIcon from "~icons/material-symbols/left-panel-open-rounded";
 import { usePreferencesStore } from "./plugins/store/preferences";
 import DebugButton from "./components/Presets/Buttons/DebugButton.vue";
+import { registerSW } from "./plugins/pwa";
 
 const { smAndDown: isMobile } = useDisplay();
 const preferences = usePreferencesStore();
@@ -128,4 +126,6 @@ onBeforeMount(() => {
     });
   }
 });
+
+registerSW();
 </script>
