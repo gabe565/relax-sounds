@@ -22,12 +22,11 @@
     </template>
 
     <v-form @submit.prevent="save">
-      <v-card>
-        <v-card-title class="text-h5">Preset Name</v-card-title>
-        <v-card-text>
+      <v-card title="Preset Name">
+        <template #text>
           <v-text-field v-model="name" required autofocus label="Name" />
-        </v-card-text>
-        <v-card-actions>
+        </template>
+        <template #actions>
           <v-spacer />
           <v-btn variant="text" @click="cancel">
             <v-icon aria-hidden="true">$close</v-icon>
@@ -37,7 +36,7 @@
             <v-icon aria-hidden="true">$complete</v-icon>
             Save Preset
           </v-btn>
-        </v-card-actions>
+        </template>
       </v-card>
     </v-form>
   </v-dialog>

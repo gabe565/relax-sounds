@@ -4,9 +4,8 @@
   </v-btn>
 
   <v-dialog v-model="show" width="400">
-    <v-card>
-      <v-card-title class="text-h5">Share</v-card-title>
-      <v-card-text>
+    <v-card title="Share">
+      <template #text>
         <v-text-field
           readonly
           :model-value="url"
@@ -14,8 +13,8 @@
           @focus="select"
           @click="select"
         />
-      </v-card-text>
-      <v-card-actions>
+      </template>
+      <template #actions>
         <v-spacer />
         <v-btn variant="text" @click="show = false">
           <v-icon aria-hidden="true">$close</v-icon>
@@ -25,7 +24,7 @@
           <v-icon :icon="CopyIcon" aria-hidden="true" />
           Copy
         </v-btn>
-      </v-card-actions>
+      </template>
     </v-card>
   </v-dialog>
 </template>

@@ -5,8 +5,7 @@
     </template>
 
     <v-form @submit.prevent="restore">
-      <v-card>
-        <v-card-title class="text-h5">Restore</v-card-title>
+      <v-card title="Restore">
         <v-card-text>
           If you previously backed up your presets, you can restore them here.
         </v-card-text>
@@ -18,7 +17,7 @@
             label="Preset File"
           />
         </v-card-text>
-        <v-card-actions>
+        <template #actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
             <v-icon aria-hidden="true">$close</v-icon>
@@ -28,7 +27,7 @@
             <v-icon aria-hidden="true">$complete</v-icon>
             Import
           </v-btn>
-        </v-card-actions>
+        </template>
       </v-card>
     </v-form>
   </v-dialog>

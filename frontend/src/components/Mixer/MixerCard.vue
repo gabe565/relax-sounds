@@ -1,13 +1,13 @@
 <template>
   <v-card variant="flat" color="cardBackground">
-    <v-card-title class="text-h5 text-truncate pb-1">
+    <template #title>
       <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
         <Icon :icon="sound.icon" />
       </v-icon>
       <span>{{ sound.name }}</span>
-    </v-card-title>
+    </template>
 
-    <v-card-actions>
+    <template #actions>
       <v-row no-gutters dense class="pr-2">
         <v-col cols="12">
           <v-slider
@@ -72,7 +72,7 @@
       <v-btn icon aria-label="Stop" @click.stop="player.stop({ sound })">
         <v-icon :icon="StopIcon" aria-hidden="true" />
       </v-btn>
-    </v-card-actions>
+    </template>
   </v-card>
 </template>
 
