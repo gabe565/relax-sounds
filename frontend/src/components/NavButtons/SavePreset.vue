@@ -21,25 +21,25 @@
       />
     </template>
 
-    <v-card>
-      <v-card-title class="text-h5">Preset Name</v-card-title>
-      <v-card-text>
-        <v-form @submit.prevent="save">
+    <v-form @submit.prevent="save">
+      <v-card>
+        <v-card-title class="text-h5">Preset Name</v-card-title>
+        <v-card-text>
           <v-text-field v-model="name" required autofocus label="Name" />
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn variant="text" @click="cancel">
-          <v-icon aria-hidden="true">$close</v-icon>
-          Cancel
-        </v-btn>
-        <v-btn color="green" variant="text" @click="save">
-          <v-icon aria-hidden="true">$complete</v-icon>
-          Save Preset
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="cancel">
+            <v-icon aria-hidden="true">$close</v-icon>
+            Cancel
+          </v-btn>
+          <v-btn color="green" variant="text" type="submit">
+            <v-icon aria-hidden="true">$complete</v-icon>
+            Save Preset
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
   </v-dialog>
 </template>
 
