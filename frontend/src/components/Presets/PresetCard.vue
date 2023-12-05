@@ -5,7 +5,8 @@
     size="x-large"
     class="w-100 d-flex justify-space-between text-none font-weight-regular"
     :aria-label="`Play ${preset.name}`"
-    @click="presets.play({ preset })"
+    :loading="loading"
+    @click="play"
   >
     <span class="text-truncate">
       {{ preset.name }}
@@ -19,20 +20,36 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import ShareButton from "./Buttons/ShareButton.vue";
 import DeleteButton from "./Buttons/DeleteButton.vue";
 import DebugButton from "./Buttons/DebugButton.vue";
 import { usePresetsStore } from "../../plugins/store/presets";
+import { Preset } from "../../util/Preset";
+import { useToast } from "vue-toastification";
 
-defineProps({
+const props = defineProps({
   preset: {
-    type: Object,
+    type: Preset,
     required: true,
   },
 });
 
 const debugEnabled = import.meta.env.DEV;
+const toast = useToast();
 const presets = usePresetsStore();
+const loading = ref(false);
+
+const play = async () => {
+  loading.value = true;
+  try {
+    await presets.play({ preset: props.preset });
+  } catch (err) {
+    toast.error("Failed to load sounds");
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <style scoped lang="scss">
