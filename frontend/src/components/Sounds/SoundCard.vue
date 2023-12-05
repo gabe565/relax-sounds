@@ -5,6 +5,7 @@
     size="x-large"
     class="w-100 justify-start text-none font-weight-regular"
     :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
+    variant="flat"
     @click="playStop"
   >
     <template #prepend>
