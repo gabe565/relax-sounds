@@ -38,11 +38,12 @@ const presets = usePresetsStore();
 <style scoped lang="scss">
 .v-btn {
   letter-spacing: initial;
-}
-.v-btn::v-deep .v-btn__content {
-  max-width: 100% !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+
+  &:deep(.v-btn__content) {
+    max-width: 100% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
 }
 </style>
