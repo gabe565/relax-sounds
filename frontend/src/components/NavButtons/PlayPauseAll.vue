@@ -6,8 +6,7 @@
     :aria-label="player.isPlaying ? 'Pause All' : 'Play All'"
     @click="player.playPauseAll"
   >
-    <span v-if="player.isPlaying">Pause</span>
-    <span v-else>Play</span>
+    {{ player.isPlaying ? "Pause" : "Play" }}
   </component>
 </template>
 
