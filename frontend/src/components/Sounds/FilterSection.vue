@@ -67,3 +67,9 @@ onMounted(async () => {
   }
 });
 </script>
+
+<style scoped lang="scss">
+.v-input:deep(.v-field__outline) {
+  display: none;
+}
+</style>
