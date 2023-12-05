@@ -8,7 +8,6 @@ import router from "./plugins/router";
 import App from "./App.vue";
 
 import "./cast";
-import "./plugins/buffer";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
