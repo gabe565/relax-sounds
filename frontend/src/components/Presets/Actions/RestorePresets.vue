@@ -1,33 +1,30 @@
 <template>
-  <div>
-    <v-dialog v-model="show" max-width="500">
-      <v-card>
-        <v-card-title class="text-h5">Restore</v-card-title>
-        <v-card-text>
-          If you previously backed up your presets, you can restore them here.
-        </v-card-text>
-        <v-card-text>
-          <v-file-input
-            v-model="file"
-            accept="application/json"
-            :error="error"
-            label="Preset File"
-          />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn variant="text" @click="show = false">
-            <v-icon aria-hidden="true">$close</v-icon>
-            Close
-          </v-btn>
-          <v-btn variant="text" :disabled="!file" @click="restore">
-            <v-icon aria-hidden="true">$complete</v-icon>
-            Import
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-dialog v-model="show" max-width="500">
+    <template #activator="{ props }">
+      <v-list-item title="Restore" :prepend-icon="RestoreIcon" v-bind="props" />
+    </template>
+
+    <v-card>
+      <v-card-title class="text-h5">Restore</v-card-title>
+      <v-card-text>
+        If you previously backed up your presets, you can restore them here.
+      </v-card-text>
+      <v-card-text>
+        <v-file-input v-model="file" accept="application/json" :error="error" label="Preset File" />
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn variant="text" @click="show = false">
+          <v-icon aria-hidden="true">$close</v-icon>
+          Close
+        </v-btn>
+        <v-btn variant="text" :disabled="!file" @click="restore">
+          <v-icon aria-hidden="true">$complete</v-icon>
+          Import
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>

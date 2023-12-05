@@ -1,5 +1,9 @@
 <template>
-  <PageLayout :actions="actions">
+  <PageLayout actions>
+    <template #actions>
+      <v-list-item title="Preload All" :prepend-icon="PreloadAllIcon" @click="player.prefetch" />
+    </template>
+
     <filter-section />
 
     <v-row>
@@ -37,19 +41,7 @@ import { useFiltersStore } from "../plugins/store/filters";
 import { useToast } from "vue-toastification";
 
 const loading = ref(true);
-
-const actions = [
-  {
-    title: "Preload All",
-    icon: PreloadAllIcon,
-    on: {
-      click: () => {
-        usePlayerStore().prefetch();
-      },
-    },
-  },
-];
-
+const player = usePlayerStore();
 const toast = useToast();
 const filters = useFiltersStore();
 

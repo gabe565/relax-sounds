@@ -1,5 +1,11 @@
 <template>
-  <PageLayout :actions="actions">
+  <PageLayout actions>
+    <template #actions>
+      <v-list-item title="Backup" :prepend-icon="BackupIcon" @click="exportPresets" />
+      <restore-presets />
+      <v-list-item title="Remove All" :prepend-icon="RemoveAllIcon" @click="removeAll" />
+    </template>
+
     <v-row>
       <v-fade-transition group leave-absolute>
         <v-col v-for="preset of presets.active" :key="preset.name" cols="12" md="6" lg="4" xl="3">
@@ -10,16 +16,13 @@
         </v-col>
       </v-fade-transition>
     </v-row>
-
-    <restore-presets v-model="showRestore" />
   </PageLayout>
 </template>
 
 <script setup>
 import { saveAs } from "file-saver/src/FileSaver";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
-import RestoreIcon from "~icons/material-symbols/backup";
 import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
 import PresetCard from "../components/Presets/PresetCard.vue";
 import PageLayout from "../layouts/PageLayout.vue";
@@ -30,8 +33,6 @@ import { usePresetsStore } from "../plugins/store/presets";
 import { useToast } from "vue-toastification";
 
 const toast = useToast();
-const showRestore = ref(false);
-
 const presets = usePresetsStore();
 
 const exportPresets = () => {
@@ -47,40 +48,6 @@ const exportPresets = () => {
   toast.success(`Downloaded ${presets.presets.length} presets.`, { icon: BackupIcon });
 };
 
-const actions = [
-  {
-    title: "Backup",
-    icon: BackupIcon,
-    on: {
-      click: exportPresets,
-    },
-  },
-  {
-    title: "Restore",
-    icon: RestoreIcon,
-    on: {
-      click: () => {
-        showRestore.value = true;
-      },
-    },
-  },
-  {
-    title: "Remove All",
-    icon: RemoveAllIcon,
-    on: {
-      click: () => {
-        presets.hideAll();
-        toast.success(RemoveAllToast, {
-          icon: RemoveAllIcon,
-          timeout: 10000,
-          closeOnClick: false,
-          onClose: presets.removeHidden,
-        });
-      },
-    },
-  },
-];
-
 onMounted(async () => {
   try {
     await usePlayerStore().initSounds();
@@ -95,4 +62,14 @@ onMounted(async () => {
     toast.error("Failed to migrate presets.");
   }
 });
+
+const removeAll = () => {
+  presets.hideAll();
+  toast.success(RemoveAllToast, {
+    icon: RemoveAllIcon,
+    timeout: 10000,
+    closeOnClick: false,
+    onClose: presets.removeHidden,
+  });
+};
 </script>

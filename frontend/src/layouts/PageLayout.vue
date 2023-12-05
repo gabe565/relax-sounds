@@ -27,12 +27,7 @@
           </template>
 
           <v-list>
-            <v-list-item v-for="(item, index) in actions" :key="index" v-on="item.on">
-              <template #prepend>
-                <v-icon :icon="item.icon" aria-hidden="true" />
-              </template>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item>
+            <slot name="actions" />
           </v-list>
         </v-menu>
       </v-col>
@@ -47,8 +42,8 @@ import MenuIcon from "~icons/material-symbols/more-horiz";
 
 defineProps({
   actions: {
-    type: Array,
-    default: null,
+    type: Boolean,
+    default: false,
   },
 });
 </script>
