@@ -18,7 +18,7 @@
       :rail="preferences.shrinkLeftPanel"
       color="accent"
       width="200"
-      :location="isMobile ? 'bottom' : 'left'"
+      mobile-breakpoint="md"
     >
       <template #prepend>
         <v-list v-if="!isMobile">
