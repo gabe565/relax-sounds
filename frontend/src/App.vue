@@ -9,8 +9,8 @@
       </v-btn>
 
       <v-spacer />
-      <SavePreset button />
-      <CastIcon button />
+      <save-preset button />
+      <cast-icon button />
     </v-app-bar>
 
     <v-navigation-drawer
@@ -42,10 +42,10 @@
       <v-divider />
 
       <v-list>
-        <PlayPauseAll />
-        <StopAll />
-        <SavePreset />
-        <CastIcon />
+        <play-pause-all />
+        <stop-all />
+        <save-preset />
+        <cast-icon />
         <debug-button v-if="debugEnabled" list-item />
       </v-list>
 
@@ -61,7 +61,7 @@
       </template>
     </v-navigation-drawer>
 
-    <UpdateSnackbar />
+    <update-snackbar />
 
     <v-main>
       <router-view v-slot="{ Component }">
@@ -86,8 +86,8 @@
       </v-btn>
 
       <v-divider vertical />
-      <PlayPauseAll button />
-      <StopAll button />
+      <play-pause-all button />
+      <stop-all button />
     </v-bottom-navigation>
   </v-app>
 </template>

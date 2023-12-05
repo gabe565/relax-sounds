@@ -1,5 +1,5 @@
 <template>
-  <PageLayout actions>
+  <page-layout actions>
     <template #actions>
       <v-list-item title="Preload All" :prepend-icon="PreloadAllIcon" @click="player.prefetch" />
     </template>
@@ -22,12 +22,12 @@
             md="4"
             lg="3"
           >
-            <SoundCard :sound="sound" />
+            <sound-card :sound="sound" />
           </v-col>
         </v-fade-transition>
       </template>
     </v-row>
-  </PageLayout>
+  </page-layout>
 </template>
 
 <script setup>

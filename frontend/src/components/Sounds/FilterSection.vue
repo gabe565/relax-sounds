@@ -22,7 +22,7 @@
           <v-chip v-bind="props" :title="item.raw.name">
             <template #prepend>
               <v-icon v-if="item.raw.icon" class="mr-2">
-                <Icon :icon="item.raw.icon" />
+                <icon :icon="item.raw.icon" />
               </v-icon>
             </template>
           </v-chip>
@@ -32,7 +32,7 @@
           <v-list-item v-bind="props" :title="item.raw.name">
             <template #prepend>
               <v-icon v-if="item.raw.icon">
-                <Icon :icon="item.raw.icon" />
+                <icon :icon="item.raw.icon" />
               </v-icon>
             </template>
           </v-list-item>

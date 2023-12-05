@@ -1,12 +1,12 @@
 <template>
-  <PageLayout>
+  <page-layout>
     <v-row>
       <v-col>
         I hate to be the bearer of bad news, but the requested file could not be located.
         <router-link to="/">Click here to go home.</router-link>
       </v-col>
     </v-row>
-  </PageLayout>
+  </page-layout>
 </template>
 
 <script setup>

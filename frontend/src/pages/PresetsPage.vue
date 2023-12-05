@@ -1,5 +1,5 @@
 <template>
-  <PageLayout actions>
+  <page-layout actions>
     <template #actions>
       <v-list-item title="Backup" :prepend-icon="BackupIcon" @click="exportPresets" />
       <restore-presets />
@@ -9,14 +9,14 @@
     <v-row>
       <v-fade-transition group leave-absolute>
         <v-col v-for="preset of presets.active" :key="preset.name" cols="12" md="6" lg="4" xl="3">
-          <PresetCard :preset="preset" />
+          <preset-card :preset="preset" />
         </v-col>
         <v-col v-if="presets.active.length === 0">
           <v-alert prominent text type="info">No Presets Saved Yet!</v-alert>
         </v-col>
       </v-fade-transition>
     </v-row>
-  </PageLayout>
+  </page-layout>
 </template>
 
 <script setup>

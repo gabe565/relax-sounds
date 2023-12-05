@@ -17,6 +17,7 @@ module.exports = {
   rules: {
     "no-unused-vars": ["error", { varsIgnorePattern: "^_", argsIgnorePattern: "^_" }],
     "vue/no-template-shadow": "off",
+    "vue/component-name-in-template-casing": ["error", "kebab-case"],
   },
   parserOptions: {
     sourceType: "module",

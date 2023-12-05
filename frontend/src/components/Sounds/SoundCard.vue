@@ -9,7 +9,7 @@
   >
     <template #prepend>
       <v-icon aria-hidden="true" class="mr-4" size="x-large" :color="iconColor">
-        <Icon :icon="sound.icon" />
+        <icon :icon="sound.icon" />
       </v-icon>
     </template>
     {{ sound.name }}

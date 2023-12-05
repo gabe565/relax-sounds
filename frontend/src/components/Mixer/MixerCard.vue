@@ -2,7 +2,7 @@
   <v-card variant="flat" color="cardBackground">
     <template #title>
       <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
-        <Icon :icon="sound.icon" />
+        <icon :icon="sound.icon" />
       </v-icon>
       <span>{{ sound.name }}</span>
     </template>

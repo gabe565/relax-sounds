@@ -1,5 +1,5 @@
 <template>
-  <PageLayout>
+  <page-layout>
     <v-row>
       <template v-if="loading">
         <v-overlay v-model="loading" class="align-center justify-center" persistent>
@@ -16,7 +16,7 @@
             md="4"
             xl="3"
           >
-            <MixerCard :sound="sound" />
+            <mixer-card :sound="sound" />
           </v-col>
           <v-col v-if="player.soundsNotStopped.length === 0">
             <v-alert prominent text type="info">No sounds are playing</v-alert>
@@ -24,7 +24,7 @@
         </v-fade-transition>
       </template>
     </v-row>
-  </PageLayout>
+  </page-layout>
 </template>
 
 <script setup>
