@@ -1,6 +1,12 @@
 <template>
-  <page-layout actions>
+  <page-layout>
     <template #actions>
+      <template v-if="isMobile">
+        <save-preset button />
+        <cast-icon button />
+      </template>
+    </template>
+    <template #menu>
       <v-list-item title="Preload All" :prepend-icon="PreloadAllIcon" @click="player.prefetch" />
     </template>
 
@@ -39,7 +45,11 @@ import FilterSection from "../components/Sounds/FilterSection.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { useFiltersStore } from "../plugins/store/filters";
 import { useToast } from "vue-toastification";
+import SavePreset from "../components/NavButtons/SavePreset.vue";
+import CastIcon from "../components/NavButtons/CastIcon.vue";
+import { useDisplay } from "vuetify";
 
+const { smAndDown: isMobile } = useDisplay();
 const loading = ref(true);
 const player = usePlayerStore();
 const toast = useToast();

@@ -14,7 +14,7 @@ pinia.use(piniaPluginPersistedstate);
 
 const toastOptions = {
   position: POSITION.TOP_RIGHT,
-  containerClassName: "mt-16 pt-3 mt-sm-0 pt-sm-0",
+  containerClassName: "mt-16 pt-3",
   transition: "Vue-Toastification__fade",
 };
 

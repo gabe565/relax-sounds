@@ -1,6 +1,9 @@
 <template>
-  <page-layout actions>
+  <page-layout>
     <template #actions>
+      <cast-icon button />
+    </template>
+    <template #menu>
       <v-list-item title="Backup" :prepend-icon="BackupIcon" @click="exportPresets" />
       <restore-presets />
       <v-list-item title="Remove All" :prepend-icon="RemoveAllIcon" @click="removeAll" />
@@ -31,6 +34,7 @@ import RemoveAllToast from "../components/Presets/Actions/RemoveAllToast.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";
 import { useToast } from "vue-toastification";
+import CastIcon from "../components/NavButtons/CastIcon.vue";
 
 const toast = useToast();
 const presets = usePresetsStore();
