@@ -1,20 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar v-if="isMobile" theme="dark" color="accent" flat>
-      <v-btn to="/" class="text-body-2 text-none px-2">
-        <template #prepend>
-          <v-icon :icon="AppIcon" aria-hidden="true" size="28" />
-        </template>
-        <v-app-bar-title>Relax Sounds</v-app-bar-title>
-      </v-btn>
-
-      <v-spacer />
-      <save-preset button />
-      <cast-icon button />
-    </v-app-bar>
-
     <v-navigation-drawer
-      v-else
       :rail="preferences.shrinkLeftPanel"
       color="accent"
       width="200"

@@ -1,5 +1,12 @@
 <template>
   <page-layout>
+    <template #actions>
+      <template v-if="isMobile">
+        <save-preset button />
+        <cast-icon button />
+      </template>
+    </template>
+
     <v-row>
       <template v-if="loading">
         <v-overlay v-model="loading" class="align-center justify-center" persistent>
@@ -33,7 +40,11 @@ import MixerCard from "../components/Mixer/MixerCard.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
+import SavePreset from "../components/NavButtons/SavePreset.vue";
+import CastIcon from "../components/NavButtons/CastIcon.vue";
+import { useDisplay } from "vuetify";
 
+const { smAndDown: isMobile } = useDisplay();
 const player = usePlayerStore();
 const loading = ref(true);
 const toast = useToast();
