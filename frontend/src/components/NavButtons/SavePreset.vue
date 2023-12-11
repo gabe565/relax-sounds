@@ -1,19 +1,23 @@
 <template>
   <v-dialog v-model="showDialog" max-width="500">
-    <template #activator="{ props }">
-      <v-btn
-        v-if="button"
-        v-bind="props"
-        icon
-        title="Save Preset"
-        :disabled="player.isStopped"
-        aria-label="Save Preset"
-      >
-        <v-icon :icon="AddIcon" aria-hidden="true" />
-      </v-btn>
+    <template #activator="{ props: dialogProps }">
+      <v-tooltip v-if="button" text="Save preset" location="bottom">
+        <template #activator="{ props: tooltipProps }">
+          <v-btn
+            v-if="button"
+            v-bind="{ ...tooltipProps, ...dialogProps }"
+            icon
+            title="Save preset"
+            :disabled="player.isStopped"
+            aria-label="Save preset"
+          >
+            <v-icon :icon="AddIcon" aria-hidden="true" />
+          </v-btn>
+        </template>
+      </v-tooltip>
       <v-list-item
         v-else
-        v-bind="props"
+        v-bind="dialogProps"
         :prepend-icon="AddIcon"
         title="Save Preset"
         :disabled="player.isStopped"

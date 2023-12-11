@@ -1,7 +1,18 @@
 <template>
-  <v-btn elevation="0" icon color="transparent" aria-label="Share" @click.stop="remove">
-    <v-icon :icon="TrashIcon" aria-hidden="true" />
-  </v-btn>
+  <v-tooltip text="Delete" location="bottom">
+    <template #activator="{ props }">
+      <v-btn
+        v-bind="props"
+        elevation="0"
+        icon
+        color="transparent"
+        aria-label="Delete"
+        @click.stop="remove"
+      >
+        <v-icon :icon="TrashIcon" aria-hidden="true" />
+      </v-btn>
+    </template>
+  </v-tooltip>
 </template>
 
 <script setup>

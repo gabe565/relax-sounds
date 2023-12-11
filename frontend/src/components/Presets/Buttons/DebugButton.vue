@@ -8,18 +8,22 @@
     aria-label="Debug"
     @click.stop="openUrl"
   />
-  <v-btn
-    v-else
-    icon
-    variant="flat"
-    color="transparent"
-    target="_blank"
-    :disabled="disabled"
-    aria-label="Debug"
-    @click.stop="openUrl"
-  >
-    <v-icon :icon="DebugIcon" aria-hidden="true" />
-  </v-btn>
+  <v-tooltip v-else text="Debug" location="bottom">
+    <template #activator="{ props }">
+      <v-btn
+        v-bind="props"
+        icon
+        variant="flat"
+        color="transparent"
+        target="_blank"
+        :disabled="disabled"
+        aria-label="Debug"
+        @click.stop="openUrl"
+      >
+        <v-icon :icon="DebugIcon" aria-hidden="true" />
+      </v-btn>
+    </template>
+  </v-tooltip>
 </template>
 
 <script setup>

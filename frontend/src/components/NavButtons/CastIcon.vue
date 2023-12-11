@@ -1,13 +1,23 @@
 <template>
   <template v-if="castEnabled">
-    <v-btn v-if="button" icon title="Cast" aria-label="Cast" @click.stop="castLauncher.click()">
-      <v-icon v-bind="props">
-        <google-cast-launcher ref="castLauncher" />
-      </v-icon>
-    </v-btn>
+    <v-tooltip v-if="button" text="Cast" location="bottom">
+      <template #activator="{ props }">
+        <v-btn
+          v-bind="props"
+          icon
+          title="Cast"
+          aria-label="Cast"
+          @click.stop="castLauncher.click()"
+        >
+          <v-icon>
+            <google-cast-launcher ref="castLauncher" class="position-relative" />
+          </v-icon>
+        </v-btn>
+      </template>
+    </v-tooltip>
     <v-list-item v-else title="Cast" aria-label="Cast" @click.stop="castLauncher.click()">
       <template #prepend>
-        <v-icon v-bind="props">
+        <v-icon>
           <google-cast-launcher ref="castLauncher" />
         </v-icon>
       </template>
@@ -22,7 +32,7 @@ import { VBtn, VListItem } from "vuetify/components";
 
 const castLauncher = ref();
 
-const props = defineProps({
+defineProps({
   button: {
     type: Boolean,
     default: false,
