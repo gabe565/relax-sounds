@@ -37,13 +37,10 @@
 
       <template #append>
         <v-divider />
-        <v-btn
-          :icon="preferences.shrinkLeftPanel ? LeftPanelOpenIcon : LeftPanelCloseIcon"
-          color="transparent"
-          variant="flat"
-          :aria-label="preferences.shrinkLeftPanel ? 'Expand Left Panel' : 'Shrink Left Panel'"
-          @click="preferences.shrinkLeftPanel = !preferences.shrinkLeftPanel"
-        />
+        <div class="d-flex overflow-hidden">
+          <nav-size-btn />
+          <theme-btn />
+        </div>
       </template>
     </v-navigation-drawer>
 
@@ -78,40 +75,53 @@
 
 <script setup>
 import { useDisplay, useTheme } from "vuetify";
-import { computed, onBeforeMount } from "vue";
+import { computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import SavePreset from "./components/NavButtons/SavePreset.vue";
 import PlayPauseAll from "./components/NavButtons/PlayPauseAll.vue";
 import StopAll from "./components/NavButtons/StopAll.vue";
 import AppIcon from "~icons/relax-sounds/icon-white";
 import CastIcon from "./components/NavButtons/CastIcon.vue";
-import LeftPanelCloseIcon from "~icons/material-symbols/left-panel-close-rounded";
-import LeftPanelOpenIcon from "~icons/material-symbols/left-panel-open-rounded";
-import { usePreferencesStore } from "./plugins/store/preferences";
+import { Theme, usePreferencesStore } from "./plugins/store/preferences";
 import DebugButton from "./components/Presets/Buttons/DebugButton.vue";
 import { registerSW } from "./plugins/pwa";
+import NavSizeBtn from "./components/NavButtons/NavSizeBtn.vue";
+import ThemeBtn from "./components/NavButtons/ThemeBtn.vue";
 
 const { smAndDown: isMobile } = useDisplay();
 const preferences = usePreferencesStore();
+const theme = useTheme();
 const debugEnabled = import.meta.env.DEV;
 
 const routes = computed(() => {
   return useRouter().options.routes.filter((route) => route.meta?.showInNav);
 });
 
-onBeforeMount(() => {
-  // check for browser support
-  if (window.matchMedia && window.matchMedia("(prefers-color-scheme)").media !== "not all") {
-    // set to preferred scheme
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const theme = useTheme();
-    theme.name.value = mediaQuery.matches ? "dark" : "light";
-    // react to changes
-    mediaQuery.addEventListener("change", (e) => {
-      theme.name.value = e.matches ? "dark" : "light";
-    });
-  }
-});
+const autoTheme = (e) => (theme.name.value = e.matches ? "dark" : "light");
+const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+watch(
+  () => preferences.theme,
+  (val) => {
+    mediaQuery.removeEventListener("change", autoTheme);
+    switch (val) {
+      case Theme.dark:
+        theme.name.value = "dark";
+        break;
+      case Theme.light:
+        theme.name.value = "light";
+        break;
+      default:
+        // check for browser support
+        if (window.matchMedia && window.matchMedia("(prefers-color-scheme)").media !== "not all") {
+          // set to preferred scheme
+          autoTheme(mediaQuery);
+          // react to changes
+          mediaQuery.addEventListener("change", autoTheme);
+        }
+    }
+  },
+  { immediate: true },
+);
 
 registerSW();
 </script>

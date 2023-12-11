@@ -10,7 +10,7 @@
 
     <slot name="actions" />
 
-    <v-menu v-if="$slots.menu" location="bottom right" transition="slide-y-transition">
+    <v-menu v-if="isMobile || $slots.menu" location="bottom right" transition="slide-y-transition">
       <template #activator="{ props }">
         <v-btn icon variant="flat" color="transparent" v-bind="props" aria-label="Menu">
           <v-icon :icon="MenuIcon" />
@@ -19,6 +19,10 @@
 
       <v-list>
         <slot name="menu" />
+        <template v-if="isMobile">
+          <v-divider v-if="$slots.menu" />
+          <theme-btn list-item />
+        </template>
       </v-list>
     </v-menu>
   </v-app-bar>
@@ -32,6 +36,7 @@
 import AppIcon from "~icons/relax-sounds/icon-white";
 import MenuIcon from "~icons/material-symbols/more-horiz";
 import { useDisplay } from "vuetify";
+import ThemeBtn from "../components/NavButtons/ThemeBtn.vue";
 
 const { smAndDown: isMobile } = useDisplay();
 </script>
