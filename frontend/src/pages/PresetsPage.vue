@@ -1,7 +1,7 @@
 <template>
   <page-layout>
     <template #actions>
-      <cast-icon button />
+      <cast-icon v-if="isMobile" button />
     </template>
     <template #menu>
       <v-list-item title="Backup" :prepend-icon="BackupIcon" @click="exportPresets" />
@@ -35,8 +35,10 @@ import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";
 import { useToast } from "vue-toastification";
 import CastIcon from "../components/NavButtons/CastIcon.vue";
+import { useDisplay } from "vuetify";
 
 const toast = useToast();
+const { smAndDown: isMobile } = useDisplay();
 const presets = usePresetsStore();
 
 const exportPresets = () => {
