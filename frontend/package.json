@@ -13,7 +13,7 @@
   "dependencies": {
     "@iconify-json/material-symbols": "1.1.65",
     "@iconify/vue": "4.1.1",
-    "@vitejs/plugin-vue": "4.5.1",
+    "@vitejs/plugin-vue": "5.0.2",
     "autoprefixer": "10.4.16",
     "base64-url": "2.3.3",
     "file-saver": "2.0.5",
