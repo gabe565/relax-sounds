@@ -17,6 +17,7 @@ COPY *.go ./
 COPY migrations/ migrations/
 COPY internal/ internal/
 
+ARG CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 RUN --mount=type=cache,target=/root/.cache \
     go build -ldflags="-w -s" -trimpath -tags disable_automigrate
 
