@@ -10,7 +10,7 @@ export const fuse = new Fuse([], {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: ["name", "tags"],
+  keys: ["name", "tags", "icon"],
 });
 
 export const useFiltersStore = defineStore("filters", () => {
