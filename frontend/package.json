@@ -27,7 +27,7 @@
     "sass": "1.69.7",
     "unplugin-icons": "0.18.2",
     "vite": "4.5.0",
-    "vite-plugin-pwa": "0.17.2",
+    "vite-plugin-pwa": "0.17.4",
     "vite-plugin-vuetify": "1.0.2",
     "vue": "3.4.14",
     "vue-router": "4.2.5",
