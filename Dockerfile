@@ -33,7 +33,7 @@ COPY frontend/ ./
 RUN npm run build
 
 
-FROM alpine:3.18
+FROM alpine:3.19
 LABEL org.opencontainers.image.source="https://github.com/gabe565/relax-sounds"
 WORKDIR /app
 
