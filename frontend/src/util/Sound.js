@@ -36,9 +36,9 @@ export class Sound {
           this.isLoading = false;
           resolve();
         });
-        this.howl.once("loaderror", () => {
+        this.howl.once("loaderror", (_, err) => {
           this.isLoading = false;
-          reject();
+          reject(err);
         });
         this.howl.load();
       });
