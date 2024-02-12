@@ -88,7 +88,7 @@ const copy = async () => {
     toast.success("Copied to clipboard.", { icon: CopyIcon });
   } catch (err) {
     console.error(err);
-    toast.error("Failed to copy to clipboard.");
+    toast.error(`Failed to copy to clipboard:\n${err}`);
   } finally {
     show.value = false;
   }

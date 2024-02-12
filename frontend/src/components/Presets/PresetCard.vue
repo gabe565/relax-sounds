@@ -45,7 +45,7 @@ const play = async () => {
   try {
     await presets.play({ preset: props.preset });
   } catch (err) {
-    toast.error("Failed to load sounds");
+    toast.error(`Failed to load sounds:\n${err}`);
   } finally {
     loading.value = false;
   }

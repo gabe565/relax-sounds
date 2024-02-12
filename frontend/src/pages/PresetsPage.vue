@@ -59,13 +59,13 @@ onMounted(async () => {
     await usePlayerStore().initSounds();
   } catch (err) {
     console.error(err);
-    toast.error("Failed to fetch sounds.");
+    toast.error(`Failed to fetch sounds:\n${err}`);
   }
   try {
     await usePresetsStore().migrate();
   } catch (err) {
     console.error(err);
-    toast.error("Failed to migrate presets.");
+    toast.error(`Failed to migrate presets:\n${err}`);
   }
 });
 

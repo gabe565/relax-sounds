@@ -38,7 +38,7 @@ const playStop = async () => {
   try {
     await player.playStop({ sound: props.sound });
   } catch (err) {
-    toast.error("Failed to load sound");
+    toast.error(`Failed to load sound:\n${err}`);
   }
 };
 </script>

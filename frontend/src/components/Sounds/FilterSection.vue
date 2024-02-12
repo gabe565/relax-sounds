@@ -61,7 +61,7 @@ onMounted(async () => {
     tags.value = await getTags();
   } catch (err) {
     console.error(err);
-    toast.error("Failed to fetch tags.");
+    toast.error(`Failed to fetch tags:\n${err}`);
   } finally {
     loading.value = false;
   }

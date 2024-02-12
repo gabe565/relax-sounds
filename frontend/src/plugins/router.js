@@ -55,7 +55,7 @@ const router = createRouter({
             toast.success(`Imported ${preset.name}.`);
           } catch (error) {
             console.error(error);
-            toast.error("Failed to import preset.");
+            toast.error(`Failed to import preset:\n${error}`);
           }
         })();
         return { name: "Presets" };

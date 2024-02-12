@@ -111,7 +111,7 @@ export const usePlayerStore = defineStore("player", () => {
           await castSession.loadMedia(request);
         } catch (error) {
           console.error(`Remote media load error: ${formatError(error)}`);
-          toast.error("Failed to cast");
+          toast.error(`Failed to cast:\n${error}`);
           return;
         }
       }
@@ -129,7 +129,7 @@ export const usePlayerStore = defineStore("player", () => {
           await sound.load();
         } catch (err) {
           console.error(err);
-          toast.error(`Failed to load ${sound.name}.`);
+          toast.error(`Failed to load ${sound.name}:\n${err}`);
           return;
         }
       }
@@ -153,7 +153,7 @@ export const usePlayerStore = defineStore("player", () => {
           await sound.load();
         } catch (err) {
           console.error(err);
-          toast.error(`Failed to load ${sound.name}.`);
+          toast.error(`Failed to load ${sound.name}:\n${err}`);
           return;
         }
       }
@@ -190,7 +190,7 @@ export const usePlayerStore = defineStore("player", () => {
               await sound.load();
             } catch (err) {
               console.error(err);
-              toast.error(`Failed to load ${sound.name}.`);
+              toast.error(`Failed to load ${sound.name}:\n${err}`);
               return;
             }
           }

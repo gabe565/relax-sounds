@@ -76,7 +76,7 @@ const restore = async () => {
       });
     } catch (err) {
       console.error(err);
-      toast.error("Failed to import presets.");
+      toast.error(`Failed to import presets:\n${err}`);
     } finally {
       show.value = false;
     }

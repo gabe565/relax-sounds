@@ -86,7 +86,7 @@ const save = async () => {
     return router.push({ name: "Presets" });
   } catch (error) {
     console.error(error);
-    toast.error("Failed to save preset.");
+    toast.error(`Failed to save preset:\n${error}`);
   }
 };
 </script>
