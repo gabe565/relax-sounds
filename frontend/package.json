@@ -23,7 +23,7 @@
     "nanoid": "5.0.4",
     "pinia": "2.1.7",
     "pinia-plugin-persistedstate": "3.2.1",
-    "pocketbase": "0.20.3",
+    "pocketbase": "0.21.1",
     "register-service-worker": "1.7.2",
     "sass": "1.69.7",
     "unplugin-icons": "0.18.2",
