@@ -27,7 +27,7 @@
     "register-service-worker": "1.7.2",
     "sass": "1.72.0",
     "unplugin-icons": "0.18.5",
-    "vite": "5.0.11",
+    "vite": "5.2.8",
     "vite-plugin-pwa": "0.19.7",
     "vite-plugin-vuetify": "2.0.3",
     "vue": "3.4.21",
