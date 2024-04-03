@@ -7,6 +7,7 @@ import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
 import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
 import { useToast } from "vue-toastification";
 import { wait } from "../util/helpers";
+import { ApiPath } from "../config/api";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -64,6 +65,12 @@ const router = createRouter({
     {
       path: "/",
       redirect: { name: "Sounds" },
+    },
+    {
+      path: "/_",
+      redirect() {
+        window.location.href = ApiPath("/_");
+      },
     },
     {
       path: "/:catchAll(.*)",
