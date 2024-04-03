@@ -6,12 +6,13 @@ replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416
 
 require (
 	github.com/aofei/mimesniffer v1.2.1
+	github.com/fatih/color v1.16.0
 	github.com/gopxl/beep v1.3.0
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
 	github.com/pocketbase/dbx v1.10.1
 	github.com/pocketbase/pocketbase v0.20.6
 	github.com/prometheus/client_golang v1.18.0
-	github.com/sirupsen/logrus v1.9.3
+	github.com/rs/zerolog v1.32.0
 	github.com/spf13/cobra v1.8.0
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
 	golang.org/x/sync v0.6.0
@@ -45,7 +46,6 @@ require (
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/domodwyer/mailyak/v3 v3.6.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/fatih/color v1.16.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/ganigeorgiev/fexpr v0.4.0 // indirect
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0 // indirect

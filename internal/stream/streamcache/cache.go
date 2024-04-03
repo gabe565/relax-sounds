@@ -3,8 +3,6 @@ package streamcache
 import (
 	"sync"
 	"time"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type Cache struct {
@@ -67,15 +65,12 @@ func (a *Cache) cleanup(since time.Duration) {
 
 	for id, entry := range a.Entries {
 		if time.Since(entry.Accessed) >= since {
-			log.WithFields(log.Fields{
-				"ip":       entry.RemoteAddr,
-				"id":       id,
-				"accessed": entry.Accessed,
-				"age":      time.Since(entry.Created).Truncate(time.Millisecond).String(),
-			}).Info("Cleanup stream")
+			entry.Log.Info().
+				Time("accessed", entry.Accessed).
+				Str("age", time.Since(entry.Created).Truncate(time.Second).String()).
+				Msg("cleanup stream")
 			if err := entry.Close(); err != nil {
-				log.WithError(err).WithField("id", id).
-					Error("Failed to cleanup stream")
+				entry.Log.Err(err).Msg("failed to cleanup stream")
 			}
 			delete(a.Entries, id)
 		}

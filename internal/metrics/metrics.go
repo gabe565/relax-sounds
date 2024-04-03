@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +17,7 @@ func Flags(cmd *cobra.Command) {
 		var err error
 		enabledDefault, err = strconv.ParseBool(env)
 		if err != nil {
-			log.WithError(err).Warn("Failed to parse METRICS_ENABLED")
+			log.Warn().Err(err).Msg("Failed to parse env METRICS_ENABLED")
 		}
 	}
 	cmd.PersistentFlags().Bool("metrics-enabled", enabledDefault, "Enables Prometheus metrics API")

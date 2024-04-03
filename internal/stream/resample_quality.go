@@ -4,7 +4,7 @@ import (
 	"os"
 	"strconv"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +17,7 @@ func Flags(cmd *cobra.Command) {
 		var err error
 		resampleQualityDefault, err = strconv.Atoi(env)
 		if err != nil {
-			log.WithError(err).Warn("Failed to parse RESAMPLE_QUALITY")
+			log.Warn().Err(err).Msg("failed to parse env RESAMPLE_QUALITY")
 		}
 	}
 	cmd.PersistentFlags().IntVar(&resampleQuality, "resample-quality", resampleQualityDefault, "Resample quality. Recommend values between 1-4.")

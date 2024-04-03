@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +18,7 @@ func Flags(cmd *cobra.Command) {
 		var err error
 		enabledDefault, err = strconv.ParseBool(env)
 		if err != nil {
-			log.WithError(err).Warn("Failed to parse DEBUG_ENABLED")
+			log.Warn().Err(err).Msg("failed to parse env DEBUG_ENABLED")
 		}
 	}
 	cmd.PersistentFlags().Bool("debug-enabled", enabledDefault, "Enables debug server")

@@ -21,7 +21,7 @@ import (
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -31,7 +31,7 @@ func MixFlags(cmd *cobra.Command) {
 		var err error
 		chunkLengthDefault, err = time.ParseDuration(env)
 		if err != nil {
-			log.WithError(err).Warn("Failed to parse STREAM_CHUNK_LENGTH")
+			log.Warn().Err(err).Msg("failed to parse env STREAM_CHUNK_LENGTH")
 		}
 	}
 	cmd.PersistentFlags().Duration("stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
@@ -71,25 +71,21 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 		if found && entry.Preset != presetEncoded {
 			// Same window is changing streams
 			// Destroy old stream then recreate
-			log.WithFields(log.Fields{
-				"ip":       entry.RemoteAddr,
-				"id":       uuid,
-				"accessed": entry.Accessed,
-				"age":      time.Since(entry.Created).Truncate(time.Millisecond).String(),
-			}).Info("Close stream")
+			entry.Log.Info().
+				Time("accessed", entry.Accessed).
+				Str("age", time.Since(entry.Created).Truncate(time.Second).String()).
+				Msg("close stream")
 			if err := entry.Close(); err != nil {
-				log.WithError(err).WithField("id", uuid).
-					Error("Failed to close stream")
+				entry.Log.Err(err).Msg("failed to close stream")
 			}
 			found = false
 		}
 		if !found {
-			log.WithField("id", uuid).Info("Create stream")
-
 			remoteAddr, _, _ := strings.Cut(c.Request().RemoteAddr, ":")
 
 			// Entry was not found
-			entry = streamcache.NewEntry(remoteAddr, presetEncoded)
+			entry = streamcache.NewEntry(remoteAddr, presetEncoded, uuid)
+			entry.Log.Info().Msg("create stream")
 
 			presetDecoded, err := preset.FromParam(presetEncoded)
 			if err != nil {
