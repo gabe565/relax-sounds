@@ -21,7 +21,9 @@ func (s Streamer) Close() error {
 	return nil
 }
 
-func NewStreamer(rawFile fs.File, entry preset.Track) (streamer Streamer, err error) {
+func NewStreamer(rawFile fs.File, entry preset.Track) (Streamer, error) {
+	var streamer Streamer
+
 	closer, format, err := Decode(rawFile)
 	if err != nil {
 		return streamer, err

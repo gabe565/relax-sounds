@@ -1,4 +1,4 @@
-package stream_cache
+package streamcache
 
 import (
 	"sync"

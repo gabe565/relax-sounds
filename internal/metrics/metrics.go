@@ -4,18 +4,20 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
-	flag "github.com/spf13/pflag"
+	"github.com/spf13/cobra"
 )
 
+//nolint:gochecknoglobals
 var (
 	enabled bool
 	addr    string
 )
 
-func init() {
+func Flags(cmd *cobra.Command) {
 	enabledDefault := true
 	if env := os.Getenv("METRICS_ENABLED"); env != "" {
 		var err error
@@ -24,14 +26,14 @@ func init() {
 			log.WithError(err).Warn("Failed to parse METRICS_ENABLED")
 		}
 	}
-	flag.BoolVar(&enabled, "metrics-enabled", enabledDefault, "Enables Prometheus metrics API")
+	cmd.PersistentFlags().BoolVar(&enabled, "metrics-enabled", enabledDefault, "Enables Prometheus metrics API")
 
 	addressDefault := ":9090"
 	if env := os.Getenv("METRICS_ADDRESS"); env != "" {
 		addressDefault = env
 	}
 
-	flag.StringVar(&addr, "metrics-address", addressDefault, "Prometheus metrics API listen address")
+	cmd.PersistentFlags().StringVar(&addr, "metrics-address", addressDefault, "Prometheus metrics API listen address")
 }
 
 func Serve() error {
@@ -41,5 +43,10 @@ func Serve() error {
 
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
-	return http.ListenAndServe(addr, mux)
+
+	server := &http.Server{
+		Addr:              addr,
+		ReadHeaderTimeout: 3 * time.Second,
+	}
+	return server.ListenAndServe()
 }

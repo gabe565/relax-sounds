@@ -2,8 +2,11 @@ package main
 
 import (
 	"github.com/gabe565/relax-sounds/internal/debug"
+	"github.com/gabe565/relax-sounds/internal/encoder/mp3"
 	"github.com/gabe565/relax-sounds/internal/handlers"
 	"github.com/gabe565/relax-sounds/internal/metrics"
+	"github.com/gabe565/relax-sounds/internal/stream"
+	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
 	_ "github.com/gabe565/relax-sounds/migrations"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
@@ -13,6 +16,13 @@ import (
 
 func main() {
 	app := pocketbase.New()
+	stream.Flags(app.RootCmd)
+	streamcache.Flags(app.RootCmd)
+	handlers.MixFlags(app.RootCmd)
+	handlers.StaticFlags(app.RootCmd)
+	mp3.Flags(app.RootCmd)
+	metrics.Flags(app.RootCmd)
+	debug.Flags(app.RootCmd)
 
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		Automigrate: automigrateEnabled(),

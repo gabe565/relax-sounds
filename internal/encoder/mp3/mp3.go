@@ -4,14 +4,15 @@ import (
 	"io"
 
 	"github.com/gopxl/beep"
-	flag "github.com/spf13/pflag"
+	"github.com/spf13/cobra"
 	"github.com/viert/go-lame"
 )
 
+//nolint:gochecknoglobals
 var quality float64
 
-func init() {
-	flag.Float64Var(&quality, "lame-quality", 2, "LAME VBR quality")
+func Flags(cmd *cobra.Command) {
+	cmd.PersistentFlags().Float64Var(&quality, "lame-quality", 2, "LAME VBR quality")
 }
 
 type Encoder struct {
@@ -19,7 +20,7 @@ type Encoder struct {
 	Format  beep.Format
 }
 
-func (e Encoder) Write(p []byte) (n int, err error) {
+func (e Encoder) Write(p []byte) (int, error) {
 	return e.Encoder.Write(p)
 }
 

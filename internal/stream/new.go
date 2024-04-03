@@ -13,9 +13,9 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-var ErrInvalidRecordId = errors.New("invalid record ID")
+var ErrInvalidRecordID = errors.New("invalid record ID")
 
-func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (stream Streams, err error) {
+func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (Streams, error) {
 	s := make(Streams, 0, len(p.Tracks))
 
 	var mu sync.Mutex
@@ -24,7 +24,7 @@ func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (stream Streams, err err
 
 	ids := make([]string, 0, len(p.Tracks))
 	for _, entry := range p.Tracks {
-		ids = append(ids, entry.Id)
+		ids = append(ids, entry.ID)
 	}
 	records, err := dao.FindRecordsByIds("sounds", ids)
 	if err != nil {
@@ -32,17 +32,15 @@ func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (stream Streams, err err
 	}
 
 	for _, entry := range p.Tracks {
-		entry := entry
-
 		var record *models.Record
 		for _, v := range records {
-			if v.GetId() == entry.Id {
+			if v.GetId() == entry.ID {
 				record = v
 				break
 			}
 		}
 		if record == nil {
-			return s, fmt.Errorf("%w: %s", ErrInvalidRecordId, entry.Id)
+			return s, fmt.Errorf("%w: %s", ErrInvalidRecordID, entry.ID)
 		}
 
 		group.Go(func() error {

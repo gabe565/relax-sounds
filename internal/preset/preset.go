@@ -1,10 +1,10 @@
 package preset
 
 type Track struct {
-	Id     string
-	Volume *float64
-	Rate   *float64
-	Pan    *float64
+	ID     string   `json:"id"`
+	Volume *float64 `json:"volume"`
+	Rate   *float64 `json:"rate"`
+	Pan    *float64 `json:"pan"`
 }
 
 func (t Track) GetVolume() float64 {
@@ -43,7 +43,7 @@ func (t Track) GetPan() float64 {
 }
 
 type Preset struct {
-	Tracks []Track
+	Tracks []Track `json:"tracks"`
 }
 
 func (preset *Preset) Add(tracks ...Track) {

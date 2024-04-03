@@ -1,19 +1,20 @@
-package stream_cache
+package streamcache
 
 import (
 	"os"
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	flag "github.com/spf13/pflag"
+	"github.com/spf13/cobra"
 )
 
+//nolint:gochecknoglobals
 var (
 	scanInterval time.Duration
 	cleanAfter   time.Duration
 )
 
-func init() {
+func Flags(cmd *cobra.Command) {
 	scanIntervalDefault := time.Minute
 	if env := os.Getenv("CACHE_SCAN_INTERVAL"); env != "" {
 		var err error
@@ -22,7 +23,7 @@ func init() {
 			log.WithError(err).Warn("Failed to parse CACHE_SCAN_INTERVAL")
 		}
 	}
-	flag.DurationVar(&scanInterval, "cache-scan-interval", scanIntervalDefault, "Interval to search stream cache for old entries")
+	cmd.PersistentFlags().DurationVar(&scanInterval, "cache-scan-interval", scanIntervalDefault, "Interval to search stream cache for old entries")
 
 	cleanAfterDefault := 8 * time.Minute
 	if env := os.Getenv("CACHE_CLEAN_AFTER"); env != "" {
@@ -33,5 +34,5 @@ func init() {
 		}
 	}
 
-	flag.DurationVar(&cleanAfter, "cache-clean-after", cleanAfterDefault, "How old a cache entry must be before it is cleaned")
+	cmd.PersistentFlags().DurationVar(&cleanAfter, "cache-clean-after", cleanAfterDefault, "How old a cache entry must be before it is cleaned")
 }

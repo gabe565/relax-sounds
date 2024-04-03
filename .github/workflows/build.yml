@@ -17,8 +17,6 @@ jobs:
       - run: sudo apt-get install -y libmp3lame-dev
       - name: Lint
         uses: golangci/golangci-lint-action@v4
-        with:
-          args: --timeout=5m
 
   backend-test:
     name: Backend Test

@@ -16,18 +16,19 @@ import (
 	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/stream"
-	"github.com/gabe565/relax-sounds/internal/stream/stream_cache"
+	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
 	"github.com/gopxl/beep"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	log "github.com/sirupsen/logrus"
-	flag "github.com/spf13/pflag"
+	"github.com/spf13/cobra"
 )
 
+//nolint:gochecknoglobals
 var chunkLength time.Duration
 
-func init() {
+func MixFlags(cmd *cobra.Command) {
 	chunkLengthDefault := 2 * time.Minute
 	if env := os.Getenv("STREAM_CHUNK_LENGTH"); env != "" {
 		var err error
@@ -36,11 +37,11 @@ func init() {
 			log.WithError(err).Warn("Failed to parse STREAM_CHUNK_LENGTH")
 		}
 	}
-	flag.DurationVar(&chunkLength, "stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
+	cmd.PersistentFlags().DurationVar(&chunkLength, "stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
 }
 
 func Mix(app core.App) echo.HandlerFunc {
-	cache := stream_cache.New()
+	cache := streamcache.New()
 	dataFs := os.DirFS(filepath.Join(app.DataDir(), "storage"))
 
 	return func(c echo.Context) error {
@@ -87,7 +88,7 @@ func Mix(app core.App) echo.HandlerFunc {
 			remoteAddr, _, _ := strings.Cut(c.Request().RemoteAddr, ":")
 
 			// Entry was not found
-			entry = stream_cache.NewEntry(remoteAddr, presetEncoded)
+			entry = streamcache.NewEntry(remoteAddr, presetEncoded)
 
 			presetDecoded, err := preset.FromParam(presetEncoded)
 			if err != nil {
@@ -198,7 +199,7 @@ func Mix(app core.App) echo.HandlerFunc {
 		}
 
 		entry.Buffer.Reset()
-		entry.ChunkNum += 1
+		entry.ChunkNum++
 		return nil
 	}
 }

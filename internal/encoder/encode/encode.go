@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gabe565/relax-sounds/internal/stream/stream_cache"
+	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
 )
 
 // Encode writes a duration of the audio stream in PCM format.
 //
 // Format precision must be 1 or 2 bytes.
-func Encode(ctx context.Context, duration time.Duration, entry *stream_cache.Entry) (err error) {
+func Encode(ctx context.Context, duration time.Duration, entry *streamcache.Entry) error {
 	durationPerLoop := time.Second / 10
 	samples := make([][2]float64, entry.Format.SampleRate.N(durationPerLoop))
 	buffer := make([]byte, len(samples)*entry.Format.Width())

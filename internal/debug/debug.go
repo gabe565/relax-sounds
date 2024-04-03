@@ -1,21 +1,24 @@
 package debug
 
+//nolint:revive,gosec
 import (
 	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"strconv"
+	"time"
 
 	log "github.com/sirupsen/logrus"
-	flag "github.com/spf13/pflag"
+	"github.com/spf13/cobra"
 )
 
+//nolint:gochecknoglobals
 var (
 	enabled bool
 	addr    string
 )
 
-func init() {
+func Flags(cmd *cobra.Command) {
 	enabledDefault := false
 	if env := os.Getenv("DEBUG_ENABLED"); env != "" {
 		var err error
@@ -24,14 +27,14 @@ func init() {
 			log.WithError(err).Warn("Failed to parse DEBUG_ENABLED")
 		}
 	}
-	flag.BoolVar(&enabled, "debug-enabled", enabledDefault, "Enables debug server")
+	cmd.PersistentFlags().BoolVar(&enabled, "debug-enabled", enabledDefault, "Enables debug server")
 
 	addressDefault := ":6060"
 	if env := os.Getenv("DEBUG_ADDRESS"); env != "" {
 		addressDefault = env
 	}
 
-	flag.StringVar(&addr, "debug-address", addressDefault, "Debug server listen address")
+	cmd.PersistentFlags().StringVar(&addr, "debug-address", addressDefault, "Debug server listen address")
 }
 
 func Serve() error {
@@ -39,5 +42,9 @@ func Serve() error {
 		return nil
 	}
 
-	return http.ListenAndServe(addr, nil)
+	server := &http.Server{
+		Addr:              addr,
+		ReadHeaderTimeout: 3 * time.Second,
+	}
+	return server.ListenAndServe()
 }

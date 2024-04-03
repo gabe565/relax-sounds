@@ -26,7 +26,7 @@ func (i FileType) MarshalText() ([]byte, error) {
 
 func (i *FileType) UnmarshalText(b []byte) error {
 	s := string(b)
-	for j := 0; j < len(_FileType_index)-1; j++ {
+	for j := range _FileType_index {
 		if s == _FileType_name[_FileType_index[j]:_FileType_index[j+1]] {
 			*i = FileType(j)
 			return nil
@@ -36,16 +36,14 @@ func (i *FileType) UnmarshalText(b []byte) error {
 }
 
 func (i FileType) ContentType() string {
-	switch i {
-	case Mp3:
+	if i == Mp3 {
 		return "audio/mp3"
 	}
 	return ""
 }
 
 func (i FileType) NewEncoder(w io.Writer, format beep.Format) (encoder.Encoder, error) {
-	switch i {
-	case Mp3:
+	if i == Mp3 {
 		return mp3.NewEncoder(w, format)
 	}
 	return nil, fmt.Errorf("%w: %s", ErrInvalidFileType, i)

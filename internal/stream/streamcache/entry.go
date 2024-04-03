@@ -1,4 +1,4 @@
-package stream_cache
+package streamcache
 
 import (
 	"bytes"
@@ -13,17 +13,20 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
-var activeStreamMetrics = promauto.NewGauge(prometheus.GaugeOpts{
-	Namespace: "relax_sounds",
-	Name:      "active_streams",
-	Help:      "Active stream count",
-})
+//nolint:gochecknoglobals
+var (
+	activeStreamMetrics = promauto.NewGauge(prometheus.GaugeOpts{
+		Namespace: "relax_sounds",
+		Name:      "streams_active",
+		Help:      "Active stream count",
+	})
 
-var totalStreamMetrics = promauto.NewCounter(prometheus.CounterOpts{
-	Namespace: "relax_sounds",
-	Name:      "total_streams",
-	Help:      "Total stream count",
-})
+	totalStreamMetrics = promauto.NewCounter(prometheus.CounterOpts{
+		Namespace: "relax_sounds",
+		Name:      "streams_total",
+		Help:      "Total stream count",
+	})
+)
 
 type Entry struct {
 	RemoteAddr string
