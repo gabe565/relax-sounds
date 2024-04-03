@@ -12,12 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-//nolint:gochecknoglobals
-var (
-	enabled bool
-	addr    string
-)
-
 func Flags(cmd *cobra.Command) {
 	enabledDefault := false
 	if env := os.Getenv("DEBUG_ENABLED"); env != "" {
@@ -27,19 +21,28 @@ func Flags(cmd *cobra.Command) {
 			log.WithError(err).Warn("Failed to parse DEBUG_ENABLED")
 		}
 	}
-	cmd.PersistentFlags().BoolVar(&enabled, "debug-enabled", enabledDefault, "Enables debug server")
+	cmd.PersistentFlags().Bool("debug-enabled", enabledDefault, "Enables debug server")
 
 	addressDefault := ":6060"
 	if env := os.Getenv("DEBUG_ADDRESS"); env != "" {
 		addressDefault = env
 	}
 
-	cmd.PersistentFlags().StringVar(&addr, "debug-address", addressDefault, "Debug server listen address")
+	cmd.PersistentFlags().String("debug-address", addressDefault, "Debug server listen address")
 }
 
-func Serve() error {
+func Serve(cmd *cobra.Command) error {
+	enabled, err := cmd.PersistentFlags().GetBool("debug-enabled")
+	if err != nil {
+		panic(err)
+	}
 	if !enabled {
 		return nil
+	}
+
+	addr, err := cmd.PersistentFlags().GetString("debug-address")
+	if err != nil {
+		panic(err)
 	}
 
 	server := &http.Server{

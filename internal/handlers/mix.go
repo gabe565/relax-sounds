@@ -19,14 +19,11 @@ import (
 	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
 	"github.com/gopxl/beep"
 	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
-	"github.com/pocketbase/pocketbase/core"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
-
-//nolint:gochecknoglobals
-var chunkLength time.Duration
 
 func MixFlags(cmd *cobra.Command) {
 	chunkLengthDefault := 2 * time.Minute
@@ -37,12 +34,16 @@ func MixFlags(cmd *cobra.Command) {
 			log.WithError(err).Warn("Failed to parse STREAM_CHUNK_LENGTH")
 		}
 	}
-	cmd.PersistentFlags().DurationVar(&chunkLength, "stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
+	cmd.PersistentFlags().Duration("stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
 }
 
-func Mix(app core.App) echo.HandlerFunc {
+func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 	cache := streamcache.New()
 	dataFs := os.DirFS(filepath.Join(app.DataDir(), "storage"))
+	chunkLength, err := app.RootCmd.PersistentFlags().GetDuration("stream-chunk-length")
+	if err != nil {
+		panic(err)
+	}
 
 	return func(c echo.Context) error {
 		var err error

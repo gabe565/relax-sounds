@@ -29,19 +29,19 @@ func main() {
 	})
 
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/*", handlers.StaticHandler())
+		e.Router.GET("/*", handlers.StaticHandler(app))
 		e.Router.GET("/api/mix/:uuid/:query", handlers.Mix(app))
 		return nil
 	})
 
 	go func() {
-		if err := metrics.Serve(); err != nil {
+		if err := metrics.Serve(app.RootCmd); err != nil {
 			log.Error(err)
 		}
 	}()
 
 	go func() {
-		if err := debug.Serve(); err != nil {
+		if err := debug.Serve(app.RootCmd); err != nil {
 			log.Error(err)
 		}
 	}()

@@ -11,12 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-//nolint:gochecknoglobals
-var (
-	enabled bool
-	addr    string
-)
-
 func Flags(cmd *cobra.Command) {
 	enabledDefault := true
 	if env := os.Getenv("METRICS_ENABLED"); env != "" {
@@ -26,23 +20,32 @@ func Flags(cmd *cobra.Command) {
 			log.WithError(err).Warn("Failed to parse METRICS_ENABLED")
 		}
 	}
-	cmd.PersistentFlags().BoolVar(&enabled, "metrics-enabled", enabledDefault, "Enables Prometheus metrics API")
+	cmd.PersistentFlags().Bool("metrics-enabled", enabledDefault, "Enables Prometheus metrics API")
 
 	addressDefault := ":9090"
 	if env := os.Getenv("METRICS_ADDRESS"); env != "" {
 		addressDefault = env
 	}
 
-	cmd.PersistentFlags().StringVar(&addr, "metrics-address", addressDefault, "Prometheus metrics API listen address")
+	cmd.PersistentFlags().String("metrics-address", addressDefault, "Prometheus metrics API listen address")
 }
 
-func Serve() error {
+func Serve(cmd *cobra.Command) error {
+	enabled, err := cmd.PersistentFlags().GetBool("metrics-enabled")
+	if err != nil {
+		panic(err)
+	}
 	if !enabled {
 		return nil
 	}
 
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
+
+	addr, err := cmd.PersistentFlags().GetString("metrics-address")
+	if err != nil {
+		panic(err)
+	}
 
 	server := &http.Server{
 		Addr:              addr,
