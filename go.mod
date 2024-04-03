@@ -7,7 +7,7 @@ replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416
 require (
 	github.com/aofei/mimesniffer v1.2.1
 	github.com/fatih/color v1.16.0
-	github.com/gopxl/beep v1.3.0
+	github.com/gopxl/beep v1.4.0
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
 	github.com/pocketbase/dbx v1.10.1
 	github.com/pocketbase/pocketbase v0.22.7
