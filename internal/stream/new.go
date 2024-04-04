@@ -44,7 +44,8 @@ func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (Streams, error) {
 		}
 
 		group.Go(func() error {
-			path := filepath.Join(record.BaseFilesPath(), record.Get("file").(string))
+			files := record.GetStringSlice("file")
+			path := filepath.Join(record.BaseFilesPath(), files[0])
 
 			f, err := dataDir.Open(path)
 			if err != nil {

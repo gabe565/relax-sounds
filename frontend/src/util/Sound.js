@@ -17,7 +17,7 @@ export class Sound {
     this._pan = 0;
     this.isLoading = false;
     this.howl = new Howl({
-      src: [this.src],
+      src: this.src,
       loop: true,
       preload: false,
       volume: 0,
@@ -25,7 +25,7 @@ export class Sound {
   }
 
   get src() {
-    return pb.getFileUrl(this, this.file);
+    return this.file.map((e) => pb.getFileUrl(this, e));
   }
 
   load() {

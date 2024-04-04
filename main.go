@@ -7,10 +7,11 @@ import (
 	"github.com/gabe565/relax-sounds/internal/debug"
 	"github.com/gabe565/relax-sounds/internal/encoder/mp3"
 	"github.com/gabe565/relax-sounds/internal/handlers"
+	"github.com/gabe565/relax-sounds/internal/hooks"
 	"github.com/gabe565/relax-sounds/internal/metrics"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
-	_ "github.com/gabe565/relax-sounds/migrations"
+	"github.com/gabe565/relax-sounds/migrations"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
@@ -41,6 +42,20 @@ func main() {
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.GET("/*", handlers.StaticHandler(app))
 		e.Router.GET("/api/mix/:uuid/:query", handlers.Mix(app))
+		return nil
+	})
+
+	app.OnModelAfterCreate("sounds").Add(hooks.Convert(app))
+	app.OnModelAfterUpdate("sounds").Add(hooks.Convert(app))
+
+	app.OnBeforeServe().Add(func(_ *core.ServeEvent) error {
+		go func() {
+			if migrations.ConvertAfterStart {
+				if err := hooks.ConvertAll(app); err != nil {
+					log.Err(err).Msg("failed to convert sound")
+				}
+			}
+		}()
 		return nil
 	})
 
