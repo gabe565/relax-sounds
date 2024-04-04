@@ -20,7 +20,9 @@ import (
 func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 	dataDir := filepath.Join(app.DataDir(), "storage")
 
+	var skipConvert bool
 	if _, err := exec.LookPath("ffmpeg"); err != nil {
+		skipConvert = true
 		log.Warn().Err(err).Msg("ffmpeg is required for secondary audio file creation")
 	}
 
@@ -34,6 +36,11 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 
 		ext := filepath.Ext(files[0])
 		if ext != ".ogg" {
+			return nil
+		}
+
+		if skipConvert {
+			log.Error().Msg("ffmpeg is required for secondary audio file creation")
 			return nil
 		}
 
