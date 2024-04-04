@@ -32,7 +32,7 @@
         <stop-all />
         <save-preset />
         <cast-icon />
-        <debug-button v-if="debugEnabled" list-item />
+        <debug-button v-if="DebugEnabled" list-item />
       </v-list>
 
       <template #append>
@@ -87,11 +87,11 @@ import DebugButton from "./components/Presets/Buttons/DebugButton.vue";
 import { registerSW } from "./plugins/pwa";
 import NavSizeBtn from "./components/NavButtons/NavSizeBtn.vue";
 import ThemeBtn from "./components/NavButtons/ThemeBtn.vue";
+import { DebugEnabled } from "./config/debug";
 
 const { smAndDown: isMobile } = useDisplay();
 const preferences = usePreferencesStore();
 const theme = useTheme();
-const debugEnabled = import.meta.env.DEV;
 
 const routes = computed(() => {
   return useRouter().options.routes.filter((route) => route.meta?.showInNav);
