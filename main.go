@@ -45,8 +45,9 @@ func main() {
 		return nil
 	})
 
-	app.OnModelAfterCreate("sounds").Add(hooks.Convert(app))
-	app.OnModelAfterUpdate("sounds").Add(hooks.Convert(app))
+	convertHook := hooks.Convert(app)
+	app.OnModelAfterCreate("sounds").Add(convertHook)
+	app.OnModelAfterUpdate("sounds").Add(convertHook)
 
 	app.OnBeforeServe().Add(func(_ *core.ServeEvent) error {
 		go func() {
