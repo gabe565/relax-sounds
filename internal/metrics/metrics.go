@@ -47,6 +47,7 @@ func Serve(cmd *cobra.Command) error {
 		panic(err)
 	}
 
+	log.Info().Str("addr", addr).Msg("Starting metrics server")
 	server := &http.Server{
 		Addr:              addr,
 		Handler:           mux,

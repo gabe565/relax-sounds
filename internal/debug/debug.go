@@ -45,6 +45,7 @@ func Serve(cmd *cobra.Command) error {
 		panic(err)
 	}
 
+	log.Info().Str("addr", addr).Msg("Starting debug server")
 	server := &http.Server{
 		Addr:              addr,
 		ReadHeaderTimeout: 3 * time.Second,
