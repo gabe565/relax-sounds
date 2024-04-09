@@ -17,7 +17,7 @@ func Flags(cmd *cobra.Command) {
 		var err error
 		enabledDefault, err = strconv.ParseBool(env)
 		if err != nil {
-			log.Warn().Err(err).Msg("Failed to parse env METRICS_ENABLED")
+			log.Warn().Err(err).Msg("failed to parse env METRICS_ENABLED")
 		}
 	}
 	cmd.PersistentFlags().Bool("metrics-enabled", enabledDefault, "Enables Prometheus metrics API")
@@ -47,7 +47,7 @@ func Serve(cmd *cobra.Command) error {
 		panic(err)
 	}
 
-	log.Info().Str("addr", addr).Msg("Starting metrics server")
+	log.Info().Str("addr", addr).Msg("starting metrics server")
 	server := &http.Server{
 		Addr:              addr,
 		Handler:           mux,
