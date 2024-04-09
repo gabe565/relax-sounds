@@ -49,6 +49,7 @@ func Serve(cmd *cobra.Command) error {
 
 	server := &http.Server{
 		Addr:              addr,
+		Handler:           mux,
 		ReadHeaderTimeout: 3 * time.Second,
 	}
 	return server.ListenAndServe()
