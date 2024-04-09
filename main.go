@@ -60,17 +60,21 @@ func main() {
 		return nil
 	})
 
-	go func() {
-		if err := metrics.Serve(app.RootCmd); err != nil {
-			log.Err(err).Msg("failed to serve metrics")
-		}
-	}()
+	app.OnBeforeServe().Add(func(_ *core.ServeEvent) error {
+		go func() {
+			if err := metrics.Serve(app.RootCmd); err != nil {
+				log.Err(err).Msg("failed to serve metrics")
+			}
+		}()
 
-	go func() {
-		if err := debug.Serve(app.RootCmd); err != nil {
-			log.Err(err).Msg("failed to serve pprof")
-		}
-	}()
+		go func() {
+			if err := debug.Serve(app.RootCmd); err != nil {
+				log.Err(err).Msg("failed to serve pprof")
+			}
+		}()
+
+		return nil
+	})
 
 	if err := app.Start(); err != nil {
 		log.Fatal().Err(err).Msg("failed to serve")
