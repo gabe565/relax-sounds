@@ -14,7 +14,9 @@ jobs:
         with:
           go-version-file: go.mod
           cache: false
-      - run: sudo apt-get install -y libmp3lame-dev
+      - uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: libmp3lame-dev
       - name: Lint
         uses: golangci/golangci-lint-action@v6
 
@@ -28,7 +30,9 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - run: sudo apt-get install -y libmp3lame-dev
+      - uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: libmp3lame-dev
       - name: Test
         run: go test ./...
 
