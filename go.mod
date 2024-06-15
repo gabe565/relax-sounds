@@ -13,7 +13,7 @@ require (
 	github.com/pocketbase/pocketbase v0.22.11
 	github.com/prometheus/client_golang v1.19.0
 	github.com/rs/zerolog v1.32.0
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/u2takey/ffmpeg-go v0.5.0
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
 	golang.org/x/sync v0.7.0
