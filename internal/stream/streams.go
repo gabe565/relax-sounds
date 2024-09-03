@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/gabe565/relax-sounds/internal/preset"
-	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/v2"
 )
 
 type Streams []Streamer
