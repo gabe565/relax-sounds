@@ -141,11 +141,14 @@ export const usePlayerStore = defineStore("player", () => {
     let uuid = sessionStorage.getItem("uuid");
     if (uuid) {
       const apiAddress = import.meta.env.VITE_API_ADDRESS || window.location.origin;
+      let resp;
       try {
-        await fetch(`${apiAddress}/api/mix/${uuid}`, { method: "DELETE" });
+        resp = await fetch(`${apiAddress}/api/mix/${uuid}`, { method: "DELETE" });
       } catch (error) {
-        console.error(`Remote media stop error: ${formatError(error)}`);
-        toast.error(`Failed to stop cast:\n${error}`);
+        if (resp.status !== 404) {
+          console.error(`Remote media stop error: ${formatError(error)}`);
+          toast.error(`Failed to stop cast:\n${error}`);
+        }
       }
     }
   };
