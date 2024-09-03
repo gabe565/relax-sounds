@@ -38,6 +38,7 @@ func MixFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().Duration("stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
 }
 
+//nolint:gocyclo
 func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 	cache := streamcache.New()
 	dataFs := os.DirFS(filepath.Join(app.DataDir(), "storage"))
