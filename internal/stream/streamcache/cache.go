@@ -66,16 +66,21 @@ func (a *Cache) cleanup(since time.Duration) {
 	defer a.mu.Unlock()
 
 	for id, entry := range a.Entries {
-		if time.Since(entry.Accessed) >= since {
-			entry.Log.Info("Cleanup stream",
-				"accessed", entry.Accessed,
-				"age", time.Since(entry.Created).Round(100*time.Millisecond).String(),
-				"transferred", humanize.IBytes(entry.Transferred),
-			)
-			if err := entry.Close(); err != nil {
-				entry.Log.Error("Failed to cleanup stream", "error", err)
+		if entry.Mu.TryLock() {
+			if time.Since(entry.Accessed) >= since {
+				entry.Log.Info("Cleanup stream",
+					"accessed", entry.Accessed,
+					"age", time.Since(entry.Created).Round(100*time.Millisecond).String(),
+					"transferred", humanize.IBytes(entry.Transferred),
+				)
+				delete(a.Entries, id)
+				entry.Mu.Unlock()
+				if err := entry.Close(); err != nil {
+					entry.Log.Error("Failed to cleanup stream", "error", err)
+				}
+			} else {
+				entry.Mu.Unlock()
 			}
-			delete(a.Entries, id)
 		}
 	}
 }
