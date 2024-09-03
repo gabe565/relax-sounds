@@ -21,7 +21,7 @@
     "fuse.js": "7.0.0",
     "howler": "2.2.4",
     "nanoid": "5.0.7",
-    "pinia": "2.1.7",
+    "pinia": "2.2.2",
     "pinia-plugin-persistedstate": "3.2.1",
     "pocketbase": "0.21.5",
     "register-service-worker": "1.7.2",
