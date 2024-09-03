@@ -8,7 +8,7 @@ RUN go mod download
 FROM golang:1.23.0-alpine AS go-builder
 WORKDIR /app
 
-RUN apk add --no-cache gcc g++ lame-dev
+RUN apk add --no-cache g++ gcc lame-dev
 
 COPY --from=go-dependencies /app /app
 COPY --from=go-dependencies /go /go
@@ -37,7 +37,7 @@ FROM alpine:3.20
 LABEL org.opencontainers.image.source="https://github.com/gabe565/relax-sounds"
 WORKDIR /app
 
-RUN apk add --no-cache lame-libs tzdata ffmpeg
+RUN apk add --no-cache ffmpeg lame-libs tzdata
 
 ARG USERNAME=relax-sounds
 ARG UID=1000
