@@ -10,30 +10,15 @@ import (
 	"github.com/gopxl/beep"
 )
 
-//go:generate stringer -type FileType -linecomment
+//go:generate enumer -type FileType -transform lower -text -output filetype_string.go
 
 type FileType uint8
 
 const (
-	Mp3 FileType = iota // mp3
+	Mp3 FileType = iota
 )
 
 var ErrInvalidFileType = errors.New("invalid file type")
-
-func (i FileType) MarshalText() ([]byte, error) {
-	return []byte(i.String()), nil
-}
-
-func (i *FileType) UnmarshalText(b []byte) error {
-	s := string(b)
-	for j := range _FileType_index {
-		if s == _FileType_name[_FileType_index[j]:_FileType_index[j+1]] {
-			*i = FileType(j)
-			return nil
-		}
-	}
-	return fmt.Errorf("%w: %s", ErrInvalidFileType, s)
-}
 
 func (i FileType) ContentType() string {
 	if i == Mp3 {
