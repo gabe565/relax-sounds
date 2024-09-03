@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -81,10 +82,13 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 			found = false
 		}
 		if !found {
-			remoteAddr, _, _ := strings.Cut(c.Request().RemoteAddr, ":")
+			remoteIP, _, err := net.SplitHostPort(c.Request().RemoteAddr)
+			if err != nil {
+				remoteIP = c.Request().RemoteAddr
+			}
 
 			// Entry was not found
-			entry = streamcache.NewEntry(remoteAddr, presetEncoded, uuid)
+			entry = streamcache.NewEntry(remoteIP, presetEncoded, uuid)
 			entry.Log.Info().Msg("create stream")
 
 			presetDecoded, err := preset.FromParam(presetEncoded)
