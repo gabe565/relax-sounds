@@ -9,7 +9,7 @@ import (
 
 	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/stream"
-	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )

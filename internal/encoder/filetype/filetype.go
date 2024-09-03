@@ -7,7 +7,7 @@ import (
 
 	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/encoder/mp3"
-	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/v2"
 )
 
 //go:generate enumer -type FileType -transform lower -text -output filetype_string.go

@@ -20,7 +20,7 @@ import (
 	"github.com/gabe565/relax-sounds/internal/preset"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
-	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/v2"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"

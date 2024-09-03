@@ -3,7 +3,7 @@ package mp3
 import (
 	"io"
 
-	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/v2"
 	"github.com/spf13/cobra"
 	"github.com/viert/go-lame"
 )

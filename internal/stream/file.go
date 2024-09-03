@@ -6,11 +6,11 @@ import (
 	"io/fs"
 
 	"github.com/gabe565/relax-sounds/internal/util"
-	"github.com/gopxl/beep"
-	"github.com/gopxl/beep/flac"
-	"github.com/gopxl/beep/mp3"
-	"github.com/gopxl/beep/vorbis"
-	"github.com/gopxl/beep/wav"
+	"github.com/gopxl/beep/v2"
+	"github.com/gopxl/beep/v2/flac"
+	"github.com/gopxl/beep/v2/mp3"
+	"github.com/gopxl/beep/v2/vorbis"
+	"github.com/gopxl/beep/v2/wav"
 )
 
 var ErrUnsupportedFileType = errors.New("unsupported file type")
