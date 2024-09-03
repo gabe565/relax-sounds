@@ -14,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/dustin/go-humanize"
 	"github.com/gabe565/relax-sounds/internal/encoder/encode"
 	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
 	"github.com/gabe565/relax-sounds/internal/preset"
@@ -76,6 +77,7 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 			entry.Log.Info("Close stream",
 				"accessed", entry.Accessed,
 				"age", time.Since(entry.Created).Round(100*time.Millisecond).String(),
+				"transferred", humanize.IBytes(entry.Transferred),
 			)
 			if err := entry.Close(); err != nil {
 				entry.Log.Error("Failed to close stream", "error", err)
@@ -194,11 +196,13 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 
 		// Write buffered stream data to client
 		c.Response().WriteHeader(http.StatusPartialContent)
-		if _, err := io.Copy(c.Response(), entry.Buffer); err != nil {
+		n, err := io.Copy(c.Response(), entry.Buffer)
+		if err != nil {
 			if !errors.Is(err, syscall.EPIPE) && !errors.Is(err, syscall.ECONNRESET) {
 				panic(err)
 			}
 		}
+		entry.Transferred += uint64(n)
 
 		entry.Buffer.Reset()
 		entry.ChunkNum++

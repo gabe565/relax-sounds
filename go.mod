@@ -6,6 +6,7 @@ replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416
 
 require (
 	github.com/aofei/mimesniffer v1.2.1
+	github.com/dustin/go-humanize v1.0.1
 	github.com/gopxl/beep v1.4.1
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
 	github.com/pocketbase/dbx v1.10.1
@@ -44,7 +45,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/domodwyer/mailyak/v3 v3.6.2 // indirect
-	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/ganigeorgiev/fexpr v0.4.0 // indirect

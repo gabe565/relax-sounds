@@ -3,6 +3,8 @@ package streamcache
 import (
 	"sync"
 	"time"
+
+	"github.com/dustin/go-humanize"
 )
 
 type Cache struct {
@@ -68,6 +70,7 @@ func (a *Cache) cleanup(since time.Duration) {
 			entry.Log.Info("Cleanup stream",
 				"accessed", entry.Accessed,
 				"age", time.Since(entry.Created).Round(100*time.Millisecond).String(),
+				"transferred", humanize.IBytes(entry.Transferred),
 			)
 			if err := entry.Close(); err != nil {
 				entry.Log.Error("Failed to cleanup stream", "error", err)

@@ -41,11 +41,12 @@ type Entry struct {
 	Buffer  *bytes.Buffer
 	Encoder encoder.Encoder
 
-	Mu        sync.Mutex
-	ChunkNum  int
-	TotalSize int
-	Created   time.Time
-	Accessed  time.Time
+	Mu          sync.Mutex
+	ChunkNum    int
+	TotalSize   int
+	Transferred uint64
+	Created     time.Time
+	Accessed    time.Time
 }
 
 func NewEntry(remoteAddr, preset, uuid string) *Entry {
