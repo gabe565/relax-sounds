@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
-	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -39,7 +38,6 @@ func MixFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().Duration("stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
 }
 
-//nolint:gocyclo
 func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 	cache := streamcache.New()
 	dataFs := os.DirFS(filepath.Join(app.DataDir(), "storage"))
@@ -85,13 +83,8 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 			found = false
 		}
 		if !found {
-			remoteIP, _, err := net.SplitHostPort(c.Request().RemoteAddr)
-			if err != nil {
-				remoteIP = c.Request().RemoteAddr
-			}
-
 			// Entry was not found
-			entry = streamcache.NewEntry(remoteIP, presetEncoded, uuid)
+			entry = streamcache.NewEntry(c.RealIP(), presetEncoded, uuid)
 			entry.Log.Info("Create stream")
 
 			presetDecoded, err := preset.FromParam(presetEncoded)
