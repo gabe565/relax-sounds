@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
+import * as _ from "lodash-es";
 import { SoundState } from "../../util/Sound";
 import { getSounds } from "../../data/sounds";
 import { formatError, getCastSession } from "../../util/googleCast";
 import { Preset } from "../../util/Preset";
 import pb from "../pocketbase";
-import { debounce, wait } from "../../util/helpers";
+import { wait } from "../../util/helpers";
 import { TYPE, useToast } from "vue-toastification";
 import { Filetype } from "../../util/filetype";
 
@@ -79,46 +80,52 @@ export const usePlayerStore = defineStore("player", () => {
     castConnected.value = value;
   };
 
-  const updateCast = debounce(async () => {
-    if (isPlaying.value) {
-      const castSession = getCastSession();
-      if (castSession) {
-        const { cast } = window.chrome;
-        const preset = new Preset({ sounds: soundsPlaying.value });
+  const updateCast = _.debounce(
+    async () => {
+      if (isPlaying.value) {
+        const castSession = getCastSession();
+        if (castSession) {
+          const { cast } = window.chrome;
+          const preset = new Preset({ sounds: soundsPlaying.value });
 
-        const mixUrl = await preset.mixUrlAs(Filetype.Mp3);
-        const mediaInfo = new cast.media.MediaInfo(mixUrl, "music");
-        mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
-        mediaInfo.metadata.title = currentName.value;
-        if (!mediaInfo.metadata.title) {
-          mediaInfo.metadata.title = soundsPlaying.value
-            .map((sound) => sound.name)
-            .sort((a, b) => a.localeCompare(b))
-            .join(", ");
+          const mixUrl = await preset.mixUrlAs(Filetype.Mp3);
+          const mediaInfo = new cast.media.MediaInfo(mixUrl, "music");
+          mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
+          mediaInfo.metadata.title = currentName.value;
+          if (!mediaInfo.metadata.title) {
+            mediaInfo.metadata.title = soundsPlaying.value
+              .map((sound) => sound.name)
+              .sort((a, b) => a.localeCompare(b))
+              .join(", ");
+          }
+          mediaInfo.metadata.artist = "Relax Sounds";
+          mediaInfo.metadata.images = [
+            new cast.Image(
+              `${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`,
+            ),
+          ];
+
+          const queue = new cast.media.QueueLoadRequest([new cast.media.QueueItem(mediaInfo)]);
+          queue.repeatMode = cast.media.RepeatMode.SINGLE;
+
+          const request = new cast.media.LoadRequest(mediaInfo);
+          request.queueData = queue;
+
+          try {
+            await castSession.loadMedia(request);
+          } catch (error) {
+            console.error(`Remote media load error: ${formatError(error)}`);
+            toast.error(`Failed to cast:\n${error}`);
+            return;
+          }
         }
-        mediaInfo.metadata.artist = "Relax Sounds";
-        mediaInfo.metadata.images = [
-          new cast.Image(`${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`),
-        ];
-
-        const queue = new cast.media.QueueLoadRequest([new cast.media.QueueItem(mediaInfo)]);
-        queue.repeatMode = cast.media.RepeatMode.SINGLE;
-
-        const request = new cast.media.LoadRequest(mediaInfo);
-        request.queueData = queue;
-
-        try {
-          await castSession.loadMedia(request);
-        } catch (error) {
-          console.error(`Remote media load error: ${formatError(error)}`);
-          toast.error(`Failed to cast:\n${error}`);
-          return;
-        }
+      } else {
+        await stopCast();
       }
-    } else {
-      await stopCast();
-    }
-  }, 250);
+    },
+    1000,
+    { leading: true },
+  );
 
   const stopCast = async () => {
     if (remotePlayerController) {

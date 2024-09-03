@@ -3,19 +3,6 @@ import base64 from "base64-url";
 
 export const wait = (timeout) => new Promise((resolve) => setTimeout(resolve, timeout));
 
-export const debounce = (fn, timeout) => {
-  let id;
-  return (...args) => {
-    if (id) {
-      clearTimeout(id);
-    }
-    id = setTimeout(() => {
-      id = null;
-      fn(...args);
-    }, timeout);
-  };
-};
-
 export const compress = async (data, encoding = "gzip") => {
   const stream = new Blob([data]).stream();
   const compressedReadableStream = stream.pipeThrough(new CompressionStream(encoding));
