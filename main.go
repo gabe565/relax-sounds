@@ -32,7 +32,7 @@ func main() {
 
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.GET("/*", handlers.StaticHandler(app))
-		e.Router.GET("/api/mix/:uuid/:query", handlers.Mix(app))
+		handlers.NewMix(app).RegisterRoutes(e.Router)
 		return nil
 	})
 

@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/dustin/go-humanize"
 	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	"github.com/gopxl/beep/v2"
@@ -75,6 +76,12 @@ func NewEntry(c echo.Context, preset, uuid string) *Entry {
 func (e *Entry) Close() error {
 	e.Mu.Lock()
 	defer e.Mu.Unlock()
+
+	e.Log.Info("Close stream",
+		"accessed", e.Accessed,
+		"age", time.Since(e.Created).Round(100*time.Millisecond).String(),
+		"transferred", humanize.IBytes(e.Transferred),
+	)
 
 	activeStreamMetrics.Dec()
 

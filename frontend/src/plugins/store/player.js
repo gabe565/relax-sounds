@@ -115,10 +115,33 @@ export const usePlayerStore = defineStore("player", () => {
           return;
         }
       }
-    } else if (remotePlayerController) {
-      remotePlayerController.stop();
+    } else {
+      await stopCast();
     }
   }, 250);
+
+  const stopCast = async () => {
+    if (remotePlayerController) {
+      remotePlayerController.stop();
+
+      if (castConnected.value && isStopped.value) {
+        await deleteStream();
+      }
+    }
+  };
+
+  const deleteStream = async () => {
+    let uuid = sessionStorage.getItem("uuid");
+    if (uuid) {
+      const apiAddress = import.meta.env.VITE_API_ADDRESS || window.location.origin;
+      try {
+        await fetch(`${apiAddress}/api/mix/${uuid}`, { method: "DELETE" });
+      } catch (error) {
+        console.error(`Remote media stop error: ${formatError(error)}`);
+        toast.error(`Failed to stop cast:\n${error}`);
+      }
+    }
+  };
 
   const playStop = async ({ sound, fade = 250, local = false }) => {
     if (sound.state === SoundState.PLAYING) {
@@ -208,7 +231,7 @@ export const usePlayerStore = defineStore("player", () => {
       stop({ sound, fade });
     });
     if (remotePlayerController) {
-      remotePlayerController.stop();
+      updateCast();
     }
     if (!local && castConnected) {
       currentName.value = null;
@@ -245,6 +268,9 @@ export const usePlayerStore = defineStore("player", () => {
         if (shouldPlay) {
           await playPauseAll();
           updateCast();
+          if (!value) {
+            await deleteStream();
+          }
         }
       },
     );

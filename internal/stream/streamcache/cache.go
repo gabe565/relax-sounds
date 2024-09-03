@@ -3,8 +3,6 @@ package streamcache
 import (
 	"sync"
 	"time"
-
-	"github.com/dustin/go-humanize"
 )
 
 type Cache struct {
@@ -38,6 +36,12 @@ func (a *Cache) Get(id string) (*Entry, bool) {
 	return nil, false
 }
 
+func (a *Cache) Delete(id string) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	delete(a.Entries, id)
+}
+
 func (a *Cache) Close() {
 	a.close <- struct{}{}
 	a.cleanup(0)
@@ -68,11 +72,6 @@ func (a *Cache) cleanup(since time.Duration) {
 	for id, entry := range a.Entries {
 		if entry.Mu.TryLock() {
 			if time.Since(entry.Accessed) >= since {
-				entry.Log.Info("Cleanup stream",
-					"accessed", entry.Accessed,
-					"age", time.Since(entry.Created).Round(100*time.Millisecond).String(),
-					"transferred", humanize.IBytes(entry.Transferred),
-				)
 				delete(a.Entries, id)
 				entry.Mu.Unlock()
 				if err := entry.Close(); err != nil {

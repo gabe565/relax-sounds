@@ -13,7 +13,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/dustin/go-humanize"
 	"github.com/gabe565/relax-sounds/internal/encoder/encode"
 	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
 	"github.com/gabe565/relax-sounds/internal/preset"
@@ -21,6 +20,7 @@ import (
 	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
 	"github.com/gopxl/beep/v2"
 	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/spf13/cobra"
@@ -38,10 +38,26 @@ func MixFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().Duration("stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
 }
 
-func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
-	cache := streamcache.New()
-	dataFs := os.DirFS(filepath.Join(app.DataDir(), "storage"))
-	chunkLength, err := app.RootCmd.PersistentFlags().GetDuration("stream-chunk-length")
+func NewMix(app *pocketbase.PocketBase) *Mix {
+	return &Mix{
+		app:   app,
+		cache: streamcache.New(),
+	}
+}
+
+type Mix struct {
+	app   *pocketbase.PocketBase
+	cache *streamcache.Cache
+}
+
+func (m *Mix) RegisterRoutes(e *echo.Echo) {
+	e.GET("/api/mix/:uuid/:query", m.Mix())
+	e.DELETE("/api/mix/:uuid", m.Stop(), middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(1)))
+}
+
+func (m *Mix) Mix() echo.HandlerFunc {
+	dataFs := os.DirFS(filepath.Join(m.app.DataDir(), "storage"))
+	chunkLength, err := m.app.RootCmd.PersistentFlags().GetDuration("stream-chunk-length")
 	if err != nil {
 		panic(err)
 	}
@@ -68,15 +84,10 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 		}
 
 		uuid := c.PathParam("uuid")
-		entry, found := cache.Get(uuid)
+		entry, found := m.cache.Get(uuid)
 		if found && entry.Preset != presetEncoded {
 			// Same window is changing streams
 			// Destroy old stream then recreate
-			entry.Log.Info("Close stream",
-				"accessed", entry.Accessed,
-				"age", time.Since(entry.Created).Round(100*time.Millisecond).String(),
-				"transferred", humanize.IBytes(entry.Transferred),
-			)
 			if err := entry.Close(); err != nil {
 				entry.Log.Error("Failed to close stream", "error", err)
 			}
@@ -96,7 +107,7 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 			}
 
 			// Set up stream
-			if entry.Streams, err = stream.New(dataFs, app.Dao(), presetDecoded); err != nil {
+			if entry.Streams, err = stream.New(dataFs, m.app.Dao(), presetDecoded); err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					// Invalid file ID returns 404
 					return apis.NewNotFoundError("", nil)
@@ -125,7 +136,7 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 				panic(err)
 			}
 
-			cache.Add(uuid, entry)
+			m.cache.Add(uuid, entry)
 		}
 
 		c.Response().Header().Set("Accept-Ranges", "bytes")
@@ -199,6 +210,24 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 
 		entry.Buffer.Reset()
 		entry.ChunkNum++
+		return nil
+	}
+}
+
+func (m *Mix) Stop() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uuid := c.PathParam("uuid")
+		entry, found := m.cache.Get(uuid)
+		if !found {
+			return apis.NewNotFoundError("no active stream for uuid", nil)
+		}
+
+		m.cache.Delete(uuid)
+		if err := entry.Close(); err != nil {
+			return apis.NewApiError(http.StatusInternalServerError, "failed to close cache entry", nil)
+		}
+
+		c.Response().WriteHeader(http.StatusNoContent)
 		return nil
 	}
 }
