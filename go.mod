@@ -5,7 +5,6 @@ go 1.23.0
 replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1
 
 require (
-	github.com/aofei/mimesniffer v1.2.1
 	github.com/dustin/go-humanize v1.0.1
 	github.com/gopxl/beep/v2 v2.0.3
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61

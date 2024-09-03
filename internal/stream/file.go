@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"path/filepath"
 
-	"github.com/gabe565/relax-sounds/internal/util"
 	"github.com/gopxl/beep/v2"
 	"github.com/gopxl/beep/v2/flac"
 	"github.com/gopxl/beep/v2/mp3"
@@ -16,20 +16,22 @@ import (
 var ErrUnsupportedFileType = errors.New("unsupported file type")
 
 func Decode(f fs.File) (beep.StreamSeekCloser, beep.Format, error) {
-	contentType, err := util.GetTypeFromFile(f)
+	stat, err := f.Stat()
 	if err != nil {
 		return nil, beep.Format{}, err
 	}
 
-	switch contentType {
-	case "application/ogg", "audio/ogg":
+	ext := filepath.Ext(stat.Name())
+
+	switch ext {
+	case ".ogg":
 		return vorbis.Decode(f)
-	case "audio/mpeg":
+	case ".mp3":
 		return mp3.Decode(f)
-	case "audio/wave", "audio/x-wav":
+	case ".wav":
 		return wav.Decode(f)
-	case "audio/x-flac":
+	case ".flac":
 		return flac.Decode(f)
 	}
-	return nil, beep.Format{}, fmt.Errorf("%w: %s", ErrUnsupportedFileType, contentType)
+	return nil, beep.Format{}, fmt.Errorf("%w: %s", ErrUnsupportedFileType, ext)
 }
