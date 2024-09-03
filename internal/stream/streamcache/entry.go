@@ -10,6 +10,7 @@ import (
 	"github.com/gabe565/relax-sounds/internal/encoder"
 	"github.com/gabe565/relax-sounds/internal/stream"
 	"github.com/gopxl/beep/v2"
+	"github.com/labstack/echo/v5"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -49,13 +50,19 @@ type Entry struct {
 	Accessed    time.Time
 }
 
-func NewEntry(remoteAddr, preset, uuid string) *Entry {
+func NewEntry(c echo.Context, preset, uuid string) *Entry {
+	remoteIP := c.RealIP()
 	entry := &Entry{
-		RemoteAddr: remoteAddr,
-		Log:        slog.With("userIp", remoteAddr, "id", uuid),
-		Preset:     preset,
-		Buffer:     bytes.NewBuffer(make([]byte, 0, 3*1024*1024)),
-		Created:    time.Now(),
+		RemoteAddr: remoteIP,
+		Log: slog.With(
+			"userIp", remoteIP,
+			"userAgent", c.Request().UserAgent(),
+			"url", c.Request().URL.String(),
+			"id", uuid,
+		),
+		Preset:  preset,
+		Buffer:  bytes.NewBuffer(make([]byte, 0, 3*1024*1024)),
+		Created: time.Now(),
 	}
 	entry.Accessed = entry.Created
 

@@ -84,7 +84,7 @@ func Mix(app *pocketbase.PocketBase) echo.HandlerFunc {
 		}
 		if !found {
 			// Entry was not found
-			entry = streamcache.NewEntry(c.RealIP(), presetEncoded, uuid)
+			entry = streamcache.NewEntry(c, presetEncoded, uuid)
 			entry.Log.Info("Create stream")
 
 			presetDecoded, err := preset.FromParam(presetEncoded)
