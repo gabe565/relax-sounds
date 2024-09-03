@@ -1,10 +1,10 @@
 package streamcache
 
 import (
+	"log/slog"
 	"os"
 	"time"
 
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +20,7 @@ func Flags(cmd *cobra.Command) {
 		var err error
 		scanIntervalDefault, err = time.ParseDuration(env)
 		if err != nil {
-			log.Warn().Err(err).Msg("failed to parse env CACHE_SCAN_INTERVAL")
+			slog.Warn("Failed to parse CACHE_SCAN_INTERVAL env", "error", err)
 		}
 	}
 	cmd.PersistentFlags().DurationVar(&scanInterval, "cache-scan-interval", scanIntervalDefault, "Interval to search stream cache for old entries")
@@ -30,7 +30,7 @@ func Flags(cmd *cobra.Command) {
 		var err error
 		cleanAfterDefault, err = time.ParseDuration(env)
 		if err != nil {
-			log.Warn().Err(err).Msg("failed to parse env CACHE_CLEAN_AFTER")
+			slog.Warn("Failed to parse CACHE_CLEAN_AFTER env", "error", err)
 		}
 	}
 

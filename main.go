@@ -1,9 +1,8 @@
 package main
 
 import (
-	"os"
+	"log/slog"
 
-	"github.com/fatih/color"
 	"github.com/gabe565/relax-sounds/internal/debug"
 	"github.com/gabe565/relax-sounds/internal/encoder/mp3"
 	"github.com/gabe565/relax-sounds/internal/handlers"
@@ -15,8 +14,6 @@ import (
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 func main() {
@@ -28,12 +25,6 @@ func main() {
 	mp3.Flags(app.RootCmd)
 	metrics.Flags(app.RootCmd)
 	debug.Flags(app.RootCmd)
-
-	log.Logger = log.Output(zerolog.ConsoleWriter{
-		Out:        os.Stderr,
-		NoColor:    color.NoColor,
-		TimeFormat: "2006/01/02 15:04:05",
-	})
 
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		Automigrate: automigrateEnabled(),
@@ -53,7 +44,7 @@ func main() {
 		go func() {
 			if migrations.ConvertAfterStart {
 				if err := hooks.ConvertAll(app); err != nil {
-					log.Err(err).Msg("failed to convert sound")
+					slog.Error("Failed to convert sound", "error", err)
 				}
 			}
 		}()
@@ -61,22 +52,13 @@ func main() {
 	})
 
 	app.OnBeforeServe().Add(func(_ *core.ServeEvent) error {
-		go func() {
-			if err := metrics.Serve(app.RootCmd); err != nil {
-				log.Err(err).Msg("failed to serve metrics")
-			}
-		}()
-
-		go func() {
-			if err := debug.Serve(app.RootCmd); err != nil {
-				log.Err(err).Msg("failed to serve pprof")
-			}
-		}()
-
+		metrics.Serve(app.RootCmd)
+		debug.Serve(app.RootCmd)
+		slog.SetDefault(app.Logger())
 		return nil
 	})
 
 	if err := app.Start(); err != nil {
-		log.Fatal().Err(err).Msg("failed to serve")
+		slog.Error("Failed to start app", "error", err)
 	}
 }

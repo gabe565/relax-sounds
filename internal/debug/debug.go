@@ -2,13 +2,13 @@ package debug
 
 //nolint:revive,gosec
 import (
+	"log/slog"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"strconv"
 	"time"
 
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +18,7 @@ func Flags(cmd *cobra.Command) {
 		var err error
 		enabledDefault, err = strconv.ParseBool(env)
 		if err != nil {
-			log.Warn().Err(err).Msg("failed to parse env DEBUG_ENABLED")
+			slog.Warn("Failed to parse DEBUG_ENABLED env")
 		}
 	}
 	cmd.PersistentFlags().Bool("debug-enabled", enabledDefault, "Enables debug server")
@@ -31,13 +31,13 @@ func Flags(cmd *cobra.Command) {
 	cmd.PersistentFlags().String("debug-address", addressDefault, "Debug server listen address")
 }
 
-func Serve(cmd *cobra.Command) error {
+func Serve(cmd *cobra.Command) {
 	enabled, err := cmd.PersistentFlags().GetBool("debug-enabled")
 	if err != nil {
 		panic(err)
 	}
 	if !enabled {
-		return nil
+		return
 	}
 
 	addr, err := cmd.PersistentFlags().GetString("debug-address")
@@ -45,10 +45,14 @@ func Serve(cmd *cobra.Command) error {
 		panic(err)
 	}
 
-	log.Info().Str("addr", addr).Msg("starting debug server")
+	slog.Info("Starting debug server", "address", addr)
 	server := &http.Server{
 		Addr:              addr,
 		ReadHeaderTimeout: 3 * time.Second,
 	}
-	return server.ListenAndServe()
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			slog.Error("Failed to serve pprof", "error", err)
+		}
+	}()
 }

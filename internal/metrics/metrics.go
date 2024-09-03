@@ -1,13 +1,13 @@
 package metrics
 
 import (
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +17,7 @@ func Flags(cmd *cobra.Command) {
 		var err error
 		enabledDefault, err = strconv.ParseBool(env)
 		if err != nil {
-			log.Warn().Err(err).Msg("failed to parse env METRICS_ENABLED")
+			slog.Warn("Failed to parse METRICS_ENABLED env", "error", err)
 		}
 	}
 	cmd.PersistentFlags().Bool("metrics-enabled", enabledDefault, "Enables Prometheus metrics API")
@@ -30,13 +30,13 @@ func Flags(cmd *cobra.Command) {
 	cmd.PersistentFlags().String("metrics-address", addressDefault, "Prometheus metrics API listen address")
 }
 
-func Serve(cmd *cobra.Command) error {
+func Serve(cmd *cobra.Command) {
 	enabled, err := cmd.PersistentFlags().GetBool("metrics-enabled")
 	if err != nil {
 		panic(err)
 	}
 	if !enabled {
-		return nil
+		return
 	}
 
 	mux := http.NewServeMux()
@@ -47,11 +47,15 @@ func Serve(cmd *cobra.Command) error {
 		panic(err)
 	}
 
-	log.Info().Str("addr", addr).Msg("starting metrics server")
+	slog.Info("Starting metrics server", "address", addr)
 	server := &http.Server{
 		Addr:              addr,
 		Handler:           mux,
 		ReadHeaderTimeout: 3 * time.Second,
 	}
-	return server.ListenAndServe()
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			slog.Error("Failed to serve metrics", "error", err)
+		}
+	}()
 }

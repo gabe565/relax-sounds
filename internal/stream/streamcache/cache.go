@@ -65,12 +65,12 @@ func (a *Cache) cleanup(since time.Duration) {
 
 	for id, entry := range a.Entries {
 		if time.Since(entry.Accessed) >= since {
-			entry.Log.Info().
-				Time("accessed", entry.Accessed).
-				Str("age", time.Since(entry.Created).Truncate(time.Second).String()).
-				Msg("cleanup stream")
+			entry.Log.Info("Cleanup stream",
+				"accessed", entry.Accessed,
+				"age", time.Since(entry.Created).Round(100*time.Millisecond).String(),
+			)
 			if err := entry.Close(); err != nil {
-				entry.Log.Err(err).Msg("failed to cleanup stream")
+				entry.Log.Error("Failed to cleanup stream", "error", err)
 			}
 			delete(a.Entries, id)
 		}

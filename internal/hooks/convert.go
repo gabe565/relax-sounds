@@ -3,6 +3,7 @@ package hooks
 import (
 	"bytes"
 	"fmt"
+	"log/slog"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -13,7 +14,6 @@ import (
 	"github.com/pocketbase/pocketbase/forms"
 	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/filesystem"
-	"github.com/rs/zerolog/log"
 	ffmpeg "github.com/u2takey/ffmpeg-go"
 )
 
@@ -23,7 +23,7 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 	var skipConvert bool
 	if _, err := exec.LookPath("ffmpeg"); err != nil {
 		skipConvert = true
-		log.Warn().Err(err).Msg("ffmpeg is required for secondary audio file creation")
+		slog.Warn("ffmpeg is required for secondary audio file creation", "error", err)
 	}
 
 	return func(e *core.ModelEvent) error {
@@ -40,16 +40,16 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 		}
 
 		if skipConvert {
-			log.Error().Msg("ffmpeg is required for secondary audio file creation")
+			slog.Error("ffmpeg is required for secondary audio file creation")
 			return nil
 		}
 
 		path := filepath.Join(dataDir, record.BaseFilesPath(), files[0])
 		dstPath := strings.TrimSuffix(files[0], ext) + ".mp3"
-		log.Info().
-			Str("src", filepath.Base(path)).
-			Str("dst", filepath.Base(dstPath)).
-			Msg("creating secondary audio file")
+		slog.Info("Creating secondary audio file",
+			"src", filepath.Base(path),
+			"dst", filepath.Base(dstPath),
+		)
 
 		var dst bytes.Buffer
 		var errBuf strings.Builder
@@ -64,7 +64,7 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 			Run()
 		if err != nil {
 			err := fmt.Errorf("%w: %s", err, errBuf.String())
-			log.Err(err).Msg("failed to convert file")
+			slog.Error("Failed to convert audio file", "error", err)
 			return err
 		}
 
@@ -97,7 +97,8 @@ func ConvertAll(app *pocketbase.PocketBase) error {
 		}
 	}
 
-	log.Info().Str("took", time.Since(start).Truncate(time.Second).String()).
-		Msg("finished creating secondary audio files")
+	slog.Info("Finished creating secondary audio files",
+		"took", time.Since(start).Round(100*time.Millisecond).String(),
+	)
 	return nil
 }

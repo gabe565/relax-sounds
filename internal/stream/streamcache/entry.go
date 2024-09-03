@@ -3,6 +3,7 @@ package streamcache
 import (
 	"bytes"
 	"errors"
+	"log/slog"
 	"sync"
 	"time"
 
@@ -11,8 +12,6 @@ import (
 	"github.com/gopxl/beep"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 //nolint:gochecknoglobals
@@ -32,7 +31,7 @@ var (
 
 type Entry struct {
 	RemoteAddr string
-	Log        zerolog.Logger
+	Log        *slog.Logger
 
 	Preset  string
 	Streams stream.Streams
@@ -52,7 +51,7 @@ type Entry struct {
 func NewEntry(remoteAddr, preset, uuid string) *Entry {
 	entry := &Entry{
 		RemoteAddr: remoteAddr,
-		Log:        log.With().Str("ip", remoteAddr).Str("id", uuid).Logger(),
+		Log:        slog.With("userIp", remoteAddr, "id", uuid),
 		Preset:     preset,
 		Buffer:     bytes.NewBuffer(make([]byte, 0, 3*1024*1024)),
 		Created:    time.Now(),
