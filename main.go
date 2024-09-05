@@ -20,7 +20,6 @@ func main() {
 	app := pocketbase.New()
 	stream.Flags(app.RootCmd)
 	streamcache.Flags(app.RootCmd)
-	handlers.MixFlags(app.RootCmd)
 	handlers.StaticFlags(app.RootCmd)
 	mp3.Flags(app.RootCmd)
 	metrics.Flags(app.RootCmd)

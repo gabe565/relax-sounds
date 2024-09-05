@@ -38,13 +38,11 @@ type Entry struct {
 	Mix     beep.Streamer
 	Format  beep.Format
 
-	Buffer  *Buffer
+	Buffer  *ProxyWriter
 	Encoder encoder.Encoder
 
 	Mu          sync.Mutex
-	ChunkNum    int
-	TotalSize   int
-	Transferred uint64
+	Transferred int64
 	Created     time.Time
 	Accessed    time.Time
 }
@@ -58,7 +56,7 @@ func NewEntry(c echo.Context, preset, uuid string) *Entry {
 			"id", uuid,
 		),
 		Preset:  preset,
-		Buffer:  NewBuffer(2 * 1024 * 1024),
+		Buffer:  NewProxyWriter(),
 		Created: time.Now(),
 	}
 	entry.Accessed = entry.Created
@@ -76,11 +74,12 @@ func (e *Entry) Close() error {
 	e.Log.Info("Close stream",
 		"accessed", e.Accessed,
 		"age", time.Since(e.Created).Round(100*time.Millisecond).String(),
-		"transferred", humanize.IBytes(e.Transferred),
+		"transferred", humanize.IBytes(uint64(e.Transferred)),
 	)
 
 	activeStreamMetrics.Dec()
 
+	e.Buffer.Close()
 	defer func() {
 		e.Buffer = nil
 	}()
