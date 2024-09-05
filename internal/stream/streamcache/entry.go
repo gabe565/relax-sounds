@@ -31,8 +31,7 @@ var (
 )
 
 type Entry struct {
-	RemoteAddr string
-	Log        *slog.Logger
+	Log *slog.Logger
 
 	Preset  string
 	Streams stream.Streams
@@ -51,11 +50,9 @@ type Entry struct {
 }
 
 func NewEntry(c echo.Context, preset, uuid string) *Entry {
-	remoteIP := c.RealIP()
 	entry := &Entry{
-		RemoteAddr: remoteIP,
 		Log: slog.With(
-			"userIp", remoteIP,
+			"userIp", c.RealIP(),
 			"userAgent", c.Request().UserAgent(),
 			"url", c.Request().URL.String(),
 			"id", uuid,

@@ -11,7 +11,6 @@ import (
 type Streamer struct {
 	Streamer beep.Streamer
 	Closer   beep.StreamCloser
-	Format   beep.Format
 }
 
 func (s Streamer) Close() error {
@@ -24,12 +23,11 @@ func (s Streamer) Close() error {
 func NewStreamer(rawFile fs.File, entry preset.Track) (Streamer, error) {
 	var streamer Streamer
 
-	closer, format, err := Decode(rawFile)
+	closer, _, err := Decode(rawFile)
 	if err != nil {
 		return streamer, err
 	}
 	streamer.Closer = closer
-	streamer.Format = format
 
 	beepStreamer := beep.Loop(-1, closer)
 
