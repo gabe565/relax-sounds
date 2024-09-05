@@ -25,7 +25,7 @@ func Flags(cmd *cobra.Command) {
 	}
 	cmd.PersistentFlags().DurationVar(&scanInterval, "cache-scan-interval", scanIntervalDefault, "Interval to search stream cache for old entries")
 
-	cleanAfterDefault := 8 * time.Minute
+	cleanAfterDefault := 15 * time.Minute
 	if env := os.Getenv("CACHE_CLEAN_AFTER"); env != "" {
 		var err error
 		cleanAfterDefault, err = time.ParseDuration(env)
