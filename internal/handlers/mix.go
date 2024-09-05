@@ -4,14 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log/slog"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
-	"time"
 
 	"github.com/gabe565/relax-sounds/internal/encoder/encode"
 	"github.com/gabe565/relax-sounds/internal/encoder/filetype"
@@ -23,20 +21,7 @@ import (
 	"github.com/labstack/echo/v5/middleware"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
-	"github.com/spf13/cobra"
 )
-
-func MixFlags(cmd *cobra.Command) {
-	chunkLengthDefault := 2 * time.Minute
-	if env := os.Getenv("STREAM_CHUNK_LENGTH"); env != "" {
-		var err error
-		chunkLengthDefault, err = time.ParseDuration(env)
-		if err != nil {
-			slog.Warn("Failed to parse STREAM_CHUNK_LENGTH env", "error", err)
-		}
-	}
-	cmd.PersistentFlags().Duration("stream-chunk-length", chunkLengthDefault, "Sets the length of each chunk when casting")
-}
 
 func NewMix(app *pocketbase.PocketBase) *Mix {
 	return &Mix{
@@ -57,10 +42,11 @@ func (m *Mix) RegisterRoutes(e *echo.Echo) {
 
 func (m *Mix) Mix() echo.HandlerFunc {
 	dataFs := os.DirFS(filepath.Join(m.app.DataDir(), "storage"))
-	chunkLength, err := m.app.RootCmd.PersistentFlags().GetDuration("stream-chunk-length")
-	if err != nil {
-		panic(err)
-	}
+
+	const (
+		TotalSize = 1500 * 1024 * 1024
+		ChunkSize = 2 * 1024 * 1024
+	)
 
 	return func(c echo.Context) error {
 		var err error
@@ -131,7 +117,7 @@ func (m *Mix) Mix() echo.HandlerFunc {
 			}
 
 			// Get current filetype encoder
-			entry.Encoder, err = fileType.NewEncoder(entry.Buffer, entry.Format)
+			entry.Encoder, err = fileType.NewEncoder(entry.Writer, entry.Format)
 			if err != nil {
 				panic(err)
 			}
@@ -165,49 +151,37 @@ func (m *Mix) Mix() echo.HandlerFunc {
 			}
 		}
 
-		var currChunkLength time.Duration
-		// First chunks will be smaller to minimize delay
-		switch entry.ChunkNum {
-		case 0:
-			currChunkLength = 15 * time.Second
-		case 1:
-			currChunkLength = time.Minute
-		default:
-			currChunkLength = chunkLength
-		}
-
 		// Ensure a single stream isn't fetched in parallel
 		entry.Mu.Lock()
 		defer entry.Mu.Unlock()
 
-		// Mux streams to encoder
-		if err = encode.Encode(c.Request().Context(), currChunkLength, entry); err != nil {
-			panic(err)
-		}
+		chunkSize := ChunkSize + entry.Writer.Buffered()
+		c.Response().Header().Set("Content-Length", strconv.Itoa(chunkSize))
+		c.Response().Header().Set("Content-Range", fmt.Sprintf(
+			"bytes %d-%d/%d",
+			firstByteIdx,
+			firstByteIdx+chunkSize-1,
+			TotalSize,
+		))
+		entry.Writer.SetWriter(c.Response())
+		entry.Writer.Limit = chunkSize
 
-		if entry.TotalSize == 0 {
-			// Set total length to ~24 hours
-			// Actual length will vary when using VBR
-			entry.TotalSize = entry.Buffer.Len() * int(24*time.Hour/currChunkLength)
-		}
-
-		c.Response().Header().Set("Content-Length", strconv.Itoa(entry.Buffer.Len()))
-		lastByteIdx := firstByteIdx + entry.Buffer.Len() - 1
-		c.Response().Header().Set(
-			"Content-Range",
-			fmt.Sprintf("bytes %d-%d/%d", firstByteIdx, lastByteIdx, entry.TotalSize),
-		)
-
-		// Write buffered stream data to client
 		c.Response().WriteHeader(http.StatusPartialContent)
-		n, err := io.Copy(c.Response(), entry.Buffer)
-		if err != nil {
-			if !errors.Is(err, syscall.EPIPE) && !errors.Is(err, syscall.ECONNRESET) {
-				panic(err)
+		defer func() {
+			entry.Transferred += c.Response().Size
+		}()
+
+		// Mux streams to encoder
+		if err = encode.Encode(c.Request().Context(), entry); err != nil {
+			switch {
+			case errors.Is(err, io.ErrShortWrite):
+			case errors.Is(err, syscall.EPIPE):
+			case errors.Is(err, syscall.ECONNRESET):
+			default:
+				return apis.NewApiError(http.StatusInternalServerError, "", err)
 			}
 		}
-		entry.Transferred += uint64(n)
-		entry.ChunkNum++
+
 		return nil
 	}
 }
