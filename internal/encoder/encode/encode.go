@@ -11,12 +11,11 @@ import (
 // Encode writes a duration of the audio stream in PCM format.
 //
 // Format precision must be 1 or 2 bytes.
-func Encode(ctx context.Context, duration time.Duration, entry *streamcache.Entry) error {
+func Encode(ctx context.Context, entry *streamcache.Entry) error {
 	durationPerLoop := time.Second / 10
 	samples := make([][2]float64, entry.Format.SampleRate.N(durationPerLoop))
 	buffer := make([]byte, len(samples)*entry.Format.Width())
 
-	var writtenDuration time.Duration
 	for {
 		n, ok := entry.Mix.Stream(samples)
 		if !ok {
@@ -41,14 +40,11 @@ func Encode(ctx context.Context, duration time.Duration, entry *streamcache.Entr
 		case <-ctx.Done():
 			return nil
 		default:
-			_, err := entry.Encoder.Write(buffer[:n*entry.Format.Width()])
-			if err != nil {
+			if _, err := entry.Encoder.Write(buffer[:n*entry.Format.Width()]); err != nil {
 				return err
 			}
-
-			writtenDuration += durationPerLoop
-			if writtenDuration >= duration {
-				return nil
+			if entry.Writer.Err != nil {
+				return entry.Writer.Err
 			}
 		}
 	}
