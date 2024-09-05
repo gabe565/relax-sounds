@@ -1,7 +1,6 @@
 package streamcache
 
 import (
-	"bytes"
 	"errors"
 	"log/slog"
 	"sync"
@@ -40,7 +39,7 @@ type Entry struct {
 	Mix     beep.Streamer
 	Format  beep.Format
 
-	Buffer  *bytes.Buffer
+	Buffer  *Buffer
 	Encoder encoder.Encoder
 
 	Mu          sync.Mutex
@@ -62,7 +61,7 @@ func NewEntry(c echo.Context, preset, uuid string) *Entry {
 			"id", uuid,
 		),
 		Preset:  preset,
-		Buffer:  bytes.NewBuffer(make([]byte, 0, 3*1024*1024)),
+		Buffer:  NewBuffer(3 * 1024 * 1024),
 		Created: time.Now(),
 	}
 	entry.Accessed = entry.Created

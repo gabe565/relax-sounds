@@ -207,8 +207,6 @@ func (m *Mix) Mix() echo.HandlerFunc {
 			}
 		}
 		entry.Transferred += uint64(n)
-
-		entry.Buffer.Reset()
 		entry.ChunkNum++
 		return nil
 	}
