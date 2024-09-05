@@ -8,9 +8,12 @@ require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/gopxl/beep/v2 v2.0.3
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
+	github.com/lmittmann/tint v1.0.5
+	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/dbx v1.10.1
 	github.com/pocketbase/pocketbase v0.22.20
 	github.com/prometheus/client_golang v1.20.2
+	github.com/samber/slog-multi v1.2.1
 	github.com/spf13/cobra v1.8.1
 	github.com/u2takey/ffmpeg-go v0.5.0
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
@@ -63,7 +66,6 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-sqlite3 v1.14.22 // indirect
 	github.com/mewkiz/flac v1.0.12 // indirect
 	github.com/mewkiz/pkg v0.0.0-20230226050401-4010bf0fec14 // indirect
@@ -75,6 +77,7 @@ require (
 	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
+	github.com/samber/lo v1.38.1 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/u2takey/go-utils v0.3.1 // indirect
@@ -83,6 +86,7 @@ require (
 	go.opencensus.io v0.24.0 // indirect
 	gocloud.dev v0.39.0 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
+	golang.org/x/exp v0.0.0-20231108232855-2478ac86f678 // indirect
 	golang.org/x/image v0.19.0 // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/oauth2 v0.22.0 // indirect
