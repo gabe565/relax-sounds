@@ -61,7 +61,7 @@ func NewEntry(c echo.Context, preset, uuid string) *Entry {
 			"id", uuid,
 		),
 		Preset:  preset,
-		Buffer:  NewBuffer(3 * 1024 * 1024),
+		Buffer:  NewBuffer(2 * 1024 * 1024),
 		Created: time.Now(),
 	}
 	entry.Accessed = entry.Created
