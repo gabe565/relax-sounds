@@ -2,7 +2,7 @@ module github.com/gabe565/relax-sounds
 
 go 1.23.0
 
-replace github.com/viert/go-lame => github.com/au1/go-lame v0.0.0-20210615194416-b6cef834b0e1
+replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-20240905080442-af2ac686306e
 
 require (
 	github.com/dustin/go-humanize v1.0.1
