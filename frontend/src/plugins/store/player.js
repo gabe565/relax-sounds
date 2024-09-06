@@ -5,10 +5,10 @@ import { SoundState } from "../../util/Sound";
 import { getSounds } from "../../data/sounds";
 import { formatError, getCastSession } from "../../util/googleCast";
 import { Preset } from "../../util/Preset";
-import pb from "../pocketbase";
 import { wait } from "../../util/helpers";
 import { TYPE, useToast } from "vue-toastification";
 import { Filetype } from "../../util/filetype";
+import pLimit from "p-limit";
 
 const toast = useToast();
 
@@ -332,21 +332,24 @@ export const usePlayerStore = defineStore("player", () => {
   };
 
   const prefetch = async () => {
-    const id = toast.info("Preloading sounds...");
+    const id = toast.info("Preloading sounds...", { timeout: false });
+    const limit = pLimit(8);
     try {
       await Promise.all(
-        sounds.value.map(async (sound) => {
-          sound.isLoading = true;
-          const url = pb.getFileUrl(sound, sound.file);
-          await fetch(url);
-          sound.isLoading = false;
-        }),
+        sounds.value.map((sound) =>
+          limit(async () => {
+            sound.isLoading = true;
+            await sound.load();
+            sound.howl.unload();
+            sound.isLoading = false;
+          }),
+        ),
       );
       toast.update(
         id,
         {
           content: "Preloaded all sounds.",
-          options: { type: TYPE.SUCCESS },
+          options: { type: TYPE.SUCCESS, timeout: undefined },
         },
         true,
       );
@@ -355,8 +358,8 @@ export const usePlayerStore = defineStore("player", () => {
       toast.update(
         id,
         {
-          content: "Failed to preload sounds.",
-          options: { type: TYPE.ERROR },
+          content: `Failed to preload sounds.\n${err}`,
+          options: { type: TYPE.ERROR, timeout: undefined },
         },
         true,
       );

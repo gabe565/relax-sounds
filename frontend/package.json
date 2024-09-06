@@ -22,6 +22,7 @@
     "howler": "2.2.4",
     "lodash-es": "4.17.21",
     "nanoid": "5.0.7",
+    "p-limit": "6.1.0",
     "pinia": "2.2.2",
     "pinia-plugin-persistedstate": "3.2.3",
     "pocketbase": "0.21.5",
