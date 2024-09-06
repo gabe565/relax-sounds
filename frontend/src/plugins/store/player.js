@@ -9,6 +9,7 @@ import { wait } from "../../util/helpers";
 import { TYPE, useToast } from "vue-toastification";
 import { Filetype } from "../../util/filetype";
 import pLimit from "p-limit";
+import { ApiPath } from "../../config/api";
 
 const toast = useToast();
 
@@ -140,10 +141,9 @@ export const usePlayerStore = defineStore("player", () => {
   const deleteStream = async () => {
     let uuid = sessionStorage.getItem("uuid");
     if (uuid) {
-      const apiAddress = import.meta.env.VITE_API_ADDRESS || window.location.origin;
       let resp;
       try {
-        resp = await fetch(`${apiAddress}/api/mix/${uuid}`, { method: "DELETE" });
+        resp = await fetch(ApiPath(`/api/mix/${uuid}`), { method: "DELETE" });
       } catch (error) {
         if (resp.status !== 404) {
           console.error(`Remote media stop error: ${formatError(error)}`);

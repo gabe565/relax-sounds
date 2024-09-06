@@ -3,6 +3,7 @@ import { Filetype } from "./filetype";
 import { getSounds } from "../data/sounds";
 import { compress, decompress } from "./helpers";
 import base64 from "base64-url";
+import { ApiPath } from "../config/api";
 
 export const legacyFromShorthand = (shorthand) =>
   shorthand.map((song) => {
@@ -74,9 +75,8 @@ export class Preset {
       uuid = nanoid();
       sessionStorage.setItem("uuid", uuid);
     }
-    const apiAddress = import.meta.env.VITE_API_ADDRESS || window.location.origin;
     const encoded = await this.getEncodedShorthand();
-    return `${apiAddress}/api/mix/${uuid}/${encoded}.${filetype}`;
+    return ApiPath(`/api/mix/${uuid}/${encoded}.${filetype}`);
   }
 
   async setMixUrl(val) {
