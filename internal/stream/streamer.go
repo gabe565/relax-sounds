@@ -29,7 +29,10 @@ func NewStreamer(rawFile fs.File, entry preset.Track) (Streamer, error) {
 	}
 	streamer.Closer = closer
 
-	beepStreamer := beep.Loop(-1, closer)
+	beepStreamer, err := beep.Loop2(closer)
+	if err != nil {
+		return streamer, err
+	}
 
 	if format.SampleRate != 44100 {
 		beepStreamer = beep.Resample(3, format.SampleRate, 44100, beepStreamer)
