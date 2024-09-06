@@ -112,10 +112,6 @@ func (m *Mix) Mix() echo.HandlerFunc {
 				Precision:   2,
 			}
 
-			if err := encode.VerifyFormat(entry.Format); err != nil {
-				panic(err)
-			}
-
 			// Get current filetype encoder
 			entry.Encoder, err = fileType.NewEncoder(entry.Writer, entry.Format)
 			if err != nil {

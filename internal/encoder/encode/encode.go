@@ -2,15 +2,25 @@ package encode
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
+)
+
+var (
+	ErrInvalidChannels      = errors.New("invalid number of channels")
+	ErrUnsupportedPrecision = errors.New("unsupported precision")
 )
 
 // Encode writes a duration of the audio stream in PCM format.
 //
 // Format precision must be 1 or 2 bytes.
 func Encode(ctx context.Context, entry *streamcache.Entry) error {
+	if entry.Format.NumChannels <= 0 {
+		return fmt.Errorf("%w: %d", ErrInvalidChannels, entry.Format.NumChannels)
+	}
+
 	samples := make([][2]float64, 512)
 	buffer := make([]byte, len(samples)*entry.Format.Width())
 
