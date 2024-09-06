@@ -23,13 +23,17 @@ func (s Streamer) Close() error {
 func NewStreamer(rawFile fs.File, entry preset.Track) (Streamer, error) {
 	var streamer Streamer
 
-	closer, _, err := Decode(rawFile)
+	closer, format, err := Decode(rawFile)
 	if err != nil {
 		return streamer, err
 	}
 	streamer.Closer = closer
 
 	beepStreamer := beep.Loop(-1, closer)
+
+	if format.SampleRate != 44100 {
+		beepStreamer = beep.Resample(3, format.SampleRate, 44100, beepStreamer)
+	}
 
 	if volume := entry.GetVolume(); volume != 1 {
 		beepStreamer = &effects.Volume{
