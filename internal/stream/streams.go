@@ -45,5 +45,9 @@ func (stream Streams) Mix() beep.Streamer {
 			streams = append(streams, streamer.Closer)
 		}
 	}
+
+	if len(streams) == 1 {
+		return streams[0]
+	}
 	return beep.Mix(streams...)
 }
