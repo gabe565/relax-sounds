@@ -1,7 +1,13 @@
 <template>
   <v-btn
     variant="flat"
-    :color="preset.new ? 'newPresetCardBackground' : 'cardBackground'"
+    :color="
+      preset.new
+        ? 'newPresetCardBackground'
+        : player.currentName === preset.name
+          ? 'accent'
+          : 'cardBackground'
+    "
     size="x-large"
     class="w-100 d-flex justify-space-between text-none font-weight-regular"
     :aria-label="`Play ${preset.name}`"
@@ -25,6 +31,7 @@ import ShareButton from "./Buttons/ShareButton.vue";
 import DeleteButton from "./Buttons/DeleteButton.vue";
 import DebugButton from "./Buttons/DebugButton.vue";
 import { usePresetsStore } from "../../plugins/store/presets";
+import { usePlayerStore } from "../../plugins/store/player";
 import { Preset } from "../../util/Preset";
 import { useToast } from "vue-toastification";
 
@@ -38,6 +45,7 @@ const props = defineProps({
 const debugEnabled = import.meta.env.DEV;
 const toast = useToast();
 const presets = usePresetsStore();
+const player = usePlayerStore();
 const loading = ref(false);
 
 const play = async () => {
