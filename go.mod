@@ -1,6 +1,6 @@
 module github.com/gabe565/relax-sounds
 
-go 1.23.0
+go 1.23.1
 
 replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-20240905080442-af2ac686306e
 
