@@ -6,7 +6,7 @@ replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-2024090508
 
 require (
 	github.com/dustin/go-humanize v1.0.1
-	github.com/gopxl/beep/v2 v2.0.4-0.20240905155001-01d1fa4a539e
+	github.com/gopxl/beep/v2 v2.0.4-0.20240906204227-376f6c5a8109
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
 	github.com/lmittmann/tint v1.0.5
 	github.com/mattn/go-isatty v0.0.20
