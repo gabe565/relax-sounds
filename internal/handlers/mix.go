@@ -160,6 +160,7 @@ func (m *Mix) Mix() echo.HandlerFunc {
 			TotalSize,
 		))
 		entry.Writer.SetWriter(c.Response())
+		defer entry.Writer.SetWriter(nil)
 		entry.Writer.Limit = chunkSize
 
 		c.Response().WriteHeader(http.StatusPartialContent)
