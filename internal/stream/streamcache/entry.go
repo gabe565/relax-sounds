@@ -42,7 +42,7 @@ type Entry struct {
 	Encoder encoder.Encoder
 
 	Mu          sync.Mutex
-	Transferred int64
+	Transferred uint64
 	Created     time.Time
 	Accessed    time.Time
 }
@@ -74,7 +74,7 @@ func (e *Entry) Close() error {
 	e.Log.Info("Close stream",
 		"accessed", e.Accessed,
 		"age", time.Since(e.Created).Round(100*time.Millisecond).String(),
-		"transferred", humanize.IBytes(uint64(e.Transferred)),
+		"transferred", humanize.IBytes(e.Transferred),
 	)
 
 	activeStreamMetrics.Dec()

@@ -165,7 +165,7 @@ func (m *Mix) Mix() echo.HandlerFunc {
 
 		c.Response().WriteHeader(http.StatusPartialContent)
 		defer func() {
-			entry.Transferred += c.Response().Size
+			entry.Transferred += uint64(c.Response().Size) //nolint:gosec
 		}()
 
 		// Mux streams to encoder
