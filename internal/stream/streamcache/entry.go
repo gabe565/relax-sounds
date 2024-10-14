@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
+	"gabe565.com/relax-sounds/internal/encoder"
+	"gabe565.com/relax-sounds/internal/stream"
 	"github.com/dustin/go-humanize"
-	"github.com/gabe565/relax-sounds/internal/encoder"
-	"github.com/gabe565/relax-sounds/internal/stream"
 	"github.com/gopxl/beep/v2"
 	"github.com/labstack/echo/v5"
 	"github.com/prometheus/client_golang/prometheus"

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/gabe565/relax-sounds/internal/preset"
+	"gabe565.com/relax-sounds/internal/preset"
 	"github.com/pocketbase/pocketbase/daos"
 	"github.com/pocketbase/pocketbase/models"
 	"golang.org/x/sync/errgroup"

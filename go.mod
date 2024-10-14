@@ -1,4 +1,4 @@
-module github.com/gabe565/relax-sounds
+module gabe565.com/relax-sounds
 
 go 1.23.0
 

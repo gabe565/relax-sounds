@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/gabe565/relax-sounds/internal/stream/streamcache"
+	"gabe565.com/relax-sounds/internal/stream/streamcache"
 )
 
 var (

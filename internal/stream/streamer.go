@@ -3,7 +3,7 @@ package stream
 import (
 	"io/fs"
 
-	"github.com/gabe565/relax-sounds/internal/preset"
+	"gabe565.com/relax-sounds/internal/preset"
 	"github.com/gopxl/beep/v2"
 	"github.com/gopxl/beep/v2/effects"
 )

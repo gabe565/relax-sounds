@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/gabe565/relax-sounds/internal/encoder"
-	"github.com/gabe565/relax-sounds/internal/encoder/mp3"
+	"gabe565.com/relax-sounds/internal/encoder"
+	"gabe565.com/relax-sounds/internal/encoder/mp3"
 	"github.com/gopxl/beep/v2"
 )
 
