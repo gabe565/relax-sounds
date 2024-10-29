@@ -17,10 +17,9 @@ import (
 	"gabe565.com/relax-sounds/internal/stream"
 	"gabe565.com/relax-sounds/internal/stream/streamcache"
 	"github.com/gopxl/beep/v2"
-	"github.com/labstack/echo/v5"
-	"github.com/labstack/echo/v5/middleware"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
+	"github.com/pocketbase/pocketbase/core"
 )
 
 func NewMix(app *pocketbase.PocketBase) *Mix {
@@ -35,12 +34,12 @@ type Mix struct {
 	cache *streamcache.Cache
 }
 
-func (m *Mix) RegisterRoutes(e *echo.Echo) {
-	e.GET("/api/mix/:uuid/:query", m.Mix())
-	e.DELETE("/api/mix/:uuid", m.Stop(), middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(1)))
+func (m *Mix) RegisterRoutes(e *core.ServeEvent) {
+	e.Router.GET("/api/mix/{uuid}/{query}", m.Mix())
+	e.Router.DELETE("/api/mix/{uuid}", m.Stop())
 }
 
-func (m *Mix) Mix() echo.HandlerFunc {
+func (m *Mix) Mix() func(*core.RequestEvent) error {
 	dataFs := os.DirFS(filepath.Join(m.app.DataDir(), "storage"))
 
 	const (
@@ -48,10 +47,10 @@ func (m *Mix) Mix() echo.HandlerFunc {
 		ChunkSize = 2 * 1024 * 1024
 	)
 
-	return func(c echo.Context) error {
+	return func(e *core.RequestEvent) error {
 		var err error
 
-		query := c.PathParam("query")
+		query := e.Request.PathValue("query")
 
 		// Preset parameter
 		presetEncoded, fileTypeStr, found := strings.Cut(query, ".")
@@ -69,7 +68,7 @@ func (m *Mix) Mix() echo.HandlerFunc {
 			panic(err)
 		}
 
-		uuid := c.PathParam("uuid")
+		uuid := e.Request.PathValue("uuid")
 		entry, found := m.cache.Get(uuid)
 		if found && entry.Preset != presetEncoded {
 			// Same window is changing streams
@@ -81,7 +80,7 @@ func (m *Mix) Mix() echo.HandlerFunc {
 		}
 		if !found {
 			// Entry was not found
-			entry = streamcache.NewEntry(c, presetEncoded, uuid)
+			entry = streamcache.NewEntry(e, presetEncoded, uuid)
 			entry.Log.Info("Create stream")
 
 			presetDecoded, err := preset.FromParam(presetEncoded)
@@ -93,7 +92,7 @@ func (m *Mix) Mix() echo.HandlerFunc {
 			}
 
 			// Set up stream
-			if entry.Streams, err = stream.New(dataFs, m.app.Dao(), presetDecoded); err != nil {
+			if entry.Streams, err = stream.New(dataFs, m.app, presetDecoded); err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					// Invalid file ID returns 404
 					return apis.NewNotFoundError("", nil)
@@ -121,12 +120,12 @@ func (m *Mix) Mix() echo.HandlerFunc {
 			m.cache.Add(uuid, entry)
 		}
 
-		c.Response().Header().Set("Accept-Ranges", "bytes")
-		c.Response().Header().Set("Connection", "Keep-Alive")
-		c.Response().Header().Set("Content-Type", fileType.ContentType())
+		e.Response.Header().Set("Accept-Ranges", "bytes")
+		e.Response.Header().Set("Connection", "Keep-Alive")
+		e.Response.Header().Set("Content-Type", fileType.ContentType())
 
 		var firstByteIdx int
-		if rangeHeader := c.Request().Header.Get("Range"); rangeHeader == "" {
+		if rangeHeader := e.Request.Header.Get("Range"); rangeHeader == "" {
 			firstByteIdx = 0
 		} else {
 			unit, ranges, found := strings.Cut(rangeHeader, "=")
@@ -152,24 +151,23 @@ func (m *Mix) Mix() echo.HandlerFunc {
 		defer entry.Mu.Unlock()
 
 		chunkSize := ChunkSize + entry.Writer.Buffered()
-		c.Response().Header().Set("Content-Length", strconv.Itoa(chunkSize))
-		c.Response().Header().Set("Content-Range", fmt.Sprintf(
+		e.Response.Header().Set("Content-Length", strconv.Itoa(chunkSize))
+		e.Response.Header().Set("Content-Range", fmt.Sprintf(
 			"bytes %d-%d/%d",
 			firstByteIdx,
 			firstByteIdx+chunkSize-1,
 			TotalSize,
 		))
-		entry.Writer.SetWriter(c.Response())
+		entry.Writer.SetWriter(e.Response)
 		defer entry.Writer.SetWriter(nil)
 		entry.Writer.Limit = chunkSize
 
-		c.Response().WriteHeader(http.StatusPartialContent)
-		defer func() {
-			entry.Transferred += uint64(c.Response().Size) //nolint:gosec
-		}()
+		e.Response.WriteHeader(http.StatusPartialContent)
 
 		// Mux streams to encoder
-		if err = encode.Encode(c.Request().Context(), entry); err != nil {
+		n, err := encode.Encode(e.Request.Context(), entry)
+		entry.Transferred += uint64(n) //nolint:gosec
+		if err != nil {
 			switch {
 			case errors.Is(err, io.ErrShortWrite):
 			case errors.Is(err, syscall.EPIPE):
@@ -183,9 +181,9 @@ func (m *Mix) Mix() echo.HandlerFunc {
 	}
 }
 
-func (m *Mix) Stop() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		uuid := c.PathParam("uuid")
+func (m *Mix) Stop() func(*core.RequestEvent) error {
+	return func(e *core.RequestEvent) error {
+		uuid := e.Request.PathValue("uuid")
 		entry, found := m.cache.Get(uuid)
 		if !found {
 			return apis.NewNotFoundError("no active stream for uuid", nil)
@@ -196,7 +194,7 @@ func (m *Mix) Stop() echo.HandlerFunc {
 			return apis.NewApiError(http.StatusInternalServerError, "failed to close cache entry", nil)
 		}
 
-		c.Response().WriteHeader(http.StatusNoContent)
+		e.Response.WriteHeader(http.StatusNoContent)
 		return nil
 	}
 }

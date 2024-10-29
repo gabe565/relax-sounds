@@ -12,7 +12,6 @@ import (
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/forms"
-	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/filesystem"
 	ffmpeg "github.com/u2takey/ffmpeg-go"
 )
@@ -27,7 +26,7 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 	}
 
 	return func(e *core.ModelEvent) error {
-		record := e.Model.(*models.Record)
+		record := e.Model.(*core.Record)
 
 		files := record.GetStringSlice("file")
 		if len(files) == 0 || len(files) > 1 {
@@ -68,24 +67,25 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 			return err
 		}
 
-		form := forms.NewRecordUpsert(app, record)
 		file, err := filesystem.NewFileFromBytes(dst.Bytes(), dstPath)
-		file.Name = dstPath
 		if err != nil {
 			return err
 		}
-		if err := form.AddFiles("file", file); err != nil {
+		file.Name = dstPath
+		record.Set("file", file)
+
+		if err := app.Save(record); err != nil {
 			return err
 		}
 
-		return form.Submit()
+		return e.Next()
 	}
 }
 
 func ConvertAll(app *pocketbase.PocketBase) error {
 	start := time.Now()
 
-	records, err := app.Dao().FindRecordsByExpr("sounds")
+	records, err := app.FindAllRecords("sounds")
 	if err != nil {
 		return err
 	}

@@ -10,7 +10,7 @@ import (
 	"gabe565.com/relax-sounds/internal/stream"
 	"github.com/dustin/go-humanize"
 	"github.com/gopxl/beep/v2"
-	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/pocketbase/core"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -47,12 +47,12 @@ type Entry struct {
 	Accessed    time.Time
 }
 
-func NewEntry(c echo.Context, preset, uuid string) *Entry {
+func NewEntry(e *core.RequestEvent, preset, uuid string) *Entry {
 	entry := &Entry{
 		Log: slog.With(
-			"userIp", c.RealIP(),
-			"userAgent", c.Request().UserAgent(),
-			"url", c.Request().URL.String(),
+			"userIp", e.RealIP(),
+			"userAgent", e.Request.UserAgent(),
+			"url", e.Request.URL.String(),
 			"id", uuid,
 		),
 		Preset:  preset,

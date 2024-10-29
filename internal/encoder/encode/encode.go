@@ -16,18 +16,19 @@ var (
 // Encode writes a duration of the audio stream in PCM format.
 //
 // Format precision must be 1 or 2 bytes.
-func Encode(ctx context.Context, entry *streamcache.Entry) error {
+func Encode(ctx context.Context, entry *streamcache.Entry) (int, error) {
 	if entry.Format.NumChannels <= 0 {
-		return fmt.Errorf("%w: %d", ErrInvalidChannels, entry.Format.NumChannels)
+		return 0, fmt.Errorf("%w: %d", ErrInvalidChannels, entry.Format.NumChannels)
 	}
 
 	samples := make([][2]float64, 512)
 	buffer := make([]byte, len(samples)*entry.Format.Width())
+	var written int
 
 	for {
 		n, ok := entry.Mix.Stream(samples)
 		if !ok {
-			return nil
+			return 0, nil
 		}
 
 		buf := buffer
@@ -41,19 +42,21 @@ func Encode(ctx context.Context, entry *streamcache.Entry) error {
 				buf = buf[entry.Format.EncodeSigned(buf, sample):]
 			}
 		default:
-			return fmt.Errorf("%w: %d", ErrUnsupportedPrecision, entry.Format.Precision)
+			return written, fmt.Errorf("%w: %d", ErrUnsupportedPrecision, entry.Format.Precision)
 		}
 
 		if ctx.Err() != nil {
-			return ctx.Err()
+			return written, ctx.Err()
 		}
 
-		if _, err := entry.Encoder.Write(buffer[:n*entry.Format.Width()]); err != nil {
-			return err
+		n, err := entry.Encoder.Write(buffer[:n*entry.Format.Width()])
+		written += n
+		if err != nil {
+			return written, err
 		}
 
 		if entry.Writer.Err != nil {
-			return entry.Writer.Err
+			return written, entry.Writer.Err
 		}
 	}
 }

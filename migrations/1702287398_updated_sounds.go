@@ -3,23 +3,19 @@ package migrations
 import (
 	"encoding/json"
 
-	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase/daos"
+	"github.com/pocketbase/pocketbase/core"
 	m "github.com/pocketbase/pocketbase/migrations"
-	"github.com/pocketbase/pocketbase/models/schema"
 )
 
 func init() {
-	m.Register(func(db dbx.Builder) error {
-		dao := daos.New(db)
-
-		collection, err := dao.FindCollectionByNameOrId("toxjtrsrx7pgzug")
+	m.Register(func(app core.App) error {
+		collection, err := app.FindCollectionByNameOrId("toxjtrsrx7pgzug")
 		if err != nil {
 			return err
 		}
 
 		// update
-		edit_file := &schema.SchemaField{}
+		edit_file := &core.FileField{}
 		json.Unmarshal([]byte(`{
 			"system": false,
 			"id": "otvjmy0h",
@@ -39,19 +35,17 @@ func init() {
 				"protected": false
 			}
 		}`), edit_file)
-		collection.Schema.AddField(edit_file)
+		collection.Fields.Add(edit_file)
 
-		return dao.SaveCollection(collection)
-	}, func(db dbx.Builder) error {
-		dao := daos.New(db)
-
-		collection, err := dao.FindCollectionByNameOrId("toxjtrsrx7pgzug")
+		return app.Save(collection)
+	}, func(app core.App) error {
+		collection, err := app.FindCollectionByNameOrId("toxjtrsrx7pgzug")
 		if err != nil {
 			return err
 		}
 
 		// update
-		edit_file := &schema.SchemaField{}
+		edit_file := &core.FileField{}
 		json.Unmarshal([]byte(`{
 			"system": false,
 			"id": "otvjmy0h",
@@ -70,8 +64,8 @@ func init() {
 				"protected": false
 			}
 		}`), edit_file)
-		collection.Schema.AddField(edit_file)
+		collection.Fields.Add(edit_file)
 
-		return dao.SaveCollection(collection)
+		return app.Save(collection)
 	})
 }

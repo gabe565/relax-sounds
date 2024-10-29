@@ -40,17 +40,17 @@ func main() {
 		Automigrate: automigrateEnabled(),
 	})
 
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/*", handlers.StaticHandler(app))
-		handlers.NewMix(app).RegisterRoutes(e.Router)
-		return nil
+	app.OnServe().BindFunc(func(e *core.ServeEvent) error {
+		e.Router.GET("/{path...}", handlers.StaticHandler(app))
+		handlers.NewMix(app).RegisterRoutes(e)
+		return e.Next()
 	})
 
 	convertHook := hooks.Convert(app)
-	app.OnModelAfterCreate("sounds").Add(convertHook)
-	app.OnModelAfterUpdate("sounds").Add(convertHook)
+	app.OnModelAfterCreateSuccess("sounds").BindFunc(convertHook)
+	app.OnModelAfterUpdateSuccess("sounds").BindFunc(convertHook)
 
-	app.OnBeforeServe().Add(func(_ *core.ServeEvent) error {
+	app.OnServe().BindFunc(func(e *core.ServeEvent) error {
 		go func() {
 			if migrations.ConvertAfterStart {
 				if err := hooks.ConvertAll(app); err != nil {
@@ -58,10 +58,7 @@ func main() {
 				}
 			}
 		}()
-		return nil
-	})
 
-	app.OnBeforeServe().Add(func(_ *core.ServeEvent) error {
 		metrics.Serve(app.RootCmd)
 		debug.Serve(app.RootCmd)
 
@@ -70,7 +67,7 @@ func main() {
 			slog.Default().Handler(),
 		)))
 
-		return nil
+		return e.Next()
 	})
 
 	if err := app.Start(); err != nil {

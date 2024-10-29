@@ -8,14 +8,13 @@ import (
 	"sync"
 
 	"gabe565.com/relax-sounds/internal/preset"
-	"github.com/pocketbase/pocketbase/daos"
-	"github.com/pocketbase/pocketbase/models"
+	"github.com/pocketbase/pocketbase/core"
 	"golang.org/x/sync/errgroup"
 )
 
 var ErrInvalidRecordID = errors.New("invalid record ID")
 
-func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (Streams, error) {
+func New(dataDir fs.FS, app core.App, p preset.Preset) (Streams, error) {
 	s := make(Streams, 0, len(p.Tracks))
 
 	var mu sync.Mutex
@@ -26,15 +25,15 @@ func New(dataDir fs.FS, dao *daos.Dao, p preset.Preset) (Streams, error) {
 	for _, entry := range p.Tracks {
 		ids = append(ids, entry.ID)
 	}
-	records, err := dao.FindRecordsByIds("sounds", ids)
+	records, err := app.FindRecordsByIds("sounds", ids)
 	if err != nil {
 		return s, err
 	}
 
 	for _, entry := range p.Tracks {
-		var record *models.Record
+		var record *core.Record
 		for _, v := range records {
-			if v.GetId() == entry.ID {
+			if v.Id == entry.ID {
 				record = v
 				break
 			}
