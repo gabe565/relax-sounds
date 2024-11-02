@@ -59,8 +59,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		}
 
 		// File type parameter
-		var fileType filetype.FileType
-		err = fileType.UnmarshalText([]byte(fileTypeStr))
+		fileType, err := filetype.FileTypeString(fileTypeStr)
 		if err != nil {
 			if errors.Is(err, filetype.ErrInvalidFileType) {
 				return apis.NewNotFoundError("", nil)
