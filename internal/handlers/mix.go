@@ -61,10 +61,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		// File type parameter
 		fileType, err := filetype.FileTypeString(fileTypeStr)
 		if err != nil {
-			if errors.Is(err, filetype.ErrInvalidFileType) {
-				return apis.NewNotFoundError("", nil)
-			}
-			panic(err)
+			return apis.NewNotFoundError("", nil)
 		}
 
 		uuid := e.Request.PathValue("uuid")
