@@ -15,14 +15,14 @@ import (
 var ErrInvalidRecordID = errors.New("invalid record ID")
 
 func New(dataDir fs.FS, app core.App, p preset.Preset) (Streams, error) {
-	s := make(Streams, 0, len(p.Tracks))
+	s := make(Streams, 0, len(p))
 
 	var mu sync.Mutex
 	group := errgroup.Group{}
 	group.SetLimit(5)
 
-	ids := make([]string, 0, len(p.Tracks))
-	for _, entry := range p.Tracks {
+	ids := make([]string, 0, len(p))
+	for _, entry := range p {
 		ids = append(ids, entry.ID)
 	}
 	records, err := app.FindRecordsByIds("sounds", ids)
@@ -30,7 +30,7 @@ func New(dataDir fs.FS, app core.App, p preset.Preset) (Streams, error) {
 		return s, err
 	}
 
-	for _, entry := range p.Tracks {
+	for _, entry := range p {
 		var record *core.Record
 		for _, v := range records {
 			if v.Id == entry.ID {

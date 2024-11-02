@@ -8,44 +8,38 @@ type Track struct {
 }
 
 func (t Track) GetVolume() float64 {
-	if t.Volume == nil {
+	switch {
+	case t.Volume == nil:
 		return 1
+	default:
+		return *t.Volume
 	}
-	return *t.Volume
 }
 
 func (t Track) GetRate() float64 {
-	if t.Rate == nil {
+	switch {
+	case t.Rate == nil:
 		return 1
-	}
-	rate := *t.Rate
-	if rate < 0.5 {
+	case *t.Rate < 0.5:
 		return 0.5
-	}
-	if rate > 1.5 {
+	case *t.Rate > 1.5:
 		return 1.5
+	default:
+		return *t.Rate
 	}
-	return rate
 }
 
 func (t Track) GetPan() float64 {
-	if t.Pan == nil {
+	switch {
+	case t.Pan == nil:
 		return 0
-	}
-	pan := *t.Pan
-	if pan < -1 {
+	case *t.Pan < -1:
 		return -1
-	}
-	if pan > 1 {
+	case *t.Pan > 1:
 		return 1
+	default:
+		return *t.Pan
 	}
-	return pan
 }
 
-type Preset struct {
-	Tracks []Track `json:"tracks"`
-}
-
-func (preset *Preset) Add(tracks ...Track) {
-	preset.Tracks = append(preset.Tracks, tracks...)
-}
+type Preset []Track

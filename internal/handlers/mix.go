@@ -75,7 +75,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			if err != nil {
 				return apis.NewBadRequestError("", nil)
 			}
-			if len(presetDecoded.Tracks) == 0 {
+			if len(presetDecoded) == 0 {
 				return apis.NewNotFoundError("", nil)
 			}
 
