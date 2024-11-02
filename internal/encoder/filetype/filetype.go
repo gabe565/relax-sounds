@@ -15,20 +15,20 @@ import (
 type FileType uint8
 
 const (
-	Mp3 FileType = iota
+	MP3 FileType = iota
 )
 
 var ErrInvalidFileType = errors.New("invalid file type")
 
 func (i FileType) ContentType() string {
-	if i == Mp3 {
+	if i == MP3 {
 		return "audio/mp3"
 	}
 	return ""
 }
 
 func (i FileType) NewEncoder(w io.Writer, format beep.Format) (encoder.Encoder, error) {
-	if i == Mp3 {
+	if i == MP3 {
 		return mp3.NewEncoder(w, format)
 	}
 	return nil, fmt.Errorf("%w: %s", ErrInvalidFileType, i)

@@ -24,14 +24,14 @@ func (i FileType) String() string {
 // Re-run the stringer command to generate them again.
 func _FileTypeNoOp() {
 	var x [1]struct{}
-	_ = x[Mp3-(0)]
+	_ = x[MP3-(0)]
 }
 
-var _FileTypeValues = []FileType{Mp3}
+var _FileTypeValues = []FileType{MP3}
 
 var _FileTypeNameToValueMap = map[string]FileType{
-	_FileTypeName[0:3]:      Mp3,
-	_FileTypeLowerName[0:3]: Mp3,
+	_FileTypeName[0:3]:      MP3,
+	_FileTypeLowerName[0:3]: MP3,
 }
 
 var _FileTypeNames = []string{
