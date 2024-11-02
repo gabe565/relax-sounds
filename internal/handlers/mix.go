@@ -66,15 +66,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 
 		uuid := e.Request.PathValue("uuid")
 		entry, found := m.cache.Get(uuid)
-		if found && entry.Preset != presetEncoded {
-			// Same window is changing streams
-			// Destroy old stream then recreate
-			if err := entry.Close(); err != nil {
-				entry.Log.Error("Failed to close stream", "error", err)
-			}
-			found = false
-		}
-		if !found {
+		if !found || entry.Preset != presetEncoded {
 			// Entry was not found
 			entry = streamcache.NewEntry(e, presetEncoded, uuid)
 			entry.Log.Info("Create stream")
@@ -113,7 +105,9 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 				panic(err)
 			}
 
-			m.cache.Add(uuid, entry)
+			if err := m.cache.Set(uuid, entry); err != nil {
+				entry.Log.Error("Failed to close stream", "error", err)
+			}
 		}
 
 		e.Response.Header().Set("Accept-Ranges", "bytes")
@@ -178,13 +172,11 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 func (m *Mix) Stop() func(*core.RequestEvent) error {
 	return func(e *core.RequestEvent) error {
 		uuid := e.Request.PathValue("uuid")
-		entry, found := m.cache.Get(uuid)
-		if !found {
+		if !m.cache.Has(uuid) {
 			return apis.NewNotFoundError("no active stream for uuid", nil)
 		}
 
-		m.cache.Delete(uuid)
-		if err := entry.Close(); err != nil {
+		if err := m.cache.Delete(uuid); err != nil {
 			return apis.NewApiError(http.StatusInternalServerError, "failed to close cache entry", nil)
 		}
 

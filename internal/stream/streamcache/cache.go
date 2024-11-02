@@ -6,40 +6,61 @@ import (
 )
 
 type Cache struct {
-	Entries map[string]*Entry
+	entries map[string]*Entry
 	close   chan<- struct{}
 	mu      sync.Mutex
 }
 
 func New() *Cache {
 	cache := &Cache{
-		Entries: make(map[string]*Entry),
+		entries: make(map[string]*Entry),
 	}
 	cache.close = cache.beginCleanupCron()
 
 	return cache
 }
 
-func (a *Cache) Add(id string, entry *Entry) {
+func (a *Cache) Set(id string, entry *Entry) error {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	a.Entries[id] = entry
+	var err error
+	if prev, ok := a.entries[id]; ok {
+		// Same window is changing streams
+		// Destroy old stream then recreate
+		err = prev.Close()
+	}
+	a.entries[id] = entry
+	return err
 }
 
 func (a *Cache) Get(id string) (*Entry, bool) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	if entry, found := a.Entries[id]; found {
+	entry, found := a.entries[id]
+	if found {
 		entry.Accessed = time.Now()
-		return entry, true
 	}
-	return nil, false
+	return entry, found
 }
 
-func (a *Cache) Delete(id string) {
+func (a *Cache) Delete(id string) error {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	delete(a.Entries, id)
+	var err error
+	if prev, ok := a.entries[id]; ok {
+		// Same window is changing streams
+		// Destroy old stream then recreate
+		err = prev.Close()
+	}
+	delete(a.entries, id)
+	return err
+}
+
+func (a *Cache) Has(id string) bool {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	_, ok := a.entries[id]
+	return ok
 }
 
 func (a *Cache) Close() {
@@ -69,10 +90,10 @@ func (a *Cache) cleanup(since time.Duration) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 
-	for id, entry := range a.Entries {
+	for id, entry := range a.entries {
 		if entry.Mu.TryLock() {
 			if time.Since(entry.Accessed) >= since {
-				delete(a.Entries, id)
+				delete(a.entries, id)
 				entry.Mu.Unlock()
 				if err := entry.Close(); err != nil {
 					entry.Log.Error("Failed to cleanup stream", "error", err)
