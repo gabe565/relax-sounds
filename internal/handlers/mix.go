@@ -124,9 +124,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		e.Response.Header().Set("Content-Type", fileType.ContentType())
 
 		var firstByteIdx int
-		if rangeHeader := e.Request.Header.Get("Range"); rangeHeader == "" {
-			firstByteIdx = 0
-		} else {
+		if rangeHeader := e.Request.Header.Get("Range"); rangeHeader != "" {
 			unit, ranges, found := strings.Cut(rangeHeader, "=")
 			// Error if no `=`, invalid unit, or multipart range
 			if !found || unit != "bytes" || strings.ContainsRune(ranges, ',') {
