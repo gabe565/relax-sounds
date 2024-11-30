@@ -62,7 +62,7 @@ watch(show, (val) => emit("update:modelValue", val));
 
 const restore = async () => {
   try {
-    const presets = JSON.parse(await file.value[0].text());
+    const presets = JSON.parse(await file.value.text());
     try {
       await Promise.all(
         presets.map(async (preset) => {
