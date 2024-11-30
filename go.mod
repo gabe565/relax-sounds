@@ -7,7 +7,7 @@ replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-2024090508
 require (
 	github.com/dmarkham/enumer v1.5.10
 	github.com/dustin/go-humanize v1.0.1
-	github.com/gopxl/beep/v2 v2.0.4-0.20240905155001-01d1fa4a539e
+	github.com/gopxl/beep/v2 v2.1.0
 	github.com/lmittmann/tint v1.0.5
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.23.3
