@@ -12,7 +12,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.23.3
 	github.com/prometheus/client_golang v1.20.2
-	github.com/samber/slog-multi v1.2.1
+	github.com/samber/slog-multi v1.2.4
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
 	github.com/u2takey/ffmpeg-go v0.5.0
@@ -80,7 +80,7 @@ require (
 	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	github.com/samber/lo v1.38.1 // indirect
+	github.com/samber/lo v1.47.0 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/u2takey/go-utils v0.3.1 // indirect
