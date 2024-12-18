@@ -5,49 +5,19 @@ import (
 	"log/slog"
 	"net/http"
 	_ "net/http/pprof"
-	"os"
-	"strconv"
 	"time"
 
-	"github.com/spf13/cobra"
+	"gabe565.com/relax-sounds/internal/config"
 )
 
-func Flags(cmd *cobra.Command) {
-	enabledDefault := false
-	if env := os.Getenv("DEBUG_ENABLED"); env != "" {
-		var err error
-		enabledDefault, err = strconv.ParseBool(env)
-		if err != nil {
-			slog.Warn("Failed to parse DEBUG_ENABLED env")
-		}
-	}
-	cmd.PersistentFlags().Bool("debug-enabled", enabledDefault, "Enables debug server")
-
-	addressDefault := ":6060"
-	if env := os.Getenv("DEBUG_ADDRESS"); env != "" {
-		addressDefault = env
-	}
-
-	cmd.PersistentFlags().String("debug-address", addressDefault, "Debug server listen address")
-}
-
-func Serve(cmd *cobra.Command) {
-	enabled, err := cmd.PersistentFlags().GetBool("debug-enabled")
-	if err != nil {
-		panic(err)
-	}
-	if !enabled {
+func Serve(conf *config.Config) {
+	if !conf.DebugEnabled {
 		return
 	}
 
-	addr, err := cmd.PersistentFlags().GetString("debug-address")
-	if err != nil {
-		panic(err)
-	}
-
-	slog.Info("Starting debug server", "address", addr)
+	slog.Info("Starting debug server", "address", conf.DebugAddress)
 	server := &http.Server{
-		Addr:              addr,
+		Addr:              conf.DebugAddress,
 		ReadHeaderTimeout: 3 * time.Second,
 	}
 	go func() {

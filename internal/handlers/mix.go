@@ -6,31 +6,30 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
 
+	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/encoder/encode"
 	"gabe565.com/relax-sounds/internal/encoder/filetype"
 	"gabe565.com/relax-sounds/internal/preset"
 	"gabe565.com/relax-sounds/internal/stream"
 	"gabe565.com/relax-sounds/internal/stream/streamcache"
 	"github.com/gopxl/beep/v2"
-	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 )
 
-func NewMix(app *pocketbase.PocketBase) *Mix {
+func NewMix(conf *config.Config) *Mix {
 	return &Mix{
-		app:   app,
-		cache: streamcache.New(),
+		conf:  conf,
+		cache: streamcache.New(conf),
 	}
 }
 
 type Mix struct {
-	app   *pocketbase.PocketBase
+	conf  *config.Config
 	cache *streamcache.Cache
 }
 
@@ -40,8 +39,6 @@ func (m *Mix) RegisterRoutes(e *core.ServeEvent) {
 }
 
 func (m *Mix) Mix() func(*core.RequestEvent) error {
-	dataFs := os.DirFS(filepath.Join(m.app.DataDir(), "storage"))
-
 	const (
 		TotalSize = 1500 * 1024 * 1024
 		ChunkSize = 2 * 1024 * 1024
@@ -80,7 +77,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			}
 
 			// Set up stream
-			if entry.Streams, err = stream.New(dataFs, m.app, presetDecoded); err != nil {
+			if entry.Streams, err = stream.New(m.conf, presetDecoded); err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					// Invalid file ID returns 404
 					return apis.NewNotFoundError("", nil)
@@ -100,7 +97,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			}
 
 			// Get current filetype encoder
-			entry.Encoder, err = fileType.NewEncoder(entry.Writer, entry.Format)
+			entry.Encoder, err = fileType.NewEncoder(m.conf, entry.Writer, entry.Format)
 			if err != nil {
 				panic(err)
 			}

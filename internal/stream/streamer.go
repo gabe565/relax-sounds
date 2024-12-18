@@ -3,6 +3,7 @@ package stream
 import (
 	"io/fs"
 
+	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/preset"
 	"github.com/gopxl/beep/v2"
 	"github.com/gopxl/beep/v2/effects"
@@ -20,7 +21,7 @@ func (s Streamer) Close() error {
 	return nil
 }
 
-func NewStreamer(rawFile fs.File, entry preset.Track) (Streamer, error) {
+func NewStreamer(conf *config.Config, rawFile fs.File, entry preset.Track) (Streamer, error) {
 	var streamer Streamer
 
 	closer, format, err := Decode(rawFile)
@@ -48,7 +49,7 @@ func NewStreamer(rawFile fs.File, entry preset.Track) (Streamer, error) {
 	}
 
 	if rate := entry.GetRate(); rate != 1 {
-		beepStreamer = beep.ResampleRatio(resampleQuality, rate, beepStreamer)
+		beepStreamer = beep.ResampleRatio(conf.ResampleQuality, rate, beepStreamer)
 	}
 
 	if pan := entry.GetPan(); pan != 0 {

@@ -3,16 +3,20 @@ package streamcache
 import (
 	"sync"
 	"time"
+
+	"gabe565.com/relax-sounds/internal/config"
 )
 
 type Cache struct {
+	conf    *config.Config
 	entries map[string]*Entry
 	close   chan<- struct{}
 	mu      sync.Mutex
 }
 
-func New() *Cache {
+func New(conf *config.Config) *Cache {
 	cache := &Cache{
+		conf:    conf,
 		entries: make(map[string]*Entry),
 	}
 	cache.close = cache.beginCleanupCron()
@@ -71,7 +75,7 @@ func (a *Cache) Close() {
 func (a *Cache) beginCleanupCron() chan<- struct{} {
 	closer := make(chan struct{})
 	go func() {
-		ticker := time.NewTicker(scanInterval)
+		ticker := time.NewTicker(a.conf.CacheScanInterval)
 
 		for {
 			select {
@@ -79,7 +83,7 @@ func (a *Cache) beginCleanupCron() chan<- struct{} {
 				ticker.Stop()
 				return
 			case <-ticker.C:
-				a.cleanup(cleanAfter)
+				a.cleanup(a.conf.CacheCleanAfter)
 			}
 		}
 	}()
