@@ -61,5 +61,6 @@ func main() {
 
 	if err := app.Start(); err != nil {
 		slog.Error("Failed to start app", "error", err)
+		os.Exit(1)
 	}
 }
