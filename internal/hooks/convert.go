@@ -2,12 +2,12 @@ package hooks
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"log/slog"
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
@@ -29,7 +29,7 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 		record := e.Model.(*core.Record)
 
 		files := record.GetStringSlice("file")
-		if len(files) == 0 || len(files) > 1 {
+		if len(files) != 1 {
 			return nil
 		}
 
@@ -82,23 +82,24 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 	}
 }
 
-func ConvertAll(app *pocketbase.PocketBase) error {
-	start := time.Now()
-
+func ConvertAll(app core.App) error {
 	records, err := app.FindAllRecords("sounds")
 	if err != nil {
 		return err
 	}
 
-	for _, record := range records {
-		form := forms.NewRecordUpsert(app, record)
-		if err := form.Submit(); err != nil {
-			return err
-		}
+	if len(records) == 0 {
+		return nil
 	}
 
-	slog.Info("Finished creating secondary audio files",
-		"took", time.Since(start).Round(100*time.Millisecond).String(),
-	)
-	return nil
+	var errs []error
+	for _, record := range records {
+		if len(record.GetStringSlice("file")) == 1 {
+			form := forms.NewRecordUpsert(app, record)
+			if err := form.Submit(); err != nil {
+				errs = append(errs, err)
+			}
+		}
+	}
+	return errors.Join(errs...)
 }

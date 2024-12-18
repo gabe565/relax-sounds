@@ -7,8 +7,6 @@ import (
 	m "github.com/pocketbase/pocketbase/migrations"
 )
 
-var ConvertAfterStart bool
-
 func init() {
 	m.Register(func(app core.App) error {
 		collection, err := app.FindCollectionByNameOrId("toxjtrsrx7pgzug")
@@ -41,7 +39,6 @@ func init() {
 		}
 		collection.Fields.Add(edit_file)
 
-		ConvertAfterStart = true
 		return app.Save(collection)
 	}, func(app core.App) error {
 		collection, err := app.FindCollectionByNameOrId("toxjtrsrx7pgzug")

@@ -10,7 +10,7 @@ import (
 	"gabe565.com/relax-sounds/internal/handlers"
 	"gabe565.com/relax-sounds/internal/hooks"
 	"gabe565.com/relax-sounds/internal/metrics"
-	"gabe565.com/relax-sounds/migrations"
+	_ "gabe565.com/relax-sounds/migrations"
 	"github.com/lmittmann/tint"
 	"github.com/mattn/go-isatty"
 	"github.com/pocketbase/pocketbase"
@@ -34,14 +34,6 @@ func main() {
 	})
 
 	app.OnServe().BindFunc(func(e *core.ServeEvent) error {
-		go func() {
-			if migrations.ConvertAfterStart {
-				if err := hooks.ConvertAll(app); err != nil {
-					slog.Error("Failed to convert sound", "error", err)
-				}
-			}
-		}()
-
 		e.Router.GET("/{path...}", handlers.StaticHandler(conf))
 		handlers.NewMix(conf).RegisterRoutes(e)
 		metrics.Serve(conf)
@@ -51,6 +43,12 @@ func main() {
 			app.Logger().Handler(),
 			slog.Default().Handler(),
 		)))
+
+		go func() {
+			if err := hooks.ConvertAll(app); err != nil {
+				slog.Error("Failed to convert sounds", "error", err)
+			}
+		}()
 
 		return e.Next()
 	})
