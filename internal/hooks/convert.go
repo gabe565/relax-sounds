@@ -72,7 +72,7 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 			return err
 		}
 		file.Name = dstPath
-		record.Set("file", file)
+		record.Set("file+", file)
 
 		if err := app.Save(record); err != nil {
 			return err
