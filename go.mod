@@ -17,7 +17,7 @@ require (
 	github.com/u2takey/ffmpeg-go v0.5.0
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
 	golang.org/x/sync v0.9.0
-	k8s.io/utils v0.0.0-20241104163129-6fe5fd82f078
+	k8s.io/utils v0.0.0-20241210054802-24370beab758
 )
 
 require (
