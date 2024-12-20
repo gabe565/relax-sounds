@@ -36,7 +36,7 @@
     "vue": "3.5.0",
     "vue-router": "4.5.0",
     "vue-toastification": "2.0.0-rc.5",
-    "vuetify": "3.7.1"
+    "vuetify": "3.7.6"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "1.10.4",
