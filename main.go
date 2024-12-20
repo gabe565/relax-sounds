@@ -14,6 +14,7 @@ import (
 	"github.com/lmittmann/tint"
 	"github.com/mattn/go-isatty"
 	"github.com/pocketbase/pocketbase"
+	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 	slogmulti "github.com/samber/slog-multi"
@@ -34,6 +35,13 @@ func main() {
 	})
 
 	app.OnServe().BindFunc(func(e *core.ServeEvent) error {
+		e.Router.BindFunc(func(e *core.RequestEvent) error {
+			if e.Request.URL.Path == "/api/health" {
+				return apis.SkipSuccessActivityLog().Func(e)
+			}
+			return e.Next()
+		})
+
 		e.Router.GET("/{path...}", handlers.StaticHandler(conf))
 		handlers.NewMix(conf).RegisterRoutes(e)
 		metrics.Serve(conf)
