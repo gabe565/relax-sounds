@@ -13,7 +13,7 @@ require (
 	github.com/pocketbase/pocketbase v0.23.3
 	github.com/prometheus/client_golang v1.20.2
 	github.com/samber/slog-multi v1.2.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/u2takey/ffmpeg-go v0.5.0
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
 	golang.org/x/sync v0.9.0
