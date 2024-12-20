@@ -306,7 +306,6 @@ export const usePlayerStore = defineStore("player", () => {
           let waitMs = 100;
           while (sounds.value.length === 0) {
             console.warn(`Sounds not loaded. Waiting ${waitMs}ms.`);
-            // eslint-disable-next-line no-await-in-loop
             await wait(waitMs);
             waitMs *= 2;
           }

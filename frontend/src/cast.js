@@ -10,13 +10,11 @@ window.__onGCastApiAvailable = async (isAvailable) => {
     let waitMs = 100;
     while (!window.cast) {
       console.warn(`Cast is undefined. Retrying setup in ${waitMs}ms.`);
-      // eslint-disable-next-line no-await-in-loop
       await wait(waitMs);
       waitMs *= 2;
     }
 
     castEnabled.value = true;
-
     await usePlayerStore().initializeCastApi();
   }
 };

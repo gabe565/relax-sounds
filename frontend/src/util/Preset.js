@@ -59,7 +59,7 @@ export class Preset {
     try {
       raw = await decompress(val);
       this.shorthand = JSON.parse(raw);
-    } catch (err) {
+    } catch {
       this.shorthand = legacyFromShorthand(JSON.parse(base64.decode(val)));
     }
   }
