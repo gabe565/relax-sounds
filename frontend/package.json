@@ -22,7 +22,7 @@
     "fuse.js": "7.0.0",
     "howler": "2.2.4",
     "lodash-es": "4.17.21",
-    "nanoid": "5.0.7",
+    "nanoid": "5.0.9",
     "p-limit": "6.2.0",
     "pinia": "2.2.2",
     "pinia-plugin-persistedstate": "3.2.3",
