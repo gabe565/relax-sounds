@@ -24,7 +24,7 @@
     "lodash-es": "4.17.21",
     "nanoid": "5.0.9",
     "p-limit": "6.2.0",
-    "pinia": "2.2.2",
+    "pinia": "2.3.0",
     "pinia-plugin-persistedstate": "3.2.3",
     "pocketbase": "0.24.0",
     "register-service-worker": "1.7.2",
