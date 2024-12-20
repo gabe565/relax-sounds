@@ -234,8 +234,8 @@ github.com/pocketbase/dbx v1.11.0 h1:LpZezioMfT3K4tLrqA55wWFw1EtH1pM4tzSVa7kgszU
 github.com/pocketbase/dbx v1.11.0/go.mod h1:xXRCIAKTHMgUCyCKZm55pUOdvFziJjQfXaWKhu2vhMs=
 github.com/pocketbase/pocketbase v0.23.11 h1:Ng4uxZ3OKwcvRvxi/hfp5l/bpzhw/mCec+IzzZLoWpc=
 github.com/pocketbase/pocketbase v0.23.11/go.mod h1:K2hsAnzmR5djrV/17oCUqczKIkfkplZ6z1gNdo6iYXQ=
-github.com/prometheus/client_golang v1.20.2 h1:5ctymQzZlyOON1666svgwn3s6IKWgfbjsejTMiXIyjg=
-github.com/prometheus/client_golang v1.20.2/go.mod h1:PIEt8X02hGcP8JWbeHyeZ53Y/jReSnHgO035n//V5WE=
+github.com/prometheus/client_golang v1.20.5 h1:cxppBPuYhUnsO6yo/aoRol4L7q7UFfdm+bR9r+8l63Y=
+github.com/prometheus/client_golang v1.20.5/go.mod h1:PIEt8X02hGcP8JWbeHyeZ53Y/jReSnHgO035n//V5WE=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/prometheus/client_model v0.6.1 h1:ZKSh/rekM+n3CeS952MLRAdFwIKqeY8b62p8ais2e9E=
 github.com/prometheus/client_model v0.6.1/go.mod h1:OrxVMOVHjw3lKMa8+x6HeMGkHMQyHDk9E3jmP2AmGiY=

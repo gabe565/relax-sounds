@@ -11,7 +11,7 @@ require (
 	github.com/lmittmann/tint v1.0.6
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.23.11
-	github.com/prometheus/client_golang v1.20.2
+	github.com/prometheus/client_golang v1.20.5
 	github.com/samber/slog-multi v1.2.4
 	github.com/stretchr/testify v1.10.0
 	github.com/u2takey/ffmpeg-go v0.5.0
