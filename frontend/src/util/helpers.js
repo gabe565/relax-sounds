@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-promise-executor-return
 import base64 from "base64-url";
 
 export const wait = (timeout) => new Promise((resolve) => setTimeout(resolve, timeout));
