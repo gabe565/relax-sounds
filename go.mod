@@ -8,7 +8,7 @@ require (
 	github.com/dmarkham/enumer v1.5.10
 	github.com/dustin/go-humanize v1.0.1
 	github.com/gopxl/beep/v2 v2.1.0
-	github.com/lmittmann/tint v1.0.5
+	github.com/lmittmann/tint v1.0.6
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.23.3
 	github.com/prometheus/client_golang v1.20.2
