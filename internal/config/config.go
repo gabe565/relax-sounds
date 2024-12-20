@@ -10,6 +10,7 @@ type Config struct {
 	App    *pocketbase.PocketBase
 	Public string
 
+	MaxPresetLen    int
 	ResampleQuality int
 	LAMEQuality     float64
 
@@ -28,6 +29,7 @@ func New(app *pocketbase.PocketBase) *Config {
 		App:    app,
 		Public: "frontend/dist",
 
+		MaxPresetLen:    20,
 		ResampleQuality: 3,
 		LAMEQuality:     2,
 

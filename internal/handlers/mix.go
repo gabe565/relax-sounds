@@ -65,16 +65,18 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		entry, found := m.cache.Get(uuid)
 		if !found || entry.Preset != presetEncoded {
 			// Entry was not found
+			presetDecoded, err := preset.FromParam(presetEncoded)
+			switch {
+			case err != nil:
+				return apis.NewBadRequestError("", nil)
+			case len(presetDecoded) == 0:
+				return apis.NewNotFoundError("", nil)
+			case len(presetDecoded) > m.conf.MaxPresetLen:
+				return apis.NewBadRequestError("Maximum preset length is "+strconv.Itoa(m.conf.MaxPresetLen)+" sounds.", nil)
+			}
+
 			entry = streamcache.NewEntry(e, presetEncoded, uuid)
 			entry.Log.Info("Create stream")
-
-			presetDecoded, err := preset.FromParam(presetEncoded)
-			if err != nil {
-				return apis.NewBadRequestError("", nil)
-			}
-			if len(presetDecoded) == 0 {
-				return apis.NewNotFoundError("", nil)
-			}
 
 			// Set up stream
 			if entry.Streams, err = stream.New(m.conf, presetDecoded); err != nil {

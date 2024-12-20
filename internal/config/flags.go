@@ -3,6 +3,7 @@ package config
 const (
 	FlagPublic = "public"
 
+	FlagMaxPresetLen    = "max-preset-length"
 	FlagResampleQuality = "resample-quality"
 	FlagLAMEQuality     = "lame-quality"
 
@@ -21,6 +22,7 @@ func (c *Config) RegisterFlags() *Config {
 
 	fs.StringVar(&c.Public, FlagPublic, c.Public, "Public directory")
 
+	fs.IntVar(&c.MaxPresetLen, FlagMaxPresetLen, c.MaxPresetLen, "Maximum number of sounds that a preset can contain")
 	fs.IntVar(&c.ResampleQuality, FlagResampleQuality, c.ResampleQuality, "Resample quality. Recommend values between 1-4.")
 	fs.Float64Var(&c.LAMEQuality, FlagLAMEQuality, c.LAMEQuality, "LAME VBR quality")
 
