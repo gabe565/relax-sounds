@@ -22,7 +22,7 @@ RUN --mount=type=cache,target=/root/.cache \
     go build -ldflags="-w -s" -trimpath -tags disable_automigrate
 
 
-FROM --platform=$BUILDPLATFORM node:20-alpine AS node-builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS node-builder
 WORKDIR /app
 
 COPY frontend/package.json frontend/package-lock.json frontend/.npmrc ./
