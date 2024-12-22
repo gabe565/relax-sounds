@@ -27,11 +27,11 @@
 </template>
 
 <script setup>
-import DebugIcon from "~icons/material-symbols/bug-report-rounded";
-import { Preset } from "../../../util/Preset";
+import { computed } from "vue";
 import { VBtn, VListItem } from "vuetify/components";
 import { usePlayerStore } from "../../../plugins/store/player";
-import { computed } from "vue";
+import { Preset } from "../../../util/Preset";
+import DebugIcon from "~icons/material-symbols/bug-report-rounded";
 
 const props = defineProps({
   listItem: {

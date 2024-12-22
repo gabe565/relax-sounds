@@ -21,11 +21,11 @@
 </template>
 
 <script setup>
-import AutoIcon from "~icons/material-symbols/brightness-auto";
+import { shallowRef, watch } from "vue";
+import { Theme, usePreferencesStore } from "../../plugins/store/preferences";
 import DarkIcon from "~icons/material-symbols/brightness-4";
 import LightIcon from "~icons/material-symbols/brightness-7";
-import { Theme, usePreferencesStore } from "../../plugins/store/preferences";
-import { shallowRef, watch } from "vue";
+import AutoIcon from "~icons/material-symbols/brightness-auto";
 
 const props = defineProps({
   listItem: {

@@ -1,15 +1,15 @@
+import * as _ from "lodash-es";
+import pLimit from "p-limit";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import * as _ from "lodash-es";
-import { SoundState } from "../../util/Sound";
-import { getSounds } from "../../data/sounds";
-import { formatError, getCastSession } from "../../util/googleCast";
-import { Preset } from "../../util/Preset";
-import { wait } from "../../util/helpers";
 import { TYPE, useToast } from "vue-toastification";
-import { Filetype } from "../../util/filetype";
-import pLimit from "p-limit";
 import { ApiPath } from "../../config/api";
+import { getSounds } from "../../data/sounds";
+import { Preset } from "../../util/Preset";
+import { SoundState } from "../../util/Sound";
+import { Filetype } from "../../util/filetype";
+import { formatError, getCastSession } from "../../util/googleCast";
+import { wait } from "../../util/helpers";
 
 const toast = useToast();
 

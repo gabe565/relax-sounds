@@ -38,16 +38,16 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import PreloadAllIcon from "~icons/material-symbols/cloud-sync-rounded";
-import PageLayout from "../layouts/PageLayout.vue";
-import SoundCard from "../components/Sounds/SoundCard.vue";
-import FilterSection from "../components/Sounds/FilterSection.vue";
-import { usePlayerStore } from "../plugins/store/player";
-import { useFiltersStore } from "../plugins/store/filters";
 import { useToast } from "vue-toastification";
-import SavePreset from "../components/NavButtons/SavePreset.vue";
-import CastIcon from "../components/NavButtons/CastIcon.vue";
 import { useDisplay } from "vuetify";
+import CastIcon from "../components/NavButtons/CastIcon.vue";
+import SavePreset from "../components/NavButtons/SavePreset.vue";
+import FilterSection from "../components/Sounds/FilterSection.vue";
+import SoundCard from "../components/Sounds/SoundCard.vue";
+import PageLayout from "../layouts/PageLayout.vue";
+import { useFiltersStore } from "../plugins/store/filters";
+import { usePlayerStore } from "../plugins/store/player";
+import PreloadAllIcon from "~icons/material-symbols/cloud-sync-rounded";
 
 const { smAndDown: isMobile } = useDisplay();
 const loading = ref(true);

@@ -19,9 +19,9 @@
 </template>
 
 <script setup>
-import UndoIcon from "~icons/material-symbols/undo-rounded";
-import { Preset } from "../../../util/Preset";
 import { usePresetsStore } from "../../../plugins/store/presets";
+import { Preset } from "../../../util/Preset";
+import UndoIcon from "~icons/material-symbols/undo-rounded";
 
 const props = defineProps({
   preset: {

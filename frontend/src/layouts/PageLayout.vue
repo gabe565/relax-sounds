@@ -34,12 +34,12 @@
 </template>
 
 <script setup>
-import AppIcon from "~icons/relax-sounds/icon-white";
-import MenuIcon from "~icons/material-symbols/more-horiz";
 import { useDisplay } from "vuetify";
 import ThemeBtn from "../components/NavButtons/ThemeBtn.vue";
 import DebugButton from "../components/Presets/Buttons/DebugButton.vue";
 import { DebugEnabled } from "../config/debug";
+import MenuIcon from "~icons/material-symbols/more-horiz";
+import AppIcon from "~icons/relax-sounds/icon-white";
 
 const { smAndDown: isMobile } = useDisplay();
 </script>

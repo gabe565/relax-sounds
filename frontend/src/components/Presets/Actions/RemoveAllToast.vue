@@ -19,8 +19,8 @@
 </template>
 
 <script setup>
-import UndoIcon from "~icons/material-symbols/undo-rounded";
 import { usePresetsStore } from "../../../plugins/store/presets";
+import UndoIcon from "~icons/material-symbols/undo-rounded";
 
 const emit = defineEmits(["close-toast"]);
 

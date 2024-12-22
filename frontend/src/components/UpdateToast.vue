@@ -21,8 +21,8 @@
 </template>
 
 <script setup>
-import RefreshIcon from "~icons/material-symbols/refresh-rounded";
 import { ref } from "vue";
+import RefreshIcon from "~icons/material-symbols/refresh-rounded";
 
 const emit = defineEmits(["refresh"]);
 

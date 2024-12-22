@@ -16,10 +16,10 @@
 </template>
 
 <script setup>
-import TrashIcon from "~icons/material-symbols/delete-rounded";
-import { usePresetsStore } from "../../../plugins/store/presets";
 import { useToast } from "vue-toastification";
+import { usePresetsStore } from "../../../plugins/store/presets";
 import DeleteToast from "./DeleteToast.vue";
+import TrashIcon from "~icons/material-symbols/delete-rounded";
 
 const props = defineProps({
   preset: {

@@ -1,11 +1,11 @@
 import vue from "@vitejs/plugin-vue";
-import vuetify from "vite-plugin-vuetify";
-import { defineConfig, loadEnv } from "vite";
-import Icons from "unplugin-icons/vite";
-import { VitePWA } from "vite-plugin-pwa";
 import autoprefixer from "autoprefixer";
-import { promises as fs } from "node:fs";
 import { escapeRegExp } from "lodash-es";
+import { promises as fs } from "node:fs";
+import Icons from "unplugin-icons/vite";
+import { defineConfig, loadEnv } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
+import vuetify from "vite-plugin-vuetify";
 
 /* eslint-env node */
 

@@ -27,8 +27,8 @@
 
 <script setup>
 import { ref } from "vue";
-import { castEnabled } from "../../cast";
 import { VBtn, VListItem } from "vuetify/components";
+import { castEnabled } from "../../cast";
 
 const castLauncher = ref();
 

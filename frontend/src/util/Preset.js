@@ -1,9 +1,9 @@
-import { nanoid } from "nanoid";
-import { Filetype } from "./filetype";
-import { getSounds } from "../data/sounds";
-import { compress, decompress } from "./helpers";
 import base64 from "base64-url";
+import { nanoid } from "nanoid";
 import { ApiPath } from "../config/api";
+import { getSounds } from "../data/sounds";
+import { Filetype } from "./filetype";
+import { compress, decompress } from "./helpers";
 
 export const legacyFromShorthand = (shorthand) =>
   shorthand.map((song) => {

@@ -1,13 +1,13 @@
 import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import { Preset } from "../util/Preset";
-import { usePresetsStore } from "./store/presets";
-import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
-import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
-import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
 import { useToast } from "vue-toastification";
-import { wait } from "../util/helpers";
 import { ApiPath } from "../config/api";
+import { Preset } from "../util/Preset";
+import { wait } from "../util/helpers";
+import { usePresetsStore } from "./store/presets";
+import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
+import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
+import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
 
 const router = createRouter({
   history: createWebHistory(),

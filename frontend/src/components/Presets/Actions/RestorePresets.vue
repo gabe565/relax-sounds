@@ -35,9 +35,9 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { Preset } from "../../../util/Preset";
-import { usePresetsStore } from "../../../plugins/store/presets";
 import { useToast } from "vue-toastification";
+import { usePresetsStore } from "../../../plugins/store/presets";
+import { Preset } from "../../../util/Preset";
 import RestoreIcon from "~icons/material-symbols/backup";
 
 const props = defineProps({

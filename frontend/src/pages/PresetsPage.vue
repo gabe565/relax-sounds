@@ -25,17 +25,17 @@
 <script setup>
 import { saveAs } from "file-saver/src/FileSaver";
 import { onMounted } from "vue";
-import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
-import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
+import { useToast } from "vue-toastification";
+import { useDisplay } from "vuetify";
+import CastIcon from "../components/NavButtons/CastIcon.vue";
+import RemoveAllToast from "../components/Presets/Actions/RemoveAllToast.vue";
+import RestorePresets from "../components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "../components/Presets/PresetCard.vue";
 import PageLayout from "../layouts/PageLayout.vue";
-import RestorePresets from "../components/Presets/Actions/RestorePresets.vue";
-import RemoveAllToast from "../components/Presets/Actions/RemoveAllToast.vue";
 import { usePlayerStore } from "../plugins/store/player";
 import { usePresetsStore } from "../plugins/store/presets";
-import { useToast } from "vue-toastification";
-import CastIcon from "../components/NavButtons/CastIcon.vue";
-import { useDisplay } from "vuetify";
+import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
+import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
 
 const toast = useToast();
 const { smAndDown: isMobile } = useDisplay();

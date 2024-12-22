@@ -43,12 +43,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import SearchIcon from "~icons/material-symbols/search-rounded";
-import { useFiltersStore } from "../../plugins/store/filters";
-import { getTags } from "../../data/tags";
 import { Icon } from "@iconify/vue";
+import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
+import { getTags } from "../../data/tags";
+import { useFiltersStore } from "../../plugins/store/filters";
+import SearchIcon from "~icons/material-symbols/search-rounded";
 
 const toast = useToast();
 const tags = ref([]);

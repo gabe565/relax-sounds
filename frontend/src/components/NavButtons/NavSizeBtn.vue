@@ -14,10 +14,10 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { usePreferencesStore } from "../../plugins/store/preferences";
 import LeftPanelCloseIcon from "~icons/material-symbols/left-panel-close-rounded";
 import LeftPanelOpenIcon from "~icons/material-symbols/left-panel-open-rounded";
-import { usePreferencesStore } from "../../plugins/store/preferences";
-import { computed } from "vue";
 
 const preferences = usePreferencesStore();
 

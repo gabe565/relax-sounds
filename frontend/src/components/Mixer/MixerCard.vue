@@ -77,15 +77,15 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
 import { Icon } from "@iconify/vue";
-import PlayIcon from "~icons/material-symbols/play-arrow-rounded";
+import { computed } from "vue";
+import { usePlayerStore } from "../../plugins/store/player";
 import PauseIcon from "~icons/material-symbols/pause-rounded";
+import PlayIcon from "~icons/material-symbols/play-arrow-rounded";
+import SpeedIcon from "~icons/material-symbols/speed-rounded";
 import StopIcon from "~icons/material-symbols/stop-rounded";
 import VolumeIcon from "~icons/material-symbols/volume-up-rounded";
-import SpeedIcon from "~icons/material-symbols/speed-rounded";
 import WidthIcon from "~icons/material-symbols/width-rounded";
-import { usePlayerStore } from "../../plugins/store/player";
 
 const props = defineProps({
   sound: {

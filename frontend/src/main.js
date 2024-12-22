@@ -1,13 +1,12 @@
-import { createApp } from "vue";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { createApp } from "vue";
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
-import vuetify from "./plugins/vuetify";
-import router from "./plugins/router";
 import App from "./App.vue";
-
 import "./cast";
+import router from "./plugins/router";
+import vuetify from "./plugins/vuetify";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);

@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-import PlayIcon from "~icons/material-symbols/play-circle-rounded";
-import PauseIcon from "~icons/material-symbols/pause-circle-rounded";
-import { usePlayerStore } from "../../plugins/store/player";
 import { VBtn, VListItem } from "vuetify/components";
+import { usePlayerStore } from "../../plugins/store/player";
+import PauseIcon from "~icons/material-symbols/pause-circle-rounded";
+import PlayIcon from "~icons/material-symbols/play-circle-rounded";
 
 const props = defineProps({
   button: {

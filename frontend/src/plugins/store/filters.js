@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import Fuse from "fuse.js";
+import { defineStore } from "pinia";
 import { computed, reactive, ref, watch } from "vue";
 import { usePlayerStore } from "./player";
 
