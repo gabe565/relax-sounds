@@ -20,11 +20,11 @@
         <template #actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon aria-hidden="true">$close</v-icon>
+            <v-icon>$close</v-icon>
             Close
           </v-btn>
           <v-btn variant="text" :disabled="!file" type="submit">
-            <v-icon aria-hidden="true">$complete</v-icon>
+            <v-icon>$complete</v-icon>
             Import
           </v-btn>
         </template>

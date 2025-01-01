@@ -11,7 +11,7 @@
             aria-label="Share"
             @click.stop="shareOrShow"
           >
-            <v-icon :icon="ShareIcon" aria-hidden="true" />
+            <v-icon :icon="ShareIcon" />
           </v-btn>
         </template>
       </v-tooltip>
@@ -29,11 +29,11 @@
       <template #actions>
         <v-spacer />
         <v-btn variant="text" @click="show = false">
-          <v-icon aria-hidden="true">$close</v-icon>
+          <v-icon>$close</v-icon>
           Close
         </v-btn>
         <v-btn variant="text" @click="copy">
-          <v-icon :icon="CopyIcon" aria-hidden="true" />
+          <v-icon :icon="CopyIcon" />
           Copy
         </v-btn>
       </template>

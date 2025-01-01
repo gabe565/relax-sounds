@@ -4,14 +4,13 @@
       <v-tooltip v-if="button" text="Save preset" location="bottom">
         <template #activator="{ props: tooltipProps }">
           <v-btn
-            v-if="button"
             v-bind="{ ...tooltipProps, ...dialogProps }"
             icon
             title="Save preset"
             :disabled="player.isStopped"
             aria-label="Save preset"
           >
-            <v-icon :icon="AddIcon" aria-hidden="true" />
+            <v-icon :icon="AddIcon" />
           </v-btn>
         </template>
       </v-tooltip>
@@ -33,11 +32,11 @@
         <template #actions>
           <v-spacer />
           <v-btn variant="text" @click="cancel">
-            <v-icon aria-hidden="true">$close</v-icon>
+            <v-icon>$close</v-icon>
             Cancel
           </v-btn>
           <v-btn color="green" variant="text" type="submit">
-            <v-icon aria-hidden="true">$complete</v-icon>
+            <v-icon>$complete</v-icon>
             Save Preset
           </v-btn>
         </template>

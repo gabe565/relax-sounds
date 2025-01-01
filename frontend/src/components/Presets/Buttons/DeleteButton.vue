@@ -9,7 +9,7 @@
         aria-label="Delete"
         @click.stop="remove"
       >
-        <v-icon :icon="TrashIcon" aria-hidden="true" />
+        <v-icon :icon="TrashIcon" />
       </v-btn>
     </template>
   </v-tooltip>

@@ -20,7 +20,7 @@
         aria-label="Debug"
         @click.stop="openUrl"
       >
-        <v-icon :icon="DebugIcon" aria-hidden="true" />
+        <v-icon :icon="DebugIcon" />
       </v-btn>
     </template>
   </v-tooltip>

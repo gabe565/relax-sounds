@@ -1,7 +1,7 @@
 <template>
   <v-card variant="flat" color="cardBackground">
     <v-card-title class="d-flex align-center py-4">
-      <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
+      <v-icon class="mr-4" size="x-small" :color="iconColor">
         <icon :icon="sound.icon" />
       </v-icon>
       <span class="flex-grow-1">
@@ -76,7 +76,7 @@
         :loading="sound.isLoading"
         @click.stop="player.playPause({ sound })"
       >
-        <v-icon v-bind="iconProps" aria-hidden="true" />
+        <v-icon v-bind="iconProps" />
       </v-btn>
 
       <v-btn
@@ -88,7 +88,7 @@
           emit('close');
         "
       >
-        <v-icon :icon="StopIcon" aria-hidden="true" />
+        <v-icon :icon="StopIcon" />
       </v-btn>
     </v-card-actions>
   </v-card>

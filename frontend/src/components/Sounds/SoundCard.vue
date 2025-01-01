@@ -17,7 +17,7 @@
         @contextmenu.prevent="dialogProps.onClick"
       >
         <template #prepend>
-          <v-icon aria-hidden="true" class="mr-4" size="x-large" :color="iconColor">
+          <v-icon class="mr-4" size="x-large" :color="iconColor">
             <icon :icon="sound.icon" />
           </v-icon>
         </template>
