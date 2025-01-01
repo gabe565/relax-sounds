@@ -26,7 +26,7 @@
     "p-limit": "6.2.0",
     "pinia": "2.3.0",
     "pinia-plugin-persistedstate": "4.2.0",
-    "pocketbase": "0.24.0",
+    "pocketbase": "0.25.0",
     "register-service-worker": "1.7.2",
     "sass-embedded": "1.83.0",
     "unplugin-icons": "0.22.0",
