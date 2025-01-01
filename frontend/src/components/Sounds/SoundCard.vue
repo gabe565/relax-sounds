@@ -1,26 +1,41 @@
 <template>
-  <v-btn
-    :color="props.sound.isStopped ? 'cardBackground' : 'accent'"
-    :loading="sound.isLoading"
-    size="x-large"
-    class="w-100 justify-start text-none font-weight-regular"
-    :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
-    variant="flat"
-    @click="playStop"
+  <v-dialog
+    max-width="400"
+    location-strategy="connected"
+    location="bottom center"
+    scroll-strategy="reposition"
   >
-    <template #prepend>
-      <v-icon aria-hidden="true" class="mr-4" size="x-large" :color="iconColor">
-        <icon :icon="sound.icon" />
-      </v-icon>
+    <template #activator="{ props: dialogProps }">
+      <v-btn
+        :color="props.sound.isStopped ? 'cardBackground' : 'accent'"
+        :loading="sound.isLoading"
+        size="x-large"
+        class="w-100 justify-start text-none font-weight-regular"
+        :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
+        variant="flat"
+        @click="playStop"
+        @contextmenu.prevent="dialogProps.onClick"
+      >
+        <template #prepend>
+          <v-icon aria-hidden="true" class="mr-4" size="x-large" :color="iconColor">
+            <icon :icon="sound.icon" />
+          </v-icon>
+        </template>
+        {{ sound.name }}
+      </v-btn>
     </template>
-    {{ sound.name }}
-  </v-btn>
+
+    <template #default="{ isActive }">
+      <mixer-card :sound="sound" closable @close="isActive.value = false" />
+    </template>
+  </v-dialog>
 </template>
 
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed } from "vue";
 import { useToast } from "vue-toastification";
+import MixerCard from "@/components/Mixer/MixerCard.vue";
 import { usePlayerStore } from "@/plugins/store/player";
 
 const props = defineProps({

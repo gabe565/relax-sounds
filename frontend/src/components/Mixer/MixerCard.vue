@@ -1,15 +1,26 @@
 <template>
   <v-card variant="flat" color="cardBackground">
-    <template #title>
+    <v-card-title class="d-flex align-center py-4">
       <v-icon aria-hidden="true" class="mr-4" size="x-small" :color="iconColor">
         <icon :icon="sound.icon" />
       </v-icon>
-      <span>{{ sound.name }}</span>
-    </template>
+      <span class="flex-grow-1">
+        {{ sound.name }}
+      </span>
 
-    <template #actions>
-      <v-row no-gutters dense class="pr-2">
-        <v-col cols="12">
+      <v-btn
+        v-if="props.closable"
+        :icon="CloseIcon"
+        variant="text"
+        density="comfortable"
+        aria-label="Close Mixer"
+        @click="emit('close')"
+      />
+    </v-card-title>
+
+    <v-card-text class="pt-1 pb-0 pr-8">
+      <v-row class="flex-column">
+        <v-col>
           <v-slider
             v-model="volume"
             :prepend-icon="VolumeIcon"
@@ -18,14 +29,13 @@
             :step="0.01"
             thumb-size="12"
             thumb-label
-            track-size="1"
             hide-details
             aria-label="Volume"
           >
             <template #thumb-label>{{ Math.round(volume * 100) }}%</template>
           </v-slider>
         </v-col>
-        <v-col cols="12">
+        <v-col>
           <v-slider
             v-model="rate"
             :prepend-icon="SpeedIcon"
@@ -34,14 +44,13 @@
             :step="0.05"
             thumb-size="12"
             thumb-label
-            track-size="1"
             hide-details
             aria-label="Speed"
           >
             <template #thumb-label>{{ Math.round(rate * 100) }}%</template>
           </v-slider>
         </v-col>
-        <v-col cols="12">
+        <v-col>
           <v-slider
             v-model="pan"
             :prepend-icon="WidthIcon"
@@ -50,7 +59,6 @@
             :step="0.05"
             thumb-size="12"
             thumb-label
-            track-size="1"
             hide-details
             aria-label="Pan"
           >
@@ -58,7 +66,9 @@
           </v-slider>
         </v-col>
       </v-row>
+    </v-card-text>
 
+    <v-card-actions class="justify-center">
       <v-btn
         elevation="0"
         icon
@@ -69,16 +79,25 @@
         <v-icon v-bind="iconProps" aria-hidden="true" />
       </v-btn>
 
-      <v-btn icon aria-label="Stop" @click.stop="player.stop({ sound })">
+      <v-btn
+        icon
+        aria-label="Stop"
+        :disabled="sound.isStopped"
+        @click.stop="
+          player.stop({ sound });
+          emit('close');
+        "
+      >
         <v-icon :icon="StopIcon" aria-hidden="true" />
       </v-btn>
-    </template>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed } from "vue";
+import CloseIcon from "~icons/material-symbols/close-rounded";
 import PauseIcon from "~icons/material-symbols/pause-rounded";
 import PlayIcon from "~icons/material-symbols/play-arrow-rounded";
 import SpeedIcon from "~icons/material-symbols/speed-rounded";
@@ -92,7 +111,13 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  closable: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const emit = defineEmits(["close"]);
 
 const player = usePlayerStore();
 const iconColor = computed(() => (props.sound.isPlaying ? "primary" : ""));
