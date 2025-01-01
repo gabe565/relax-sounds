@@ -12,8 +12,8 @@
 
 <script setup>
 import { VBtn, VListItem } from "vuetify/components";
-import { usePlayerStore } from "../../plugins/store/player";
 import StopIcon from "~icons/material-symbols/stop-circle-rounded";
+import { usePlayerStore } from "@/plugins/store/player";
 
 const props = defineProps({
   button: {

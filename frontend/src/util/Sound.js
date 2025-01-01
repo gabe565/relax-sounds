@@ -1,5 +1,5 @@
 import { Howl } from "howler";
-import pb from "../plugins/pocketbase";
+import pb from "@/plugins/pocketbase";
 
 export const SoundState = {
   PLAYING: "playing",

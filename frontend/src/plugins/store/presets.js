@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { Preset } from "../../util/Preset";
-import { SoundState } from "../../util/Sound";
-import { usePlayerStore } from "./player";
+import { usePlayerStore } from "@/plugins/store/player";
+import { Preset } from "@/util/Preset";
+import { SoundState } from "@/util/Sound";
 
 let stateVersion = 0;
 const version = 3;

@@ -2,14 +2,13 @@ import vue from "@vitejs/plugin-vue";
 import autoprefixer from "autoprefixer";
 import { escapeRegExp } from "lodash-es";
 import { promises as fs } from "node:fs";
+import { URL, fileURLToPath } from "node:url";
 import Icons from "unplugin-icons/vite";
 import { defineConfig, loadEnv } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import vuetify from "vite-plugin-vuetify";
 
-/* eslint-env node */
-
-export default defineConfig((mode) => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   let apiBase = "";
@@ -109,6 +108,11 @@ export default defineConfig((mode) => {
     css: {
       postcss: {
         plugins: [autoprefixer({})],
+      },
+    },
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
   };

@@ -1,4 +1,4 @@
-import pb from "../plugins/pocketbase";
+import pb from "@/plugins/pocketbase";
 
 let tags;
 

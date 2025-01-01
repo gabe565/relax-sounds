@@ -77,17 +77,17 @@
 import { computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useDisplay, useTheme } from "vuetify";
-import CastIcon from "./components/NavButtons/CastIcon.vue";
-import NavSizeBtn from "./components/NavButtons/NavSizeBtn.vue";
-import PlayPauseAll from "./components/NavButtons/PlayPauseAll.vue";
-import SavePreset from "./components/NavButtons/SavePreset.vue";
-import StopAll from "./components/NavButtons/StopAll.vue";
-import ThemeBtn from "./components/NavButtons/ThemeBtn.vue";
-import DebugButton from "./components/Presets/Buttons/DebugButton.vue";
-import { DebugEnabled } from "./config/debug";
-import { registerSW } from "./plugins/pwa";
-import { Theme, usePreferencesStore } from "./plugins/store/preferences";
 import AppIcon from "~icons/relax-sounds/icon-white";
+import CastIcon from "@/components/NavButtons/CastIcon.vue";
+import NavSizeBtn from "@/components/NavButtons/NavSizeBtn.vue";
+import PlayPauseAll from "@/components/NavButtons/PlayPauseAll.vue";
+import SavePreset from "@/components/NavButtons/SavePreset.vue";
+import StopAll from "@/components/NavButtons/StopAll.vue";
+import ThemeBtn from "@/components/NavButtons/ThemeBtn.vue";
+import DebugButton from "@/components/Presets/Buttons/DebugButton.vue";
+import { DebugEnabled } from "@/config/debug";
+import { registerSW } from "@/plugins/pwa";
+import { Theme, usePreferencesStore } from "@/plugins/store/preferences";
 
 const { smAndDown: isMobile } = useDisplay();
 const preferences = usePreferencesStore();

@@ -21,7 +21,7 @@
 import { Icon } from "@iconify/vue";
 import { computed } from "vue";
 import { useToast } from "vue-toastification";
-import { usePlayerStore } from "../../plugins/store/player";
+import { usePlayerStore } from "@/plugins/store/player";
 
 const props = defineProps({
   sound: {

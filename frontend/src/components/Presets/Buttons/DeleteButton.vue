@@ -17,9 +17,9 @@
 
 <script setup>
 import { useToast } from "vue-toastification";
-import { usePresetsStore } from "../../../plugins/store/presets";
-import DeleteToast from "./DeleteToast.vue";
 import TrashIcon from "~icons/material-symbols/delete-rounded";
+import DeleteToast from "@/components/Presets/Buttons/DeleteToast.vue";
+import { usePresetsStore } from "@/plugins/store/presets";
 
 const props = defineProps({
   preset: {

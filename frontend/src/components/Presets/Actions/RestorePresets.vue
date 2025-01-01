@@ -36,9 +36,9 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
-import { usePresetsStore } from "../../../plugins/store/presets";
-import { Preset } from "../../../util/Preset";
 import RestoreIcon from "~icons/material-symbols/backup";
+import { usePresetsStore } from "@/plugins/store/presets";
+import { Preset } from "@/util/Preset";
 
 const props = defineProps({
   modelValue: Boolean,

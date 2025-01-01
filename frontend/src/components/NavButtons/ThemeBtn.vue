@@ -22,10 +22,10 @@
 
 <script setup>
 import { shallowRef, watch } from "vue";
-import { Theme, usePreferencesStore } from "../../plugins/store/preferences";
 import DarkIcon from "~icons/material-symbols/brightness-4";
 import LightIcon from "~icons/material-symbols/brightness-7";
 import AutoIcon from "~icons/material-symbols/brightness-auto";
+import { Theme, usePreferencesStore } from "@/plugins/store/preferences";
 
 const props = defineProps({
   listItem: {

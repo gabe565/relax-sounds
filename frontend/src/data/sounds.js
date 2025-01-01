@@ -1,5 +1,5 @@
-import pb from "../plugins/pocketbase";
-import { Sound } from "../util/Sound";
+import pb from "@/plugins/pocketbase";
+import { Sound } from "@/util/Sound";
 
 let sounds;
 

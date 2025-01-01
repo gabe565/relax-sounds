@@ -1,7 +1,7 @@
 import Fuse from "fuse.js";
 import { defineStore } from "pinia";
 import { computed, reactive, ref, watch } from "vue";
-import { usePlayerStore } from "./player";
+import { usePlayerStore } from "@/plugins/store/player";
 
 export const fuse = new Fuse([], {
   shouldSort: true,

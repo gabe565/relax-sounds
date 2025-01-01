@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
-import UpdateToast from "../components/UpdateToast.vue";
+import UpdateToast from "@/components/UpdateToast.vue";
 
 const toast = useToast();
 const updateSW = ref(undefined);

@@ -44,9 +44,9 @@
 <script setup>
 import { computed, nextTick, ref, watch } from "vue";
 import { useToast } from "vue-toastification";
-import { Preset } from "../../../util/Preset";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import ShareIcon from "~icons/material-symbols/share";
+import { Preset } from "@/util/Preset";
 
 const props = defineProps({
   preset: {

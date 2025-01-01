@@ -10,5 +10,5 @@
 </template>
 
 <script setup>
-import PageLayout from "../layouts/PageLayout.vue";
+import PageLayout from "@/layouts/PageLayout.vue";
 </script>

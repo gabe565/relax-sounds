@@ -51,11 +51,11 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { VBtn, VListItem } from "vuetify/components";
-import { usePlayerStore } from "../../plugins/store/player";
-import { usePresetsStore } from "../../plugins/store/presets";
-import { wait } from "../../util/helpers";
 import AddIcon from "~icons/material-symbols/add-circle-rounded";
 import SaveIcon from "~icons/material-symbols/save-rounded";
+import { usePlayerStore } from "@/plugins/store/player";
+import { usePresetsStore } from "@/plugins/store/presets";
+import { wait } from "@/util/helpers";
 
 defineProps({
   button: {

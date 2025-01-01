@@ -3,13 +3,13 @@ import pLimit from "p-limit";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { TYPE, useToast } from "vue-toastification";
-import { ApiPath } from "../../config/api";
-import { getSounds } from "../../data/sounds";
-import { Preset } from "../../util/Preset";
-import { SoundState } from "../../util/Sound";
-import { Filetype } from "../../util/filetype";
-import { formatError, getCastSession } from "../../util/googleCast";
-import { wait } from "../../util/helpers";
+import { ApiPath } from "@/config/api";
+import { getSounds } from "@/data/sounds";
+import { Preset } from "@/util/Preset";
+import { SoundState } from "@/util/Sound";
+import { Filetype } from "@/util/filetype";
+import { formatError, getCastSession } from "@/util/googleCast";
+import { wait } from "@/util/helpers";
 
 const toast = useToast();
 

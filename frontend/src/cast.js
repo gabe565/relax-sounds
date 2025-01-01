@@ -1,6 +1,6 @@
 import { ref } from "vue";
-import { usePlayerStore } from "./plugins/store/player";
-import { wait } from "./util/helpers";
+import { usePlayerStore } from "@/plugins/store/player";
+import { wait } from "@/util/helpers";
 
 export const castEnabled = ref(false);
 

@@ -28,12 +28,12 @@
 <script setup>
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
-import { usePlayerStore } from "../../plugins/store/player";
-import { usePresetsStore } from "../../plugins/store/presets";
-import { Preset } from "../../util/Preset";
-import DebugButton from "./Buttons/DebugButton.vue";
-import DeleteButton from "./Buttons/DeleteButton.vue";
-import ShareButton from "./Buttons/ShareButton.vue";
+import DebugButton from "@/components/Presets/Buttons/DebugButton.vue";
+import DeleteButton from "@/components/Presets/Buttons/DeleteButton.vue";
+import ShareButton from "@/components/Presets/Buttons/ShareButton.vue";
+import { usePlayerStore } from "@/plugins/store/player";
+import { usePresetsStore } from "@/plugins/store/presets";
+import { Preset } from "@/util/Preset";
 
 const props = defineProps({
   preset: {

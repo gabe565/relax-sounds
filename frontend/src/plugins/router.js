@@ -1,13 +1,13 @@
 import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import { useToast } from "vue-toastification";
-import { ApiPath } from "../config/api";
-import { Preset } from "../util/Preset";
-import { wait } from "../util/helpers";
-import { usePresetsStore } from "./store/presets";
 import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
 import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
 import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
+import { ApiPath } from "@/config/api";
+import { usePresetsStore } from "@/plugins/store/presets";
+import { Preset } from "@/util/Preset";
+import { wait } from "@/util/helpers";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,7 +15,7 @@ const router = createRouter({
     {
       path: "/sounds",
       name: "Sounds",
-      component: () => import("../pages/SoundsPage.vue"),
+      component: () => import("@/pages/SoundsPage.vue"),
       props: true,
       meta: {
         icon: SoundsIcon,
@@ -25,7 +25,7 @@ const router = createRouter({
     {
       path: "/mixer",
       name: "Mixer",
-      component: () => import("../pages/MixerPage.vue"),
+      component: () => import("@/pages/MixerPage.vue"),
       props: true,
       meta: {
         icon: MixerIcon,
@@ -35,7 +35,7 @@ const router = createRouter({
     {
       path: "/presets",
       name: "Presets",
-      component: () => import("../pages/PresetsPage.vue"),
+      component: () => import("@/pages/PresetsPage.vue"),
       props: true,
       meta: {
         icon: PresetsIcon,
@@ -75,7 +75,7 @@ const router = createRouter({
     {
       path: "/:catchAll(.*)",
       name: "404 Not Found",
-      component: () => import("../pages/NotFoundPage.vue"),
+      component: () => import("@/pages/NotFoundPage.vue"),
     },
   ],
 });

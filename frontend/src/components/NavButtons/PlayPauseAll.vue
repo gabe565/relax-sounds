@@ -12,9 +12,9 @@
 
 <script setup>
 import { VBtn, VListItem } from "vuetify/components";
-import { usePlayerStore } from "../../plugins/store/player";
 import PauseIcon from "~icons/material-symbols/pause-circle-rounded";
 import PlayIcon from "~icons/material-symbols/play-circle-rounded";
+import { usePlayerStore } from "@/plugins/store/player";
 
 const props = defineProps({
   button: {

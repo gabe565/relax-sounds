@@ -29,9 +29,9 @@
 <script setup>
 import { computed } from "vue";
 import { VBtn, VListItem } from "vuetify/components";
-import { usePlayerStore } from "../../../plugins/store/player";
-import { Preset } from "../../../util/Preset";
 import DebugIcon from "~icons/material-symbols/bug-report-rounded";
+import { usePlayerStore } from "@/plugins/store/player";
+import { Preset } from "@/util/Preset";
 
 const props = defineProps({
   listItem: {
