@@ -29,7 +29,7 @@
       <template #actions>
         <v-spacer />
         <v-btn variant="text" @click="show = false">
-          <v-icon>$close</v-icon>
+          <v-icon :icon="CloseIcon" />
           Close
         </v-btn>
         <v-btn variant="text" @click="copy">
@@ -44,6 +44,7 @@
 <script setup>
 import { computed, nextTick, ref, watch } from "vue";
 import { useToast } from "vue-toastification";
+import CloseIcon from "~icons/material-symbols/close-rounded";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import ShareIcon from "~icons/material-symbols/share";
 import { Preset } from "@/util/Preset";

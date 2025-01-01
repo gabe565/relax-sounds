@@ -32,11 +32,11 @@
         <template #actions>
           <v-spacer />
           <v-btn variant="text" @click="cancel">
-            <v-icon>$close</v-icon>
+            <v-icon :icon="CloseIcon" />
             Cancel
           </v-btn>
           <v-btn color="green" variant="text" type="submit">
-            <v-icon>$complete</v-icon>
+            <v-icon :icon="CheckIcon" />
             Save Preset
           </v-btn>
         </template>
@@ -51,6 +51,8 @@ import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { VBtn, VListItem } from "vuetify/components";
 import AddIcon from "~icons/material-symbols/add-circle-rounded";
+import CheckIcon from "~icons/material-symbols/check-rounded";
+import CloseIcon from "~icons/material-symbols/close-rounded";
 import SaveIcon from "~icons/material-symbols/save-rounded";
 import { usePlayerStore } from "@/plugins/store/player";
 import { usePresetsStore } from "@/plugins/store/presets";

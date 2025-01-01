@@ -20,11 +20,11 @@
         <template #actions>
           <v-spacer />
           <v-btn variant="text" @click="show = false">
-            <v-icon>$close</v-icon>
+            <v-icon :icon="CloseIcon" />
             Close
           </v-btn>
           <v-btn variant="text" :disabled="!file" type="submit">
-            <v-icon>$complete</v-icon>
+            <v-icon :icon="CheckIcon" />
             Import
           </v-btn>
         </template>
@@ -37,6 +37,8 @@
 import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import RestoreIcon from "~icons/material-symbols/backup";
+import CheckIcon from "~icons/material-symbols/check-rounded";
+import CloseIcon from "~icons/material-symbols/close-rounded";
 import { usePresetsStore } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
 
