@@ -3,11 +3,11 @@
     :is="component"
     :prepend-icon="StopIcon"
     :disabled="player.isStopped"
-    title="Stop All"
-    text="Stop All"
-    aria-label="Stop All"
+    aria-label="Stop"
     @click="player.stopAll({})"
-  />
+  >
+    Stop
+  </component>
 </template>
 
 <script setup>
