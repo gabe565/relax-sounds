@@ -25,7 +25,7 @@ export class Sound {
   }
 
   get src() {
-    return this.file.map((e) => pb.getFileUrl(this, e));
+    return this.file.map((e) => pb.files.getURL(this, e));
   }
 
   load() {
