@@ -6,8 +6,8 @@ replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-2024090508
 
 require (
 	github.com/dmarkham/enumer v1.5.10
-	github.com/dustin/go-humanize v1.0.1
 	github.com/gopxl/beep/v2 v2.1.0
+	github.com/labstack/gommon v0.4.2
 	github.com/lmittmann/tint v1.0.6
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.23.12
@@ -48,6 +48,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/domodwyer/mailyak/v3 v3.6.2 // indirect
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.7 // indirect
 	github.com/ganigeorgiev/fexpr v0.4.1 // indirect

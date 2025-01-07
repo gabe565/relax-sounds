@@ -153,7 +153,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 
 		// Mux streams to encoder
 		n, err := encode.Encode(e.Request.Context(), entry)
-		entry.Transferred += uint64(n) //nolint:gosec
+		entry.Transferred += int64(n)
 		if err != nil {
 			switch {
 			case errors.Is(err, io.ErrShortWrite):
