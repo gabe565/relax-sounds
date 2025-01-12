@@ -11,11 +11,18 @@
 
     <v-row>
       <v-fade-transition group leave-absolute>
-        <v-col v-for="preset of presets.active" :key="preset.name" cols="12" md="6" lg="4" xl="3">
-          <preset-card :preset="preset" />
-        </v-col>
-        <v-col v-if="presets.active.length === 0">
-          <v-alert prominent text type="info">No Presets Saved Yet!</v-alert>
+        <template v-if="presets.active.length !== 0">
+          <v-col v-for="preset of presets.active" :key="preset.name" cols="12" md="6" lg="4" xl="3">
+            <preset-card :preset="preset" />
+          </v-col>
+        </template>
+        <v-col v-else>
+          <v-alert prominent type="info">
+            <template #prepend>
+              <v-icon :icon="InfoIcon" />
+            </template>
+            No presets saved yet
+          </v-alert>
         </v-col>
       </v-fade-transition>
     </v-row>
@@ -29,6 +36,7 @@ import { useToast } from "vue-toastification";
 import { useDisplay } from "vuetify";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
 import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
+import InfoIcon from "~icons/material-symbols/info-rounded";
 import CastIcon from "@/components/NavButtons/CastIcon.vue";
 import RemoveAllToast from "@/components/Presets/Actions/RemoveAllToast.vue";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";

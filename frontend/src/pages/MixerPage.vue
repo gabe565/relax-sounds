@@ -7,14 +7,13 @@
       </template>
     </template>
 
+    <v-overlay v-if="loading" v-model="loading" class="align-center justify-center" persistent>
+      <v-progress-circular color="primary" indeterminate size="64" />
+    </v-overlay>
+
     <v-row>
-      <template v-if="loading">
-        <v-overlay v-model="loading" class="align-center justify-center" persistent>
-          <v-progress-circular color="primary" indeterminate size="64" />
-        </v-overlay>
-      </template>
-      <template v-else>
-        <v-fade-transition group leave-absolute>
+      <v-fade-transition group leave-absolute>
+        <template v-if="player.soundsNotStopped.length !== 0">
           <v-col
             v-for="sound of player.soundsNotStopped"
             :key="sound.id"
@@ -25,11 +24,16 @@
           >
             <mixer-card :sound="sound" />
           </v-col>
-          <v-col v-if="player.soundsNotStopped.length === 0">
-            <v-alert prominent text type="info">No sounds are playing</v-alert>
-          </v-col>
-        </v-fade-transition>
-      </template>
+        </template>
+        <v-col v-else>
+          <v-alert prominent type="info">
+            <template #prepend>
+              <v-icon :icon="InfoIcon" />
+            </template>
+            No sounds are playing
+          </v-alert>
+        </v-col>
+      </v-fade-transition>
     </v-row>
   </page-layout>
 </template>
@@ -38,6 +42,7 @@
 import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
 import { useDisplay } from "vuetify";
+import InfoIcon from "~icons/material-symbols/info-rounded";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
 import CastIcon from "@/components/NavButtons/CastIcon.vue";
 import SavePreset from "@/components/NavButtons/SavePreset.vue";
