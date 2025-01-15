@@ -3,7 +3,6 @@ package stream
 import (
 	"errors"
 	"io/fs"
-	"sync"
 
 	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/preset"
@@ -20,7 +19,7 @@ func (stream Streams) Close() error {
 	return errors.Join(errs...)
 }
 
-func (stream *Streams) Add(conf *config.Config, f fs.File, entry preset.Track, mu *sync.Mutex) error {
+func (stream *Streams) Add(conf *config.Config, f fs.File, entry preset.Track) error {
 	if entry.GetVolume() == 0 {
 		return nil
 	}
@@ -30,8 +29,6 @@ func (stream *Streams) Add(conf *config.Config, f fs.File, entry preset.Track, m
 		return err
 	}
 
-	mu.Lock()
-	defer mu.Unlock()
 	*stream = append(*stream, streamer)
 	return nil
 }
