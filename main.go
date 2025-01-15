@@ -34,6 +34,13 @@ func main() {
 		Automigrate: automigrateEnabled(),
 	})
 
+	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
+		if err := conf.Load(app.RootCmd); err != nil {
+			return err
+		}
+		return e.Next()
+	})
+
 	app.OnServe().BindFunc(func(e *core.ServeEvent) error {
 		e.Router.BindFunc(func(e *core.RequestEvent) error {
 			if e.Request.URL.Path == "/api/health" {
