@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"sync"
 
 	"gabe565.com/relax-sounds/internal/config"
@@ -31,7 +32,7 @@ func New(conf *config.Config, p preset.Preset) (Streams, error) {
 		return s, err
 	}
 
-	dataFs := os.DirFS(filepath.Join(conf.App.DataDir(), "storage"))
+	storageDir := filepath.Join(conf.App.DataDir(), "storage")
 	for _, entry := range p {
 		var record *core.Record
 		for _, v := range records {
@@ -46,9 +47,22 @@ func New(conf *config.Config, p preset.Preset) (Streams, error) {
 
 		group.Go(func() error {
 			files := record.GetStringSlice("file")
-			path := filepath.Join(record.BaseFilesPath(), files[0])
+			var preferredFile string
+			for _, preferredExt := range preferredExts() {
+				i := slices.IndexFunc(files, func(s string) bool {
+					return filepath.Ext(s) == preferredExt
+				})
+				if i != -1 {
+					preferredFile = files[i]
+					break
+				}
+			}
+			if preferredFile == "" {
+				preferredFile = files[0]
+			}
+			path := filepath.Join(storageDir, record.BaseFilesPath(), preferredFile)
 
-			f, err := dataFs.Open(path)
+			f, err := os.Open(path)
 			if err != nil {
 				return err
 			}
@@ -59,4 +73,8 @@ func New(conf *config.Config, p preset.Preset) (Streams, error) {
 
 	err = group.Wait()
 	return s, err
+}
+
+func preferredExts() []string {
+	return []string{".wav", ".ogg"}
 }

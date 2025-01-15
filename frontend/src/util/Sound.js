@@ -25,7 +25,9 @@ export class Sound {
   }
 
   get src() {
-    return this.file.map((e) => pb.files.getURL(this, e));
+    return this.file
+      .filter((f) => !f.endsWith(".flac") && !f.endsWith(".wav"))
+      .map((f) => pb.files.getURL(this, f));
   }
 
   load() {
