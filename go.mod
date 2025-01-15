@@ -6,7 +6,7 @@ replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-2024090508
 
 require (
 	github.com/dmarkham/enumer v1.5.10
-	github.com/gopxl/beep/v2 v2.1.0
+	github.com/gopxl/beep/v2 v2.1.1
 	github.com/labstack/gommon v0.4.2
 	github.com/lmittmann/tint v1.0.6
 	github.com/mattn/go-isatty v0.0.20
