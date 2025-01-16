@@ -3,7 +3,6 @@ package hooks
 import (
 	"errors"
 	"fmt"
-	"io"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -15,7 +14,6 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/forms"
 	"github.com/pocketbase/pocketbase/tools/filesystem"
-	ffmpeg "github.com/u2takey/ffmpeg-go"
 )
 
 func altExts() []string {
@@ -64,19 +62,20 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 				"dst", filepath.Base(dstPath),
 			)
 
-			var kwargs ffmpeg.KwArgs
-			if altExt == ".mp3" {
-				kwargs = ffmpeg.KwArgs{"qscale:a": "2"}
+			args := []string{
+				"-hide_banner",
+				"-loglevel", "error",
+				"-i", path,
 			}
+			if altExt == ".mp3" {
+				args = append(args, "-qscale:a", "2")
+			}
+			args = append(args, dstPath)
 
-			var errBuf strings.Builder
-			err = ffmpeg.Input(path).
-				Output(dstPath, kwargs).
-				WithOutput(io.Discard, &errBuf).
-				Silent(true).
-				Run()
+			cmd := exec.Command("ffmpeg", args...)
+			b, err := cmd.CombinedOutput()
 			if err != nil {
-				err := fmt.Errorf("%w: %s", err, errBuf.String())
+				err := fmt.Errorf("%w: %s", err, b)
 				slog.Error("Failed to convert audio file", "error", err)
 				return err
 			}
