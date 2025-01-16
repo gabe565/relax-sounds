@@ -23,24 +23,22 @@ func altExts() []string {
 func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 	dataDir := filepath.Join(app.DataDir(), "storage")
 
-	var skipConvert bool
 	if _, err := exec.LookPath("ffmpeg"); err != nil {
-		skipConvert = true
-		slog.Warn("ffmpeg is required for secondary audio file creation", "error", err)
+		slog.Warn("ffmpeg is required for alt audio file creation", "error", err)
 	}
 
 	return func(e *core.ModelEvent) error {
+		if _, err := exec.LookPath("ffmpeg"); err != nil {
+			slog.Warn("ffmpeg is required for alt audio file creation", "error", err)
+			return nil
+		}
+
 		record := e.Model.(*core.Record)
 
 		files := record.GetStringSlice("file")
 		exts := make([]string, 0, len(files))
 		for _, file := range files {
 			exts = append(exts, filepath.Ext(file))
-		}
-
-		if skipConvert {
-			slog.Error("ffmpeg is required for alt audio file creation")
-			return nil
 		}
 
 		tmpDir, err := os.MkdirTemp("", "relax-sounds-*")
