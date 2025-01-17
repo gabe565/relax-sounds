@@ -26,12 +26,7 @@
           </v-col>
         </template>
         <v-col v-else>
-          <v-alert prominent type="info">
-            <template #prepend>
-              <v-icon :icon="InfoIcon" />
-            </template>
-            No sounds are playing
-          </v-alert>
+          <v-alert prominent type="info" :icon="InfoIcon">No sounds are playing</v-alert>
         </v-col>
       </v-fade-transition>
     </v-row>
