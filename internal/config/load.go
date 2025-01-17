@@ -23,8 +23,10 @@ func (c *Config) Load(cmd *cobra.Command) error {
 	return errors.Join(errs...)
 }
 
+const EnvPrefix = "RELAX_"
+
 func EnvName(name string) string {
 	name = strings.ToUpper(name)
 	name = strings.ReplaceAll(name, "-", "_")
-	return name
+	return EnvPrefix + name
 }
