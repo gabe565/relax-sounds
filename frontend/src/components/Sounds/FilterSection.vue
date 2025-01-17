@@ -2,6 +2,7 @@
   <v-row class="filters">
     <v-col>
       <v-combobox
+        ref="combobox"
         v-model="filters.filters.word"
         label="Search"
         :prepend-inner-icon="SearchIcon"
@@ -18,6 +19,11 @@
         :return-object="false"
         :menu-icon="DropdownIcon"
         :clear-icon="CloseIcon"
+        @keydown.esc="
+          filters.filters.word = '';
+          combobox.blur();
+        "
+        @keydown.enter="combobox.blur()"
       >
         <template #item="{ props, item }">
           <v-list-item v-bind="props" :title="item.raw.name">
@@ -35,7 +41,8 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { onMounted, ref } from "vue";
+import { useMagicKeys } from "@vueuse/core";
+import { onMounted, ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import DropdownIcon from "~icons/material-symbols/arrow-drop-down-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
@@ -43,11 +50,18 @@ import SearchIcon from "~icons/material-symbols/search-rounded";
 import { getTags } from "@/data/tags";
 import { useFiltersStore } from "@/plugins/store/filters";
 
-const toast = useToast();
+const combobox = ref(null);
 const tags = ref([]);
 const loading = ref(true);
-
+const toast = useToast();
 const filters = useFiltersStore();
+
+const { Cmd_K, Ctrl_K } = useMagicKeys();
+watch([Cmd_K, Ctrl_K], (v) => {
+  if (v) {
+    combobox.value?.focus();
+  }
+});
 
 onMounted(async () => {
   try {
