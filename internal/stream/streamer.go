@@ -35,8 +35,9 @@ func NewStreamer(conf *config.Config, rawFile fs.File, entry preset.Track) (Stre
 		return streamer, err
 	}
 
-	if format.SampleRate != 44100 {
-		beepStreamer = beep.Resample(3, format.SampleRate, 44100, beepStreamer)
+	if rate := entry.GetRate(); rate != 1 || format.SampleRate != 44100 {
+		rate *= float64(format.SampleRate) / 44100
+		beepStreamer = beep.ResampleRatio(conf.ResampleQuality, rate, beepStreamer)
 	}
 
 	if volume := entry.GetVolume(); volume != 1 {
@@ -46,10 +47,6 @@ func NewStreamer(conf *config.Config, rawFile fs.File, entry preset.Track) (Stre
 			Volume:   volume - 1,
 			Silent:   volume == 0,
 		}
-	}
-
-	if rate := entry.GetRate(); rate != 1 {
-		beepStreamer = beep.ResampleRatio(conf.ResampleQuality, rate, beepStreamer)
 	}
 
 	if pan := entry.GetPan(); pan != 0 {
