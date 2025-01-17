@@ -1,11 +1,11 @@
-FROM --platform=$BUILDPLATFORM golang:1.23.4-alpine AS go-dependencies
+FROM --platform=$BUILDPLATFORM golang:1.23.5-alpine AS go-dependencies
 WORKDIR /app
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 
-FROM golang:1.23.4-alpine AS go-builder
+FROM golang:1.23.5-alpine AS go-builder
 WORKDIR /app
 
 RUN apk add --no-cache g++ gcc lame-dev
