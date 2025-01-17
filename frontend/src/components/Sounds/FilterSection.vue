@@ -11,23 +11,12 @@
         rounded
         density="comfortable"
         hide-details
-        chips
         hide-no-data
         :items="tags"
         item-title="name"
         item-value="name"
         :return-object="false"
       >
-        <template #chip="{ props, item }">
-          <v-chip v-bind="props" :title="item.raw.name">
-            <template #prepend>
-              <v-icon v-if="item.raw.icon" class="mr-2">
-                <icon :icon="item.raw.icon" />
-              </v-icon>
-            </template>
-          </v-chip>
-        </template>
-
         <template #item="{ props, item }">
           <v-list-item v-bind="props" :title="item.raw.name">
             <template #prepend>
