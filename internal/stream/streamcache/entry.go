@@ -35,7 +35,6 @@ type Entry struct {
 
 	Preset  string
 	Streams stream.Streams
-	Mix     beep.Streamer
 	Format  beep.Format
 
 	Writer  *ProxyWriter

@@ -36,8 +36,9 @@ func Encode(ctx context.Context, entry *streamcache.Entry) error {
 		return fmt.Errorf("%w: %d", ErrUnsupportedPrecision, entry.Format.Precision)
 	}
 
+	mix := entry.Streams.Mix()
 	for {
-		n, ok := entry.Mix.Stream(samples)
+		n, ok := mix.Stream(samples)
 		if !ok {
 			return nil
 		}

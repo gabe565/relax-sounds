@@ -85,7 +85,6 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			if len(entry.Streams) == 0 {
 				return apis.NewNotFoundError("", nil)
 			}
-			entry.Mix = entry.Streams.Mix()
 
 			entry.Format = beep.Format{
 				SampleRate:  44100,
