@@ -21,9 +21,21 @@ func Encode(ctx context.Context, entry *streamcache.Entry) (int, error) {
 		return 0, fmt.Errorf("%w: %d", ErrInvalidChannels, entry.Format.NumChannels)
 	}
 
-	samples := make([][2]float64, 512)
-	buffer := make([]byte, len(samples)*entry.Format.Width())
-	var written int
+	var (
+		samples = make([][2]float64, 512)
+		buffer  = make([]byte, len(samples)*entry.Format.Width())
+		written int
+		encode  func(p []byte, sample [2]float64) (n int)
+	)
+
+	switch entry.Format.Precision {
+	case 1:
+		encode = entry.Format.EncodeUnsigned
+	case 2, 3:
+		encode = entry.Format.EncodeSigned
+	default:
+		return written, fmt.Errorf("%w: %d", ErrUnsupportedPrecision, entry.Format.Precision)
+	}
 
 	for {
 		n, ok := entry.Mix.Stream(samples)
@@ -32,17 +44,8 @@ func Encode(ctx context.Context, entry *streamcache.Entry) (int, error) {
 		}
 
 		buf := buffer
-		switch entry.Format.Precision {
-		case 1:
-			for _, sample := range samples[:n] {
-				buf = buf[entry.Format.EncodeUnsigned(buf, sample):]
-			}
-		case 2, 3:
-			for _, sample := range samples[:n] {
-				buf = buf[entry.Format.EncodeSigned(buf, sample):]
-			}
-		default:
-			return written, fmt.Errorf("%w: %d", ErrUnsupportedPrecision, entry.Format.Precision)
+		for _, sample := range samples[:n] {
+			buf = buf[encode(buf, sample):]
 		}
 
 		if ctx.Err() != nil {
@@ -51,11 +54,10 @@ func Encode(ctx context.Context, entry *streamcache.Entry) (int, error) {
 
 		n, err := entry.Encoder.Write(buffer[:n*entry.Format.Width()])
 		written += n
-		if err != nil {
+		switch {
+		case err != nil:
 			return written, err
-		}
-
-		if entry.Writer.Err != nil {
+		case entry.Writer.Err != nil:
 			return written, entry.Writer.Err
 		}
 	}
