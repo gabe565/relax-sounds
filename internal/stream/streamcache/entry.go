@@ -41,10 +41,9 @@ type Entry struct {
 	Writer  *ProxyWriter
 	Encoder encoder.Encoder
 
-	Mu          sync.Mutex
-	Transferred config.Bytes
-	Created     time.Time
-	Accessed    time.Time
+	Mu       sync.Mutex
+	Created  time.Time
+	Accessed time.Time
 }
 
 func NewEntry(e *core.RequestEvent, preset, uuid string) *Entry {
@@ -74,7 +73,7 @@ func (e *Entry) Close() error {
 	e.Log.Info("Close stream",
 		"accessed", e.Accessed,
 		"age", time.Since(e.Created).Round(100*time.Millisecond).String(),
-		"transferred", e.Transferred,
+		"transferred", config.Bytes(e.Writer.TotalWritten()),
 	)
 
 	activeStreamMetrics.Dec()

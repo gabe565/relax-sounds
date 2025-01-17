@@ -147,9 +147,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		e.Response.WriteHeader(http.StatusPartialContent)
 
 		// Mux streams to encoder
-		n, err := encode.Encode(e.Request.Context(), entry)
-		entry.Transferred += config.Bytes(n)
-		if err != nil {
+		if err := encode.Encode(e.Request.Context(), entry); err != nil {
 			switch {
 			case errors.Is(err, io.ErrShortWrite):
 			case errors.Is(err, syscall.EPIPE):
@@ -158,7 +156,6 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 				return apis.NewApiError(http.StatusInternalServerError, "", err)
 			}
 		}
-
 		return nil
 	}
 }
