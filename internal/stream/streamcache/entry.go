@@ -82,8 +82,10 @@ func (e *Entry) Close() error {
 		e.Writer = nil
 	}()
 
-	return errors.Join(
-		e.Streams.Close(),
-		e.Encoder.Close(),
-	)
+	errs := make([]error, 0, 2)
+	errs = append(errs, e.Streams.Close())
+	if e.Encoder != nil {
+		errs = append(errs, e.Encoder.Close())
+	}
+	return errors.Join(errs...)
 }

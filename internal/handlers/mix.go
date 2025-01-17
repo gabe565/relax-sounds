@@ -71,6 +71,9 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			}
 
 			entry = streamcache.NewEntry(e, presetEncoded, uuid)
+			if err := m.cache.Set(uuid, entry); err != nil {
+				entry.Log.Error("Failed to close stream", "error", err)
+			}
 			entry.Log.Info("Create stream")
 
 			// Set up stream
@@ -96,10 +99,6 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			entry.Encoder, err = fileType.NewEncoder(m.conf, entry.Writer, entry.Format)
 			if err != nil {
 				panic(err)
-			}
-
-			if err := m.cache.Set(uuid, entry); err != nil {
-				entry.Log.Error("Failed to close stream", "error", err)
 			}
 		}
 
