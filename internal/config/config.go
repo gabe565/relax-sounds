@@ -13,6 +13,8 @@ type Config struct {
 	MaxPresetLen    int
 	ResampleQuality int
 	LAMEQuality     float64
+	MixTotalSize    Bytes
+	MixChunkSize    Bytes
 
 	CacheScanInterval time.Duration
 	CacheCleanAfter   time.Duration
@@ -32,6 +34,8 @@ func New(app *pocketbase.PocketBase) *Config {
 		MaxPresetLen:    20,
 		ResampleQuality: 3,
 		LAMEQuality:     2,
+		MixTotalSize:    1.5 * 1024 * 1024 * 1024,
+		MixChunkSize:    2 * 1024 * 1024,
 
 		CacheScanInterval: time.Minute,
 		CacheCleanAfter:   15 * time.Minute,

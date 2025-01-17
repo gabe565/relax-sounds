@@ -39,11 +39,6 @@ func (m *Mix) RegisterRoutes(e *core.ServeEvent) {
 }
 
 func (m *Mix) Mix() func(*core.RequestEvent) error {
-	const (
-		TotalSize = 1500 * 1024 * 1024
-		ChunkSize = 2 * 1024 * 1024
-	)
-
 	return func(e *core.RequestEvent) error {
 		var err error
 
@@ -137,13 +132,13 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		entry.Mu.Lock()
 		defer entry.Mu.Unlock()
 
-		chunkSize := ChunkSize + entry.Writer.Buffered()
+		chunkSize := int(m.conf.MixChunkSize) + entry.Writer.Buffered()
 		e.Response.Header().Set("Content-Length", strconv.Itoa(chunkSize))
 		e.Response.Header().Set("Content-Range", fmt.Sprintf(
 			"bytes %d-%d/%d",
 			firstByteIdx,
 			firstByteIdx+chunkSize-1,
-			TotalSize,
+			int(m.conf.MixTotalSize),
 		))
 		entry.Writer.SetWriter(e.Response)
 		defer entry.Writer.SetWriter(nil)
@@ -153,7 +148,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 
 		// Mux streams to encoder
 		n, err := encode.Encode(e.Request.Context(), entry)
-		entry.Transferred += int64(n)
+		entry.Transferred += config.Bytes(n)
 		if err != nil {
 			switch {
 			case errors.Is(err, io.ErrShortWrite):

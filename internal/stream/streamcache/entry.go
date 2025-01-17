@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
+	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/encoder"
 	"gabe565.com/relax-sounds/internal/stream"
 	"github.com/gopxl/beep/v2"
-	"github.com/labstack/gommon/bytes"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -42,7 +42,7 @@ type Entry struct {
 	Encoder encoder.Encoder
 
 	Mu          sync.Mutex
-	Transferred int64
+	Transferred config.Bytes
 	Created     time.Time
 	Accessed    time.Time
 }
@@ -74,7 +74,7 @@ func (e *Entry) Close() error {
 	e.Log.Info("Close stream",
 		"accessed", e.Accessed,
 		"age", time.Since(e.Created).Round(100*time.Millisecond).String(),
-		"transferred", bytes.Format(e.Transferred),
+		"transferred", e.Transferred,
 	)
 
 	activeStreamMetrics.Dec()
