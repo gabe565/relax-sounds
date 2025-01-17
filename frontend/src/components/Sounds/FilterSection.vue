@@ -16,6 +16,8 @@
         item-title="name"
         item-value="name"
         :return-object="false"
+        :menu-icon="DropdownIcon"
+        :clear-icon="CloseIcon"
       >
         <template #item="{ props, item }">
           <v-list-item v-bind="props" :title="item.raw.name">
@@ -35,6 +37,8 @@
 import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
+import DropdownIcon from "~icons/material-symbols/arrow-drop-down-rounded";
+import CloseIcon from "~icons/material-symbols/close-rounded";
 import SearchIcon from "~icons/material-symbols/search-rounded";
 import { getTags } from "@/data/tags";
 import { useFiltersStore } from "@/plugins/store/filters";
