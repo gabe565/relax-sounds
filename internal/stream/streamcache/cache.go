@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"gabe565.com/relax-sounds/internal/config"
+	"gabe565.com/utils/must"
+	"github.com/pocketbase/pocketbase"
 )
 
 type Cache struct {
@@ -19,8 +21,7 @@ func New(conf *config.Config) *Cache {
 		conf:    conf,
 		entries: make(map[string]*Entry),
 	}
-	cache.close = cache.beginCleanupCron()
-
+	must.Must(cache.RegisterCron(conf.App, ""))
 	return cache
 }
 
@@ -72,22 +73,10 @@ func (a *Cache) Close() {
 	a.cleanup(0)
 }
 
-func (a *Cache) beginCleanupCron() chan<- struct{} {
-	closer := make(chan struct{})
-	go func() {
-		ticker := time.NewTicker(a.conf.CacheScanInterval)
-
-		for {
-			select {
-			case <-closer:
-				ticker.Stop()
-				return
-			case <-ticker.C:
-				a.cleanup(a.conf.CacheCleanAfter)
-			}
-		}
-	}()
-	return closer
+func (a *Cache) RegisterCron(app *pocketbase.PocketBase, id string) error {
+	return app.Cron().Add("mixStreamCleanup"+id, "* * * * *", func() {
+		a.cleanup(a.conf.CacheCleanAfter)
+	})
 }
 
 func (a *Cache) cleanup(since time.Duration) {
@@ -99,9 +88,11 @@ func (a *Cache) cleanup(since time.Duration) {
 			if time.Since(entry.Accessed) >= since {
 				delete(a.entries, id)
 				entry.Mu.Unlock()
-				if err := entry.Close(); err != nil {
-					entry.Log.Error("Failed to cleanup stream", "error", err)
-				}
+				go func() {
+					if err := entry.Close(); err != nil {
+						entry.Log.Error("Failed to cleanup stream", "error", err)
+					}
+				}()
 			} else {
 				entry.Mu.Unlock()
 			}
