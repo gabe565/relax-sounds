@@ -9,8 +9,7 @@ const (
 	FlagMixTotalSize    = "mix-total-size"
 	FlagMixChunkSize    = "mix-chunk-size"
 
-	FlagCacheScanInterval = "cache-scan-interval"
-	FlagCacheCleanAfter   = "cache-clean-after"
+	FlagCacheCleanAfter = "cache-clean-after"
 
 	FlagMetricsEnabled = "metrics-enabled"
 	FlagMetricsAddress = "metrics-address"
@@ -30,7 +29,6 @@ func (c *Config) RegisterFlags() *Config {
 	fs.Var(&c.MixTotalSize, FlagMixTotalSize, "Total size of a mix stream")
 	fs.Var(&c.MixChunkSize, FlagMixChunkSize, "Size of each HTTP response from the mix endpoint")
 
-	fs.DurationVar(&c.CacheScanInterval, FlagCacheScanInterval, c.CacheScanInterval, "Interval to search stream cache for old entries")
 	fs.DurationVar(&c.CacheCleanAfter, FlagCacheCleanAfter, c.CacheCleanAfter, "How old a cache entry must be before it is cleaned")
 
 	fs.BoolVar(&c.MetricsEnabled, FlagMetricsEnabled, c.MetricsEnabled, "Enables Prometheus metrics API")

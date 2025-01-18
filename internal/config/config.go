@@ -16,8 +16,7 @@ type Config struct {
 	MixTotalSize    Bytes
 	MixChunkSize    Bytes
 
-	CacheScanInterval time.Duration
-	CacheCleanAfter   time.Duration
+	CacheCleanAfter time.Duration
 
 	MetricsEnabled bool
 	MetricsAddress string
@@ -37,8 +36,7 @@ func New(app *pocketbase.PocketBase) *Config {
 		MixTotalSize:    1.5 * 1024 * 1024 * 1024,
 		MixChunkSize:    2 * 1024 * 1024,
 
-		CacheScanInterval: time.Minute,
-		CacheCleanAfter:   15 * time.Minute,
+		CacheCleanAfter: 15 * time.Minute,
 
 		MetricsEnabled: true,
 		MetricsAddress: ":9090",
