@@ -11,7 +11,7 @@ require (
 	github.com/labstack/gommon v0.4.2
 	github.com/lmittmann/tint v1.0.6
 	github.com/mattn/go-isatty v0.0.20
-	github.com/pocketbase/pocketbase v0.24.3
+	github.com/pocketbase/pocketbase v0.24.4
 	github.com/prometheus/client_golang v1.20.5
 	github.com/samber/slog-multi v1.3.3
 	github.com/spf13/cobra v1.8.1
