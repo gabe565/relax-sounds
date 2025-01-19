@@ -240,10 +240,8 @@ export const usePlayerStore = defineStore("player", () => {
     soundsNotStopped.value.forEach((sound) => {
       stop({ sound, fade });
     });
-    if (remotePlayerController) {
-      updateCast();
-    }
     if (!local && castConnected.value) {
+      updateCast();
       currentName.value = null;
     }
   };
