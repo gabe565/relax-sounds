@@ -109,8 +109,11 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		e.Response.Header().Set("Connection", "Keep-Alive")
 		e.Response.Header().Set("Content-Type", fileType.ContentType())
 
+		var hasRangeHeader bool
 		var firstByteIdx int
 		if rangeHeader := e.Request.Header.Get("Range"); rangeHeader != "" {
+			hasRangeHeader = true
+
 			unit, ranges, found := strings.Cut(rangeHeader, "=")
 			// Error if no `=`, invalid unit, or multipart range
 			if !found || unit != "bytes" || strings.ContainsRune(ranges, ',') {
@@ -134,28 +137,32 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		defer entry.Mu.Unlock()
 
 		chunkSize := int(m.conf.MixChunkSize) + entry.Writer.Buffered()
-		e.Response.Header().Set("Content-Length", strconv.Itoa(chunkSize))
 		e.Response.Header().Set("Content-Range", fmt.Sprintf(
 			"bytes %d-%d/%d",
 			firstByteIdx,
 			firstByteIdx+chunkSize-1,
 			int(m.conf.MixTotalSize),
 		))
-		entry.Writer.SetWriter(e.Response)
-		defer entry.Writer.SetWriter(nil)
-		entry.Writer.Limit = chunkSize
 
 		e.Response.WriteHeader(http.StatusPartialContent)
 
-		// Mux streams to encoder
-		if err := encode.Encode(e.Request.Context(), entry); err != nil {
-			switch {
-			case errors.Is(err, context.Canceled):
-			case errors.Is(err, io.ErrShortWrite):
-			case errors.Is(err, syscall.EPIPE):
-			case errors.Is(err, syscall.ECONNRESET):
-			default:
-				return apis.NewApiError(http.StatusInternalServerError, "", err)
+		if hasRangeHeader {
+			e.Response.Header().Set("Content-Length", strconv.Itoa(chunkSize))
+			entry.Writer.Limit = chunkSize
+
+			entry.Writer.SetWriter(e.Response)
+			defer entry.Writer.SetWriter(nil)
+
+			// Mux streams to encoder
+			if err := encode.Encode(e.Request.Context(), entry); err != nil {
+				switch {
+				case errors.Is(err, context.Canceled):
+				case errors.Is(err, io.ErrShortWrite):
+				case errors.Is(err, syscall.EPIPE):
+				case errors.Is(err, syscall.ECONNRESET):
+				default:
+					return apis.NewApiError(http.StatusInternalServerError, "", err)
+				}
 			}
 		}
 		return nil
