@@ -53,7 +53,19 @@ export const usePlayerStore = defineStore("player", () => {
 
   const soundById = (id) => sounds.value.find((sound) => sound.id === id);
 
-  const play = ({ sound, fade = 250 }) => {
+  const play = async ({ sound, fade = 250 }) => {
+    if (!castConnected.value && sound.isUnloaded) {
+      try {
+        await sound.load();
+      } catch (err) {
+        console.error(err);
+        toast.error(`Failed to load ${sound.name}:\n${err}`);
+        return;
+      }
+    }
+    if (sound.isPaused) {
+      fade = false;
+    }
     sound.play(!castConnected.value, fade);
   };
 
@@ -157,19 +169,7 @@ export const usePlayerStore = defineStore("player", () => {
     if (sound.state === SoundState.PLAYING) {
       stop({ sound, fade });
     } else {
-      if (!castConnected.value && sound.isUnloaded) {
-        try {
-          await sound.load();
-        } catch (err) {
-          console.error(err);
-          toast.error(`Failed to load ${sound.name}:\n${err}`);
-          return;
-        }
-      }
-      if (sound.isPaused) {
-        fade = false;
-      }
-      play({ sound, fade });
+      await play({ sound, fade });
     }
     currentName.value = null;
     if (!local && castConnected.value) {
@@ -181,19 +181,7 @@ export const usePlayerStore = defineStore("player", () => {
     if (sound.state === SoundState.PLAYING) {
       pause({ sound, fade });
     } else {
-      if (!castConnected.value && sound.isUnloaded) {
-        try {
-          await sound.load();
-        } catch (err) {
-          console.error(err);
-          toast.error(`Failed to load ${sound.name}:\n${err}`);
-          return;
-        }
-      }
-      if (sound.isPaused) {
-        fade = false;
-      }
-      play({ sound, fade });
+      await play({ sound, fade });
     }
     currentName.value = null;
     if (!local && castConnected.value) {
@@ -218,16 +206,7 @@ export const usePlayerStore = defineStore("player", () => {
         if (newState === SoundState.PAUSED) {
           pause({ sound });
         } else {
-          if (!castConnected.value && sound.isUnloaded) {
-            try {
-              await sound.load();
-            } catch (err) {
-              console.error(err);
-              toast.error(`Failed to load ${sound.name}:\n${err}`);
-              return;
-            }
-          }
-          play({ sound, fade: 0 });
+          await play({ sound, fade: 0 });
         }
       }),
     );
