@@ -172,7 +172,7 @@ export const usePlayerStore = defineStore("player", () => {
       play({ sound, fade });
     }
     currentName.value = null;
-    if (!local && castConnected) {
+    if (!local && castConnected.value) {
       updateCast();
     }
   };
@@ -196,7 +196,7 @@ export const usePlayerStore = defineStore("player", () => {
       play({ sound, fade });
     }
     currentName.value = null;
-    if (!local && castConnected) {
+    if (!local && castConnected.value) {
       updateCast();
     }
   };
@@ -205,7 +205,7 @@ export const usePlayerStore = defineStore("player", () => {
     soundsPlaying.value.forEach((sound) => {
       pause({ sound });
     });
-    if (!local && castConnected && remotePlayerController) {
+    if (!local && castConnected.value && remotePlayerController) {
       remotePlayerController.playOrPause();
     }
   };
@@ -231,7 +231,7 @@ export const usePlayerStore = defineStore("player", () => {
         }
       }),
     );
-    if (!local && castConnected && remotePlayerController) {
+    if (!local && castConnected.value && remotePlayerController) {
       remotePlayerController.playOrPause();
     }
   };
@@ -243,7 +243,7 @@ export const usePlayerStore = defineStore("player", () => {
     if (remotePlayerController) {
       updateCast();
     }
-    if (!local && castConnected) {
+    if (!local && castConnected.value) {
       currentName.value = null;
     }
   };
