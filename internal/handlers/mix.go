@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -34,8 +35,10 @@ type Mix struct {
 }
 
 func (m *Mix) RegisterRoutes(e *core.ServeEvent) {
-	e.Router.GET("/api/mix/{uuid}/{query}", m.Mix())
-	e.Router.DELETE("/api/mix/{uuid}", m.Stop())
+	g := e.Router.Group("/api/mix")
+	g.Bind(apis.SkipSuccessActivityLog())
+	g.GET("/{uuid}/{query}", m.Mix())
+	g.DELETE("/{uuid}", m.Stop())
 }
 
 func (m *Mix) Mix() func(*core.RequestEvent) error {
@@ -147,6 +150,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		// Mux streams to encoder
 		if err := encode.Encode(e.Request.Context(), entry); err != nil {
 			switch {
+			case errors.Is(err, context.Canceled):
 			case errors.Is(err, io.ErrShortWrite):
 			case errors.Is(err, syscall.EPIPE):
 			case errors.Is(err, syscall.ECONNRESET):
