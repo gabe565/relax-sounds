@@ -110,7 +110,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		e.Response.Header().Set("Content-Type", fileType.ContentType())
 
 		var hasRangeHeader bool
-		var firstByteIdx int
+		var chunkStart, chunkEnd int
 		if rangeHeader := e.Request.Header.Get("Range"); rangeHeader != "" {
 			hasRangeHeader = true
 
@@ -127,9 +127,10 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			}
 
 			// Convert to int
-			if firstByteIdx, err = strconv.Atoi(first); err != nil {
+			if chunkStart, err = strconv.Atoi(first); err != nil {
 				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "", nil)
 			}
+			chunkEnd = chunkStart
 		}
 
 		// Ensure a single stream isn't fetched in parallel
@@ -137,17 +138,17 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		defer entry.Mu.Unlock()
 
 		chunkSize := int(m.conf.MixChunkSize) + entry.Writer.Buffered()
+		if hasRangeHeader {
+			chunkEnd = chunkStart + chunkSize - 1
+		}
 		e.Response.Header().Set("Content-Range", fmt.Sprintf(
-			"bytes %d-%d/%d",
-			firstByteIdx,
-			firstByteIdx+chunkSize-1,
-			int(m.conf.MixTotalSize),
+			"bytes %d-%d/%d", chunkStart, chunkEnd, int(m.conf.MixTotalSize),
 		))
 
 		e.Response.WriteHeader(http.StatusPartialContent)
 
 		if hasRangeHeader {
-			if firstByteIdx == 0 && entry.Writer.TotalWritten() != 0 {
+			if chunkStart == 0 && entry.Writer.TotalWritten() != 0 {
 				for _, s := range entry.Streams {
 					_ = s.Closer.Seek(0)
 				}
