@@ -11,7 +11,7 @@ import (
 
 type Streamer struct {
 	Streamer beep.Streamer
-	Closer   beep.StreamCloser
+	Closer   beep.StreamSeekCloser
 }
 
 func (s Streamer) Close() error {

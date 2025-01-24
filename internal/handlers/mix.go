@@ -147,6 +147,12 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		e.Response.WriteHeader(http.StatusPartialContent)
 
 		if hasRangeHeader {
+			if firstByteIdx == 0 && entry.Writer.TotalWritten() != 0 {
+				for _, s := range entry.Streams {
+					_ = s.Closer.Seek(0)
+				}
+			}
+
 			e.Response.Header().Set("Content-Length", strconv.Itoa(chunkSize))
 			entry.Writer.Limit = chunkSize
 
