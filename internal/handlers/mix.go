@@ -3,7 +3,6 @@ package handlers
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -141,9 +140,9 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		if hasRangeHeader {
 			chunkEnd = chunkStart + chunkSize - 1
 		}
-		e.Response.Header().Set("Content-Range", fmt.Sprintf(
-			"bytes %d-%d/%d", chunkStart, chunkEnd, int(m.conf.MixTotalSize),
-		))
+		e.Response.Header().Set("Content-Range",
+			"bytes "+strconv.Itoa(chunkStart)+"-"+strconv.Itoa(chunkEnd)+"/"+strconv.Itoa(int(m.conf.MixTotalSize)),
+		)
 
 		e.Response.WriteHeader(http.StatusPartialContent)
 
