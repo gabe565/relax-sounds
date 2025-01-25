@@ -17,7 +17,7 @@ type Cache struct {
 	conf    *config.Config
 	id      int64
 	entries map[string]*Entry
-	mu      sync.Mutex
+	mu      sync.RWMutex
 }
 
 func New(conf *config.Config) *Cache {
@@ -32,40 +32,38 @@ func New(conf *config.Config) *Cache {
 
 func (a *Cache) Set(id string, entry *Entry) error {
 	a.mu.Lock()
-	defer a.mu.Unlock()
-	var err error
-	if prev, ok := a.entries[id]; ok {
-		// Same window is changing streams
-		// Destroy old stream then recreate
-		err = prev.Close()
-	}
+	prev, ok := a.entries[id]
 	a.entries[id] = entry
-	return err
+	a.mu.Unlock()
+
+	if ok {
+		return prev.Close()
+	}
+	return nil
 }
 
 func (a *Cache) Get(id string) (*Entry, bool) {
-	a.mu.Lock()
-	defer a.mu.Unlock()
+	a.mu.RLock()
+	defer a.mu.RUnlock()
 	entry, found := a.entries[id]
 	return entry, found
 }
 
 func (a *Cache) Delete(id string) error {
 	a.mu.Lock()
-	defer a.mu.Unlock()
-	var err error
-	if prev, ok := a.entries[id]; ok {
-		// Same window is changing streams
-		// Destroy old stream then recreate
-		err = prev.Close()
-	}
+	prev, ok := a.entries[id]
 	delete(a.entries, id)
-	return err
+	a.mu.Unlock()
+
+	if ok {
+		return prev.Close()
+	}
+	return nil
 }
 
 func (a *Cache) Has(id string) bool {
-	a.mu.Lock()
-	defer a.mu.Unlock()
+	a.mu.RLock()
+	defer a.mu.RUnlock()
 	_, ok := a.entries[id]
 	return ok
 }
@@ -97,15 +95,13 @@ func (a *Cache) cleanup(cleanupAge time.Duration) {
 		if entry.Mu.TryLock() {
 			if time.Since(entry.Accessed) >= cleanupAge {
 				delete(a.entries, id)
-				entry.Mu.Unlock()
 				go func() {
 					if err := entry.Close(); err != nil {
 						entry.Log.Error("Failed to cleanup stream", "error", err)
 					}
 				}()
-			} else {
-				entry.Mu.Unlock()
 			}
+			entry.Mu.Unlock()
 		}
 	}
 }

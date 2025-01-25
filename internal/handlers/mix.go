@@ -60,8 +60,13 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 		}
 
 		uuid := e.Request.PathValue("uuid")
+
 		entry, found := m.cache.Get(uuid)
-		if !found || entry.Preset != presetEncoded {
+		if found && entry.Preset == presetEncoded {
+			// Ensure a single stream isn't fetched in parallel
+			entry.Mu.Lock()
+			defer entry.Mu.Unlock()
+		} else {
 			// Entry was not found
 			presetDecoded, err := preset.FromParam(presetEncoded)
 			switch {
@@ -74,9 +79,15 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			}
 
 			entry = streamcache.NewEntry(e, presetEncoded, uuid)
+
+			// Ensure a single stream isn't fetched in parallel
+			entry.Mu.Lock()
+			defer entry.Mu.Unlock()
+
 			if err := m.cache.Set(uuid, entry); err != nil {
 				entry.Log.Error("Failed to close stream", "error", err)
 			}
+
 			entry.Log.Info("Create stream")
 
 			// Set up stream
@@ -132,10 +143,6 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 			}
 			chunkEnd = chunkStart
 		}
-
-		// Ensure a single stream isn't fetched in parallel
-		entry.Mu.Lock()
-		defer entry.Mu.Unlock()
 
 		chunkSize := int(m.conf.MixChunkSize) + entry.Writer.Buffered()
 		if hasRangeHeader {
