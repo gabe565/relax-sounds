@@ -43,6 +43,8 @@ func (a *Cache) Get(id string) (*Entry, bool) {
 	defer a.mu.Unlock()
 	entry, found := a.entries[id]
 	if found {
+		entry.Mu.Lock()
+		defer entry.Mu.Unlock()
 		entry.Accessed = time.Now()
 	}
 	return entry, found
