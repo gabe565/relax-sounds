@@ -141,7 +141,6 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo
 			if chunkStart, err = strconv.Atoi(first); err != nil {
 				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "", nil)
 			}
-			chunkEnd = chunkStart
 		}
 
 		chunkSize := int(m.conf.MixChunkSize) + entry.Writer.Buffered()
