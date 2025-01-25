@@ -147,6 +147,10 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo
 		chunkSize := int(m.conf.MixChunkSize) + entry.Writer.Buffered()
 		if hasRangeHeader {
 			chunkEnd = chunkStart + chunkSize - 1
+			if chunkEnd >= int(m.conf.MixTotalSize) {
+				chunkEnd = int(m.conf.MixTotalSize) - 1
+				chunkSize = chunkEnd - chunkStart + 1
+			}
 		}
 		e.Response.Header().Set("Content-Range",
 			"bytes "+strconv.Itoa(chunkStart)+"-"+strconv.Itoa(chunkEnd)+"/"+strconv.Itoa(int(m.conf.MixTotalSize)),
