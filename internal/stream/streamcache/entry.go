@@ -77,7 +77,9 @@ func (e *Entry) Close() error {
 
 	activeStreamMetrics.Dec()
 
-	e.Writer.Close()
+	if e.Writer != nil {
+		e.Writer.Close()
+	}
 	defer func() {
 		e.Writer = nil
 	}()
