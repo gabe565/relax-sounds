@@ -72,7 +72,7 @@ func (e *Entry) Close() error {
 	e.Log.Info("Close stream",
 		"accessed", e.Accessed,
 		"age", time.Since(e.Created).Round(100*time.Millisecond).String(),
-		"transferred", config.Bytes(e.Writer.TotalWritten()),
+		"transferred", config.Bytes(e.Writer.TotalWritten()).String(),
 	)
 
 	activeStreamMetrics.Dec()
