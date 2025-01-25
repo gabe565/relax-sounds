@@ -41,7 +41,7 @@ func (m *Mix) RegisterRoutes(e *core.ServeEvent) {
 	g.DELETE("/{uuid}", m.Stop())
 }
 
-func (m *Mix) Mix() func(*core.RequestEvent) error {
+func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo
 	return func(e *core.RequestEvent) error {
 		var err error
 
@@ -154,7 +154,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 
 		e.Response.WriteHeader(http.StatusPartialContent)
 
-		if hasRangeHeader {
+		if hasRangeHeader && e.Request.Method == http.MethodGet {
 			if chunkStart == 0 && entry.Writer.TotalWritten() != 0 {
 				for _, s := range entry.Streams {
 					_ = s.Closer.Seek(0)
