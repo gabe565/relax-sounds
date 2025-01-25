@@ -89,13 +89,13 @@ func (a *Cache) RegisterCron() error {
 	})
 }
 
-func (a *Cache) cleanup(since time.Duration) {
+func (a *Cache) cleanup(cleanupAge time.Duration) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 
 	for id, entry := range a.entries {
 		if entry.Mu.TryLock() {
-			if time.Since(entry.Accessed) >= since {
+			if time.Since(entry.Accessed) >= cleanupAge {
 				delete(a.entries, id)
 				entry.Mu.Unlock()
 				go func() {
