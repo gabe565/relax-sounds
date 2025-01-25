@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+	"time"
 
 	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/encoder/encode"
@@ -171,6 +172,8 @@ func (m *Mix) Mix() func(*core.RequestEvent) error {
 				}
 			}
 		}
+
+		entry.Accessed = time.Now()
 		return nil
 	}
 }
