@@ -3,6 +3,7 @@ package config
 import (
 	"time"
 
+	"gabe565.com/utils/bytefmt"
 	"github.com/pocketbase/pocketbase"
 )
 
@@ -33,8 +34,8 @@ func New(app *pocketbase.PocketBase) *Config {
 		MaxPresetLen:    20,
 		ResampleQuality: 3,
 		LAMEQuality:     2,
-		MixTotalSize:    1.5 * 1024 * 1024 * 1024,
-		MixChunkSize:    2 * 1024 * 1024,
+		MixTotalSize:    1.5 * bytefmt.GiB,
+		MixChunkSize:    2 * bytefmt.MiB,
 
 		CacheCleanAfter: 15 * time.Minute,
 

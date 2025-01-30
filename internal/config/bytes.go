@@ -1,15 +1,17 @@
 package config
 
-import "github.com/labstack/gommon/bytes"
+import (
+	"gabe565.com/utils/bytefmt"
+)
 
 type Bytes int64
 
 func (b Bytes) String() string {
-	return bytes.Format(int64(b))
+	return bytefmt.Encode(int64(b))
 }
 
 func (b *Bytes) Set(s string) error {
-	v, err := bytes.Parse(s)
+	v, err := bytefmt.Decode(s)
 	if err != nil {
 		return err
 	}

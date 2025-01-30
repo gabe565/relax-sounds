@@ -5,10 +5,9 @@ go 1.23.5
 replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-20240905080442-af2ac686306e
 
 require (
-	gabe565.com/utils v0.0.0-20241213205714-152b8de1d3fe
+	gabe565.com/utils v0.0.0-20250130072635-ed882da6fcdd
 	github.com/dmarkham/enumer v1.5.10
 	github.com/gopxl/beep/v2 v2.1.1
-	github.com/labstack/gommon v0.4.2
 	github.com/lmittmann/tint v1.0.6
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.24.3
