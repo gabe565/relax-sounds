@@ -13,8 +13,8 @@ cloud.google.com/go/storage v1.43.0 h1:CcxnSohZwizt4LCzQHWvBf1/kvtHUn7gk9QERXPyX
 cloud.google.com/go/storage v1.43.0/go.mod h1:ajvxEa7WmZS1PxvKRq4bq0tFT3vMd502JwstCcYv0Q0=
 filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
 filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
-gabe565.com/utils v0.0.0-20250130072635-ed882da6fcdd h1:ATna6PCWp9+8x3hBC/miPdvu4uVDRj4zw2QYNW6OaV0=
-gabe565.com/utils v0.0.0-20250130072635-ed882da6fcdd/go.mod h1:6FZP8OeF0k3hTsPClyDGEILcBg3hvGcSp4u4pmjMusY=
+gabe565.com/utils v0.0.0-20250203234441-e4ad4d8bf6fc h1:n7llDREvlK4/Rfq7vNTnznEaP4tqeccOTLXN0GrzesM=
+gabe565.com/utils v0.0.0-20250203234441-e4ad4d8bf6fc/go.mod h1:YToTsVeo5RGbu9+B16PDW+Ls2dViRvAl2A9legFFHNw=
 github.com/AlecAivazis/survey/v2 v2.3.7 h1:6I/u8FvytdGsgonrYsVn2t8t4QiRnh6QSTqkkhIiSjQ=
 github.com/AlecAivazis/survey/v2 v2.3.7/go.mod h1:xUTIdE4KCOIjsBAE1JYsUPoCqYdZ1reCfTwbto0Fduo=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
