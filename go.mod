@@ -5,7 +5,7 @@ go 1.23.5
 replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-20240905080442-af2ac686306e
 
 require (
-	gabe565.com/utils v0.0.0-20250130072635-ed882da6fcdd
+	gabe565.com/utils v0.0.0-20250302063333-ede73b14282c
 	github.com/dmarkham/enumer v1.5.10
 	github.com/gopxl/beep/v2 v2.1.1
 	github.com/lmittmann/tint v1.0.6
@@ -13,8 +13,8 @@ require (
 	github.com/pocketbase/pocketbase v0.24.3
 	github.com/prometheus/client_golang v1.20.5
 	github.com/samber/slog-multi v1.3.3
-	github.com/spf13/cobra v1.8.1
-	github.com/spf13/pflag v1.0.5
+	github.com/spf13/cobra v1.9.1
+	github.com/spf13/pflag v1.0.6
 	github.com/stretchr/testify v1.10.0
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
 	k8s.io/utils v0.0.0-20241210054802-24370beab758
