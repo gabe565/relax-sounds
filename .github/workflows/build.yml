@@ -86,7 +86,7 @@ jobs:
           context: .
           pull: true
           push: ${{ github.secret_source == 'Actions' && steps.meta.outputs.tags != '' }}
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
