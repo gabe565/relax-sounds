@@ -1,17 +1,17 @@
-FROM --platform=$BUILDPLATFORM golang:1.23.5-alpine AS go-dependencies
+FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.6.1 AS xx
+
+FROM --platform=$BUILDPLATFORM golang:1.23.5-alpine AS go-builder
 WORKDIR /app
+
+RUN apk add --no-cache clang
+
+COPY --from=xx / /
 
 COPY go.mod go.sum ./
 RUN go mod download
 
-
-FROM golang:1.23.5-alpine AS go-builder
-WORKDIR /app
-
-RUN apk add --no-cache g++ gcc lame-dev
-
-COPY --from=go-dependencies /app /app
-COPY --from=go-dependencies /go /go
+ARG TARGETPLATFORM
+RUN xx-apk add --no-cache gcc g++ lame-dev
 
 COPY *.go ./
 COPY migrations/ migrations/
@@ -19,7 +19,7 @@ COPY internal/ internal/
 
 ARG CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 RUN --mount=type=cache,target=/root/.cache \
-    go build -ldflags="-w -s" -trimpath -tags disable_automigrate,grpcnotrace
+  CGO_ENABLED=1 xx-go build -ldflags='-w -s' -trimpath -tags disable_automigrate,grpcnotrace
 
 
 FROM --platform=$BUILDPLATFORM node:22-alpine AS node-builder
