@@ -9,6 +9,7 @@ import (
 	"github.com/gopxl/beep/v2"
 )
 
+//nolint:recvcheck
 type Streams []Streamer
 
 func (stream Streams) Close() error {

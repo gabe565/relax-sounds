@@ -33,7 +33,7 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 			return nil
 		}
 
-		record := e.Model.(*core.Record)
+		record := e.Model.(*core.Record) //nolint:errcheck
 
 		files := record.GetStringSlice("file")
 		exts := make([]string, 0, len(files))

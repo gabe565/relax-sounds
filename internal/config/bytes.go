@@ -4,6 +4,7 @@ import (
 	"gabe565.com/utils/bytefmt"
 )
 
+//nolint:recvcheck
 type Bytes int64
 
 func (b Bytes) String() string {

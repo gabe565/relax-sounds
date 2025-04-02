@@ -8,12 +8,10 @@ type Track struct {
 }
 
 func (t Track) GetVolume() float64 {
-	switch {
-	case t.Volume == nil:
+	if t.Volume == nil {
 		return 1
-	default:
-		return *t.Volume
 	}
+	return *t.Volume
 }
 
 func (t Track) GetRate() float64 {

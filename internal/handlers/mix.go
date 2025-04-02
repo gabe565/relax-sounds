@@ -41,7 +41,7 @@ func (m *Mix) RegisterRoutes(e *core.ServeEvent) {
 	g.DELETE("/{uuid}", m.Stop())
 }
 
-func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo
+func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,cyclop,funlen
 	return func(e *core.RequestEvent) error {
 		var err error
 
