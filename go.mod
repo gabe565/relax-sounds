@@ -8,7 +8,7 @@ require (
 	gabe565.com/utils v0.0.0-20250130072635-ed882da6fcdd
 	github.com/dmarkham/enumer v1.5.10
 	github.com/gopxl/beep/v2 v2.1.1
-	github.com/lmittmann/tint v1.0.6
+	github.com/lmittmann/tint v1.0.7
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.26.6
 	github.com/prometheus/client_golang v1.21.1
