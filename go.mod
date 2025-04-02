@@ -5,7 +5,7 @@ go 1.24.2
 replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-20240905080442-af2ac686306e
 
 require (
-	gabe565.com/utils v0.0.0-20250130072635-ed882da6fcdd
+	gabe565.com/utils v0.0.0-20250302063333-ede73b14282c
 	github.com/dmarkham/enumer v1.5.10
 	github.com/gopxl/beep/v2 v2.1.1
 	github.com/lmittmann/tint v1.0.7
