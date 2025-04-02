@@ -6,7 +6,6 @@ replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-2024090508
 
 require (
 	gabe565.com/utils v0.0.0-20250302063333-ede73b14282c
-	github.com/dmarkham/enumer v1.5.10
 	github.com/gopxl/beep/v2 v2.1.1
 	github.com/lmittmann/tint v1.0.7
 	github.com/mattn/go-isatty v0.0.20
@@ -26,6 +25,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
+	github.com/dmarkham/enumer v1.5.11 // indirect
 	github.com/domodwyer/mailyak/v3 v3.6.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fatih/color v1.18.0 // indirect
@@ -73,3 +73,5 @@ require (
 	modernc.org/memory v1.8.2 // indirect
 	modernc.org/sqlite v1.36.3 // indirect
 )
+
+tool github.com/dmarkham/enumer

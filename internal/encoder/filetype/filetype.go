@@ -11,7 +11,7 @@ import (
 	"github.com/gopxl/beep/v2"
 )
 
-//go:generate go run github.com/dmarkham/enumer -type FileType -transform lower -output filetype_string.go
+//go:generate go tool enumer -type FileType -transform lower -output filetype_string.go
 
 type FileType uint8
 
