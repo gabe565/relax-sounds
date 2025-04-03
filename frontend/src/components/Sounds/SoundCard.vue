@@ -21,7 +21,7 @@
             <icon :icon="sound.icon" />
           </v-icon>
         </template>
-        {{ sound.name }}
+        <span class="text-truncate">{{ sound.name }}</span>
       </v-btn>
     </template>
 
@@ -61,5 +61,9 @@ const playStop = async () => {
 <style scoped>
 .v-btn {
   letter-spacing: initial;
+  padding: 0 6px 0 24px;
+}
+:deep(.v-btn__content) {
+  min-width: 0;
 }
 </style>
