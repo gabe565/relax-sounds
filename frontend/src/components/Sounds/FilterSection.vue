@@ -6,7 +6,7 @@
         v-model="filters.filters.word"
         label="Search"
         :prepend-inner-icon="SearchIcon"
-        :loading="loading"
+        :loading="isLoading"
         clearable
         persistent-clear
         rounded
@@ -14,6 +14,7 @@
         hide-details
         hide-no-data
         :items="tags"
+        :error="error"
         item-title="name"
         item-value="name"
         :return-object="false"
@@ -41,8 +42,8 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { useMagicKeys } from "@vueuse/core";
-import { onMounted, ref, watch } from "vue";
+import { useAsyncState, useMagicKeys } from "@vueuse/core";
+import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import DropdownIcon from "~icons/material-symbols/arrow-drop-down-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
@@ -50,9 +51,7 @@ import SearchIcon from "~icons/material-symbols/search-rounded";
 import { getTags } from "@/data/tags";
 import { useFiltersStore } from "@/plugins/store/filters";
 
-const combobox = ref(null);
-const tags = ref([]);
-const loading = ref(true);
+const combobox = ref();
 const toast = useToast();
 const filters = useFiltersStore();
 
@@ -63,15 +62,14 @@ watch([Cmd_K, Ctrl_K], (v) => {
   }
 });
 
-onMounted(async () => {
-  try {
-    tags.value = await getTags();
-  } catch (err) {
-    console.error(err);
-    toast.error(`Failed to fetch tags:\n${err}`);
-  } finally {
-    loading.value = false;
-  }
+const {
+  state: tags,
+  isLoading,
+  error,
+} = useAsyncState(getTags, [], {
+  onError(e) {
+    toast.error(`Failed to fetch tags:\n${e}`);
+  },
 });
 </script>
 

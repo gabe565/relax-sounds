@@ -7,7 +7,7 @@
       </template>
     </template>
 
-    <v-overlay v-if="loading" v-model="loading" class="align-center justify-center" persistent>
+    <v-overlay v-model="isLoading" class="align-center justify-center" persistent>
       <v-progress-circular color="primary" indeterminate size="64" />
     </v-overlay>
 
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { useAsyncState } from "@vueuse/core";
 import { useToast } from "vue-toastification";
 import { useDisplay } from "vuetify";
 import InfoIcon from "~icons/material-symbols/info-rounded";
@@ -46,17 +46,11 @@ import { usePlayerStore } from "@/plugins/store/player";
 
 const { smAndDown: isMobile } = useDisplay();
 const player = usePlayerStore();
-const loading = ref(true);
 const toast = useToast();
 
-onMounted(async () => {
-  try {
-    await usePlayerStore().initSounds();
-  } catch (err) {
-    console.error(err);
-    toast.error(`Failed to fetch sounds:\n${err}`);
-  } finally {
-    loading.value = false;
-  }
+const { isLoading } = useAsyncState(player.initSounds, undefined, {
+  onError(e) {
+    toast.error(`Failed to fetch sounds:\n${e}`);
+  },
 });
 </script>

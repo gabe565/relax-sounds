@@ -9,6 +9,10 @@
       <v-list-item title="Remove All" :prepend-icon="RemoveAllIcon" @click="removeAll" />
     </template>
 
+    <v-overlay v-model="isLoading" class="align-center justify-center" persistent>
+      <v-progress-circular color="primary" indeterminate size="64" />
+    </v-overlay>
+
     <v-row>
       <v-fade-transition group leave-absolute>
         <template v-if="presets.active.length !== 0">
@@ -25,8 +29,8 @@
 </template>
 
 <script setup>
+import { useAsyncState } from "@vueuse/core";
 import { saveAs } from "file-saver/src/FileSaver";
-import { onMounted } from "vue";
 import { useToast } from "vue-toastification";
 import { useDisplay } from "vuetify";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
@@ -57,20 +61,18 @@ const exportPresets = () => {
   toast.success(`Downloaded ${presets.presets.length} presets.`, { icon: BackupIcon });
 };
 
-onMounted(async () => {
-  try {
+const { isLoading } = useAsyncState(
+  async () => {
     await usePlayerStore().initSounds();
-  } catch (err) {
-    console.error(err);
-    toast.error(`Failed to fetch sounds:\n${err}`);
-  }
-  try {
     await usePresetsStore().migrate();
-  } catch (err) {
-    console.error(err);
-    toast.error(`Failed to migrate presets:\n${err}`);
-  }
-});
+  },
+  undefined,
+  {
+    onError(e) {
+      toast.error(`Failed to load: ${e}`);
+    },
+  },
+);
 
 const removeAll = () => {
   presets.hideAll();
