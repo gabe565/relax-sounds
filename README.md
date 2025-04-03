@@ -2,6 +2,7 @@
 
 <img src="./frontend/src/assets/icon-purple.svg" alt="Relax Sounds Icon" align="right" width="90">
 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/gabe565/relax-sounds)](https://github.com/gabe565/relax-sounds/releases)
 [![Build](https://github.com/gabe565/relax-sounds/actions/workflows/build.yml/badge.svg)](https://github.com/gabe565/relax-sounds/actions/workflows/build.yml)
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/gabe565)](https://artifacthub.io/packages/helm/gabe565/relax-sounds)
 
