@@ -1,11 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      :rail="preferences.shrinkLeftPanel"
-      color="accent"
-      width="200"
-      mobile-breakpoint="md"
-    >
+    <v-navigation-drawer :rail="preferences.shrinkLeftPanel" color="accent" width="200">
       <template #prepend>
         <v-list v-if="!isMobile">
           <v-list-item to="/" title="Relax Sounds" :prepend-icon="AppIcon" />

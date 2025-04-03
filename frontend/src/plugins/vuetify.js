@@ -3,6 +3,12 @@ import "vuetify/styles";
 import colors from "vuetify/util/colors";
 
 export default createVuetify({
+  display: {
+    mobileBreakpoint: "md",
+    thresholds: {
+      md: 760,
+    },
+  },
   theme: {
     defaultTheme: "dark",
     themes: {
