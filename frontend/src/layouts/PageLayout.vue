@@ -43,3 +43,9 @@ import { DebugEnabled } from "@/config/debug";
 
 const { smAndDown: isMobile } = useDisplay();
 </script>
+
+<style lang="css" scoped>
+header.v-toolbar {
+  transition: none;
+}
+</style>
