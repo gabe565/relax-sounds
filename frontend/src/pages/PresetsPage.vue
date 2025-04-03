@@ -1,7 +1,10 @@
 <template>
   <page-layout>
     <template #actions>
-      <cast-icon v-if="isMobile" button />
+      <template v-if="isMobile">
+        <save-preset button />
+        <cast-icon button />
+      </template>
     </template>
     <template #menu>
       <v-list-item title="Backup" :prepend-icon="BackupIcon" @click="exportPresets" />
@@ -37,6 +40,7 @@ import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
 import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
 import InfoIcon from "~icons/material-symbols/info-rounded";
 import CastIcon from "@/components/NavButtons/CastIcon.vue";
+import SavePreset from "@/components/NavButtons/SavePreset.vue";
 import RemoveAllToast from "@/components/Presets/Actions/RemoveAllToast.vue";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "@/components/Presets/PresetCard.vue";
