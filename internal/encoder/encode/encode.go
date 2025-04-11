@@ -43,9 +43,9 @@ func Encode(ctx context.Context, entry *streamcache.Entry) error {
 			return nil
 		}
 
-		buf := buffer
+		var offset int
 		for _, sample := range samples[:n] {
-			buf = buf[encode(buf, sample):]
+			offset += encode(buffer[offset:], sample)
 		}
 
 		if ctx.Err() != nil {
