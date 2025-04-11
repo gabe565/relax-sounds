@@ -12,7 +12,7 @@ func NewProxyWriter() *ProxyWriter {
 
 type ProxyWriter struct {
 	Limit int
-	Err   error
+	err   error
 
 	w            io.Writer
 	buf          bytes.Buffer
@@ -20,20 +20,21 @@ type ProxyWriter struct {
 	totalWritten int64
 }
 
+// Write proxies writes to the provided io.Writer up to a limit.
+//
+// The limit is enforced to prevent overflowing the previously sent Content-Length.
+//
+// Write always returns a nil error to avoid halting the encoder on failure.
+// Check Err to inspect write errors.
+//
+//nolint:nilerr
 func (b *ProxyWriter) Write(p []byte) (int, error) {
 	if b.w == nil {
 		return len(p), nil
 	}
 
-	if b.buf.Len() != 0 {
-		// Flush buffer
-		n, err := io.CopyN(b.w, &b.buf, int64(b.Limit-b.written))
-		b.written += int(n)
-		b.totalWritten += n
-		if err != nil && !errors.Is(err, io.EOF) {
-			b.Err = err
-			return len(p), nil
-		}
+	if err := b.flush(); err != nil {
+		return len(p), nil
 	}
 
 	if available := b.Limit - b.written; len(p) > available {
@@ -41,9 +42,9 @@ func (b *ProxyWriter) Write(p []byte) (int, error) {
 		b.written += n
 		b.totalWritten += int64(n)
 		if err != nil {
-			b.Err = err
+			b.err = err
 		} else {
-			b.Err = io.ErrShortWrite
+			b.err = io.ErrShortWrite
 		}
 		b.buf.Write(p[n:])
 		return len(p), nil
@@ -53,21 +54,41 @@ func (b *ProxyWriter) Write(p []byte) (int, error) {
 	b.written += n
 	b.totalWritten += int64(n)
 	if err != nil {
-		b.Err = err
+		b.err = err
 	} else if b.written >= b.Limit {
-		b.Err = io.ErrShortWrite
+		b.err = io.ErrShortWrite
 	}
 
 	return len(p), nil
+}
+
+func (b *ProxyWriter) flush() error {
+	if b.buf.Len() == 0 {
+		return nil
+	}
+	n, err := io.CopyN(b.w, &b.buf, int64(b.Limit-b.written))
+	b.written += int(n)
+	b.totalWritten += n
+	if err != nil && !errors.Is(err, io.EOF) {
+		b.err = err
+		return err
+	}
+	return nil
+}
+
+func (b *ProxyWriter) Err() error {
+	return b.err
 }
 
 func (b *ProxyWriter) Buffered() int {
 	return b.buf.Len()
 }
 
+// SetWriter sets the output writer for the current chunk.
+// Buffered overflow data from previous writes is preserved.
 func (b *ProxyWriter) SetWriter(w io.Writer) {
 	b.w = w
-	b.Err = nil
+	b.err = nil
 	b.written = 0
 }
 
@@ -77,7 +98,7 @@ func (b *ProxyWriter) TotalWritten() int64 {
 
 func (b *ProxyWriter) Close() {
 	b.buf.Reset()
-	b.Err = nil
+	b.err = nil
 	b.w = nil
 	b.written = 0
 }

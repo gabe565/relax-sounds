@@ -56,8 +56,8 @@ func Encode(ctx context.Context, entry *streamcache.Entry) error {
 		switch {
 		case err != nil:
 			return err
-		case entry.Writer.Err != nil:
-			return entry.Writer.Err
+		case entry.Writer.Err() != nil:
+			return entry.Writer.Err()
 		}
 	}
 }
