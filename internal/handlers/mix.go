@@ -68,6 +68,10 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			defer entry.Mu.Unlock()
 		} else {
 			// Entry was not found
+			if err := m.cache.Delete(uuid); err != nil {
+				entry.Log.Error("Failed to close stream", "error", err)
+			}
+
 			presetDecoded, err := preset.FromParam(presetEncoded)
 			switch {
 			case err != nil:
@@ -83,10 +87,6 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			// Ensure a single stream isn't fetched in parallel
 			entry.Mu.Lock()
 			defer entry.Mu.Unlock()
-
-			if err := m.cache.Set(uuid, entry); err != nil {
-				entry.Log.Error("Failed to close stream", "error", err)
-			}
 
 			entry.Log.Info("Create stream")
 
@@ -114,6 +114,8 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			if err != nil {
 				panic(err)
 			}
+
+			m.cache.Set(uuid, entry)
 		}
 
 		e.Response.Header().Set("Accept-Ranges", "bytes")

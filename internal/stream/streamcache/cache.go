@@ -30,16 +30,10 @@ func New(conf *config.Config) *Cache {
 	return cache
 }
 
-func (a *Cache) Set(id string, entry *Entry) error {
+func (a *Cache) Set(id string, entry *Entry) {
 	a.mu.Lock()
-	prev, ok := a.entries[id]
 	a.entries[id] = entry
 	a.mu.Unlock()
-
-	if ok {
-		return prev.Close()
-	}
-	return nil
 }
 
 func (a *Cache) Get(id string) (*Entry, bool) {
