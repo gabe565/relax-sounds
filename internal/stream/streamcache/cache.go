@@ -49,10 +49,13 @@ func (a *Cache) Delete(id string) error {
 	delete(a.entries, id)
 	a.mu.Unlock()
 
+	var err error
 	if ok {
-		return prev.Close()
+		if err = prev.Close(); err != nil {
+			prev.Log.Error("Failed to close stream", "error", err)
+		}
 	}
-	return nil
+	return err
 }
 
 func (a *Cache) Has(id string) bool {

@@ -68,9 +68,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			defer entry.Mu.Unlock()
 		} else {
 			// Entry was not found
-			if err := m.cache.Delete(uuid); err != nil {
-				entry.Log.Error("Failed to close stream", "error", err)
-			}
+			_ = m.cache.Delete(uuid)
 
 			presetDecoded, err := preset.FromParam(presetEncoded)
 			switch {
