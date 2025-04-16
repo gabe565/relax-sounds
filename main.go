@@ -8,6 +8,7 @@ import (
 	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/debug"
 	"gabe565.com/relax-sounds/internal/handlers"
+	"gabe565.com/relax-sounds/internal/handlers/mix"
 	"gabe565.com/relax-sounds/internal/hooks"
 	"gabe565.com/relax-sounds/internal/metrics"
 	_ "gabe565.com/relax-sounds/migrations"
@@ -50,7 +51,7 @@ func main() {
 		})
 
 		e.Router.GET("/{path...}", handlers.StaticHandler(conf))
-		handlers.NewMix(conf).RegisterRoutes(e)
+		mix.NewMix(conf).RegisterRoutes(e)
 		metrics.Serve(conf)
 		debug.Serve(conf)
 

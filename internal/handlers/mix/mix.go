@@ -1,4 +1,4 @@
-package handlers
+package mix
 
 import (
 	"context"
@@ -12,11 +12,10 @@ import (
 	"time"
 
 	"gabe565.com/relax-sounds/internal/config"
-	"gabe565.com/relax-sounds/internal/encoder/encode"
-	"gabe565.com/relax-sounds/internal/encoder/filetype"
-	"gabe565.com/relax-sounds/internal/preset"
-	"gabe565.com/relax-sounds/internal/stream"
-	"gabe565.com/relax-sounds/internal/stream/streamcache"
+	"gabe565.com/relax-sounds/internal/handlers/mix/cache"
+	"gabe565.com/relax-sounds/internal/handlers/mix/encoder"
+	"gabe565.com/relax-sounds/internal/handlers/mix/preset"
+	"gabe565.com/relax-sounds/internal/handlers/mix/stream"
 	"github.com/gopxl/beep/v2"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -25,13 +24,13 @@ import (
 func NewMix(conf *config.Config) *Mix {
 	return &Mix{
 		conf:  conf,
-		cache: streamcache.New(conf),
+		cache: cache.New(conf),
 	}
 }
 
 type Mix struct {
 	conf  *config.Config
-	cache *streamcache.Cache
+	cache *cache.Cache
 }
 
 func (m *Mix) RegisterRoutes(e *core.ServeEvent) {
@@ -48,13 +47,13 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 		query := e.Request.PathValue("query")
 
 		// Preset parameter
-		presetEncoded, fileTypeStr, found := strings.Cut(query, ".")
+		preStr, formatStr, found := strings.Cut(query, ".")
 		if !found {
 			return apis.NewNotFoundError("Missing file format", nil)
 		}
 
 		// File type parameter
-		fileType, err := filetype.FileTypeString(fileTypeStr)
+		format, err := encoder.FormatString(formatStr)
 		if err != nil {
 			return apis.NewNotFoundError("Invalid file format", nil)
 		}
@@ -62,7 +61,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 		uuid := e.Request.PathValue("uuid")
 
 		entry, found := m.cache.Get(uuid)
-		if found && entry.Preset == presetEncoded {
+		if found && entry.Preset == preStr {
 			// Ensure a single stream isn't fetched in parallel
 			entry.Mu.Lock()
 			defer entry.Mu.Unlock()
@@ -70,18 +69,18 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			// Entry was not found
 			_ = m.cache.Delete(uuid)
 
-			presetDecoded, err := preset.FromParam(presetEncoded)
+			pre, err := preset.FromParam(preStr)
 			switch {
 			case err != nil:
 				return apis.NewBadRequestError("Failed to decode preset", nil)
-			case len(presetDecoded) == 0:
+			case len(pre) == 0:
 				return apis.NewNotFoundError("Minimum preset length is 1 sound", nil)
-			case len(presetDecoded) > m.conf.MaxPresetLen:
+			case len(pre) > m.conf.MaxPresetLen:
 				return apis.NewBadRequestError("Maximum preset length is "+strconv.Itoa(m.conf.MaxPresetLen)+" sounds", nil)
 			}
 
 			var success bool
-			entry = streamcache.NewEntry(e, presetEncoded, uuid)
+			entry = cache.NewEntry(e, preStr, uuid)
 			defer func() {
 				if !success {
 					_ = entry.Close()
@@ -95,7 +94,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			entry.Log.Info("Create stream")
 
 			// Set up stream
-			if entry.Streams, err = stream.New(m.conf, presetDecoded); err != nil {
+			if entry.Streams, err = stream.New(m.conf, pre); err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					// Invalid file ID returns 404
 					return apis.NewNotFoundError("Sounds not found", nil)
@@ -112,8 +111,8 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 				Precision:   2,
 			}
 
-			// Get current filetype encoder
-			entry.Encoder, err = fileType.NewEncoder(m.conf, entry.Writer, entry.Format)
+			// Get current encoder
+			entry.Encoder, err = format.NewEncoder(m.conf, entry.Writer, entry.Format)
 			if err != nil {
 				return apis.NewInternalServerError("Failed to create encoder", nil)
 			}
@@ -124,7 +123,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 
 		e.Response.Header().Set("Accept-Ranges", "bytes")
 		e.Response.Header().Set("Connection", "Keep-Alive")
-		e.Response.Header().Set("Content-Type", fileType.ContentType())
+		e.Response.Header().Set("Content-Type", format.ContentType())
 
 		var hasRangeHeader bool
 		var chunkStart, chunkEnd int
@@ -182,7 +181,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			defer entry.Writer.SetWriter(nil)
 
 			// Mux streams to encoder
-			if err := encode.Encode(e.Request.Context(), entry); err != nil {
+			if err := Encode(e.Request.Context(), entry); err != nil {
 				switch {
 				case errors.Is(err, context.Canceled):
 				case errors.Is(err, io.ErrShortWrite):

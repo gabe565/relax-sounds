@@ -1,11 +1,11 @@
-package encode
+package mix
 
 import (
 	"context"
 	"errors"
 	"fmt"
 
-	"gabe565.com/relax-sounds/internal/stream/streamcache"
+	"gabe565.com/relax-sounds/internal/handlers/mix/cache"
 )
 
 var (
@@ -16,7 +16,7 @@ var (
 // Encode writes a duration of the audio stream in PCM format.
 //
 // Format precision must be 1 or 2 bytes.
-func Encode(ctx context.Context, entry *streamcache.Entry) error {
+func Encode(ctx context.Context, entry *cache.Entry) error {
 	if entry.Format.NumChannels <= 0 {
 		return fmt.Errorf("%w: %d", ErrInvalidChannels, entry.Format.NumChannels)
 	}

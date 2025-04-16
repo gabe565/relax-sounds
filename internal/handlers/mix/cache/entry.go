@@ -1,4 +1,4 @@
-package streamcache
+package cache
 
 import (
 	"errors"
@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"gabe565.com/relax-sounds/internal/config"
-	"gabe565.com/relax-sounds/internal/encoder"
-	"gabe565.com/relax-sounds/internal/stream"
+	"gabe565.com/relax-sounds/internal/handlers/mix/encoder"
+	"gabe565.com/relax-sounds/internal/handlers/mix/stream"
 	"github.com/gopxl/beep/v2"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/prometheus/client_golang/prometheus"

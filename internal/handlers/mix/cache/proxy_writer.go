@@ -1,4 +1,4 @@
-package streamcache
+package cache
 
 import (
 	"bytes"

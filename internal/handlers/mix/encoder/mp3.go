@@ -1,4 +1,4 @@
-package mp3
+package encoder
 
 import (
 	"io"
@@ -8,23 +8,23 @@ import (
 	"github.com/viert/go-lame"
 )
 
-type Encoder struct {
+type MP3 struct {
 	Encoder *lame.Encoder
 	Format  beep.Format
 }
 
-func (e Encoder) Write(p []byte) (int, error) {
+func (e MP3) Write(p []byte) (int, error) {
 	return e.Encoder.Write(p)
 }
 
-func (e Encoder) Close() error {
+func (e MP3) Close() error {
 	e.Encoder.Close()
 	return nil
 }
 
 func NewEncoder(conf *config.Config, w io.Writer, format beep.Format) (io.WriteCloser, error) {
 	var err error
-	enc := Encoder{
+	enc := MP3{
 		Encoder: lame.NewEncoder(w),
 		Format:  format,
 	}

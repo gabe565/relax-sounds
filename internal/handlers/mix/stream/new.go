@@ -8,7 +8,7 @@ import (
 	"slices"
 
 	"gabe565.com/relax-sounds/internal/config"
-	"gabe565.com/relax-sounds/internal/preset"
+	"gabe565.com/relax-sounds/internal/handlers/mix/preset"
 	"github.com/pocketbase/pocketbase/core"
 )
 

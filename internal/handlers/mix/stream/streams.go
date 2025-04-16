@@ -5,7 +5,7 @@ import (
 	"io/fs"
 
 	"gabe565.com/relax-sounds/internal/config"
-	"gabe565.com/relax-sounds/internal/preset"
+	"gabe565.com/relax-sounds/internal/handlers/mix/preset"
 	"github.com/gopxl/beep/v2"
 )
 
