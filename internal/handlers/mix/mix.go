@@ -117,7 +117,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 				return apis.NewInternalServerError("Failed to create encoder", nil)
 			}
 
-			m.cache.Set(uuid, entry)
+			_ = m.cache.Set(uuid, entry)
 			success = true
 		}
 

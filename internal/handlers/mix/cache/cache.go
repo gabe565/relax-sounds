@@ -30,10 +30,19 @@ func New(conf *config.Config) *Cache {
 	return cache
 }
 
-func (a *Cache) Set(id string, entry *Entry) {
+func (a *Cache) Set(id string, entry *Entry) error {
 	a.mu.Lock()
+	prev, ok := a.entries[id]
 	a.entries[id] = entry
 	a.mu.Unlock()
+
+	var err error
+	if ok {
+		if err = prev.Close(); err != nil {
+			prev.Log.Error("Failed to close stream", "error", err)
+		}
+	}
+	return err
 }
 
 func (a *Cache) Get(id string) (*Entry, bool) {
