@@ -80,7 +80,13 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 				return apis.NewBadRequestError("Maximum preset length is "+strconv.Itoa(m.conf.MaxPresetLen)+" sounds", nil)
 			}
 
+			var success bool
 			entry = streamcache.NewEntry(e, presetEncoded, uuid)
+			defer func() {
+				if !success {
+					_ = entry.Close()
+				}
+			}()
 
 			// Ensure a single stream isn't fetched in parallel
 			entry.Mu.Lock()
@@ -113,6 +119,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			}
 
 			m.cache.Set(uuid, entry)
+			success = true
 		}
 
 		e.Response.Header().Set("Accept-Ranges", "bytes")
