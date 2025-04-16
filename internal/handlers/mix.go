@@ -50,13 +50,13 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 		// Preset parameter
 		presetEncoded, fileTypeStr, found := strings.Cut(query, ".")
 		if !found {
-			return apis.NewNotFoundError("", nil)
+			return apis.NewNotFoundError("Missing file format", nil)
 		}
 
 		// File type parameter
 		fileType, err := filetype.FileTypeString(fileTypeStr)
 		if err != nil {
-			return apis.NewNotFoundError("", nil)
+			return apis.NewNotFoundError("Invalid file format", nil)
 		}
 
 		uuid := e.Request.PathValue("uuid")
@@ -73,11 +73,11 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			presetDecoded, err := preset.FromParam(presetEncoded)
 			switch {
 			case err != nil:
-				return apis.NewBadRequestError("", nil)
+				return apis.NewBadRequestError("Failed to decode preset", nil)
 			case len(presetDecoded) == 0:
-				return apis.NewNotFoundError("", nil)
+				return apis.NewNotFoundError("Minimum preset length is 1 sound", nil)
 			case len(presetDecoded) > m.conf.MaxPresetLen:
-				return apis.NewBadRequestError("Maximum preset length is "+strconv.Itoa(m.conf.MaxPresetLen)+" sounds.", nil)
+				return apis.NewBadRequestError("Maximum preset length is "+strconv.Itoa(m.conf.MaxPresetLen)+" sounds", nil)
 			}
 
 			entry = streamcache.NewEntry(e, presetEncoded, uuid)
@@ -92,13 +92,12 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			if entry.Streams, err = stream.New(m.conf, presetDecoded); err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					// Invalid file ID returns 404
-					return apis.NewNotFoundError("", nil)
+					return apis.NewNotFoundError("Sounds not found", nil)
 				}
-				// Other errors return 500
-				panic(err)
+				return apis.NewInternalServerError("Failed to create stream", nil)
 			}
 			if len(entry.Streams) == 0 {
-				return apis.NewNotFoundError("", nil)
+				return apis.NewNotFoundError("Minimum preset length is 1 sound", nil)
 			}
 
 			entry.Format = beep.Format{
@@ -110,7 +109,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			// Get current filetype encoder
 			entry.Encoder, err = fileType.NewEncoder(m.conf, entry.Writer, entry.Format)
 			if err != nil {
-				panic(err)
+				return apis.NewInternalServerError("Failed to create encoder", nil)
 			}
 
 			m.cache.Set(uuid, entry)
@@ -128,23 +127,23 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			unit, ranges, found := strings.Cut(rangeHeader, "=")
 			// Error if no `=`, invalid unit, or multipart range
 			if !found || unit != "bytes" || strings.ContainsRune(ranges, ',') {
-				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "", nil)
+				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "Missing unit", nil)
 			}
 
 			first, last, found := strings.Cut(ranges, "-")
 			// Error if `-` missing or end byte requested
 			if !found || last != "" {
-				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "", nil)
+				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "Missing chunk end byte", nil)
 			}
 
 			// Convert to int
 			if chunkStart, err = strconv.Atoi(first); err != nil {
-				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "", nil)
+				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "Failed to parse chunk start", nil)
 			}
 
 			// Error if too large
 			if chunkStart >= int(m.conf.MixTotalSize) {
-				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "", nil)
+				return apis.NewApiError(http.StatusRequestedRangeNotSatisfiable, "Range too large", nil)
 			}
 		}
 
@@ -183,7 +182,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 				case errors.Is(err, syscall.EPIPE):
 				case errors.Is(err, syscall.ECONNRESET):
 				default:
-					return apis.NewApiError(http.StatusInternalServerError, "", err)
+					return apis.NewInternalServerError("Failed to encode", nil)
 				}
 			}
 		}
@@ -197,11 +196,11 @@ func (m *Mix) Stop() func(*core.RequestEvent) error {
 	return func(e *core.RequestEvent) error {
 		uuid := e.Request.PathValue("uuid")
 		if !m.cache.Has(uuid) {
-			return apis.NewNotFoundError("no active stream for uuid", nil)
+			return apis.NewNotFoundError("No active stream for UUID", nil)
 		}
 
 		if err := m.cache.Delete(uuid); err != nil {
-			return apis.NewApiError(http.StatusInternalServerError, "failed to close cache entry", nil)
+			return apis.NewInternalServerError("Failed to close cache entry", nil)
 		}
 
 		e.Response.WriteHeader(http.StatusNoContent)
