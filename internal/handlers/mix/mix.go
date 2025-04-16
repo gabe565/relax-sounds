@@ -67,7 +67,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			defer entry.Mu.Unlock()
 		} else {
 			// Entry was not found
-			_ = m.cache.Delete(uuid)
+			_, _ = m.cache.Delete(uuid)
 
 			pre, err := preset.FromParam(preStr)
 			switch {
@@ -201,12 +201,14 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 func (m *Mix) Stop() func(*core.RequestEvent) error {
 	return func(e *core.RequestEvent) error {
 		uuid := e.Request.PathValue("uuid")
-		if !m.cache.Has(uuid) {
-			return apis.NewNotFoundError("No active stream for UUID", nil)
+
+		found, err := m.cache.Delete(uuid)
+		if err != nil {
+			return apis.NewInternalServerError("Failed to close cache entry", nil)
 		}
 
-		if err := m.cache.Delete(uuid); err != nil {
-			return apis.NewInternalServerError("Failed to close cache entry", nil)
+		if !found {
+			return apis.NewNotFoundError("No active stream for UUID", nil)
 		}
 
 		e.Response.WriteHeader(http.StatusNoContent)

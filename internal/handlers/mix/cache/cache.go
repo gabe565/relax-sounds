@@ -52,7 +52,7 @@ func (a *Cache) Get(id string) (*Entry, bool) {
 	return entry, found
 }
 
-func (a *Cache) Delete(id string) error {
+func (a *Cache) Delete(id string) (bool, error) {
 	a.mu.Lock()
 	prev, ok := a.entries[id]
 	delete(a.entries, id)
@@ -64,7 +64,7 @@ func (a *Cache) Delete(id string) error {
 			prev.Log.Error("Failed to close stream", "error", err)
 		}
 	}
-	return err
+	return ok, err
 }
 
 func (a *Cache) Has(id string) bool {
