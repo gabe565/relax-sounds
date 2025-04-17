@@ -1,0 +1,51 @@
+services:
+  api:
+    image: ghcr.io/gabe565/relax-sounds
+    build:
+      context: .
+      target: api-only
+    depends_on:
+      valkey:
+        condition: service_started
+    ports:
+      - 127.0.0.1:3000:80
+    volumes:
+      - ./pb_data:/data
+    read_only: true
+    develop:
+      watch:
+        - action: rebuild
+          path: ./go.mod
+        - action: rebuild
+          path: ./go.sum
+        - action: rebuild
+          path: ./main.go
+        - action: rebuild
+          path: ./internal
+        - action: rebuild
+          path: ./migrations
+
+  frontend:
+    image: ghcr.io/gabe565/relax-sounds-frontend
+    build:
+      context: .
+      target: frontend-deps
+    command:
+      - sh
+      - -c
+      - |
+        set -eux
+        npm install
+        exec npm run dev -- --host 0.0.0.0
+    environment:
+      VITE_API_ADDRESS: http://localhost:3000
+    ports:
+      - 127.0.0.1:5173:5173
+    volumes:
+      - ./frontend:/app
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend/package.json
+        - action: rebuild
+          path: ./frontend/package-lock.json

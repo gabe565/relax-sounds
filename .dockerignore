@@ -6,7 +6,7 @@
 .pre-commit-config.yaml
 Dockerfile
 pb_data/
-docker-compose.yml
+compose*.yaml
 frontend/README.md
 frontend/dist/
 frontend/node_modules/

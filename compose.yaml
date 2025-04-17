@@ -1,0 +1,8 @@
+services:
+  app:
+    image: ghcr.io/gabe565/relax-sounds
+    build: .
+    ports:
+      - 80:80
+    volumes:
+      - ./pb_data:/data
