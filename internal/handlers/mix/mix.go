@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"io"
+	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"strconv"
@@ -19,18 +21,37 @@ import (
 	"github.com/gopxl/beep/v2"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/valkey-io/valkey-go"
 )
 
-func NewMix(conf *config.Config) *Mix {
-	return &Mix{
-		conf:  conf,
-		cache: cache.New(conf),
+func NewMix(conf *config.Config) (*Mix, error) {
+	var v valkey.Client
+	if conf.ValkeyEnabled {
+		valkeyAddr := net.JoinHostPort(conf.ValkeyHost, strconv.Itoa(int(conf.ValkeyPort)))
+		var err error
+		v, err = valkey.NewClient(valkey.ClientOption{
+			InitAddress:           []string{valkeyAddr},
+			Password:              conf.ValkeyPassword,
+			SelectDB:              conf.ValkeyDB,
+			DisableCache:          true,
+			DisableAutoPipelining: true,
+		})
+		if err != nil {
+			return nil, err
+		}
 	}
+
+	return &Mix{
+		conf:   conf,
+		cache:  cache.New(conf),
+		valkey: v,
+	}, nil
 }
 
 type Mix struct {
-	conf  *config.Config
-	cache *cache.Cache
+	conf   *config.Config
+	cache  *cache.Cache
+	valkey valkey.Client
 }
 
 func (m *Mix) RegisterRoutes(e *core.ServeEvent) {
@@ -80,7 +101,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			}
 
 			var success bool
-			entry = cache.NewEntry(e, preStr, uuid)
+			entry = cache.NewEntry(e, uuid, preStr)
 			defer func() {
 				if !success {
 					_ = entry.Close()
@@ -168,9 +189,15 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 		e.Response.WriteHeader(http.StatusPartialContent)
 
 		if hasRangeHeader && e.Request.Method == http.MethodGet {
-			if chunkStart == 0 && entry.Writer.TotalWritten() != 0 {
-				for _, s := range entry.Streams {
-					_ = s.Closer.Seek(0)
+			if chunkStart == 0 {
+				if entry.Writer.TotalWritten() != 0 {
+					for _, s := range entry.Streams {
+						_ = s.Closer.Seek(0)
+					}
+				}
+			} else if m.valkey != nil {
+				if _, err := entry.LoadPositions(e.Request.Context(), m.valkey); err != nil {
+					slog.Warn("Failed to load positions", "error", err)
 				}
 			}
 
@@ -189,6 +216,12 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 				case errors.Is(err, syscall.ECONNRESET):
 				default:
 					return apis.NewInternalServerError("Failed to encode", nil)
+				}
+			}
+
+			if m.valkey != nil {
+				if err := entry.StorePositions(e.Request.Context(), m.valkey); err != nil {
+					slog.Warn("Failed to store positions", "error", err)
 				}
 			}
 		}

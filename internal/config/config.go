@@ -19,6 +19,12 @@ type Config struct {
 
 	CacheCleanAfter time.Duration
 
+	ValkeyEnabled  bool
+	ValkeyHost     string
+	ValkeyPort     uint16
+	ValkeyPassword string
+	ValkeyDB       int
+
 	MetricsEnabled bool
 	MetricsAddress string
 
@@ -38,6 +44,9 @@ func New(app *pocketbase.PocketBase) *Config {
 		MixChunkSize:    2 * bytefmt.MiB,
 
 		CacheCleanAfter: 15 * time.Minute,
+
+		ValkeyHost: "localhost",
+		ValkeyPort: 6379,
 
 		MetricsEnabled: true,
 		MetricsAddress: ":9090",

@@ -9,6 +9,12 @@ const (
 	FlagMixTotalSize    = "mix-total-size"
 	FlagMixChunkSize    = "mix-chunk-size"
 
+	FlagValkeyEnabled  = "valkey-enabled"
+	FlagValkeyHost     = "valkey-host"
+	FlagValkeyPort     = "valkey-port"
+	FlagValkeyPassword = "valkey-password"
+	FlagValkeyDB       = "valkey-db"
+
 	FlagCacheCleanAfter = "cache-clean-after"
 
 	FlagMetricsEnabled = "metrics-enabled"
@@ -34,6 +40,12 @@ func (c *Config) RegisterFlags() *Config {
 	fs.DurationVar(&c.CacheCleanAfter, FlagCacheCleanAfter, c.CacheCleanAfter,
 		"How old a cache entry must be before it is cleaned",
 	)
+
+	fs.BoolVar(&c.ValkeyEnabled, FlagValkeyEnabled, c.ValkeyEnabled, "Enables Valkey position cache")
+	fs.StringVar(&c.ValkeyHost, FlagValkeyHost, c.ValkeyHost, "Valkey host")
+	fs.Uint16Var(&c.ValkeyPort, FlagValkeyPort, c.ValkeyPort, "Valkey port")
+	fs.StringVar(&c.ValkeyPassword, FlagValkeyPassword, c.ValkeyPassword, "Valkey password")
+	fs.IntVar(&c.ValkeyDB, FlagValkeyDB, c.ValkeyDB, "Valkey database")
 
 	fs.BoolVar(&c.MetricsEnabled, FlagMetricsEnabled, c.MetricsEnabled, "Enables Prometheus metrics API")
 	fs.StringVar(&c.MetricsAddress, FlagMetricsAddress, c.MetricsAddress, "Prometheus metrics API listen address")

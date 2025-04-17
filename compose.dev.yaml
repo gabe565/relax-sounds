@@ -4,6 +4,9 @@ services:
     build:
       context: .
       target: api-only
+    environment:
+      RELAX_VALKEY_ENABLED: "true"
+      RELAX_VALKEY_HOST: valkey
     depends_on:
       valkey:
         condition: service_started
@@ -49,3 +52,8 @@ services:
           path: ./frontend/package.json
         - action: rebuild
           path: ./frontend/package-lock.json
+
+  valkey:
+    image: valkey/valkey:8-alpine
+    ports:
+      - 127.0.0.1:6379:6379

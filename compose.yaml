@@ -2,7 +2,15 @@ services:
   app:
     image: ghcr.io/gabe565/relax-sounds
     build: .
+    environment:
+      RELAX_VALKEY_ENABLED: "true"
+      RELAX_VALKEY_HOST: valkey
     ports:
       - 80:80
     volumes:
       - ./pb_data:/data
+
+  valkey:
+    image: valkey/valkey:8-alpine
+    ports:
+      - 127.0.0.1:6379:6379
