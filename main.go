@@ -50,8 +50,13 @@ func main() {
 			return e.Next()
 		})
 
+		m, err := mix.NewMix(conf)
+		if err != nil {
+			return err
+		}
+		m.RegisterRoutes(e)
+
 		e.Router.GET("/{path...}", handlers.StaticHandler(conf))
-		mix.NewMix(conf).RegisterRoutes(e)
 		metrics.Serve(conf)
 		debug.Serve(conf)
 
