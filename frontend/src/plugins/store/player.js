@@ -103,6 +103,7 @@ export const usePlayerStore = defineStore("player", () => {
 
           const mixUrl = await preset.mixUrlAs(Filetype.Mp3);
           const mediaInfo = new cast.media.MediaInfo(mixUrl, "music");
+          mediaInfo.streamType = cast.media.StreamType.LIVE;
           mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
           mediaInfo.metadata.title = currentName.value;
           if (!mediaInfo.metadata.title) {
