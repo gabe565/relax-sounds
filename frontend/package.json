@@ -31,7 +31,7 @@
     "register-service-worker": "1.7.2",
     "sass-embedded": "1.86.2",
     "unplugin-icons": "22.1.0",
-    "vite": "6.2.4",
+    "vite": "6.2.7",
     "vite-plugin-pwa": "1.0.0",
     "vite-plugin-vuetify": "2.1.0",
     "vue": "3.5.13",
