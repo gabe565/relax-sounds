@@ -18,7 +18,7 @@ jobs:
         with:
           packages: libmp3lame-dev
       - name: Lint
-        uses: golangci/golangci-lint-action@v7
+        uses: golangci/golangci-lint-action@v8
 
   backend-test:
     name: Backend Test
