@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.6.1 AS xx
 
-FROM --platform=$BUILDPLATFORM golang:1.24.2-alpine AS api-build
+FROM --platform=$BUILDPLATFORM golang:1.24.4-alpine AS api-build
 WORKDIR /app
 
 RUN apk add --no-cache clang
