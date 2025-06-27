@@ -50,6 +50,6 @@
     "eslint-plugin-vuetify": "2.5.2",
     "globals": "16.2.0",
     "prettier": "3.5.3",
-    "vue-eslint-parser": "10.1.1"
+    "vue-eslint-parser": "10.1.4"
   }
 }
