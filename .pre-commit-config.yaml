@@ -10,7 +10,7 @@ repos:
     hooks:
       - id: eslint
         name: eslint
-        entry: npm --prefix frontend run lint
+        entry: pnpm --prefix frontend run lint
         language: system
         files: '^frontend/src'
         types_or: [javascript, vue]

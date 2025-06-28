@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.12.4",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -37,7 +38,8 @@
     "vue": "3.5.17",
     "vue-router": "4.5.1",
     "vue-toastification": "2.0.0-rc.5",
-    "vuetify": "3.8.11"
+    "vuetify": "3.8.11",
+    "workbox-window": "7.3.0"
   },
   "devDependencies": {
     "@eslint/js": "9.29.0",

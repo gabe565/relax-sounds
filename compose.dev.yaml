@@ -38,8 +38,9 @@ services:
       - -c
       - |
         set -eux
-        npm install
-        exec npm run dev -- --host 0.0.0.0
+        corepack enable
+        pnpm install --frozen-lockfile
+        exec pnpm run dev -- --host 0.0.0.0
     environment:
       VITE_API_ADDRESS: http://localhost:3000
     ports:
