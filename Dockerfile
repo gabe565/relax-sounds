@@ -25,12 +25,16 @@ RUN --mount=type=cache,target=/root/.cache \
 FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-deps
 WORKDIR /app
 
-COPY frontend/package.json frontend/package-lock.json frontend/.npmrc ./
-RUN npm ci
+RUN corepack enable
+
+COPY frontend/package.json frontend/pnpm-*.yaml frontend/.npmrc ./
+RUN --mount=type=cache,id=pnpm,target=/root/.cache \
+  pnpm install --prod --frozen-lockfile
 
 FROM frontend-deps AS frontend-build
 COPY frontend/ ./
-RUN npm run build
+RUN --mount=type=cache,id=pnpm,target=/root/.cache \
+  pnpm run build
 
 
 FROM alpine:3.22.0 AS api-only
