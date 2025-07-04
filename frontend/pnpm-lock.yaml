@@ -19,7 +19,7 @@ importers:
         version: 1.0.11
       '@vitejs/plugin-vue':
         specifier: 6.0.0
-        version: 6.0.0(vite@6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)
+        version: 6.0.0(vite@7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)
       '@vueuse/core':
         specifier: 13.4.0
         version: 13.4.0(vue@3.5.17)
@@ -66,14 +66,14 @@ importers:
         specifier: 22.1.0
         version: 22.1.0(@vue/compiler-sfc@3.5.17)
       vite:
-        specifier: 6.3.5
-        version: 6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1)
+        specifier: 7.0.2
+        version: 7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1)
       vite-plugin-pwa:
         specifier: 1.0.0
-        version: 1.0.0(vite@6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(workbox-build@7.3.0)(workbox-window@7.3.0)
+        version: 1.0.0(vite@7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(workbox-build@7.3.0)(workbox-window@7.3.0)
       vite-plugin-vuetify:
         specifier: 2.1.1
-        version: 2.1.1(vite@6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)(vuetify@3.8.11)
+        version: 2.1.1(vite@7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)(vuetify@3.8.11)
       vue:
         specifier: 3.5.17
         version: 3.5.17
@@ -2684,19 +2684,19 @@ packages:
       vue: ^3.0.0
       vuetify: ^3.0.0
 
-  vite@6.3.5:
-    resolution: {integrity: sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+  vite@7.0.2:
+    resolution: {integrity: sha512-hxdyZDY1CM6SNpKI4w4lcUc3Mtkd9ej4ECWVHSMrOdSinVc2zYOAppHeGc/hzmRo3pxM5blMzkuWHOJA/3NiFw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      '@types/node': ^20.19.0 || >=22.12.0
       jiti: '>=1.21.0'
-      less: '*'
+      less: ^4.0.0
       lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
+      sass: ^1.70.0
+      sass-embedded: ^1.70.0
+      stylus: '>=0.54.8'
+      sugarss: ^5.0.0
       terser: ^5.16.0
       tsx: ^4.8.1
       yaml: ^2.4.2
@@ -3902,10 +3902,10 @@ snapshots:
 
   '@types/web-bluetooth@0.0.21': {}
 
-  '@vitejs/plugin-vue@6.0.0(vite@6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)':
+  '@vitejs/plugin-vue@6.0.0(vite@7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.19
-      vite: 6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1)
+      vite: 7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1)
       vue: 3.5.17
 
   '@vue/compiler-core@3.5.17':
@@ -5614,29 +5614,29 @@ snapshots:
 
   varint@6.0.0: {}
 
-  vite-plugin-pwa@1.0.0(vite@6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(workbox-build@7.3.0)(workbox-window@7.3.0):
+  vite-plugin-pwa@1.0.0(vite@7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(workbox-build@7.3.0)(workbox-window@7.3.0):
     dependencies:
       debug: 4.4.1
       pretty-bytes: 6.1.1
       tinyglobby: 0.2.14
-      vite: 6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1)
+      vite: 7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1)
       workbox-build: 7.3.0
       workbox-window: 7.3.0
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-vuetify@2.1.1(vite@6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)(vuetify@3.8.11):
+  vite-plugin-vuetify@2.1.1(vite@7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)(vuetify@3.8.11):
     dependencies:
       '@vuetify/loader-shared': 2.1.0(vue@3.5.17)(vuetify@3.8.11)
       debug: 4.4.1
       upath: 2.0.1
-      vite: 6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1)
+      vite: 7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1)
       vue: 3.5.17
       vuetify: 3.8.11(vite-plugin-vuetify@2.1.1)(vue@3.5.17)
     transitivePeerDependencies:
       - supports-color
 
-  vite@6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1):
+  vite@7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1):
     dependencies:
       esbuild: 0.25.5
       fdir: 6.4.6(picomatch@4.0.2)
@@ -5684,7 +5684,7 @@ snapshots:
     dependencies:
       vue: 3.5.17
     optionalDependencies:
-      vite-plugin-vuetify: 2.1.1(vite@6.3.5(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)(vuetify@3.8.11)
+      vite-plugin-vuetify: 2.1.1(vite@7.0.2(jiti@2.4.2)(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.17)(vuetify@3.8.11)
 
   webidl-conversions@4.0.2: {}
 
