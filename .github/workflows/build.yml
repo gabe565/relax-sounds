@@ -20,7 +20,7 @@ jobs:
         with:
           go-version-file: go.mod
           cache: false
-      - uses: awalsh128/cache-apt-pkgs-action@5902b33ae29014e6ca012c5d8025d4346556bd40 # v1.4.3
+      - uses: awalsh128/cache-apt-pkgs-action@4c82c3ccdc1344ee11e9775dbdbdf43aa8a5614e # v1.5.1
         with:
           packages: libmp3lame-dev
       - name: Lint
@@ -38,7 +38,7 @@ jobs:
         uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
         with:
           go-version-file: go.mod
-      - uses: awalsh128/cache-apt-pkgs-action@5902b33ae29014e6ca012c5d8025d4346556bd40 # v1.4.3
+      - uses: awalsh128/cache-apt-pkgs-action@4c82c3ccdc1344ee11e9775dbdbdf43aa8a5614e # v1.5.1
         with:
           packages: libmp3lame-dev
       - name: Test
