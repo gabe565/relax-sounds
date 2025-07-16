@@ -37,7 +37,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.cache \
   pnpm run build
 
 
-FROM alpine:3.22.0 AS api-only
+FROM alpine:3.22.1 AS api-only
 LABEL org.opencontainers.image.source="https://github.com/gabe565/relax-sounds"
 WORKDIR /app
 
