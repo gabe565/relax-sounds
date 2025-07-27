@@ -42,10 +42,10 @@
     "workbox-window": "7.3.0"
   },
   "devDependencies": {
-    "@eslint/js": "9.29.0",
+    "@eslint/js": "9.32.0",
     "@trivago/prettier-plugin-sort-imports": "5.2.2",
     "@vue/eslint-config-prettier": "10.2.0",
-    "eslint": "9.29.0",
+    "eslint": "9.32.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.3",
     "eslint-plugin-vue": "10.3.0",
