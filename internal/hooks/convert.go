@@ -70,7 +70,7 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 			}
 			args = append(args, dstPath)
 
-			cmd := exec.Command("ffmpeg", args...)
+			cmd := exec.CommandContext(e.Context, "ffmpeg", args...)
 			b, err := cmd.CombinedOutput()
 			if err != nil {
 				err := fmt.Errorf("%w: %s", err, b)
