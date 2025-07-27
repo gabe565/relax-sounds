@@ -27,7 +27,7 @@
     "nanoid": "5.1.5",
     "p-limit": "6.2.0",
     "pinia": "3.0.3",
-    "pinia-plugin-persistedstate": "4.3.0",
+    "pinia-plugin-persistedstate": "4.4.1",
     "pocketbase": "0.26.1",
     "register-service-worker": "1.7.2",
     "sass-embedded": "1.89.2",
