@@ -72,8 +72,8 @@ importers:
         specifier: 1.0.2
         version: 1.0.2(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(workbox-build@7.3.0)(workbox-window@7.3.0)
       vite-plugin-vuetify:
-        specifier: 2.1.1
-        version: 2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2)
+        specifier: 2.1.2
+        version: 2.1.2(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2)
       vue:
         specifier: 3.5.18
         version: 3.5.18
@@ -85,7 +85,7 @@ importers:
         version: 2.0.0-rc.5(vue@3.5.18)
       vuetify:
         specifier: 3.9.2
-        version: 3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
+        version: 3.9.2(vite-plugin-vuetify@2.1.2)(vue@3.5.18)
       workbox-window:
         specifier: 7.3.0
         version: 7.3.0
@@ -1146,8 +1146,8 @@ packages:
   '@vue/shared@3.5.18':
     resolution: {integrity: sha512-cZy8Dq+uuIXbxCZpuLd2GJdeSO/lIzIspC2WtkqIpje5QyFbvLaI5wZtdUjLHjGZrlVX6GilejatWwVYYRc8tA==}
 
-  '@vuetify/loader-shared@2.1.0':
-    resolution: {integrity: sha512-dNE6Ceym9ijFsmJKB7YGW0cxs7xbYV8+1LjU6jd4P14xOt/ji4Igtgzt0rJFbxu+ZhAzqz853lhB0z8V9Dy9cQ==}
+  '@vuetify/loader-shared@2.1.1':
+    resolution: {integrity: sha512-jSZTzTYaoiv8iwonFCVZQ0YYX/M+Uyl4ng+C4egMJT0Hcmh9gIxJL89qfZICDeo3g0IhqrvipW2FFKKRDMtVcA==}
     peerDependencies:
       vue: ^3.0.0
       vuetify: ^3.0.0
@@ -2370,6 +2370,7 @@ packages:
   source-map@0.8.0-beta.0:
     resolution: {integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA==}
     engines: {node: '>= 8'}
+    deprecated: The work that was done in this beta branch won't be included in future versions
 
   sourcemap-codec@1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
@@ -2582,8 +2583,8 @@ packages:
       '@vite-pwa/assets-generator':
         optional: true
 
-  vite-plugin-vuetify@2.1.1:
-    resolution: {integrity: sha512-Pb7bKhQH8qPMzURmEGq2aIqCJkruFNsyf1NcrrtnjsOIkqJPMcBbiP0oJoO8/uAmyB5W/1JTbbUEsyXdMM0QHQ==}
+  vite-plugin-vuetify@2.1.2:
+    resolution: {integrity: sha512-I/wd6QS+DO6lHmuGoi1UTyvvBTQ2KDzQZ9oowJQEJ6OcjWfJnscYXx2ptm6S7fJSASuZT8jGRBL3LV4oS3LpaA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       vite: '>=5'
@@ -3877,11 +3878,11 @@ snapshots:
 
   '@vue/shared@3.5.18': {}
 
-  '@vuetify/loader-shared@2.1.0(vue@3.5.18)(vuetify@3.9.2)':
+  '@vuetify/loader-shared@2.1.1(vue@3.5.18)(vuetify@3.9.2)':
     dependencies:
       upath: 2.0.1
       vue: 3.5.18
-      vuetify: 3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
+      vuetify: 3.9.2(vite-plugin-vuetify@2.1.2)(vue@3.5.18)
 
   '@vueuse/core@13.5.0(vue@3.5.18)':
     dependencies:
@@ -4273,7 +4274,7 @@ snapshots:
       eslint: 9.32.0
       eslint-plugin-vue: 10.3.0(eslint@9.32.0)(vue-eslint-parser@10.2.0(eslint@9.32.0))
       requireindex: 1.2.0
-      vuetify: 3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
+      vuetify: 3.9.2(vite-plugin-vuetify@2.1.2)(vue@3.5.18)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - vue-eslint-parser
@@ -5386,14 +5387,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-vuetify@2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2):
+  vite-plugin-vuetify@2.1.2(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2):
     dependencies:
-      '@vuetify/loader-shared': 2.1.0(vue@3.5.18)(vuetify@3.9.2)
+      '@vuetify/loader-shared': 2.1.1(vue@3.5.18)(vuetify@3.9.2)
       debug: 4.4.1
       upath: 2.0.1
       vite: 7.0.6(sass-embedded@1.89.2)(terser@5.43.1)
       vue: 3.5.18
-      vuetify: 3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
+      vuetify: 3.9.2(vite-plugin-vuetify@2.1.2)(vue@3.5.18)
     transitivePeerDependencies:
       - supports-color
 
@@ -5439,11 +5440,11 @@ snapshots:
       '@vue/server-renderer': 3.5.18(vue@3.5.18)
       '@vue/shared': 3.5.18
 
-  vuetify@3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18):
+  vuetify@3.9.2(vite-plugin-vuetify@2.1.2)(vue@3.5.18):
     dependencies:
       vue: 3.5.18
     optionalDependencies:
-      vite-plugin-vuetify: 2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2)
+      vite-plugin-vuetify: 2.1.2(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2)
 
   webidl-conversions@4.0.2: {}
 
