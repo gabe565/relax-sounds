@@ -51,8 +51,8 @@ importers:
         specifier: 3.0.3
         version: 3.0.3(vue@3.5.18)
       pinia-plugin-persistedstate:
-        specifier: 4.4.1
-        version: 4.4.1(pinia@3.0.3(vue@3.5.18))
+        specifier: 4.5.0
+        version: 4.5.0(pinia@3.0.3(vue@3.5.18))
       pocketbase:
         specifier: 0.26.2
         version: 0.26.2
@@ -2049,8 +2049,8 @@ packages:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
     engines: {node: '>=12'}
 
-  pinia-plugin-persistedstate@4.4.1:
-    resolution: {integrity: sha512-lmuMPpXla2zJKjxEq34e1E9P9jxkWEhcVwwioCCE0izG45kkTOvQfCzvwhW3i38cvnaWC7T1eRdkd15Re59ldw==}
+  pinia-plugin-persistedstate@4.5.0:
+    resolution: {integrity: sha512-QTkP1xJVyCdr2I2p3AKUZM84/e+IS+HktRxKGAIuDzkyaKKV48mQcYkJFVVDuvTxlI5j6X3oZObpqoVB8JnWpw==}
     peerDependencies:
       '@nuxt/kit': '>=3.0.0'
       '@pinia/nuxt': '>=0.10.0'
@@ -2370,6 +2370,7 @@ packages:
   source-map@0.8.0-beta.0:
     resolution: {integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA==}
     engines: {node: '>= 8'}
+    deprecated: The work that was done in this beta branch won't be included in future versions
 
   sourcemap-codec@1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
@@ -4834,7 +4835,7 @@ snapshots:
 
   picomatch@4.0.3: {}
 
-  pinia-plugin-persistedstate@4.4.1(pinia@3.0.3(vue@3.5.18)):
+  pinia-plugin-persistedstate@4.5.0(pinia@3.0.3(vue@3.5.18)):
     dependencies:
       deep-pick-omit: 1.2.1
       defu: 6.1.4
