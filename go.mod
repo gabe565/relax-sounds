@@ -12,8 +12,8 @@ require (
 	github.com/pocketbase/pocketbase v0.29.0
 	github.com/prometheus/client_golang v1.22.0
 	github.com/samber/slog-multi v1.4.1
-	github.com/spf13/cobra v1.9.1
-	github.com/spf13/pflag v1.0.7
+	github.com/spf13/cobra v1.10.1
+	github.com/spf13/pflag v1.0.9
 	github.com/stretchr/testify v1.10.0
 	github.com/valkey-io/valkey-go v1.0.63
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
