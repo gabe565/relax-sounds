@@ -11,7 +11,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.29.0
 	github.com/prometheus/client_golang v1.22.0
-	github.com/samber/slog-multi v1.4.1
+	github.com/samber/slog-multi v1.5.0
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.7
 	github.com/stretchr/testify v1.10.0
