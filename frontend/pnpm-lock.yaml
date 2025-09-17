@@ -73,7 +73,7 @@ importers:
         version: 1.0.2(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(workbox-build@7.3.0)(workbox-window@7.3.0)
       vite-plugin-vuetify:
         specifier: 2.1.1
-        version: 2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2)
+        version: 2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.10.2)
       vue:
         specifier: 3.5.18
         version: 3.5.18
@@ -84,8 +84,8 @@ importers:
         specifier: 2.0.0-rc.5
         version: 2.0.0-rc.5(vue@3.5.18)
       vuetify:
-        specifier: 3.9.2
-        version: 3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
+        specifier: 3.10.2
+        version: 3.10.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
       workbox-window:
         specifier: 7.3.0
         version: 7.3.0
@@ -113,7 +113,7 @@ importers:
         version: 10.3.0(eslint@9.32.0)(vue-eslint-parser@10.2.0(eslint@9.32.0))
       eslint-plugin-vuetify:
         specifier: 2.5.2
-        version: 2.5.2(eslint@9.32.0)(vue-eslint-parser@10.2.0(eslint@9.32.0))(vuetify@3.9.2)
+        version: 2.5.2(eslint@9.32.0)(vue-eslint-parser@10.2.0(eslint@9.32.0))(vuetify@3.10.2)
       globals:
         specifier: 16.3.0
         version: 16.3.0
@@ -2370,6 +2370,7 @@ packages:
   source-map@0.8.0-beta.0:
     resolution: {integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA==}
     engines: {node: '>= 8'}
+    deprecated: The work that was done in this beta branch won't be included in future versions
 
   sourcemap-codec@1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
@@ -2654,9 +2655,8 @@ packages:
       typescript:
         optional: true
 
-  vuetify@3.9.2:
-    resolution: {integrity: sha512-Pax7YCgbE5SArY8CDM0A9dTVHnG1oU79eIBA+FEEg3dDFV7bc+0AppJJLfG2+aoaBlJf2UH7tOCflJ/U23YU1Q==}
-    engines: {node: ^12.20 || >=14.13}
+  vuetify@3.10.2:
+    resolution: {integrity: sha512-uuAm+uj170ZWdS0aiomhgtdYOR3/I2yzynskBfYyFB1Fn/HKvlvPDaU3ISZnf0GHIJQENdj7eLg/wTChrIwEQw==}
     peerDependencies:
       typescript: '>=4.7'
       vite-plugin-vuetify: '>=2.1.0'
@@ -3877,11 +3877,11 @@ snapshots:
 
   '@vue/shared@3.5.18': {}
 
-  '@vuetify/loader-shared@2.1.0(vue@3.5.18)(vuetify@3.9.2)':
+  '@vuetify/loader-shared@2.1.0(vue@3.5.18)(vuetify@3.10.2)':
     dependencies:
       upath: 2.0.1
       vue: 3.5.18
-      vuetify: 3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
+      vuetify: 3.10.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
 
   '@vueuse/core@13.5.0(vue@3.5.18)':
     dependencies:
@@ -4268,12 +4268,12 @@ snapshots:
       vue-eslint-parser: 10.2.0(eslint@9.32.0)
       xml-name-validator: 4.0.0
 
-  eslint-plugin-vuetify@2.5.2(eslint@9.32.0)(vue-eslint-parser@10.2.0(eslint@9.32.0))(vuetify@3.9.2):
+  eslint-plugin-vuetify@2.5.2(eslint@9.32.0)(vue-eslint-parser@10.2.0(eslint@9.32.0))(vuetify@3.10.2):
     dependencies:
       eslint: 9.32.0
       eslint-plugin-vue: 10.3.0(eslint@9.32.0)(vue-eslint-parser@10.2.0(eslint@9.32.0))
       requireindex: 1.2.0
-      vuetify: 3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
+      vuetify: 3.10.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - vue-eslint-parser
@@ -5386,14 +5386,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-vuetify@2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2):
+  vite-plugin-vuetify@2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.10.2):
     dependencies:
-      '@vuetify/loader-shared': 2.1.0(vue@3.5.18)(vuetify@3.9.2)
+      '@vuetify/loader-shared': 2.1.0(vue@3.5.18)(vuetify@3.10.2)
       debug: 4.4.1
       upath: 2.0.1
       vite: 7.0.6(sass-embedded@1.89.2)(terser@5.43.1)
       vue: 3.5.18
-      vuetify: 3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
+      vuetify: 3.10.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18)
     transitivePeerDependencies:
       - supports-color
 
@@ -5439,11 +5439,11 @@ snapshots:
       '@vue/server-renderer': 3.5.18(vue@3.5.18)
       '@vue/shared': 3.5.18
 
-  vuetify@3.9.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18):
+  vuetify@3.10.2(vite-plugin-vuetify@2.1.1)(vue@3.5.18):
     dependencies:
       vue: 3.5.18
     optionalDependencies:
-      vite-plugin-vuetify: 2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.9.2)
+      vite-plugin-vuetify: 2.1.1(vite@7.0.6(sass-embedded@1.89.2)(terser@5.43.1))(vue@3.5.18)(vuetify@3.10.2)
 
   webidl-conversions@4.0.2: {}
 

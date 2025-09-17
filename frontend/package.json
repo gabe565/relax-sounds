@@ -38,7 +38,7 @@
     "vue": "3.5.18",
     "vue-router": "4.5.1",
     "vue-toastification": "2.0.0-rc.5",
-    "vuetify": "3.9.2",
+    "vuetify": "3.10.2",
     "workbox-window": "7.3.0"
   },
   "devDependencies": {
