@@ -11,6 +11,6 @@ services:
       - ./pb_data:/data
 
   valkey:
-    image: valkey/valkey:8-alpine
+    image: valkey/valkey:9-alpine
     ports:
       - 127.0.0.1:6379:6379
