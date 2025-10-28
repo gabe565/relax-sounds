@@ -22,7 +22,7 @@ RUN --mount=type=cache,target=/root/.cache \
   CGO_ENABLED=1 xx-go build -ldflags='-w -s' -trimpath -tags disable_automigrate,grpcnotrace
 
 
-FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-deps
+FROM --platform=$BUILDPLATFORM node:24-alpine AS frontend-deps
 WORKDIR /app
 
 RUN corepack enable
