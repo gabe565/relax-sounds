@@ -27,10 +27,10 @@
         @keydown.enter="combobox.blur()"
       >
         <template #item="{ props, item }">
-          <v-list-item v-bind="props" :title="item.raw.name">
+          <v-list-item v-bind="props" :title="item?.name ?? item">
             <template #prepend>
-              <v-icon v-if="item.raw.icon">
-                <icon :icon="item.raw.icon" />
+              <v-icon v-if="item?.icon">
+                <icon :icon="item.icon" />
               </v-icon>
             </template>
           </v-list-item>
