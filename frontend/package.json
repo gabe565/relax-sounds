@@ -36,7 +36,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plugin-vuetify": "2.1.1",
     "vue": "3.5.18",
-    "vue-router": "4.5.1",
+    "vue-router": "5.0.3",
     "vue-toastification": "2.0.0-rc.5",
     "vuetify": "4.0.1",
     "workbox-window": "7.4.0"
