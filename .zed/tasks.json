@@ -1,0 +1,6 @@
+[
+  {
+    "label": "Run",
+    "command": "docker compose -f compose.dev.yaml up --watch",
+  },
+]

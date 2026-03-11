@@ -22,11 +22,8 @@ services:
         - action: rebuild
           path: ./go.sum
         - action: rebuild
-          path: ./main.go
-        - action: rebuild
-          path: ./internal
-        - action: rebuild
-          path: ./migrations
+          path: .
+          include: "**/*.go"
 
   frontend:
     image: ghcr.io/gabe565/relax-sounds-frontend
@@ -34,25 +31,22 @@ services:
       context: .
       target: frontend-deps
     command:
-      - sh
-      - -c
-      - |
-        set -eux
-        corepack enable
-        pnpm install --frozen-lockfile
-        exec pnpm run dev -- --host 0.0.0.0
+      - pnpm
+      - run
+      - dev
+      - --host=0.0.0.0
     environment:
       VITE_API_ADDRESS: http://localhost:3000
     ports:
       - 127.0.0.1:5173:5173
-    volumes:
-      - ./frontend:/app
     develop:
       watch:
         - action: rebuild
-          path: ./frontend/package.json
-        - action: rebuild
-          path: ./frontend/package-lock.json
+          path: ./frontend
+          include: "package*.json"
+        - action: sync
+          path: ./frontend
+          target: /app
 
   valkey:
     image: valkey/valkey:9-alpine

@@ -29,10 +29,11 @@ RUN corepack enable
 
 COPY frontend/package.json frontend/pnpm-*.yaml frontend/.npmrc ./
 RUN --mount=type=cache,id=pnpm,target=/root/.cache \
-  pnpm install --prod --frozen-lockfile
+  pnpm install --frozen-lockfile
+
+COPY frontend/ ./
 
 FROM frontend-deps AS frontend-build
-COPY frontend/ ./
 RUN --mount=type=cache,id=pnpm,target=/root/.cache \
   pnpm run build
 
