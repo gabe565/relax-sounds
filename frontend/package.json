@@ -31,7 +31,7 @@
     "pocketbase": "0.26.2",
     "register-service-worker": "1.7.2",
     "sass-embedded": "1.98.0",
-    "unplugin-icons": "22.1.0",
+    "unplugin-icons": "23.0.1",
     "vite": "7.0.8",
     "vite-plugin-pwa": "1.0.2",
     "vite-plugin-vuetify": "2.1.1",
