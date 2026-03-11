@@ -11,29 +11,11 @@ import (
 	"sync"
 	"time"
 
-	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/handlers/mix/encoder"
 	"gabe565.com/relax-sounds/internal/handlers/mix/stream"
 	"github.com/gopxl/beep/v2"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/valkey-io/valkey-go"
-)
-
-//nolint:gochecknoglobals
-var (
-	activeStreamMetrics = promauto.NewGauge(prometheus.GaugeOpts{
-		Namespace: "relax_sounds",
-		Name:      "streams_active",
-		Help:      "Active stream count",
-	})
-
-	totalStreamMetrics = promauto.NewCounter(prometheus.CounterOpts{
-		Namespace: "relax_sounds",
-		Name:      "streams_total",
-		Help:      "Total stream count",
-	})
 )
 
 type Entry struct {
@@ -48,13 +30,12 @@ type Entry struct {
 	Encoder     encoder.Encoder
 	positionErr error
 
-	Mu       sync.Mutex
-	Created  time.Time
-	Accessed time.Time
+	Mu      sync.Mutex
+	Created time.Time
 }
 
 func NewEntry(e *core.RequestEvent, uuid, preset string) *Entry {
-	entry := &Entry{
+	return &Entry{
 		Log: slog.With(
 			"userIp", e.RealIP(),
 			"userAgent", e.Request.UserAgent(),
@@ -66,32 +47,21 @@ func NewEntry(e *core.RequestEvent, uuid, preset string) *Entry {
 		Writer:  NewProxyWriter(),
 		Created: time.Now(),
 	}
-	entry.Accessed = entry.Created
-
-	activeStreamMetrics.Inc()
-	totalStreamMetrics.Inc()
-
-	return entry
 }
 
 func (e *Entry) Close() error {
 	e.Mu.Lock()
 	defer e.Mu.Unlock()
+	return e.close()
+}
 
-	e.Log.Info("Close stream",
-		"accessed", e.Accessed,
-		"age", time.Since(e.Created).Round(100*time.Millisecond).String(),
-		"transferred", config.Bytes(e.Writer.TotalWritten()).String(),
-	)
-
-	activeStreamMetrics.Dec()
-
+func (e *Entry) close() error {
 	if e.Writer != nil {
 		e.Writer.Close()
+		defer func() {
+			e.Writer = nil
+		}()
 	}
-	defer func() {
-		e.Writer = nil
-	}()
 
 	errs := make([]error, 0, 2)
 	errs = append(errs, e.Streams.Close())

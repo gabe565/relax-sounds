@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
-	"time"
 
 	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/handlers/mix/cache"
@@ -19,6 +18,7 @@ import (
 	"gabe565.com/relax-sounds/internal/handlers/mix/preset"
 	"gabe565.com/relax-sounds/internal/handlers/mix/stream"
 	"github.com/gopxl/beep/v2"
+	"github.com/jellydator/ttlcache/v3"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/valkey-io/valkey-go"
@@ -50,7 +50,7 @@ func NewMix(conf *config.Config) (*Mix, error) {
 
 type Mix struct {
 	conf   *config.Config
-	cache  *cache.Cache
+	cache  *ttlcache.Cache[string, *cache.Entry]
 	valkey valkey.Client
 }
 
@@ -81,15 +81,14 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 
 		uuid := e.Request.PathValue("uuid")
 
-		entry, found := m.cache.Get(uuid)
-		if found && entry.Preset == preStr {
+		var entry *cache.Entry
+		if cacheEntry := m.cache.Get(uuid); cacheEntry != nil && cacheEntry.Value().Preset == preStr {
 			// Ensure a single stream isn't fetched in parallel
+			entry = cacheEntry.Value()
 			entry.Mu.Lock()
 			defer entry.Mu.Unlock()
 		} else {
 			// Entry was not found
-			_, _ = m.cache.Delete(uuid)
-
 			pre, err := preset.FromParam(preStr)
 			switch {
 			case err != nil:
@@ -113,8 +112,6 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			// Ensure a single stream isn't fetched in parallel
 			entry.Mu.Lock()
 			defer entry.Mu.Unlock()
-
-			entry.Log.Info("Create stream")
 
 			// Set up stream
 			if entry.Streams, err = stream.New(m.conf, pre); err != nil {
@@ -140,7 +137,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 				return apis.NewInternalServerError("Failed to create encoder", nil)
 			}
 
-			_ = m.cache.Set(uuid, entry)
+			m.cache.Set(uuid, entry, ttlcache.DefaultTTL)
 			success = true
 		}
 
@@ -228,7 +225,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			}
 		}
 
-		entry.Accessed = time.Now()
+		m.cache.Touch(uuid)
 		return nil
 	}
 }
@@ -236,16 +233,7 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 func (m *Mix) Stop() func(*core.RequestEvent) error {
 	return func(e *core.RequestEvent) error {
 		uuid := e.Request.PathValue("uuid")
-
-		found, err := m.cache.Delete(uuid)
-		if err != nil {
-			return apis.NewInternalServerError("Failed to close cache entry", nil)
-		}
-
-		if !found {
-			return apis.NewNotFoundError("No active stream for UUID", nil)
-		}
-
+		m.cache.Delete(uuid)
 		e.Response.WriteHeader(http.StatusNoContent)
 		return nil
 	}

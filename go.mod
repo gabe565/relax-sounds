@@ -7,6 +7,7 @@ replace github.com/viert/go-lame => github.com/gabe565/go-lame v0.0.0-2024090508
 require (
 	gabe565.com/utils v0.0.0-20260310002041-b3b94f17b36b
 	github.com/gopxl/beep/v2 v2.1.1
+	github.com/jellydator/ttlcache/v3 v3.4.0
 	github.com/lmittmann/tint v1.1.3
 	github.com/mattn/go-isatty v0.0.20
 	github.com/pocketbase/pocketbase v0.36.6

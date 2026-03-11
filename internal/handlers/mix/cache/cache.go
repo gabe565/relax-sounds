@@ -1,113 +1,44 @@
 package cache
 
 import (
-	"strconv"
-	"sync"
-	"sync/atomic"
+	"context"
 	"time"
 
 	"gabe565.com/relax-sounds/internal/config"
-	"gabe565.com/utils/must"
+	"github.com/jellydator/ttlcache/v3"
 )
 
-//nolint:gochecknoglobals
-var nextID atomic.Int64
+func New(conf *config.Config) *ttlcache.Cache[string, *Entry] {
+	cache := ttlcache.New[string, *Entry](
+		ttlcache.WithTTL[string, *Entry](conf.CacheCleanAfter),
+	)
 
-type Cache struct {
-	conf    *config.Config
-	id      int64
-	entries map[string]*Entry
-	mu      sync.RWMutex
-}
+	cache.OnInsertion(func(_ context.Context, i *ttlcache.Item[string, *Entry]) {
+		i.Value().Log.Info("Create stream")
 
-func New(conf *config.Config) *Cache {
-	cache := &Cache{
-		conf:    conf,
-		id:      nextID.Add(1),
-		entries: make(map[string]*Entry),
-	}
-	must.Must(cache.RegisterCron())
-	return cache
-}
-
-func (a *Cache) Set(id string, entry *Entry) error {
-	a.mu.Lock()
-	prev, ok := a.entries[id]
-	a.entries[id] = entry
-	a.mu.Unlock()
-
-	var err error
-	if ok {
-		if err = prev.Close(); err != nil {
-			prev.Log.Error("Failed to close stream", "error", err)
-		}
-	}
-	return err
-}
-
-func (a *Cache) Get(id string) (*Entry, bool) {
-	a.mu.RLock()
-	defer a.mu.RUnlock()
-	entry, found := a.entries[id]
-	return entry, found
-}
-
-func (a *Cache) Delete(id string) (bool, error) {
-	a.mu.Lock()
-	prev, ok := a.entries[id]
-	delete(a.entries, id)
-	a.mu.Unlock()
-
-	var err error
-	if ok {
-		if err = prev.Close(); err != nil {
-			prev.Log.Error("Failed to close stream", "error", err)
-		}
-	}
-	return ok, err
-}
-
-func (a *Cache) Has(id string) bool {
-	a.mu.RLock()
-	defer a.mu.RUnlock()
-	_, ok := a.entries[id]
-	return ok
-}
-
-func (a *Cache) idString() string {
-	var id string
-	if a.id != 1 {
-		id = strconv.FormatInt(a.id, 10)
-	}
-	return id
-}
-
-func (a *Cache) Close() {
-	a.conf.App.Cron().Remove("mixStreamCleanup" + a.idString())
-	a.cleanup(0)
-}
-
-func (a *Cache) RegisterCron() error {
-	return a.conf.App.Cron().Add("mixStreamCleanup"+a.idString(), "* * * * *", func() {
-		a.cleanup(a.conf.CacheCleanAfter)
+		activeStreamMetrics.Inc()
+		totalStreamMetrics.Inc()
 	})
-}
 
-func (a *Cache) cleanup(cleanupAge time.Duration) {
-	a.mu.Lock()
-	defer a.mu.Unlock()
+	cache.OnEviction(func(_ context.Context, _ ttlcache.EvictionReason, i *ttlcache.Item[string, *Entry]) {
+		e := i.Value()
 
-	for id, entry := range a.entries {
-		if entry.Mu.TryLock() {
-			if time.Since(entry.Accessed) >= cleanupAge {
-				delete(a.entries, id)
-				go func() {
-					if err := entry.Close(); err != nil {
-						entry.Log.Error("Failed to cleanup stream", "error", err)
-					}
-				}()
-			}
-			entry.Mu.Unlock()
+		e.Mu.Lock()
+		defer e.Mu.Unlock()
+
+		e.Log.Info("Close stream",
+			"age", time.Since(e.Created).Round(100*time.Millisecond).String(),
+			"transferred", config.Bytes(e.Writer.TotalWritten()).String(),
+		)
+
+		if err := e.close(); err != nil {
+			e.Log.Error("Failed to cleanup stream", "error", err)
 		}
-	}
+
+		activeStreamMetrics.Dec()
+	})
+
+	go cache.Start()
+
+	return cache
 }
