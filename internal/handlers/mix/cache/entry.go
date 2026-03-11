@@ -44,8 +44,9 @@ type Entry struct {
 	Streams stream.Streams
 	Format  beep.Format
 
-	Writer  *ProxyWriter
-	Encoder encoder.Encoder
+	Writer      *ProxyWriter
+	Encoder     encoder.Encoder
+	positionErr error
 
 	Mu       sync.Mutex
 	Created  time.Time
@@ -114,18 +115,24 @@ func (e *Entry) StorePositions(ctx context.Context, v valkey.Client) error {
 
 	b, err := json.Marshal(positions)
 	if err != nil {
+		e.positionErr = err
 		return err
 	}
 
 	res := v.Do(ctx,
 		v.B().Set().Key(e.valkeyKey("position")).Value(valkey.BinaryString(b)).Ex(10*time.Minute).Build(),
 	)
-	return res.Error()
+	e.positionErr = res.Error()
+	return e.positionErr
 }
 
 var ErrPositionLenMismatch = errors.New("position length mismatch")
 
 func (e *Entry) LoadPositions(ctx context.Context, v valkey.Client) (bool, error) {
+	if e.positionErr != nil {
+		return false, nil //nolint:nilerr
+	}
+
 	res := v.Do(ctx,
 		v.B().Get().Key(e.valkeyKey("position")).Build(),
 	)
