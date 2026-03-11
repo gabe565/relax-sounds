@@ -51,8 +51,8 @@ importers:
         specifier: 3.0.4
         version: 3.0.4(vue@3.5.18)
       pinia-plugin-persistedstate:
-        specifier: 4.4.1
-        version: 4.4.1(pinia@3.0.4(vue@3.5.18))
+        specifier: 4.7.1
+        version: 4.7.1(pinia@3.0.4(vue@3.5.18))
       pocketbase:
         specifier: 0.26.2
         version: 0.26.2
@@ -1445,9 +1445,6 @@ packages:
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
-  deep-pick-omit@1.2.1:
-    resolution: {integrity: sha512-2J6Kc/m3irCeqVG42T+SaUMesaK7oGWaedGnQQK/+O0gYc+2SP5bKh/KKTE7d7SJ+GCA9UUE1GRzh6oDe0EnGw==}
-
   deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
@@ -1462,9 +1459,6 @@ packages:
 
   defu@6.1.4:
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
-
-  destr@2.0.5:
-    resolution: {integrity: sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==}
 
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
@@ -2139,8 +2133,8 @@ packages:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
     engines: {node: '>=12'}
 
-  pinia-plugin-persistedstate@4.4.1:
-    resolution: {integrity: sha512-lmuMPpXla2zJKjxEq34e1E9P9jxkWEhcVwwioCCE0izG45kkTOvQfCzvwhW3i38cvnaWC7T1eRdkd15Re59ldw==}
+  pinia-plugin-persistedstate@4.7.1:
+    resolution: {integrity: sha512-WHOqh2esDlR3eAaknPbqXrkkj0D24h8shrDPqysgCFR6ghqP/fpFfJmMPJp0gETHsvrh9YNNg6dQfo2OEtDnIQ==}
     peerDependencies:
       '@nuxt/kit': '>=3.0.0'
       '@pinia/nuxt': '>=0.10.0'
@@ -4276,8 +4270,6 @@ snapshots:
 
   deep-is@0.1.4: {}
 
-  deep-pick-omit@1.2.1: {}
-
   deepmerge@4.3.1: {}
 
   define-data-property@1.1.4:
@@ -4293,8 +4285,6 @@ snapshots:
       object-keys: 1.1.1
 
   defu@6.1.4: {}
-
-  destr@2.0.5: {}
 
   detect-libc@2.1.2:
     optional: true
@@ -5017,11 +5007,9 @@ snapshots:
 
   picomatch@4.0.3: {}
 
-  pinia-plugin-persistedstate@4.4.1(pinia@3.0.4(vue@3.5.18)):
+  pinia-plugin-persistedstate@4.7.1(pinia@3.0.4(vue@3.5.18)):
     dependencies:
-      deep-pick-omit: 1.2.1
       defu: 6.1.4
-      destr: 2.0.5
     optionalDependencies:
       pinia: 3.0.4(vue@3.5.18)
 
