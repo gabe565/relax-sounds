@@ -163,9 +163,6 @@ linters:
       - linters:
           - revive
         text: var-naming
-      - linters:
-          - noctx
-        text: .*log/slog.* must not be called. use .*log/slog.*Context
       - path: migrations
         linters:
           - errcheck

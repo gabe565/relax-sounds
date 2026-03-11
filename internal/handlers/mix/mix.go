@@ -97,7 +97,9 @@ func (m *Mix) Mix() func(*core.RequestEvent) error { //nolint:gocyclo,gocognit,c
 			case len(pre) == 0:
 				return apis.NewNotFoundError("Minimum preset length is 1 sound", nil)
 			case len(pre) > m.conf.MaxPresetLen:
-				return apis.NewBadRequestError("Maximum preset length is "+strconv.Itoa(m.conf.MaxPresetLen)+" sounds", nil)
+				return apis.NewBadRequestError(
+					"Maximum preset length is "+strconv.Itoa(m.conf.MaxPresetLen)+" sounds", nil,
+				)
 			}
 
 			var success bool
