@@ -72,9 +72,9 @@ func (e *Entry) close() error {
 }
 
 func (e *Entry) valkeyKey(topic string) string {
-	hash := sha256.Sum256([]byte(e.UUID + e.Preset))
+	hash := sha256.Sum256([]byte(e.Preset))
 	hashHex := hex.EncodeToString(hash[:])
-	return hashHex + "_" + topic
+	return e.UUID + ":" + hashHex + ":" + topic
 }
 
 func (e *Entry) StorePositions(ctx context.Context, v valkey.Client) error {
