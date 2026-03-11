@@ -17,7 +17,6 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/valkey-io/valkey-go v1.0.72
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
-	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
 )
 
 require (

@@ -5,7 +5,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"k8s.io/utils/ptr"
 )
 
 func TestFromParam(t *testing.T) {
@@ -22,7 +21,7 @@ func TestFromParam(t *testing.T) {
 		{
 			"valid",
 			args{"H4sIAOu4JWcAA4uuVspMUbJSKkktLlHSUSrLzynNTVWyMtRRKkosgTAKEvOUrAxqYwExJrb2KwAAAA"},
-			Preset{{ID: "test", Volume: ptr.To(1.0), Rate: ptr.To(1.0), Pan: ptr.To(0.0)}},
+			Preset{{ID: "test", Volume: new(1.0), Rate: new(1.0), Pan: new(0.0)}},
 			require.NoError,
 		},
 	}

@@ -59,6 +59,7 @@ linters:
     - loggercheck
     - makezero
     - mirror
+    - modernize
     - musttag
     - nakedret
     - nestif
