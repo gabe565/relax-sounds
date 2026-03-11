@@ -54,8 +54,8 @@ importers:
         specifier: 4.7.1
         version: 4.7.1(pinia@3.0.4(vue@3.5.18))
       pocketbase:
-        specifier: 0.26.2
-        version: 0.26.2
+        specifier: 0.26.8
+        version: 0.26.8
       register-service-worker:
         specifier: 1.7.2
         version: 1.7.2
@@ -2206,8 +2206,8 @@ packages:
   pkg-types@2.3.0:
     resolution: {integrity: sha512-SIqCzDRg0s9npO5XQ3tNZioRY1uK06lA41ynBC1YmFTmnY6FjUjVt6s4LoADmwoig1qqD0oK8h1p/8mlMx8Oig==}
 
-  pocketbase@0.26.2:
-    resolution: {integrity: sha512-WA8EOBc3QnSJh8rJ3iYoi9DmmPOMFIgVfAmIGux7wwruUEIzXgvrO4u0W2htfQjGIcyezJkdZOy5Xmh7SxAftw==}
+  pocketbase@0.26.8:
+    resolution: {integrity: sha512-aQ/ewvS7ncvAE8wxoW10iAZu6ElgbeFpBhKPnCfvRovNzm2gW8u/sQNPGN6vNgVEagz44kK//C61oKjfa+7Low==}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -5102,7 +5102,7 @@ snapshots:
       exsolve: 1.0.7
       pathe: 2.0.3
 
-  pocketbase@0.26.2: {}
+  pocketbase@0.26.8: {}
 
   possible-typed-array-names@1.1.0: {}
 
