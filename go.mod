@@ -12,7 +12,7 @@ require (
 	github.com/pocketbase/pocketbase v0.29.0
 	github.com/prometheus/client_golang v1.22.0
 	github.com/samber/slog-multi v1.4.1
-	github.com/spf13/cobra v1.9.1
+	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/stretchr/testify v1.10.0
 	github.com/valkey-io/valkey-go v1.0.63
