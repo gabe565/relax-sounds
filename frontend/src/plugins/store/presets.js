@@ -7,322 +7,269 @@ import { usePlayerStore } from "@/plugins/store/player";
 import { Preset } from "@/util/Preset";
 import { SoundState } from "@/util/Sound";
 
-let stateVersion = 0;
-const version = 3;
+const Version = 3;
 
-const saveState = (presets) => {
-  const state = { version, presets };
-  localStorage.setItem("presets", JSON.stringify(state));
-};
+export const usePresetsStore = defineStore(
+  "presets",
+  () => {
+    const version = ref(Version);
+    const presets = ref([]);
+    const isSyncing = ref(false);
+    const { isAuthenticated, user } = useAuth();
+    let syncPromise = null;
 
-const loadState = () => {
-  let state = JSON.parse(localStorage.getItem("presets"));
-
-  if (!state) {
-    // Playlist to preset migration
-    const playlists = JSON.parse(localStorage.getItem("playlists"));
-    if (playlists) {
-      state = { version, presets: playlists.playlists };
-      localStorage.setItem("presets", JSON.stringify(state));
-      localStorage.removeItem("playlists");
-    }
-  }
-
-  if (state) {
-    let dirty = false;
-    if (Array.isArray(state)) {
-      // Migrate state to object
-      dirty = true;
-      state = { presets: state };
-    }
-
-    if (!state.version || state.version === 1) {
-      // v2 migration
-      dirty = true;
-      for (const preset of state.presets) {
-        for (const sound of preset.sounds) {
+    const add = async ({ preset, playing = true, sync = true }) => {
+      for (const sound of preset.sounds) {
+        if (typeof sound.id === "number") {
           sound.id = sound.id.toString();
         }
       }
-      state.version = version;
-    }
+      const newPreset = new Preset(preset);
 
-    stateVersion = state.version;
-    if (dirty) {
-      saveState(state);
-    }
-
-    return state.presets.map((preset) => new Preset(preset)).filter((preset) => !preset.hidden);
-  }
-  return [];
-};
-
-export const usePresetsStore = defineStore("presets", () => {
-  const presets = ref(loadState());
-  const isSyncing = ref(false);
-  const { isAuthenticated, user } = useAuth();
-  let syncPromise = null;
-
-  const add = async ({ preset, playing = true, sync = true }) => {
-    for (const sound of preset.sounds) {
-      if (typeof sound.id === "number") {
-        sound.id = sound.id.toString();
-      }
-    }
-    const newPreset = new Preset(preset);
-
-    presets.value.push(newPreset);
-    if (playing) {
-      usePlayerStore().currentName = preset.name;
-    }
-    saveState(presets.value);
-
-    if (sync) {
-      await performSync();
-    }
-  };
-
-  const active = computed(() => {
-    return presets.value.filter((preset) => !preset.hidden);
-  });
-
-  const hide = ({ preset }) => {
-    preset.hidden = true;
-    saveState(presets.value);
-  };
-
-  const hideAll = () => {
-    for (const preset of presets.value) {
-      preset.hidden = true;
-    }
-    saveState(presets.value);
-  };
-
-  const unhide = ({ preset }) => {
-    delete preset.hidden;
-    saveState(presets.value);
-  };
-
-  const unhideAll = () => {
-    for (const preset of presets.value) {
-      delete preset.hidden;
-    }
-    saveState(presets.value);
-  };
-
-  const remove = async ({ preset, sync = true }) => {
-    const index = presets.value.indexOf(preset);
-    if (index !== -1) {
-      if (sync && isAuthenticated.value && preset.synced) {
-        try {
-          await pb.collection("presets").delete(preset.id);
-        } catch (e) {
-          if (e.status !== 404) {
-            throw e;
-          }
-        }
+      presets.value.push(newPreset);
+      if (playing) {
+        usePlayerStore().currentName = preset.name;
       }
 
-      presets.value.splice(index, 1);
-      saveState(presets.value);
-    }
-  };
-
-  const removeHidden = async ({ sync = true } = {}) => {
-    const toRemove = presets.value.filter((preset) => preset.hidden);
-
-    if (sync && isAuthenticated.value) {
-      const syncedToRemove = toRemove.filter((p) => p.synced);
-      if (syncedToRemove.length > 0) {
-        const batch = pb.createBatch();
-        for (const preset of syncedToRemove) {
-          batch.collection("presets").delete(preset.id);
-        }
-        await batch.send();
+      if (sync) {
+        await performSync();
       }
-    }
+    };
 
-    presets.value = presets.value.filter((preset) => !preset.hidden);
-    saveState(presets.value);
-  };
-
-  const savePlaying = async ({ name }) => {
-    const sounds = usePlayerStore().soundsPlaying.map((sound) => ({
-      id: sound.id,
-      volume: sound.volume,
-      rate: sound.rate,
-      pan: sound.pan,
-    }));
-
-    await add({
-      preset: {
-        name,
-        sounds,
-        new: true,
-      },
+    const active = computed(() => {
+      return presets.value.filter((preset) => !preset.hidden);
     });
-  };
 
-  const play = async ({ preset }) => {
-    const playerStore = usePlayerStore();
-    if (playerStore.state !== SoundState.STOPPED) {
-      playerStore.stopAll({ fade: 0, local: true });
-    }
-    await Promise.all(
-      preset.sounds.map((savedSound) => {
-        const sound = playerStore.soundById(savedSound.id);
-        sound.volume = savedSound.volume || 1;
-        sound.rate = savedSound.rate || 1;
-        sound.pan = savedSound.pan || 0;
-        const fade = playerStore.state === SoundState.STOPPED ? 500 : false;
-        return playerStore.playStop({ sound, fade, local: true });
-      }),
-    );
-    playerStore.currentName = preset.name;
-    if (preset.new) {
-      preset.new = false;
-      saveState(presets.value);
-    }
-    playerStore.updateCast();
-  };
+    const hide = ({ preset }) => {
+      preset.hidden = true;
+    };
 
-  const migrate = async () => {
-    if (stateVersion === 2) {
-      await Promise.all(presets.value.map((preset) => preset.migrate()));
-      saveState(presets.value);
-    }
-  };
-
-  const performSync = async () => {
-    if (!isAuthenticated.value) {
-      return;
-    }
-    if (syncPromise) return syncPromise;
-
-    syncPromise = (async () => {
-      isSyncing.value = true;
-      try {
-        const batch = pb.createBatch();
-        const remotePresets = await pb.collection("presets").getFullList();
-        const localPresets = presets.value;
-
-        let dirty = false;
-
-        // Resolve remote to local
-        for (const remote of remotePresets) {
-          const remoteMetadata = remote.metadata || {};
-          const remoteSounds = (remote.sounds || []).map((id) => ({
-            id,
-            volume: remoteMetadata[id]?.volume ?? 1,
-            pan: remoteMetadata[id]?.pan ?? 0,
-            rate: remoteMetadata[id]?.rate ?? 1,
-          }));
-
-          let local = localPresets.find((p) => p.id === remote.id);
-          if (!local) {
-            localPresets.push(
-              new Preset({
-                id: remote.id,
-                name: remote.name,
-                sounds: remoteSounds,
-                synced: true,
-              }),
-            );
-            dirty = true;
-          } else {
-            local.synced = true;
-            if (
-              local.name !== remote.name ||
-              JSON.stringify(local.sounds) !== JSON.stringify(remoteSounds)
-            ) {
-              local.name = remote.name;
-              local.sounds = remoteSounds;
-              dirty = true;
-            }
-          }
-        }
-
-        // Resolve local to remote
-        const idsToUpdate = [];
-        const idsToRemove = [];
-        for (const local of localPresets) {
-          const remote = remotePresets.find((p) => p.id === local.id);
-          if (!remote) {
-            if (local.synced) {
-              idsToRemove.push(local.id);
-            } else {
-              const metadata = {};
-              for (const sound of local.sounds) {
-                metadata[sound.id] = {
-                  volume: sound.volume,
-                  pan: sound.pan,
-                  rate: sound.rate,
-                };
-              }
-
-              batch.collection("presets").create({
-                name: local.name,
-                user: user.value.id,
-                sounds: local.sounds.map((s) => s.id),
-                metadata: metadata,
-              });
-              idsToUpdate.push(local.id);
-              dirty = true;
-            }
-          }
-        }
-
-        if (idsToRemove.length > 0) {
-          presets.value = presets.value.filter((p) => !idsToRemove.includes(p.id));
-          dirty = true;
-        }
-
-        if (idsToUpdate.length > 0) {
-          const response = await batch.send();
-
-          for (const [key, entry] of response.entries()) {
-            const localEntry = localPresets.find((p) => p.id === idsToUpdate[key]);
-            localEntry.id = entry.body.id;
-            localEntry.synced = true;
-            dirty = true;
-          }
-        }
-
-        if (dirty) {
-          saveState(presets.value);
-        }
-      } finally {
-        isSyncing.value = false;
-        syncPromise = null;
+    const hideAll = () => {
+      for (const preset of presets.value) {
+        preset.hidden = true;
       }
-    })();
+    };
 
-    return syncPromise;
-  };
+    const unhide = ({ preset }) => {
+      delete preset.hidden;
+    };
 
-  pb.authStore.onChange(async () => {
-    try {
-      await performSync();
-    } catch (err) {
-      console.error("Failed to sync presets:", err);
-      useToast().error(`Failed to sync presets:\n${getErrorMessage(err)}`);
-    }
-  }, true);
+    const unhideAll = () => {
+      for (const preset of presets.value) {
+        delete preset.hidden;
+      }
+    };
 
-  return {
-    presets,
-    isSyncing,
-    add,
-    active,
-    hide,
-    hideAll,
-    unhide,
-    unhideAll,
-    remove,
-    removeHidden,
-    savePlaying,
-    play,
-    migrate,
-    sync: performSync,
-  };
-});
+    const remove = async ({ preset, sync = true }) => {
+      const index = presets.value.indexOf(preset);
+      if (index !== -1) {
+        if (sync && isAuthenticated.value && preset.synced) {
+          try {
+            await pb.collection("presets").delete(preset.id);
+          } catch (e) {
+            if (e.status !== 404) {
+              throw e;
+            }
+          }
+        }
+
+        presets.value.splice(index, 1);
+      }
+    };
+
+    const removeHidden = async ({ sync = true } = {}) => {
+      const toRemove = presets.value.filter((preset) => preset.hidden);
+
+      if (sync && isAuthenticated.value) {
+        const syncedToRemove = toRemove.filter((p) => p.synced);
+        if (syncedToRemove.length > 0) {
+          const batch = pb.createBatch();
+          for (const preset of syncedToRemove) {
+            batch.collection("presets").delete(preset.id);
+          }
+          await batch.send();
+        }
+      }
+
+      presets.value = presets.value.filter((preset) => !preset.hidden);
+    };
+
+    const savePlaying = async ({ name }) => {
+      const sounds = usePlayerStore().soundsPlaying.map((sound) => ({
+        id: sound.id,
+        volume: sound.volume,
+        rate: sound.rate,
+        pan: sound.pan,
+      }));
+
+      await add({
+        preset: {
+          name,
+          sounds,
+          new: true,
+        },
+      });
+    };
+
+    const play = async ({ preset }) => {
+      const playerStore = usePlayerStore();
+      if (playerStore.state !== SoundState.STOPPED) {
+        playerStore.stopAll({ fade: 0, local: true });
+      }
+      await Promise.all(
+        preset.sounds.map((savedSound) => {
+          const sound = playerStore.soundById(savedSound.id);
+          sound.volume = savedSound.volume || 1;
+          sound.rate = savedSound.rate || 1;
+          sound.pan = savedSound.pan || 0;
+          const fade = playerStore.state === SoundState.STOPPED ? 500 : false;
+          return playerStore.playStop({ sound, fade, local: true });
+        }),
+      );
+      playerStore.currentName = preset.name;
+      if (preset.new) {
+        preset.new = false;
+      }
+      playerStore.updateCast();
+    };
+
+    const migrate = async () => {
+      if (version.value === 2) {
+        await Promise.all(presets.value.map((preset) => preset.migrate()));
+        version.value++;
+      }
+    };
+
+    const performSync = async () => {
+      if (!isAuthenticated.value) {
+        return;
+      }
+      if (syncPromise) return syncPromise;
+
+      syncPromise = (async () => {
+        isSyncing.value = true;
+        try {
+          const batch = pb.createBatch();
+          const remotePresets = await pb.collection("presets").getFullList();
+          const localPresets = presets.value;
+
+          // Resolve remote to local
+          for (const remote of remotePresets) {
+            const remoteMetadata = remote.metadata || {};
+            const remoteSounds = (remote.sounds || []).map((id) => ({
+              id,
+              volume: remoteMetadata[id]?.volume ?? 1,
+              pan: remoteMetadata[id]?.pan ?? 0,
+              rate: remoteMetadata[id]?.rate ?? 1,
+            }));
+
+            let local = localPresets.find((p) => p.id === remote.id);
+            if (!local) {
+              localPresets.push(
+                new Preset({
+                  id: remote.id,
+                  name: remote.name,
+                  sounds: remoteSounds,
+                  synced: true,
+                }),
+              );
+            } else {
+              local.synced = true;
+              if (
+                local.name !== remote.name ||
+                JSON.stringify(local.sounds) !== JSON.stringify(remoteSounds)
+              ) {
+                local.name = remote.name;
+                local.sounds = remoteSounds;
+              }
+            }
+          }
+
+          // Resolve local to remote
+          const idsToUpdate = [];
+          const idsToRemove = [];
+          for (const local of localPresets) {
+            const remote = remotePresets.find((p) => p.id === local.id);
+            if (!remote) {
+              if (local.synced) {
+                idsToRemove.push(local.id);
+              } else {
+                const metadata = {};
+                for (const sound of local.sounds) {
+                  metadata[sound.id] = {
+                    volume: sound.volume,
+                    pan: sound.pan,
+                    rate: sound.rate,
+                  };
+                }
+
+                batch.collection("presets").create({
+                  name: local.name,
+                  user: user.value.id,
+                  sounds: local.sounds.map((s) => s.id),
+                  metadata: metadata,
+                });
+                idsToUpdate.push(local.id);
+              }
+            }
+          }
+
+          if (idsToRemove.length > 0) {
+            presets.value = presets.value.filter((p) => !idsToRemove.includes(p.id));
+          }
+
+          if (idsToUpdate.length > 0) {
+            const response = await batch.send();
+
+            for (const [key, entry] of response.entries()) {
+              const localEntry = localPresets.find((p) => p.id === idsToUpdate[key]);
+              localEntry.id = entry.body.id;
+              localEntry.synced = true;
+            }
+          }
+        } finally {
+          isSyncing.value = false;
+          syncPromise = null;
+        }
+      })();
+
+      return syncPromise;
+    };
+
+    pb.authStore.onChange(async () => {
+      try {
+        await performSync();
+      } catch (err) {
+        console.error("Failed to sync presets:", err);
+        useToast().error(`Failed to sync presets:\n${getErrorMessage(err)}`);
+      }
+    }, true);
+
+    return {
+      presets,
+      isSyncing,
+      add,
+      active,
+      hide,
+      hideAll,
+      unhide,
+      unhideAll,
+      remove,
+      removeHidden,
+      savePlaying,
+      play,
+      migrate,
+      sync: performSync,
+    };
+  },
+  {
+    persist: {
+      pick: ["presets", "version"],
+      afterHydrate(ctx) {
+        if (ctx.store?.presets) {
+          ctx.store.presets = ctx.store.presets.map((p) => new Preset(p)).filter((p) => !p.hidden);
+        }
+      },
+    },
+  },
+);
