@@ -2,9 +2,12 @@ import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import { useToast } from "vue-toastification";
 import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
+import LogoutIcon from "~icons/material-symbols/logout-rounded";
 import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
 import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
+import { useAuth } from "@/composables/useAuth.js";
 import { ApiPath } from "@/config/api";
+import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
 import { wait } from "@/util/helpers";
@@ -43,6 +46,50 @@ const router = createRouter({
       },
     },
     {
+      path: "/login",
+      name: "Login",
+      component: () => import("@/pages/LoginPage.vue"),
+      meta: {
+        showInNav: false,
+        guestOnly: true,
+        hideLogin: true,
+      },
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: () => import("@/pages/LoginPage.vue"),
+      props: { register: true },
+      meta: {
+        showInNav: false,
+        guestOnly: true,
+        hideLogin: true,
+      },
+    },
+    {
+      path: "/forgot-password",
+      name: "Forgot Password",
+      component: () => import("@/pages/ForgotPasswordPage.vue"),
+      meta: {
+        showInNav: false,
+        guestOnly: true,
+        hideLogin: true,
+      },
+    },
+    {
+      path: "/logout",
+      name: "Logout",
+      redirect: () => {
+        useAuth().logout();
+        return { name: "Sounds" };
+      },
+      meta: {
+        icon: LogoutIcon,
+        showInNav: false,
+        authOnly: true,
+      },
+    },
+    {
       path: "/import/:name/:songs",
       redirect: ({ params }) => {
         (async () => {
@@ -52,11 +99,11 @@ const router = createRouter({
             const preset = new Preset({ new: true });
             preset.encodedName = params.name;
             await preset.setEncodedShorthand(params.songs);
-            usePresetsStore().add({ preset });
+            await usePresetsStore().add({ preset });
             toast.success(`Imported ${preset.name}.`);
-          } catch (error) {
-            console.error(error);
-            toast.error(`Failed to import preset:\n${error}`);
+          } catch (err) {
+            console.error(err);
+            toast.error(`Failed to import preset:\n${getErrorMessage(err)}`);
           }
         })();
         return { name: "Presets" };

@@ -41,7 +41,7 @@
 
     <v-main>
       <router-view v-slot="{ Component }">
-        <keep-alive>
+        <keep-alive exclude="LoginPage,ForgotPasswordPage">
           <component :is="Component" />
         </keep-alive>
       </router-view>
@@ -80,6 +80,7 @@ import SavePreset from "@/components/NavButtons/SavePreset.vue";
 import StopAll from "@/components/NavButtons/StopAll.vue";
 import ThemeBtn from "@/components/NavButtons/ThemeBtn.vue";
 import DebugButton from "@/components/Presets/Buttons/DebugButton.vue";
+import { useAuth } from "@/composables/useAuth";
 import { DebugEnabled } from "@/config/debug";
 import { registerSW } from "@/plugins/pwa";
 import { Theme, usePreferencesStore } from "@/plugins/store/preferences";
@@ -87,11 +88,16 @@ import { Theme, usePreferencesStore } from "@/plugins/store/preferences";
 const { smAndDown: isMobile } = useDisplay();
 const preferences = usePreferencesStore();
 const theme = useTheme();
+const { isAuthenticated } = useAuth();
 
 const routes = computed(() => {
-  return useRouter().options.routes.filter((route) => route.meta?.showInNav);
+  return useRouter().options.routes.filter((route) => {
+    if (!route.meta?.showInNav) return false;
+    if (route.meta.guestOnly && isAuthenticated.value) return false;
+    if (route.meta.authOnly && !isAuthenticated.value) return false;
+    return true;
+  });
 });
-
 const autoTheme = (e) => (theme.name.value = e.matches ? "dark" : "light");
 const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 watch(

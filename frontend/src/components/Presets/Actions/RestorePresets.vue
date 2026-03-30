@@ -35,12 +35,14 @@
 </template>
 
 <script setup>
+import { nanoid } from "nanoid";
 import { ref, watch } from "vue";
 import { useToast } from "vue-toastification";
 import AttachmentIcon from "~icons/material-symbols/attach-file-rounded";
 import RestoreIcon from "~icons/material-symbols/backup";
 import CheckIcon from "~icons/material-symbols/check-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
+import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
 
@@ -50,6 +52,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
+const presets = usePresetsStore();
 const toast = useToast();
 const show = ref(false);
 const file = ref(null);
@@ -66,21 +69,27 @@ watch(show, (val) => emit("update:modelValue", val));
 
 const restore = async () => {
   try {
-    const presets = JSON.parse(await file.value.text());
+    const presetsData = JSON.parse(await file.value.text());
     try {
       await Promise.all(
-        presets.map(async (preset) => {
-          preset = new Preset(preset);
+        presetsData.map(async (data) => {
+          const preset = new Preset(data);
+          preset.id = nanoid();
+          preset.synced = false;
           await preset.migrate();
-          usePresetsStore().add({ preset, playing: false });
+          await presets.add({ preset, playing: false, sync: false });
         }),
       );
-      toast.success(`Imported ${presets.length} preset${presets.length !== 1 ? "s" : ""}.`, {
-        icon: RestoreIcon,
-      });
+      await presets.sync();
+      toast.success(
+        `Imported ${presetsData.length} preset${presetsData.length !== 1 ? "s" : ""}.`,
+        {
+          icon: RestoreIcon,
+        },
+      );
     } catch (err) {
       console.error(err);
-      toast.error(`Failed to import presets:\n${err}`);
+      toast.error(`Failed to import presets:\n${getErrorMessage(err)}`);
     } finally {
       show.value = false;
     }

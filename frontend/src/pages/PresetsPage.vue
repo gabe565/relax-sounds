@@ -19,7 +19,7 @@
     <v-row>
       <v-fade-transition group leave-absolute>
         <template v-if="presets.active.length !== 0">
-          <v-col v-for="preset of presets.active" :key="preset.name" cols="12" md="6" lg="4" xl="3">
+          <v-col v-for="preset of presets.active" :key="preset.id" cols="12" md="6" lg="4" xl="3">
             <preset-card :preset="preset" />
           </v-col>
         </template>
@@ -34,6 +34,7 @@
 <script setup>
 import { useAsyncState } from "@vueuse/core";
 import { saveAs } from "file-saver/src/FileSaver";
+import { onActivated } from "vue";
 import { useToast } from "vue-toastification";
 import { useDisplay } from "vuetify";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
@@ -45,12 +46,22 @@ import RemoveAllToast from "@/components/Presets/Actions/RemoveAllToast.vue";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "@/components/Presets/PresetCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
+import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePlayerStore } from "@/plugins/store/player";
 import { usePresetsStore } from "@/plugins/store/presets";
 
 const toast = useToast();
 const { smAndDown: isMobile } = useDisplay();
 const presets = usePresetsStore();
+
+onActivated(async () => {
+  try {
+    await presets.sync();
+  } catch (err) {
+    console.error("Failed to sync presets:", err);
+    useToast().error(`Failed to sync presets:\n${getErrorMessage(err)}`);
+  }
+});
 
 const exportPresets = () => {
   const blob = new Blob([JSON.stringify(presets.presets)], {
@@ -84,7 +95,14 @@ const removeAll = () => {
     icon: RemoveAllIcon,
     timeout: 10000,
     closeOnClick: false,
-    onClose: presets.removeHidden,
+    onClose: async () => {
+      try {
+        await presets.removeHidden();
+      } catch (err) {
+        console.error("Failed to remove hidden presets:", err);
+        toast.error(`Failed to remove all presets:\n${getErrorMessage(err)}`);
+      }
+    },
   });
 };
 </script>

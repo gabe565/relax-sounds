@@ -54,6 +54,7 @@ import AddIcon from "~icons/material-symbols/add-circle-rounded";
 import CheckIcon from "~icons/material-symbols/check-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
 import SaveIcon from "~icons/material-symbols/save-rounded";
+import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePlayerStore } from "@/plugins/store/player";
 import { usePresetsStore } from "@/plugins/store/presets";
 import { wait } from "@/util/helpers";
@@ -70,6 +71,7 @@ const showDialog = ref(false);
 const name = ref("");
 const player = usePlayerStore();
 const router = useRouter();
+const presets = usePresetsStore();
 
 const cancel = () => {
   showDialog.value = false;
@@ -81,13 +83,13 @@ const save = async () => {
   await wait(300);
 
   try {
-    usePresetsStore().savePlaying({ name: name.value });
+    await presets.savePlaying({ name: name.value });
     toast.success(`Saved "${name.value}".`, { icon: SaveIcon });
     name.value = "";
     return router.push({ name: "Presets" });
-  } catch (error) {
-    console.error(error);
-    toast.error(`Failed to save preset:\n${error}`);
+  } catch (err) {
+    console.error(err);
+    toast.error(`Failed to save preset:\n${getErrorMessage(err)}`);
   }
 };
 </script>

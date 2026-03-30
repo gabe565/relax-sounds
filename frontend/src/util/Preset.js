@@ -16,9 +16,11 @@ export const legacyFromShorthand = (shorthand) =>
 
 export class Preset {
   constructor(obj) {
+    this.id = nanoid();
     this.name = "Unnamed Preset";
     this.sounds = [];
     this.new = false;
+    this.synced = false;
     Object.assign(this, obj);
   }
 
