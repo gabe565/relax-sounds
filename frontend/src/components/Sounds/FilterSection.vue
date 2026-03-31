@@ -1,5 +1,5 @@
 <template>
-  <v-row class="filters">
+  <v-row>
     <v-col>
       <v-combobox
         ref="combobox"
@@ -74,7 +74,7 @@ const {
 });
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .v-input:deep(.v-field__outline) {
   display: none;
 }

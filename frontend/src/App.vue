@@ -37,7 +37,7 @@
           <component :is="Component" />
         </keep-alive>
       </router-view>
-      <v-spacer v-if="isMobile && showPlayerBar" style="height: 64px" />
+      <v-spacer v-if="isMobile && showPlayerBar" class="h-16" />
     </v-main>
 
     <player-bar v-if="showPlayerBar" />
@@ -115,9 +115,3 @@ watch(
 
 registerSW();
 </script>
-
-<style lang="scss">
-html {
-  scrollbar-gutter: stable;
-}
-</style>

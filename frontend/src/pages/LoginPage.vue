@@ -6,7 +6,7 @@
       </v-card-title>
       <v-card-text>
         <template v-if="authMethods.loading">
-          <div class="d-flex justify-center py-8">
+          <div class="flex justify-center py-8">
             <v-progress-circular indeterminate color="primary" />
           </div>
         </template>
@@ -94,7 +94,7 @@
           <!-- Divider -->
           <div
             v-if="authMethods.password?.enabled && authMethods.oauth2?.providers?.length"
-            class="d-flex align-center my-6"
+            class="flex align-center my-6"
           >
             <v-divider />
             <span class="mx-4 text-caption text-medium-emphasis">OR</span>

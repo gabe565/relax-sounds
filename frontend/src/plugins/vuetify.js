@@ -1,15 +1,20 @@
 import { createVuetify } from "vuetify";
-import "vuetify/styles";
 
 export default createVuetify({
   display: {
     mobileBreakpoint: "md",
     thresholds: {
-      md: 760,
+      xs: 0,
+      sm: 600,
+      md: 840,
+      lg: 1145,
+      xl: 1545,
+      xxl: 2138,
     },
   },
   theme: {
     defaultTheme: "dark",
+    utilities: false,
     themes: {
       dark: {
         dark: true,

@@ -1,10 +1,10 @@
 <template>
   <v-card variant="flat" color="cardBackground">
-    <v-card-title class="d-flex align-center py-4">
+    <v-card-title class="flex align-center py-4">
       <v-icon class="mr-4" size="x-small" :color="iconColor">
         <icon :icon="sound.icon" />
       </v-icon>
-      <span class="flex-grow-1">
+      <span class="grow">
         {{ sound.name }}
       </span>
 
@@ -18,8 +18,8 @@
       />
     </v-card-title>
 
-    <v-card-text class="pt-1 pb-0 pr-8">
-      <v-row class="flex-column">
+    <v-card-text class="pt-1 pr-8 pb-0">
+      <v-row class="flex-col">
         <v-col>
           <v-slider
             v-model="volume"

@@ -1,7 +1,7 @@
 <template>
-  <div class="d-flex align-center">
+  <div class="flex items-center">
     <span>Removed {{ presets.presets.length }} presets.</span>
-    <div class="flex-grow-1" />
+    <div class="grow" />
     <button
       class="v-btn v-btn--slim v-btn--density-default v-btn--size-default v-btn--variant-text v-btn--icon"
       title="Undo"

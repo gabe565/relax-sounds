@@ -13,7 +13,7 @@
       <v-card color="cardBackground" variant="flat">
         <v-card-title class="pt-6 px-6">Edit Profile</v-card-title>
         <v-card-text>
-          <div class="d-flex justify-center mb-6">
+          <div class="flex justify-center mb-6">
             <v-avatar
               size="96"
               class="elevation-2 cursor-pointer text-center"
@@ -35,7 +35,7 @@
               ref="fileInput"
               type="file"
               accept="image/*"
-              class="d-none"
+              class="hidden"
               @change="onFileChange"
             />
           </div>

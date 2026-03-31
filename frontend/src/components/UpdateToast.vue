@@ -1,8 +1,8 @@
 <template>
-  <div class="d-flex align-center">
+  <div class="flex items-center">
     <span v-if="!loading">New content available, click on reload button to update.</span>
     <span v-else>Refreshing. Please wait...</span>
-    <div class="flex-grow-1" />
+    <div class="grow" />
     <button
       class="v-btn v-btn--slim v-btn--density-default v-btn--size-default v-btn--variant-text v-btn--icon"
       :class="{ 'v-btn--disabled': loading }"

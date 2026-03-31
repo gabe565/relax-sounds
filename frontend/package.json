@@ -19,7 +19,6 @@
     "@vitejs/plugin-vue": "6.0.5",
     "@vue/compiler-sfc": "3.5.31",
     "@vueuse/core": "14.2.1",
-    "autoprefixer": "10.4.27",
     "base64-url": "2.3.3",
     "file-saver": "2.0.5",
     "fuse.js": "7.1.0",
@@ -44,6 +43,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@tailwindcss/vite": "4.2.2",
     "@trivago/prettier-plugin-sort-imports": "6.0.2",
     "@vue/eslint-config-prettier": "10.2.0",
     "eslint": "10.1.0",
@@ -53,6 +53,7 @@
     "eslint-plugin-vuetify": "2.7.2",
     "globals": "17.4.0",
     "prettier": "3.8.1",
+    "tailwindcss": "4.2.2",
     "vue-eslint-parser": "10.4.0"
   }
 }

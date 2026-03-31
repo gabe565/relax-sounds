@@ -1,5 +1,5 @@
+import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
-import autoprefixer from "autoprefixer";
 import { escapeRegExp } from "lodash-es";
 import { promises as fs } from "node:fs";
 import { URL, fileURLToPath } from "node:url";
@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
+      tailwindcss(),
       vue({
         template: {
           compilerOptions: {
@@ -27,7 +28,7 @@ export default defineConfig(({ mode }) => {
       }),
       vuetify({
         styles: {
-          configFile: "src/scss/variables.scss",
+          configFile: "src/scss/settings.scss",
         },
       }),
       Icons({
@@ -106,11 +107,6 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
-    css: {
-      postcss: {
-        plugins: [autoprefixer({})],
-      },
-    },
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),

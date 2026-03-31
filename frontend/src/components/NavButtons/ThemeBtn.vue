@@ -17,7 +17,7 @@
         aria-label="Change theme"
         @click="next"
       >
-        <v-icon :icon="config.icon" size="small" />
+        <v-icon :icon="config.icon" />
       </v-btn>
     </template>
   </v-tooltip>
@@ -84,5 +84,3 @@ const next = () => {
   }
 };
 </script>
-
-<style scoped lang="scss"></style>
