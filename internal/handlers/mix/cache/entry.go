@@ -37,7 +37,7 @@ type Entry struct {
 func NewEntry(e *core.RequestEvent, uuid, preset string) *Entry {
 	return &Entry{
 		Log: slog.With(
-			"userIp", e.RealIP(),
+			"userIP", e.RealIP(),
 			"userAgent", e.Request.UserAgent(),
 			"url", e.Request.URL.String(),
 			"id", uuid,
