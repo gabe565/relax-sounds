@@ -3,7 +3,7 @@
     variant="flat"
     :color="player.currentName === preset.name ? 'accent' : 'cardBackground'"
     size="x-large"
-    class="w-100 d-flex justify-space-between text-none font-weight-regular"
+    class="w-100 d-flex justify-space-between text-none font-weight-regular pr-2"
     :aria-label="`Play ${preset.name}`"
     :loading="loading"
     @click="play"
@@ -12,8 +12,10 @@
       {{ preset.name }}
     </span>
     <template #append>
-      <share-button :preset="preset" />
-      <delete-button :preset="preset" />
+      <v-btn-group>
+        <share-button :preset="preset" />
+        <delete-button :preset="preset" />
+      </v-btn-group>
     </template>
   </v-btn>
 </template>
