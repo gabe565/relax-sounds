@@ -1,4 +1,8 @@
 packages:
   - .
 onlyBuiltDependencies:
+  - '@parcel/watcher'
   - esbuild
+overrides:
+  serialize-javascript@<7.0.5: '>=7.0.5'
+  serialize-javascript@<=7.0.2: '>=7.0.3'
