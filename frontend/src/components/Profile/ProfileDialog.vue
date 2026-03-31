@@ -9,10 +9,10 @@
       />
     </template>
 
-    <v-card color="cardBackground" variant="flat">
-      <v-card-title class="pt-6 px-6">Edit Profile</v-card-title>
-      <v-card-text>
-        <v-form @submit.prevent="saveProfile">
+    <v-form @submit.prevent="saveProfile">
+      <v-card color="cardBackground" variant="flat">
+        <v-card-title class="pt-6 px-6">Edit Profile</v-card-title>
+        <v-card-text>
           <div class="d-flex justify-center mb-6">
             <v-avatar
               size="96"
@@ -78,10 +78,10 @@
             >
               {{ getErrorMessage(externalAuthsError) }}
             </v-alert>
-            <v-list v-else class="bg-transparent pa-0 mb-4">
+            <v-list v-else class="bg-transparent">
               <v-list-item v-for="provider in authMethods.oauth2?.providers" :key="provider.name">
                 <template #prepend>
-                  <v-avatar size="24" rounded="0" class="mr-3">
+                  <v-avatar size="24" rounded="0" class="mr-3" variant="text">
                     <v-img :src="provider.icon" :cover="false" />
                   </v-avatar>
                 </template>
@@ -111,14 +111,14 @@
               </v-list-item>
             </v-list>
           </template>
+        </v-card-text>
 
-          <div class="d-flex justify-end">
-            <v-btn variant="text" class="mr-2" @click="dialog = false">Cancel</v-btn>
-            <v-btn type="submit" color="primary" :loading="isLoading" variant="flat">Save</v-btn>
-          </div>
-        </v-form>
-      </v-card-text>
-    </v-card>
+        <v-card-actions class="mr-4 mb-4">
+          <v-btn variant="text" class="mr-2" @click="dialog = false">Cancel</v-btn>
+          <v-btn type="submit" color="primary" :loading="isLoading" variant="flat">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
   </v-dialog>
 </template>
 

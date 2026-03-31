@@ -1,11 +1,5 @@
 <template>
   <page-layout>
-    <template #actions>
-      <template v-if="isMobile">
-        <save-preset button />
-        <cast-icon button />
-      </template>
-    </template>
     <template #menu>
       <v-list-item title="Backup" :prepend-icon="BackupIcon" @click="exportPresets" />
       <restore-presets />
@@ -36,12 +30,9 @@ import { useAsyncState } from "@vueuse/core";
 import { saveAs } from "file-saver/src/FileSaver";
 import { onActivated } from "vue";
 import { useToast } from "vue-toastification";
-import { useDisplay } from "vuetify";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
 import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
 import InfoIcon from "~icons/material-symbols/info-rounded";
-import CastIcon from "@/components/NavButtons/CastIcon.vue";
-import SavePreset from "@/components/NavButtons/SavePreset.vue";
 import RemoveAllToast from "@/components/Presets/Actions/RemoveAllToast.vue";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "@/components/Presets/PresetCard.vue";
@@ -51,7 +42,6 @@ import { usePlayerStore } from "@/plugins/store/player";
 import { usePresetsStore } from "@/plugins/store/presets";
 
 const toast = useToast();
-const { smAndDown: isMobile } = useDisplay();
 const presets = usePresetsStore();
 
 onActivated(async () => {

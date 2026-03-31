@@ -103,11 +103,7 @@ export const usePresetsStore = defineStore(
       }));
 
       await add({
-        preset: {
-          name,
-          sounds,
-          new: true,
-        },
+        preset: { name, sounds },
       });
     };
 

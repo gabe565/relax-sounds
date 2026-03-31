@@ -10,7 +10,8 @@
         :color="props.sound.isStopped ? 'cardBackground' : 'accent'"
         :loading="sound.isLoading"
         size="x-large"
-        class="w-100 justify-start text-none font-weight-regular"
+        class="w-100 justify-start text-none font-weight-regular sound-card"
+        :class="{ 'sound-active': !props.sound.isStopped }"
         :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
         variant="flat"
         @click="playStop"
@@ -45,7 +46,7 @@ const props = defineProps({
   },
 });
 
-const iconColor = computed(() => (props.sound.isPlaying ? "primary" : ""));
+const iconColor = computed(() => (props.sound.isPlaying ? "secondary" : ""));
 const toast = useToast();
 const player = usePlayerStore();
 
@@ -62,8 +63,18 @@ const playStop = async () => {
 .v-btn {
   letter-spacing: initial;
   padding: 0 6px 0 24px;
+  transition: all 0.3s ease;
 }
 :deep(.v-btn__content) {
   min-width: 0;
+}
+
+.sound-card {
+  border: 1px solid transparent;
+}
+
+.sound-active {
+  box-shadow: 0 0 12px rgba(255, 183, 77, 0.25) !important;
+  border: 1px solid rgba(255, 183, 77, 0.35) !important;
 }
 </style>

@@ -96,7 +96,7 @@ const router = createRouter({
           const toast = useToast();
           try {
             await wait(500);
-            const preset = new Preset({ new: true });
+            const preset = new Preset();
             preset.encodedName = params.name;
             await preset.setEncodedShorthand(params.songs);
             await usePresetsStore().add({ preset });

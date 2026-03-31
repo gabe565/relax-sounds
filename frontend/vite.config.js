@@ -35,6 +35,7 @@ export default defineConfig(({ mode }) => {
         autoInstall: true,
         customCollections: {
           "relax-sounds": {
+            icon: () => fs.readFile("./src/assets/icon-purple.svg", "utf-8"),
             "icon-white": () => fs.readFile("./src/assets/icon-white.svg", "utf-8"),
           },
         },
@@ -49,8 +50,8 @@ export default defineConfig(({ mode }) => {
           short_name: "Relax Sounds",
           id: "/",
           description: "Stream relaxing sound mixes",
-          theme_color: "#673AB7",
-          background_color: "#673AB7",
+          theme_color: "#BB86FC",
+          background_color: "#160E27",
           icons: [
             {
               src: "img/icons/android-chrome-192x192.png",

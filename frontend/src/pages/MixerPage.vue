@@ -1,12 +1,5 @@
 <template>
   <page-layout>
-    <template #actions>
-      <template v-if="isMobile">
-        <save-preset button />
-        <cast-icon button />
-      </template>
-    </template>
-
     <v-overlay v-model="isLoading" class="align-center justify-center" persistent>
       <v-progress-circular color="primary" indeterminate size="64" />
     </v-overlay>
@@ -36,15 +29,11 @@
 <script setup>
 import { useAsyncState } from "@vueuse/core";
 import { useToast } from "vue-toastification";
-import { useDisplay } from "vuetify";
 import InfoIcon from "~icons/material-symbols/info-rounded";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
-import CastIcon from "@/components/NavButtons/CastIcon.vue";
-import SavePreset from "@/components/NavButtons/SavePreset.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { usePlayerStore } from "@/plugins/store/player";
 
-const { smAndDown: isMobile } = useDisplay();
 const player = usePlayerStore();
 const toast = useToast();
 

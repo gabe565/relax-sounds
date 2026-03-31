@@ -114,7 +114,7 @@
               @click="loginWithProvider(provider)"
             >
               <template #prepend>
-                <v-avatar size="24" rounded="0">
+                <v-avatar size="24" rounded="0" variant="text">
                   <v-img :src="provider.icon" :cover="false" />
                 </v-avatar>
               </template>

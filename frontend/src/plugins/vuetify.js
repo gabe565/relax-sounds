@@ -1,6 +1,5 @@
 import { createVuetify } from "vuetify";
 import "vuetify/styles";
-import colors from "vuetify/util/colors";
 
 export default createVuetify({
   display: {
@@ -15,20 +14,21 @@ export default createVuetify({
       dark: {
         dark: true,
         colors: {
-          background: "#150B29",
-          cardBackground: "#271A40",
-          newPresetCardBackground: colors.deepPurple.darken2,
-          primary: colors.deepOrange.base,
-          accent: colors.deepPurple.base,
+          background: "#160E27",
+          surface: "#251842",
+          cardBackground: "#332457",
+          primary: "#BB86FC",
+          secondary: "#FFB74D",
+          accent: "#7C4DFF",
         },
       },
       light: {
         colors: {
-          cardBackground: "#F4F4F4",
-          newPresetCardBackground: colors.deepPurple.lighten1,
-          primary: colors.deepOrange.base,
-          secondary: "#E4E4E4",
-          accent: colors.deepPurple.base,
+          background: "#F5F1FA",
+          cardBackground: "#FFFFFF",
+          primary: "#7C4DFF",
+          secondary: "#FB8C00",
+          accent: "#9C27B0",
         },
       },
     },

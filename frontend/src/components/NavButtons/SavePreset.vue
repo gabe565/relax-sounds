@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="showDialog" max-width="500">
     <template #activator="{ props: dialogProps }">
-      <v-tooltip v-if="button" text="Save preset" location="bottom">
+      <v-tooltip v-if="button" text="Save preset" location="top">
         <template #activator="{ props: tooltipProps }">
           <v-btn
             v-bind="{ ...tooltipProps, ...dialogProps }"
@@ -25,21 +25,22 @@
     </template>
 
     <v-form @submit.prevent="save">
-      <v-card title="Preset Name">
-        <template #text>
-          <v-text-field v-model="name" required autofocus label="Name" />
-        </template>
-        <template #actions>
-          <v-spacer />
-          <v-btn variant="text" @click="cancel">
-            <v-icon :icon="CloseIcon" />
-            Cancel
-          </v-btn>
-          <v-btn color="green" variant="text" type="submit">
-            <v-icon :icon="CheckIcon" />
-            Save Preset
-          </v-btn>
-        </template>
+      <v-card color="cardBackground" variant="flat">
+        <v-card-title class="pt-6 px-6">Save Preset</v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="name"
+            required
+            autofocus
+            label="Name"
+            variant="outlined"
+            density="comfortable"
+          />
+        </v-card-text>
+        <v-card-actions class="mr-4 mb-4">
+          <v-btn variant="text" class="mr-2" @click="cancel">Cancel</v-btn>
+          <v-btn type="submit" color="primary" variant="flat">Save</v-btn>
+        </v-card-actions>
       </v-card>
     </v-form>
   </v-dialog>
@@ -49,11 +50,8 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import { VBtn, VListItem } from "vuetify/components";
-import AddIcon from "~icons/material-symbols/add-circle-rounded";
-import CheckIcon from "~icons/material-symbols/check-rounded";
-import CloseIcon from "~icons/material-symbols/close-rounded";
-import SaveIcon from "~icons/material-symbols/save-rounded";
+import AddIcon from "~icons/material-symbols/add-sharp";
+import SaveIcon from "~icons/material-symbols/save-sharp";
 import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePlayerStore } from "@/plugins/store/player";
 import { usePresetsStore } from "@/plugins/store/presets";

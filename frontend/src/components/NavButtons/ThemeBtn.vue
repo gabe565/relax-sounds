@@ -10,12 +10,15 @@
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
-        :icon="config.icon"
         color="transparent"
         variant="flat"
+        size="small"
+        icon
         aria-label="Change theme"
         @click="next"
-      />
+      >
+        <v-icon :icon="config.icon" size="small" />
+      </v-btn>
     </template>
   </v-tooltip>
 </template>

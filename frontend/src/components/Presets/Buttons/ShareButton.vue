@@ -16,27 +16,23 @@
         </template>
       </v-tooltip>
     </template>
-    <v-card title="Share">
-      <template #text>
+
+    <v-card color="cardBackground" variant="flat">
+      <v-card-title class="pt-6 px-6">Share</v-card-title>
+      <v-card-text>
         <v-text-field
           readonly
           :model-value="url"
           label="Share URL"
+          hide-details
           @focus="select"
           @click="select"
         />
-      </template>
-      <template #actions>
-        <v-spacer />
-        <v-btn variant="text" @click="show = false">
-          <v-icon :icon="CloseIcon" />
-          Close
-        </v-btn>
-        <v-btn variant="text" @click="copy">
-          <v-icon :icon="CopyIcon" />
-          Copy
-        </v-btn>
-      </template>
+      </v-card-text>
+      <v-card-actions class="mr-4 mb-4">
+        <v-btn variant="text" @click="show = false">Close</v-btn>
+        <v-btn color="primary" variant="flat" @click="copy">Copy</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -44,7 +40,6 @@
 <script setup>
 import { computed, nextTick, ref, watch } from "vue";
 import { useToast } from "vue-toastification";
-import CloseIcon from "~icons/material-symbols/close-rounded";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import ShareIcon from "~icons/material-symbols/share";
 import { Preset } from "@/util/Preset";

@@ -31,6 +31,7 @@
             thumb-label
             hide-details
             aria-label="Volume"
+            color="secondary"
           >
             <template #thumb-label>{{ Math.round(volume * 100) }}%</template>
           </v-slider>
@@ -46,6 +47,7 @@
             thumb-label
             hide-details
             aria-label="Speed"
+            color="secondary"
           >
             <template #thumb-label>{{ Math.round(rate * 100) }}%</template>
           </v-slider>
@@ -61,6 +63,7 @@
             thumb-label
             hide-details
             aria-label="Pan"
+            color="secondary"
           >
             <template #thumb-label>{{ Math.round(pan * 100) }}%</template>
           </v-slider>
@@ -74,6 +77,7 @@
         icon
         :aria-label="sound.isPlaying ? 'Pause' : 'Play'"
         :loading="sound.isLoading"
+        variant="text"
         @click.stop="player.playPause({ sound })"
       >
         <v-icon v-bind="iconProps" />
@@ -83,6 +87,7 @@
         icon
         aria-label="Stop"
         :disabled="sound.isStopped"
+        variant="text"
         @click.stop="
           player.stop({ sound });
           emit('close');
@@ -120,7 +125,7 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const player = usePlayerStore();
-const iconColor = computed(() => (props.sound.isPlaying ? "primary" : ""));
+const iconColor = computed(() => (props.sound.isPlaying ? "secondary" : ""));
 
 const volume = computed({
   get: () => props.sound.volume,

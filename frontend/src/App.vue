@@ -1,9 +1,19 @@
 <template>
   <v-app>
-    <v-navigation-drawer :rail="preferences.shrinkLeftPanel" color="accent" width="200">
+    <v-navigation-drawer
+      v-if="!isMobile"
+      :rail="preferences.shrinkLeftPanel"
+      color="surface"
+      width="200"
+      class="border-e-0"
+    >
       <template #prepend>
         <v-list v-if="!isMobile">
-          <v-list-item to="/" title="Relax Sounds" :prepend-icon="AppIcon" />
+          <v-list-item to="/" title="Relax Sounds">
+            <template #prepend>
+              <v-icon :icon="AppIcon" color="secondary" />
+            </template>
+          </v-list-item>
         </v-list>
         <v-divider />
       </template>
@@ -19,24 +29,6 @@
           :prepend-icon="route.meta.icon"
         />
       </v-list>
-
-      <v-divider />
-
-      <v-list>
-        <play-pause-all />
-        <stop-all />
-        <save-preset />
-        <cast-icon />
-        <debug-button v-if="DebugEnabled" list-item />
-      </v-list>
-
-      <template #append>
-        <v-divider />
-        <div class="d-flex overflow-hidden">
-          <nav-size-btn />
-          <theme-btn />
-        </div>
-      </template>
     </v-navigation-drawer>
 
     <v-main>
@@ -45,43 +37,34 @@
           <component :is="Component" />
         </keep-alive>
       </router-view>
-      <v-spacer style="height: 28px" />
+      <v-spacer v-if="isMobile && showPlayerBar" style="height: 64px" />
     </v-main>
 
+    <player-bar v-if="showPlayerBar" />
+
     <v-bottom-navigation
-      v-if="isMobile"
+      v-if="isMobile && showPlayerBar"
       v-model="botnav"
-      bg-color="accent"
+      bg-color="surface"
       color="primary"
-      theme="dark"
+      grow
       :model-value="null"
     >
       <v-btn v-for="route in routes" :key="route.path" :to="route.path" :value="route.name">
         <v-icon v-if="route.meta.icon" :icon="route.meta.icon" />
         <span>{{ route.name }}</span>
       </v-btn>
-
-      <v-divider vertical />
-      <play-pause-all button />
-      <stop-all button />
     </v-bottom-navigation>
   </v-app>
 </template>
 
 <script setup>
 import { computed, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useDisplay, useTheme } from "vuetify";
-import AppIcon from "~icons/relax-sounds/icon-white";
-import CastIcon from "@/components/NavButtons/CastIcon.vue";
-import NavSizeBtn from "@/components/NavButtons/NavSizeBtn.vue";
-import PlayPauseAll from "@/components/NavButtons/PlayPauseAll.vue";
-import SavePreset from "@/components/NavButtons/SavePreset.vue";
-import StopAll from "@/components/NavButtons/StopAll.vue";
-import ThemeBtn from "@/components/NavButtons/ThemeBtn.vue";
-import DebugButton from "@/components/Presets/Buttons/DebugButton.vue";
+import AppIcon from "~icons/relax-sounds/icon";
+import PlayerBar from "@/components/NavButtons/PlayerBar.vue";
 import { useAuth } from "@/composables/useAuth";
-import { DebugEnabled } from "@/config/debug";
 import { registerSW } from "@/plugins/pwa";
 import { Theme, usePreferencesStore } from "@/plugins/store/preferences";
 
@@ -89,6 +72,7 @@ const { smAndDown: isMobile } = useDisplay();
 const preferences = usePreferencesStore();
 const theme = useTheme();
 const { isAuthenticated } = useAuth();
+const route = useRoute();
 
 const routes = computed(() => {
   return useRouter().options.routes.filter((route) => {
@@ -98,6 +82,11 @@ const routes = computed(() => {
     return true;
   });
 });
+
+const showPlayerBar = computed(() => {
+  return route.meta?.showInNav !== false;
+});
+
 const autoTheme = (e) => (theme.name.value = e.matches ? "dark" : "light");
 const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 watch(
@@ -126,3 +115,9 @@ watch(
 
 registerSW();
 </script>
+
+<style lang="scss">
+html {
+  scrollbar-gutter: stable;
+}
+</style>

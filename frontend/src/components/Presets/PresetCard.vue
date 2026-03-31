@@ -1,13 +1,7 @@
 <template>
   <v-btn
     variant="flat"
-    :color="
-      preset.new
-        ? 'newPresetCardBackground'
-        : player.currentName === preset.name
-          ? 'accent'
-          : 'cardBackground'
-    "
+    :color="player.currentName === preset.name ? 'accent' : 'cardBackground'"
     size="x-large"
     class="w-100 d-flex justify-space-between text-none font-weight-regular"
     :aria-label="`Play ${preset.name}`"
@@ -18,7 +12,6 @@
       {{ preset.name }}
     </span>
     <template #append>
-      <debug-button v-if="debugEnabled" :preset="preset" />
       <share-button :preset="preset" />
       <delete-button :preset="preset" />
     </template>
@@ -28,7 +21,6 @@
 <script setup>
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
-import DebugButton from "@/components/Presets/Buttons/DebugButton.vue";
 import DeleteButton from "@/components/Presets/Buttons/DeleteButton.vue";
 import ShareButton from "@/components/Presets/Buttons/ShareButton.vue";
 import { usePlayerStore } from "@/plugins/store/player";
@@ -42,7 +34,6 @@ const props = defineProps({
   },
 });
 
-const debugEnabled = import.meta.env.DEV;
 const toast = useToast();
 const presets = usePresetsStore();
 const player = usePlayerStore();

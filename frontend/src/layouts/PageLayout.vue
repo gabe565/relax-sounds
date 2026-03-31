@@ -1,8 +1,8 @@
 <template>
-  <v-app-bar theme="dark" color="accent" flat :title="route.name">
+  <v-app-bar color="surface" flat :title="route.name">
     <template #prepend>
       <v-btn v-if="isMobile" to="/" icon size="small">
-        <v-icon :icon="AppIcon" size="28" style="opacity: 0.7" aria-label="Relax Sounds" />
+        <v-icon :icon="AppIcon" size="28" color="secondary" aria-label="Relax Sounds" />
       </v-btn>
     </template>
 
@@ -10,7 +10,11 @@
 
     <slot name="actions" />
 
-    <v-menu v-if="isMobile || $slots.menu" location="bottom right" transition="slide-y-transition">
+    <v-menu
+      v-if="isMobile || $slots.menu || DebugEnabled"
+      location="bottom right"
+      transition="slide-y-transition"
+    >
       <template #activator="{ props }">
         <v-btn icon variant="flat" color="transparent" v-bind="props" aria-label="Menu">
           <v-icon :icon="MenuIcon" />
@@ -19,11 +23,11 @@
 
       <v-list>
         <slot name="menu" />
+        <v-divider v-if="$slots.menu && (isMobile || DebugEnabled)" />
         <template v-if="isMobile">
-          <v-divider v-if="$slots.menu" />
-          <debug-button v-if="DebugEnabled" list-item />
           <theme-btn list-item />
         </template>
+        <debug-button v-if="DebugEnabled" />
       </v-list>
     </v-menu>
 
@@ -83,7 +87,7 @@ import LoginIcon from "~icons/material-symbols/login-rounded";
 import LogoutIcon from "~icons/material-symbols/logout-rounded";
 import MenuIcon from "~icons/material-symbols/more-horiz";
 import PersonIcon from "~icons/material-symbols/person-rounded";
-import AppIcon from "~icons/relax-sounds/icon-white";
+import AppIcon from "~icons/relax-sounds/icon";
 import ThemeBtn from "@/components/NavButtons/ThemeBtn.vue";
 import DebugButton from "@/components/Presets/Buttons/DebugButton.vue";
 import ProfileDialog from "@/components/Profile/ProfileDialog.vue";

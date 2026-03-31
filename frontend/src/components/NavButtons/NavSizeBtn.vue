@@ -3,12 +3,18 @@
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
-        :icon="preferences.shrinkLeftPanel ? LeftPanelOpenIcon : LeftPanelCloseIcon"
         color="transparent"
         variant="flat"
+        size="small"
+        icon
         aria-label="Toggle left panel"
         @click="preferences.shrinkLeftPanel = !preferences.shrinkLeftPanel"
-      />
+      >
+        <v-icon
+          :icon="preferences.shrinkLeftPanel ? LeftPanelOpenIcon : LeftPanelCloseIcon"
+          size="small"
+        />
+      </v-btn>
     </template>
   </v-tooltip>
 </template>

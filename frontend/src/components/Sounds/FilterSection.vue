@@ -20,6 +20,7 @@
         :return-object="false"
         :menu-icon="DropdownIcon"
         :clear-icon="CloseIcon"
+        color="secondary"
         @keydown.esc="
           filters.filters.word = '';
           combobox.blur();
