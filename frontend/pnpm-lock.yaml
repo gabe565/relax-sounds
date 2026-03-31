@@ -115,8 +115,8 @@ importers:
         specifier: 10.8.0
         version: 10.8.0(eslint@10.0.3)(vue-eslint-parser@10.4.0(eslint@10.0.3))
       eslint-plugin-vuetify:
-        specifier: 2.7.0
-        version: 2.7.0(eslint@10.0.3)(vue-eslint-parser@10.4.0(eslint@10.0.3))(vuetify@4.0.1)
+        specifier: 2.7.2
+        version: 2.7.2(eslint@10.0.3)(vue-eslint-parser@10.4.0(eslint@10.0.3))(vuetify@4.0.1)
       globals:
         specifier: 17.4.0
         version: 17.4.0
@@ -1625,8 +1625,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-vuetify@2.7.0:
-    resolution: {integrity: sha512-6yl3W/FM6F81KG3c69fGoPWCkdoMG0ZPGhoF3uq2pjOWoQFdNo0jR+/s2016NCxuKWqaVfo5zWVUIGUupamhwA==}
+  eslint-plugin-vuetify@2.7.2:
+    resolution: {integrity: sha512-c8uKnb4DFJFBaqGTKT9Yv6SDhe+cVAQpRpey7nRlpXgXfHpMEe8u6yg5DEhn+Diam0bY05nEe3+T/t/d+cEinQ==}
     peerDependencies:
       eslint: ^8.0.0 || ^9.0.0 || ^10.0.0
       vuetify: ^3.0.0 || ^4.0.0
@@ -4567,7 +4567,7 @@ snapshots:
       vue-eslint-parser: 10.4.0(eslint@10.0.3)
       xml-name-validator: 4.0.0
 
-  eslint-plugin-vuetify@2.7.0(eslint@10.0.3)(vue-eslint-parser@10.4.0(eslint@10.0.3))(vuetify@4.0.1):
+  eslint-plugin-vuetify@2.7.2(eslint@10.0.3)(vue-eslint-parser@10.4.0(eslint@10.0.3))(vuetify@4.0.1):
     dependencies:
       eslint: 10.0.3
       eslint-plugin-vue: 10.8.0(eslint@10.0.3)(vue-eslint-parser@10.4.0(eslint@10.0.3))
