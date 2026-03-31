@@ -3,12 +3,12 @@
     variant="flat"
     :color="player.currentName === preset.name ? 'accent' : 'cardBackground'"
     size="x-large"
-    class="w-100 d-flex justify-space-between text-none font-weight-regular pr-2"
+    class="card-btn w-full flex justify-between pr-2"
     :aria-label="`Play ${preset.name}`"
     :loading="loading"
     @click="play"
   >
-    <span class="text-truncate">
+    <span class="truncate">
       {{ preset.name }}
     </span>
     <template #append>
@@ -52,16 +52,3 @@ const play = async () => {
   }
 };
 </script>
-
-<style scoped lang="scss">
-.v-btn {
-  letter-spacing: initial;
-
-  &:deep(.v-btn__content) {
-    max-width: 100% !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-}
-</style>

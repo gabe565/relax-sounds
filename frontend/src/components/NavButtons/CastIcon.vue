@@ -3,7 +3,7 @@
     <template #activator="{ props }">
       <v-btn v-bind="props" icon title="Cast" aria-label="Cast" @click.stop="castLauncher.click()">
         <v-icon>
-          <google-cast-launcher ref="castLauncher" class="position-relative" />
+          <google-cast-launcher ref="castLauncher" class="relative transition-colors" />
         </v-icon>
       </v-btn>
     </template>
@@ -24,10 +24,9 @@ defineProps({
 });
 </script>
 
-<style scoped lang="scss">
+<style>
 google-cast-launcher {
   --disconnected-color: rgb(var(--v-theme-on-surface));
   --connected-color: rgb(var(--v-theme-primary));
-  transition: color 0.3s ease;
 }
 </style>

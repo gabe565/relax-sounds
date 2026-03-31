@@ -10,19 +10,23 @@
         :color="props.sound.isStopped ? 'cardBackground' : 'accent'"
         :loading="sound.isLoading"
         size="x-large"
-        class="w-100 justify-start text-none font-weight-regular sound-card"
-        :class="{ 'sound-active': !props.sound.isStopped }"
+        class="card-btn w-full justify-start border transition"
+        :class="[
+          props.sound.isStopped
+            ? 'border-transparent'
+            : 'border-secondary/35 shadow-[0_0_12px] shadow-secondary/25',
+        ]"
         :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
         variant="flat"
         @click="playStop"
         @contextmenu.prevent="dialogProps.onClick"
       >
         <template #prepend>
-          <v-icon class="mr-4" size="x-large" :color="iconColor">
+          <v-icon size="x-large" :color="iconColor">
             <icon :icon="sound.icon" />
           </v-icon>
         </template>
-        <span class="text-truncate">{{ sound.name }}</span>
+        <span class="truncate">{{ sound.name }}</span>
       </v-btn>
     </template>
 
@@ -46,6 +50,7 @@ const props = defineProps({
   },
 });
 
+/* Use secondary (Amber) for playing icons to break up the purple */
 const iconColor = computed(() => (props.sound.isPlaying ? "secondary" : ""));
 const toast = useToast();
 const player = usePlayerStore();
@@ -58,23 +63,3 @@ const playStop = async () => {
   }
 };
 </script>
-
-<style scoped>
-.v-btn {
-  letter-spacing: initial;
-  padding: 0 6px 0 24px;
-  transition: all 0.3s ease;
-}
-:deep(.v-btn__content) {
-  min-width: 0;
-}
-
-.sound-card {
-  border: 1px solid transparent;
-}
-
-.sound-active {
-  box-shadow: 0 0 12px rgba(255, 183, 77, 0.25) !important;
-  border: 1px solid rgba(255, 183, 77, 0.35) !important;
-}
-</style>

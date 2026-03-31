@@ -10,10 +10,7 @@
         aria-label="Toggle left panel"
         @click="preferences.shrinkLeftPanel = !preferences.shrinkLeftPanel"
       >
-        <v-icon
-          :icon="preferences.shrinkLeftPanel ? LeftPanelOpenIcon : LeftPanelCloseIcon"
-          size="small"
-        />
+        <v-icon :icon="preferences.shrinkLeftPanel ? LeftPanelOpenIcon : LeftPanelCloseIcon" />
       </v-btn>
     </template>
   </v-tooltip>
@@ -29,5 +26,3 @@ const preferences = usePreferencesStore();
 
 const text = computed(() => (preferences.shrinkLeftPanel ? "Expand panel" : "Shrink panel"));
 </script>
-
-<style scoped lang="scss"></style>

@@ -74,7 +74,7 @@
     </v-menu>
   </v-app-bar>
 
-  <v-container class="pt-6 pt-lg-12">
+  <v-container class="pt-6">
     <slot />
   </v-container>
 </template>
@@ -102,9 +102,3 @@ const { authEnabled, user, isAuthenticated, logout, avatarURL } = useAuth();
 
 const isLoading = computed(() => presets.isSyncing || !user.value?.id);
 </script>
-
-<style lang="css" scoped>
-header.v-toolbar {
-  transition: none;
-}
-</style>
