@@ -10,7 +10,7 @@ require (
 	github.com/jellydator/ttlcache/v3 v3.4.0
 	github.com/lmittmann/tint v1.1.3
 	github.com/mattn/go-isatty v0.0.20
-	github.com/pocketbase/pocketbase v0.36.6
+	github.com/pocketbase/pocketbase v0.36.8
 	github.com/prometheus/client_golang v1.23.2
 	github.com/samber/slog-multi v1.7.1
 	github.com/spf13/cobra v1.10.2
@@ -29,7 +29,7 @@ require (
 	github.com/dmarkham/enumer v1.6.3 // indirect
 	github.com/domodwyer/mailyak/v3 v3.6.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/fatih/color v1.18.0 // indirect
+	github.com/fatih/color v1.19.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
 	github.com/ganigeorgiev/fexpr v0.5.0 // indirect
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0 // indirect
@@ -58,22 +58,21 @@ require (
 	github.com/samber/slog-common v0.20.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
-	golang.org/x/crypto v0.48.0 // indirect
-	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
+	golang.org/x/crypto v0.49.0 // indirect
 	golang.org/x/image v0.38.0 // indirect
 	golang.org/x/mod v0.33.0 // indirect
-	golang.org/x/net v0.50.0 // indirect
-	golang.org/x/oauth2 v0.35.0 // indirect
+	golang.org/x/net v0.52.0 // indirect
+	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/text v0.35.0 // indirect
 	golang.org/x/tools v0.42.0 // indirect
 	google.golang.org/protobuf v1.36.8 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	modernc.org/libc v1.67.6 // indirect
+	modernc.org/libc v1.70.0 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.11.0 // indirect
-	modernc.org/sqlite v1.46.1 // indirect
+	modernc.org/sqlite v1.48.0 // indirect
 )
 
 tool github.com/dmarkham/enumer
