@@ -52,9 +52,9 @@ import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import AddIcon from "~icons/material-symbols/add-sharp";
 import SaveIcon from "~icons/material-symbols/save-sharp";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 import { getErrorMessage } from "@/plugins/store/pocketbase.js";
-import { usePresetsStore } from "@/plugins/store/presets";
+import { usePresets } from "@/plugins/store/presets";
 import { wait } from "@/util/helpers";
 
 defineProps({
@@ -66,9 +66,9 @@ defineProps({
 
 const showDialog = ref(false);
 const name = ref("");
-const player = usePlayerStore();
+const player = usePlayer();
 const router = useRouter();
-const presets = usePresetsStore();
+const presets = usePresets();
 
 const cancel = () => {
   showDialog.value = false;

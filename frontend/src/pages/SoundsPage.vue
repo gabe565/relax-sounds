@@ -34,12 +34,12 @@ import PreloadAllIcon from "~icons/material-symbols/cloud-sync-rounded";
 import FilterSection from "@/components/Sounds/FilterSection.vue";
 import SoundCard from "@/components/Sounds/SoundCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
-import { useFiltersStore } from "@/plugins/store/filters";
-import { usePlayerStore } from "@/plugins/store/player";
+import { useFilters } from "@/plugins/store/filters";
+import { usePlayer } from "@/plugins/store/player";
 import { getErrorMessage } from "@/plugins/store/pocketbase.js";
 
-const player = usePlayerStore();
-const filters = useFiltersStore();
+const player = usePlayer();
+const filters = useFilters();
 const isLoading = ref(true);
 
 (async () => {

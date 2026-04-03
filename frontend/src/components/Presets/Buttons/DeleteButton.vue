@@ -19,7 +19,7 @@
 import { toast } from "vue-sonner";
 import TrashIcon from "~icons/material-symbols/delete-rounded";
 import { getErrorMessage } from "@/plugins/store/pocketbase.js";
-import { usePresetsStore } from "@/plugins/store/presets";
+import { usePresets } from "@/plugins/store/presets";
 
 const props = defineProps({
   preset: {
@@ -28,7 +28,7 @@ const props = defineProps({
   },
 });
 
-const presets = usePresetsStore();
+const presets = usePresets();
 
 const remove = async () => {
   presets.hide({ preset: props.preset });
