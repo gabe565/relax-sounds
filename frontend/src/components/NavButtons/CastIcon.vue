@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { useTemplateRef } from "vue";
 import { castEnabled } from "@/cast";
 
-const castLauncher = ref();
+const castLauncher = useTemplateRef("castLauncher");
 
 defineProps({
   tooltipLocation: {
