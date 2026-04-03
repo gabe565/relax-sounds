@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="surface" flat :title="route.name">
+  <v-app-bar theme="dark" color="surface" flat :title="route.name">
     <template #prepend>
       <v-btn v-if="isMobile" to="/" icon size="small">
         <v-icon :icon="AppIcon" size="28" color="secondary" aria-label="Relax Sounds" />

@@ -9,6 +9,7 @@
     <v-navigation-drawer
       v-if="!isMobile"
       :rail="preferences.shrinkLeftPanel"
+      theme="dark"
       color="surface"
       width="200"
       class="border-e-0"
@@ -51,6 +52,7 @@
     <v-bottom-navigation
       v-if="isMobile && showPlayerBar"
       v-model="botnav"
+      theme="dark"
       bg-color="surface"
       color="primary"
       grow
