@@ -5,7 +5,7 @@
         {{ route.name }}
       </v-card-title>
       <v-card-text>
-        <template v-if="authMethods.loading">
+        <template v-if="pb.authMethods.loading">
           <div class="flex justify-center py-8">
             <v-progress-circular indeterminate color="primary" />
           </div>
@@ -13,7 +13,7 @@
         <template v-else>
           <!-- Password Form -->
           <v-form
-            v-if="authMethods.password?.enabled"
+            v-if="pb.authMethods.password?.enabled"
             @submit.prevent="props.register ? registerWithPassword() : loginWithPassword()"
           >
             <v-alert v-if="alert.text" v-bind="alert" class="mb-6" />
@@ -73,7 +73,7 @@
             </v-btn>
           </v-form>
 
-          <div v-if="authMethods.password?.enabled" class="text-center mt-4">
+          <div v-if="pb.authMethods.password?.enabled" class="text-center mt-4">
             <v-btn variant="text" size="small" :to="props.register ? '/login' : '/register'">
               {{ props.register ? "Already have an account?" : "Don't have an account?" }}
             </v-btn>
@@ -93,7 +93,7 @@
 
           <!-- Divider -->
           <div
-            v-if="authMethods.password?.enabled && authMethods.oauth2?.providers?.length"
+            v-if="pb.authMethods.password?.enabled && pb.authMethods.oauth2?.providers?.length"
             class="flex align-center my-6"
           >
             <v-divider />
@@ -102,9 +102,9 @@
           </div>
 
           <!-- OAuth2 Providers -->
-          <template v-if="authMethods.oauth2?.providers?.length">
+          <template v-if="pb.authMethods.oauth2?.providers?.length">
             <v-btn
-              v-for="provider in authMethods.oauth2.providers"
+              v-for="provider in pb.authMethods.oauth2.providers"
               :key="provider.name"
               variant="outlined"
               block
@@ -130,9 +130,8 @@
 <script setup>
 import { reactive, ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useAuth } from "@/composables/useAuth.js";
 import PageLayout from "@/layouts/PageLayout.vue";
-import { getErrorMessage, pb } from "@/plugins/pocketbase";
+import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
 const props = defineProps({
   register: {
@@ -142,10 +141,10 @@ const props = defineProps({
 });
 
 const router = useRouter();
-const { authEnabled, authMethods, isAuthenticated } = useAuth();
+const pb = usePocketBase();
 
 watchEffect(async () => {
-  if (isAuthenticated.value || (!authMethods.value.loading && !authEnabled.value)) {
+  if (pb.isAuthenticated || (!pb.authMethods.loading && !pb.authEnabled)) {
     await router.replace("/");
   }
 });
@@ -181,7 +180,7 @@ const resendVerification = async () => {
   if (!email.value) return;
   isResending.value = true;
   try {
-    await pb.collection("users").requestVerification(email.value);
+    await pb.client.collection("users").requestVerification(email.value);
     alert.text = "Verification email sent.";
     alert.color = "success";
     showResend.value = false;
@@ -197,7 +196,7 @@ const loginWithPassword = async () => {
 
   isLoading.value = true;
   try {
-    await pb.collection("users").authWithPassword(email.value, password.value);
+    await pb.client.collection("users").authWithPassword(email.value, password.value);
     await router.push("/");
   } catch (error) {
     handleAuthError(error);
@@ -211,12 +210,12 @@ const registerWithPassword = async () => {
 
   isLoading.value = true;
   try {
-    await pb.collection("users").create({
+    await pb.client.collection("users").create({
       email: email.value,
       password: password.value,
       passwordConfirm: passwordConfirm.value,
     });
-    await pb.collection("users").requestVerification(email.value);
+    await pb.client.collection("users").requestVerification(email.value);
     alert.text = "Account created. Please check your email for verification.";
     alert.color = "success";
     await router.push("/login");
@@ -230,7 +229,7 @@ const registerWithPassword = async () => {
 const loginWithProvider = async (provider) => {
   providerLoading.value = provider.name;
   try {
-    await pb.collection("users").authWithOAuth2({ provider: provider.name });
+    await pb.client.collection("users").authWithOAuth2({ provider: provider.name });
     await router.push("/");
   } catch (error) {
     handleAuthError(error);

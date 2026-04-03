@@ -52,8 +52,8 @@ import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import AddIcon from "~icons/material-symbols/add-sharp";
 import SaveIcon from "~icons/material-symbols/save-sharp";
-import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePlayerStore } from "@/plugins/store/player";
+import { getErrorMessage } from "@/plugins/store/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 import { wait } from "@/util/helpers";
 

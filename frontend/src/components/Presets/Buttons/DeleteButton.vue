@@ -18,7 +18,7 @@
 <script setup>
 import { toast } from "vue-sonner";
 import TrashIcon from "~icons/material-symbols/delete-rounded";
-import { getErrorMessage } from "@/plugins/pocketbase.js";
+import { getErrorMessage } from "@/plugins/store/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 
 const props = defineProps({
