@@ -18,6 +18,7 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+	"github.com/pocketbase/pocketbase/tools/osutils"
 	slogmulti "github.com/samber/slog-multi"
 )
 
@@ -32,7 +33,7 @@ func main() {
 	conf := config.New(app).RegisterFlags()
 
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
-		Automigrate: automigrateEnabled(),
+		Automigrate: osutils.IsProbablyGoRun(),
 	})
 
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
