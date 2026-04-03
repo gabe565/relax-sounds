@@ -1,23 +1,30 @@
-import base64 from "base64-url";
-
 export const wait = (timeout) => new Promise((resolve) => setTimeout(resolve, timeout));
 
+export const toUrlSafeBase64 = (b64) =>
+  b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+export const fromUrlSafeBase64 = (str) => {
+  str = str.replace(/-/g, "+").replace(/_/g, "/");
+  return str + "==".slice(0, (4 - (str.length % 4)) % 4);
+};
+
+export const streamToArrayBuffer = async (stream) => {
+  const blob = await new Response(stream).blob();
+  return blob.arrayBuffer();
+};
+
 export const compress = async (data, encoding = "gzip") => {
-  const stream = new Blob([data]).stream();
-  const compressedReadableStream = stream.pipeThrough(new CompressionStream(encoding));
-  const compressedResponse = new Response(compressedReadableStream);
-  const blob = await compressedResponse.blob();
-  const buffer = await blob.arrayBuffer();
-  const compressedBase64 = base64.escape(btoa(String.fromCharCode(...new Uint8Array(buffer))));
-  return compressedBase64;
+  const stream = new Blob([data]).stream().pipeThrough(new CompressionStream(encoding));
+  const buffer = await streamToArrayBuffer(stream);
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return toUrlSafeBase64(btoa(binary));
 };
 
 export const decompress = async (data, encoding = "gzip") => {
-  data = atob(base64.unescape(data));
-  data = Uint8Array.from(data, (m) => m.codePointAt(0));
-  const stream = new Blob([data]).stream();
-  const compressedReadableStream = stream.pipeThrough(new DecompressionStream(encoding));
-  const resp = new Response(compressedReadableStream);
-  const blob = await resp.blob();
-  return await blob.text();
+  const binary = atob(fromUrlSafeBase64(data));
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream(encoding));
+  return new Response(stream).text();
 };
