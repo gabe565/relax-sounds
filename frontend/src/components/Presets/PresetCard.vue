@@ -3,7 +3,7 @@
     :active="player.currentName === props.preset.name"
     variant="flat"
     size="x-large"
-    class="card-btn bg-card-background w-full flex justify-between pr-2 v-active:bg-accent"
+    class="card-btn bg-card-background w-full flex justify-between pr-2 v-active:bg-accent v-active:light:text-white"
     :aria-label="`Play ${preset.name}`"
     :loading="loading"
     @click="play"

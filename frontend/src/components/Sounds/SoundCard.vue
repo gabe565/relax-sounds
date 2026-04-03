@@ -10,14 +10,14 @@
         :active="sound.isPlaying"
         :loading="sound.isLoading"
         size="x-large"
-        class="group card-btn bg-card-background w-full justify-start border transition border-transparent v-active:bg-accent v-active:border-secondary/35 v-active:shadow-[0_0_12px] v-active:shadow-secondary/25"
+        class="group card-btn bg-card-background w-full justify-start border transition border-transparent v-active:bg-accent v-active:light:text-white v-active:border-secondary/35 v-active:shadow-[0_0_12px] v-active:shadow-secondary/25"
         :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
         variant="flat"
         @click="playStop"
         @contextmenu.prevent="dialogProps.onClick"
       >
         <template #prepend>
-          <v-icon size="x-large" class="group-v-active:text-secondary">
+          <v-icon size="x-large" class="group-v-active:text-white">
             <icon :icon="sound.icon" />
           </v-icon>
         </template>
