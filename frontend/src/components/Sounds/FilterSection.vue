@@ -44,7 +44,7 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { useAsyncState, useMagicKeys } from "@vueuse/core";
-import { ref, watch } from "vue";
+import { useTemplateRef, watch } from "vue";
 import { toast } from "vue-sonner";
 import DropdownIcon from "~icons/material-symbols/arrow-drop-down-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
@@ -52,7 +52,7 @@ import SearchIcon from "~icons/material-symbols/search-rounded";
 import { useFiltersStore } from "@/plugins/store/filters";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
 
-const combobox = ref();
+const combobox = useTemplateRef("combobox");
 const pb = usePocketBase();
 const filters = useFiltersStore();
 
