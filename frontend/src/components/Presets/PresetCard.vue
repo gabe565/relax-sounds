@@ -1,7 +1,7 @@
 <template>
   <v-btn
     variant="flat"
-    :color="player.currentName === preset.name ? 'accent' : 'cardBackground'"
+    :color="player.currentName === preset.name ? 'accent' : 'card-background'"
     size="x-large"
     class="card-btn w-full flex justify-between pr-2"
     :aria-label="`Play ${preset.name}`"

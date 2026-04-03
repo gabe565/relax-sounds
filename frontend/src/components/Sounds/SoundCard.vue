@@ -7,7 +7,7 @@
   >
     <template #activator="{ props: dialogProps }">
       <v-btn
-        :color="props.sound.isStopped ? 'cardBackground' : 'accent'"
+        :color="props.sound.isStopped ? 'card-background' : 'accent'"
         :loading="sound.isLoading"
         size="x-large"
         class="card-btn w-full justify-start border transition"

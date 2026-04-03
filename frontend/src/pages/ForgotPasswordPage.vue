@@ -1,6 +1,6 @@
 <template>
   <page-layout>
-    <v-card max-width="400" class="mx-auto mt-8" color="cardBackground" variant="flat">
+    <v-card max-width="400" class="mx-auto mt-8" color="card-background" variant="flat">
       <v-card-title class="text-center pt-6">Reset Password</v-card-title>
       <v-card-text>
         <v-form @submit.prevent="requestReset">

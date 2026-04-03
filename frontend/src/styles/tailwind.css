@@ -22,7 +22,7 @@
   --color-background: rgb(var(--v-theme-background));
   --color-surface: rgb(var(--v-theme-surface));
   --color-on-surface: rgb(var(--v-theme-on-surface));
-  --color-card-background: rgb(var(--v-theme-cardBackground));
+  --color-card-background: rgb(var(--v-theme-card-background));
   --color-primary: rgb(var(--v-theme-primary));
   --color-secondary: rgb(var(--v-theme-secondary));
   --color-accent: rgb(var(--v-theme-accent));

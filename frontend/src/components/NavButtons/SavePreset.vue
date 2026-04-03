@@ -25,7 +25,7 @@
     </template>
 
     <v-form @submit.prevent="save">
-      <v-card color="cardBackground" variant="flat">
+      <v-card color="card-background" variant="flat">
         <v-card-title class="pt-6 px-6">Save Preset</v-card-title>
         <v-card-text>
           <v-text-field
