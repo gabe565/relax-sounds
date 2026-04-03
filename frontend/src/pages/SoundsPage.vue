@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { useAsyncState } from "@vueuse/core";
+import { ref } from "vue";
 import { toast } from "vue-sonner";
 import PreloadAllIcon from "~icons/material-symbols/cloud-sync-rounded";
 import FilterSection from "@/components/Sounds/FilterSection.vue";
@@ -36,13 +36,20 @@ import SoundCard from "@/components/Sounds/SoundCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { useFiltersStore } from "@/plugins/store/filters";
 import { usePlayerStore } from "@/plugins/store/player";
+import { getErrorMessage } from "@/plugins/store/pocketbase.js";
 
 const player = usePlayerStore();
 const filters = useFiltersStore();
+const isLoading = ref(true);
 
-const { isLoading } = useAsyncState(player.initSounds, undefined, {
-  onError(e) {
-    toast.error(`Failed to fetch sounds:\n${e}`);
-  },
-});
+(async () => {
+  try {
+    await player.loadSounds();
+  } catch (err) {
+    console.error(err);
+    toast.error(`Failed to fetch sounds:\n${getErrorMessage(err)}`);
+  } finally {
+    isLoading.value = false;
+  }
+})();
 </script>

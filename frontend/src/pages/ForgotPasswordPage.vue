@@ -44,21 +44,17 @@
 <script setup>
 import { reactive, ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
-import { useAuth } from "@/composables/useAuth.js";
 import PageLayout from "@/layouts/PageLayout.vue";
-import { getErrorMessage, pb } from "@/plugins/pocketbase";
+import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
 const email = ref("");
 const isLoading = ref(false);
 const router = useRouter();
-const { authMethods, isAuthenticated } = useAuth();
+const pb = usePocketBase();
 const alert = reactive({});
 
 watchEffect(async () => {
-  if (
-    isAuthenticated.value ||
-    (!authMethods.value.loading && !authMethods.value.password?.enabled)
-  ) {
+  if (pb.isAuthenticated || (!pb.authMethods.loading && !pb.authMethods.password?.enabled)) {
     await router.replace("/");
   }
 });
@@ -68,7 +64,7 @@ const requestReset = async () => {
 
   isLoading.value = true;
   try {
-    await pb.collection("users").requestPasswordReset(email.value);
+    await pb.client.collection("users").requestPasswordReset(email.value);
     alert.text = "Password reset link sent. Please check your email.";
     alert.color = "success";
   } catch (error) {

@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { ApiPath } from "@/config/api";
-import { getSounds } from "@/data/sounds";
+import { usePlayerStore } from "@/plugins/store/player.js";
 import { Filetype } from "@/util/filetype";
 import { compress, decompress, fromUrlSafeBase64 } from "@/util/helpers";
 
@@ -86,11 +86,12 @@ export class Preset {
   }
 
   async migrate() {
+    const player = usePlayerStore();
+    await player.loadSounds();
     await Promise.all(
       this.sounds.map(async (sound) => {
         if (sound.id.length <= 3) {
-          const sounds = await getSounds();
-          const found = sounds.find((e) => `${e.old_id}` === sound.id);
+          const found = player.sounds.find((e) => `${e.old_id}` === sound.id);
           if (found) {
             sound.id = found.id;
           }

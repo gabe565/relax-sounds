@@ -27,18 +27,25 @@
 </template>
 
 <script setup>
-import { useAsyncState } from "@vueuse/core";
+import { ref } from "vue";
 import { toast } from "vue-sonner";
 import InfoIcon from "~icons/material-symbols/info-rounded";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { usePlayerStore } from "@/plugins/store/player";
+import { getErrorMessage } from "@/plugins/store/pocketbase.js";
 
 const player = usePlayerStore();
+const isLoading = ref(true);
 
-const { isLoading } = useAsyncState(player.initSounds, undefined, {
-  onError(e) {
-    toast.error(`Failed to fetch sounds:\n${e}`);
-  },
-});
+(async () => {
+  try {
+    await player.loadSounds();
+  } catch (err) {
+    console.error(err);
+    toast.error(`Failed to load:\n${getErrorMessage(err)}`);
+  } finally {
+    isLoading.value = false;
+  }
+})();
 </script>

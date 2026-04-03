@@ -4,19 +4,39 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { toast } from "vue-sonner";
 import { ApiPath } from "@/config/api";
-import { getSounds } from "@/data/sounds";
+import { usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Preset } from "@/util/Preset";
 import { SoundState } from "@/util/Sound";
+import { Sound } from "@/util/Sound";
 import { Filetype } from "@/util/filetype";
 import { formatError, getCastSession } from "@/util/googleCast";
 import { wait } from "@/util/helpers";
 
 export const usePlayerStore = defineStore("player", () => {
+  const pb = usePocketBase();
   const sounds = ref([]);
   const currentName = ref();
   let remotePlayer;
   let remotePlayerController;
   const castConnected = ref(false);
+
+  const loadSounds = async (force = false) => {
+    if (!force && sounds.value.length > 0) {
+      return;
+    }
+
+    const data = await pb.client.collection("sounds").getFullList({
+      fields: "collectionId,id,old_id,name,icon,file,expand.tags.name",
+      expand: "tags",
+      sort: "name",
+    });
+
+    sounds.value = data.map((sound) => {
+      sound.tags = sound.expand?.tags?.map((tag) => tag.name);
+      delete sound.expand;
+      return new Sound(sound);
+    });
+  };
 
   const soundsPlaying = computed(() => {
     return sounds.value.filter((sound) => sound.isPlaying);
@@ -224,12 +244,6 @@ export const usePlayerStore = defineStore("player", () => {
     }
   };
 
-  const initSounds = async () => {
-    if (!sounds.value.length) {
-      sounds.value = await getSounds();
-    }
-  };
-
   const initializeCastApi = () => {
     const { framework: castFramework } = window.cast;
     const { cast } = window.chrome;
@@ -352,7 +366,7 @@ export const usePlayerStore = defineStore("player", () => {
     stopAll,
     initializeCastApi,
     updateCast,
-    initSounds,
+    loadSounds,
     prefetch,
   };
 });
