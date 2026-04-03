@@ -17,7 +17,7 @@
 
 <script setup>
 import StopIcon from "~icons/material-symbols/stop-sharp";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 
-const player = usePlayerStore();
+const player = usePlayer();
 </script>

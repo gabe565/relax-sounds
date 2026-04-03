@@ -109,7 +109,7 @@ import SpeedIcon from "~icons/material-symbols/speed-rounded";
 import StopIcon from "~icons/material-symbols/stop-rounded";
 import VolumeIcon from "~icons/material-symbols/volume-up-rounded";
 import WidthIcon from "~icons/material-symbols/width-rounded";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 
 const props = defineProps({
   sound: {
@@ -124,7 +124,7 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-const player = usePlayerStore();
+const player = usePlayer();
 const iconColor = computed(() => (props.sound.isPlaying ? "secondary" : ""));
 
 const volume = computed({

@@ -28,7 +28,7 @@ import { shallowRef, watch } from "vue";
 import DarkIcon from "~icons/material-symbols/brightness-4";
 import LightIcon from "~icons/material-symbols/brightness-7";
 import AutoIcon from "~icons/material-symbols/brightness-auto";
-import { Theme, usePreferencesStore } from "@/plugins/store/preferences";
+import { Theme, usePreferences } from "@/plugins/store/preferences";
 
 const props = defineProps({
   listItem: {
@@ -37,7 +37,7 @@ const props = defineProps({
   },
 });
 
-const preferences = usePreferencesStore();
+const preferences = usePreferences();
 
 let config = shallowRef({});
 

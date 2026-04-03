@@ -12,7 +12,7 @@ import { Filetype } from "@/util/filetype";
 import { formatError, getCastSession } from "@/util/googleCast";
 import { wait } from "@/util/helpers";
 
-export const usePlayerStore = defineStore("player", () => {
+export const usePlayer = defineStore("player", () => {
   const pb = usePocketBase();
   const sounds = ref([]);
   const currentName = ref();

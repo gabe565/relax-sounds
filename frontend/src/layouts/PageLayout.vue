@@ -93,12 +93,12 @@ import DebugButton from "@/components/Presets/Buttons/DebugButton.vue";
 import ProfileDialog from "@/components/Profile/ProfileDialog.vue";
 import { DebugEnabled } from "@/config/debug";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
-import { usePresetsStore } from "@/plugins/store/presets";
+import { usePresets } from "@/plugins/store/presets";
 
 const { smAndDown: isMobile } = useDisplay();
 const route = useRoute();
 const pb = usePocketBase();
-const presets = usePresetsStore();
+const presets = usePresets();
 
 const isLoading = computed(() => presets.isSyncing || !pb.user?.id);
 </script>
