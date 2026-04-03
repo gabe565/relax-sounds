@@ -3,8 +3,10 @@ package preset
 import (
 	"bytes"
 	"compress/gzip"
+	"compress/zlib"
 	"encoding/base64"
 	"encoding/json"
+	"io"
 )
 
 func FromParam(encoded string) (Preset, error) {
@@ -13,13 +15,21 @@ func FromParam(encoded string) (Preset, error) {
 		return Preset{}, err
 	}
 
-	r, err := gzip.NewReader(bytes.NewReader(data))
+	var r io.ReadCloser
+	switch {
+	case bytes.HasPrefix(data, []byte{0x78, 0x9C}):
+		r, err = zlib.NewReader(bytes.NewReader(data))
+	case bytes.HasPrefix(data, []byte{0x1F, 0x8B}):
+		r, err = gzip.NewReader(bytes.NewReader(data))
+	default:
+		r = io.NopCloser(bytes.NewReader(data))
+	}
 	if err != nil {
 		return Preset{}, err
 	}
-	defer func(r *gzip.Reader) {
+	defer func() {
 		_ = r.Close()
-	}(r)
+	}()
 
 	var preset Preset
 	if err = json.NewDecoder(r).Decode(&preset); err != nil {
