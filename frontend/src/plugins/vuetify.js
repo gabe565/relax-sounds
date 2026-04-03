@@ -21,7 +21,7 @@ export default createVuetify({
         colors: {
           background: "#160E27",
           surface: "#251842",
-          cardBackground: "#332457",
+          "card-background": "#332457",
           primary: "#BB86FC",
           secondary: "#FFB74D",
           accent: "#7C4DFF",
@@ -30,7 +30,7 @@ export default createVuetify({
       light: {
         colors: {
           background: "#F5F1FA",
-          cardBackground: "#FFFFFF",
+          "card-background": "#FFF",
           primary: "#7C4DFF",
           secondary: "#FB8C00",
           accent: "#9C27B0",
