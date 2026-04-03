@@ -38,7 +38,8 @@
 </template>
 
 <script setup>
-import { computed, nextTick, ref, watch } from "vue";
+import { computedAsync } from "@vueuse/core";
+import { computed, nextTick, ref } from "vue";
 import { toast } from "vue-sonner";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import ShareIcon from "~icons/material-symbols/share";
@@ -51,13 +52,14 @@ const props = defineProps({
   },
 });
 
+const url = computedAsync(async () => await props.preset.getShareUrl());
 const show = ref(false);
 
-const shareData = computed(() => {
+const shareData = computedAsync(async () => {
   return {
     title: "Relax Sounds",
     text: `Import my Relax Sounds preset called "${props.preset.name}"`,
-    url: props.preset.shareUrl,
+    url: url.value,
   };
 });
 
@@ -98,13 +100,4 @@ const share = async () => {
     show.value = true;
   }
 };
-
-const url = ref("");
-watch(
-  props.preset,
-  async () => {
-    url.value = await props.preset.getShareUrl();
-  },
-  { immediate: true },
-);
 </script>
