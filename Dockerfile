@@ -36,7 +36,7 @@ COPY --from=frontend-build /app/dist ./frontend/dist
 
 ARG CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 RUN --mount=type=cache,target=/root/.cache \
-  CGO_ENABLED=1 xx-go build -ldflags='-w -s' -trimpath -tags disable_automigrate,grpcnotrace
+  CGO_ENABLED=1 xx-go build -ldflags='-w -s' -trimpath -tags grpcnotrace
 
 
 FROM alpine:3.23.3
