@@ -1,13 +1,16 @@
 package handlers
 
 import (
-	"os"
-
-	"gabe565.com/relax-sounds/internal/config"
+	"gabe565.com/relax-sounds/frontend"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 )
 
-func StaticHandler(conf *config.Config) func(*core.RequestEvent) error {
-	return apis.Static(os.DirFS(conf.Public), true)
+func Static() (func(*core.RequestEvent) error, error) {
+	fs, err := frontend.FS()
+	if err != nil {
+		return nil, err
+	}
+
+	return apis.Static(fs, true), nil
 }
