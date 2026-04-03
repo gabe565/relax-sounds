@@ -39,6 +39,13 @@ export const usePocketBase = defineStore("pocketbase", () => {
   });
   onScopeDispose(unsubscribeAuth);
 
+  const refreshAuth = async () => {
+    if (client.authStore.isValid) {
+      await client.collection("users").authRefresh();
+    }
+  };
+  refreshAuth().catch(console.error);
+
   const authMethods = computedAsync(
     async () => {
       const res = await client.collection("users").listAuthMethods();
@@ -78,6 +85,7 @@ export const usePocketBase = defineStore("pocketbase", () => {
     client,
     user,
     isAuthenticated,
+    refreshAuth,
     authEnabled,
     authMethods,
     avatarURL,
