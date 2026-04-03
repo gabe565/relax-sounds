@@ -23,7 +23,7 @@
               <v-icon v-else :icon="PersonIcon" size="64" />
               <v-overlay
                 activator="parent"
-                class="align-center justify-center"
+                class="self-center justify-center"
                 scrim="black"
                 contained
                 open-on-hover
