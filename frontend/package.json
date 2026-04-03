@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "watch": "vite build --mode=dev --watch",
     "lint": "eslint . --fix",
-    "format": "prettier . --write --ignore-path .gitignore"
+    "format": "prettier . --write"
   },
   "dependencies": {
     "@iconify-json/material-symbols": "1.2.64",
