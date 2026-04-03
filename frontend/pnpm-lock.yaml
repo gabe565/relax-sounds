@@ -30,9 +30,6 @@ importers:
       '@vueuse/core':
         specifier: 14.2.1
         version: 14.2.1(vue@3.5.31)
-      base64-url:
-        specifier: 2.3.3
-        version: 2.3.3
       file-saver:
         specifier: 2.0.5
         version: 2.0.5
@@ -1481,10 +1478,6 @@ packages:
   balanced-match@4.0.4:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
-
-  base64-url@2.3.3:
-    resolution: {integrity: sha512-dLMhIsK7OplcDauDH/tZLvK7JmUZK3A7KiQpjNzsBrM6Etw7hzNI1tLEywqJk9NnwkgWuFKSlx/IUO7vF6Mo8Q==}
-    engines: {node: '>=6'}
 
   baseline-browser-mapping@2.10.12:
     resolution: {integrity: sha512-qyq26DxfY4awP2gIRXhhLWfwzwI+N5Nxk6iQi8EFizIaWIjqicQTE4sLnZZVdeKPRcVNoJOkkpfzoIYuvCKaIQ==}
@@ -4496,8 +4489,6 @@ snapshots:
   balanced-match@1.0.2: {}
 
   balanced-match@4.0.4: {}
-
-  base64-url@2.3.3: {}
 
   baseline-browser-mapping@2.10.12: {}
 
