@@ -1,9 +1,9 @@
 <template>
   <v-btn
+    :active="player.currentName === props.preset.name"
     variant="flat"
-    :color="player.currentName === preset.name ? 'accent' : 'card-background'"
     size="x-large"
-    class="card-btn w-full flex justify-between pr-2"
+    class="card-btn bg-card-background w-full flex justify-between pr-2 v-active:bg-accent"
     :aria-label="`Play ${preset.name}`"
     :loading="loading"
     @click="play"
