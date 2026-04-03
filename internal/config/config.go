@@ -8,8 +8,7 @@ import (
 )
 
 type Config struct {
-	App    *pocketbase.PocketBase
-	Public string
+	App *pocketbase.PocketBase
 
 	MaxPresetLen    int
 	ResampleQuality int
@@ -34,8 +33,7 @@ type Config struct {
 
 func New(app *pocketbase.PocketBase) *Config {
 	return &Config{
-		App:    app,
-		Public: "frontend/dist",
+		App: app,
 
 		MaxPresetLen:    20,
 		ResampleQuality: 3,
