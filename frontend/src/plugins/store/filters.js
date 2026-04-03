@@ -1,7 +1,7 @@
 import Fuse from "fuse.js";
 import { defineStore } from "pinia";
 import { computed, reactive, ref, watch } from "vue";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 
 export const fuse = new Fuse([], {
   shouldSort: true,
@@ -13,8 +13,8 @@ export const fuse = new Fuse([], {
   keys: ["name", "tags", "icon"],
 });
 
-export const useFiltersStore = defineStore("filters", () => {
-  const player = usePlayerStore();
+export const useFilters = defineStore("filters", () => {
+  const player = usePlayer();
   const filters = ref({
     word: null,
     page: 1,

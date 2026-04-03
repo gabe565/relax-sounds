@@ -41,7 +41,7 @@ import { Icon } from "@iconify/vue";
 import { computed } from "vue";
 import { toast } from "vue-sonner";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 
 const props = defineProps({
   sound: {
@@ -52,7 +52,7 @@ const props = defineProps({
 
 /* Use secondary (Amber) for playing icons to break up the purple */
 const iconColor = computed(() => (props.sound.isPlaying ? "secondary" : ""));
-const player = usePlayerStore();
+const player = usePlayer();
 
 const playStop = async () => {
   try {

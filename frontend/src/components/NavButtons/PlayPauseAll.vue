@@ -19,7 +19,7 @@
 <script setup>
 import PauseIcon from "~icons/material-symbols/pause-circle-sharp";
 import PlayIcon from "~icons/material-symbols/play-circle-sharp";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 
-const player = usePlayerStore();
+const player = usePlayer();
 </script>

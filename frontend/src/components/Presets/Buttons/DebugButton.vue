@@ -12,10 +12,10 @@
 <script setup>
 import { computed } from "vue";
 import DebugIcon from "~icons/material-symbols/bug-report-rounded";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 import { Preset } from "@/util/Preset";
 
-const player = usePlayerStore();
+const player = usePlayer();
 
 const openUrl = async () => {
   let preset;

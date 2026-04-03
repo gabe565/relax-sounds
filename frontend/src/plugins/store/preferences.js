@@ -7,7 +7,7 @@ export const Theme = {
   light: "light",
 };
 
-export const usePreferencesStore = defineStore(
+export const usePreferences = defineStore(
   "preferences",
   () => {
     const theme = ref(Theme.auto);
