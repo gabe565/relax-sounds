@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, ref, watch } from "vue";
+import { nextTick, ref } from "vue";
 import { toast } from "vue-sonner";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import ShareIcon from "~icons/material-symbols/share";
@@ -52,20 +52,19 @@ const props = defineProps({
 });
 
 const show = ref(false);
+const url = ref("");
 
-const shareData = computed(() => {
-  return {
-    title: "Relax Sounds",
-    text: `Import my Relax Sounds preset called "${props.preset.name}"`,
-    url: props.preset.shareUrl,
-  };
+const shareData = () => ({
+  title: "Relax Sounds",
+  text: `Import my Relax Sounds preset called "${props.preset.name}"`,
+  url: url.value,
 });
 
-const canShare = computed(() => navigator.canShare && navigator.canShare(shareData.value));
-
 const shareOrShow = async () => {
-  if (canShare.value) {
-    return share();
+  url.value = await props.preset.getShareUrl();
+  const data = shareData();
+  if (navigator.canShare && navigator.canShare(data)) {
+    await share(data);
   } else {
     show.value = true;
   }
@@ -80,31 +79,20 @@ const select = async (event) => {
 const copy = async () => {
   try {
     await navigator.clipboard.writeText(url.value);
+    show.value = false;
     toast.success("Copied to clipboard.", { icon: CopyIcon });
   } catch (err) {
     console.error(err);
     toast.error(`Failed to copy to clipboard:\n${err}`);
-  } finally {
-    show.value = false;
   }
 };
 
-const share = async () => {
+const share = async (data) => {
   try {
-    await navigator.share(shareData.value);
+    await navigator.share(data);
     show.value = false;
   } catch (err) {
     console.error(err);
-    show.value = true;
   }
 };
-
-const url = ref("");
-watch(
-  props.preset,
-  async () => {
-    url.value = await props.preset.getShareUrl();
-  },
-  { immediate: true },
-);
 </script>
