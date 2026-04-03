@@ -51,8 +51,8 @@ export default defineConfig(({ mode }) => {
           short_name: "Relax Sounds",
           id: "/",
           description: "Stream relaxing sound mixes",
-          theme_color: "#BB86FC",
-          background_color: "#160E27",
+          theme_color: "#251842",
+          background_color: "#251842",
           icons: [
             {
               src: "img/icons/android-chrome-192x192.png",
