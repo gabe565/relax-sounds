@@ -1,9 +1,8 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { toast } from "vue-sonner";
-import { useAuth } from "@/composables/useAuth.js";
-import { getErrorMessage, pb } from "@/plugins/pocketbase";
 import { usePlayerStore } from "@/plugins/store/player";
+import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Preset } from "@/util/Preset";
 import { SoundState } from "@/util/Sound";
 
@@ -12,10 +11,11 @@ const Version = 3;
 export const usePresetsStore = defineStore(
   "presets",
   () => {
+    const pb = usePocketBase();
+    const player = usePlayerStore();
     const version = ref(Version);
     const presets = ref([]);
     const isSyncing = ref(false);
-    const { isAuthenticated, user } = useAuth();
     let syncPromise = null;
 
     const add = async ({ preset, playing = true, sync = true }) => {
@@ -28,7 +28,7 @@ export const usePresetsStore = defineStore(
 
       presets.value.push(newPreset);
       if (playing) {
-        usePlayerStore().currentName = preset.name;
+        player.currentName = preset.name;
       }
 
       if (sync) {
@@ -63,9 +63,9 @@ export const usePresetsStore = defineStore(
     const remove = async ({ preset, sync = true }) => {
       const index = presets.value.indexOf(preset);
       if (index !== -1) {
-        if (sync && isAuthenticated.value && preset.synced) {
+        if (sync && pb.isAuthenticated && preset.synced) {
           try {
-            await pb.collection("presets").delete(preset.id);
+            await pb.client.collection("presets").delete(preset.id);
           } catch (e) {
             if (e.status !== 404) {
               throw e;
@@ -80,7 +80,7 @@ export const usePresetsStore = defineStore(
     const removeHidden = async ({ sync = true } = {}) => {
       const toRemove = presets.value.filter((preset) => preset.hidden);
 
-      if (sync && isAuthenticated.value) {
+      if (sync && pb.isAuthenticated) {
         const syncedToRemove = toRemove.filter((p) => p.synced);
         if (syncedToRemove.length > 0) {
           const batch = pb.createBatch();
@@ -95,7 +95,7 @@ export const usePresetsStore = defineStore(
     };
 
     const savePlaying = async ({ name }) => {
-      const sounds = usePlayerStore().soundsPlaying.map((sound) => ({
+      const sounds = player.soundsPlaying.map((sound) => ({
         id: sound.id,
         volume: sound.volume,
         rate: sound.rate,
@@ -108,25 +108,24 @@ export const usePresetsStore = defineStore(
     };
 
     const play = async ({ preset }) => {
-      const playerStore = usePlayerStore();
-      if (playerStore.state !== SoundState.STOPPED) {
-        playerStore.stopAll({ fade: 0, local: true });
+      if (player.state !== SoundState.STOPPED) {
+        player.stopAll({ fade: 0, local: true });
       }
       await Promise.all(
         preset.sounds.map((savedSound) => {
-          const sound = playerStore.soundById(savedSound.id);
+          const sound = player.soundById(savedSound.id);
           sound.volume = savedSound.volume || 1;
           sound.rate = savedSound.rate || 1;
           sound.pan = savedSound.pan || 0;
-          const fade = playerStore.state === SoundState.STOPPED ? 500 : false;
-          return playerStore.playStop({ sound, fade, local: true });
+          const fade = player.state === SoundState.STOPPED ? 500 : false;
+          return player.playStop({ sound, fade, local: true });
         }),
       );
-      playerStore.currentName = preset.name;
+      player.currentName = preset.name;
       if (preset.new) {
         preset.new = false;
       }
-      playerStore.updateCast();
+      player.updateCast();
     };
 
     const migrate = async () => {
@@ -137,7 +136,7 @@ export const usePresetsStore = defineStore(
     };
 
     const performSync = async () => {
-      if (!isAuthenticated.value) {
+      if (!pb.isAuthenticated) {
         return;
       }
       if (syncPromise) return syncPromise;
@@ -145,8 +144,8 @@ export const usePresetsStore = defineStore(
       syncPromise = (async () => {
         isSyncing.value = true;
         try {
-          const batch = pb.createBatch();
-          const remotePresets = await pb.collection("presets").getFullList();
+          const batch = pb.client.createBatch();
+          const remotePresets = await pb.client.collection("presets").getFullList();
           const localPresets = presets.value;
 
           // Resolve remote to local
@@ -201,7 +200,7 @@ export const usePresetsStore = defineStore(
 
                 batch.collection("presets").create({
                   name: local.name,
-                  user: user.value.id,
+                  user: pb.user.id,
                   sounds: local.sounds.map((s) => s.id),
                   metadata: metadata,
                 });
@@ -232,14 +231,18 @@ export const usePresetsStore = defineStore(
       return syncPromise;
     };
 
-    pb.authStore.onChange(async () => {
-      try {
-        await performSync();
-      } catch (err) {
-        console.error("Failed to sync presets:", err);
-        toast.error(`Failed to sync presets:\n${getErrorMessage(err)}`);
-      }
-    }, true);
+    watch(
+      () => pb.user,
+      async () => {
+        try {
+          await performSync();
+        } catch (err) {
+          console.error("Failed to sync presets:", err);
+          toast.error(`Failed to sync presets:\n${getErrorMessage(err)}`);
+        }
+      },
+      { immediate: true },
+    );
 
     return {
       presets,

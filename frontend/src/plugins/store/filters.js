@@ -14,6 +14,7 @@ export const fuse = new Fuse([], {
 });
 
 export const useFiltersStore = defineStore("filters", () => {
+  const player = usePlayerStore();
   const filters = ref({
     word: null,
     page: 1,
@@ -24,19 +25,18 @@ export const useFiltersStore = defineStore("filters", () => {
     if (filters.value.word) {
       result = reactive(fuse.search(filters.value.word).map((e) => e.item));
     } else {
-      result = usePlayerStore().sounds;
+      result = player.sounds;
     }
     return result;
   });
 
   const updateSounds = (val = null) => {
     if (val === null) {
-      val = usePlayerStore().sounds;
+      val = player.sounds;
     }
     fuse.setCollection(val);
   };
-  watch(() => usePlayerStore().sounds, updateSounds);
-  updateSounds();
+  watch(() => player.sounds, updateSounds, { immediate: true });
 
   return {
     filters,

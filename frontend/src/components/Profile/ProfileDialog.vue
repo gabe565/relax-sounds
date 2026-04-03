@@ -129,8 +129,7 @@ import { toast } from "vue-sonner";
 import EditIcon from "~icons/material-symbols/edit-rounded";
 import LockResetIcon from "~icons/material-symbols/lock-reset-rounded";
 import PersonIcon from "~icons/material-symbols/person-rounded";
-import { useAuth } from "@/composables/useAuth.js";
-import { getErrorMessage, pb } from "@/plugins/pocketbase";
+import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
 const props = defineProps({
   user: {
@@ -140,7 +139,7 @@ const props = defineProps({
 });
 
 const fileInput = useTemplateRef("fileInput");
-const { authMethods, avatarURL } = useAuth();
+const pb = usePocketBase();
 
 const dialog = ref(false);
 const isLoading = ref(false);
@@ -160,7 +159,9 @@ const {
   error: externalAuthsError,
 } = useAsyncState(
   async () =>
-    await pb.collection("_externalAuths").getFullList({ filter: `recordRef = "${props.user.id}"` }),
+    await pb.client
+      .collection("_externalAuths")
+      .getFullList({ filter: `recordRef = "${props.user.id}"` }),
   [],
   { immediate: false },
 );
@@ -178,7 +179,7 @@ const linkProvider = async (provider) => {
 
   linkingProvider.value = provider;
   try {
-    await pb.collection("users").authWithOAuth2({ provider: provider.name });
+    await pb.client.collection("users").authWithOAuth2({ provider: provider.name });
     toast.success(`Linked ${provider.displayName}`);
     await fetchExternalAuths();
   } catch (error) {
@@ -197,7 +198,7 @@ const unlinkProvider = async (provider) => {
 
   linkingProvider.value = provider;
   try {
-    await pb.collection("_externalAuths").delete(record.id);
+    await pb.client.collection("_externalAuths").delete(record.id);
     toast.success(`Unlinked ${provider.displayName}`);
     await fetchExternalAuths();
   } catch (error) {
@@ -228,7 +229,7 @@ const saveProfile = async () => {
       formData.append("avatar", avatarFile.value);
     }
 
-    await pb.collection("users").update(props.user.id, formData);
+    await pb.client.collection("users").update(props.user.id, formData);
     toast.success("Profile updated");
     dialog.value = false;
   } catch (error) {
@@ -243,7 +244,7 @@ const resetPassword = async () => {
   if (!props.user) return;
 
   try {
-    await pb.collection("users").requestPasswordReset(props.user.email);
+    await pb.client.collection("users").requestPasswordReset(props.user.email);
     toast.success("Password reset email sent.");
   } catch (e) {
     console.error(e);

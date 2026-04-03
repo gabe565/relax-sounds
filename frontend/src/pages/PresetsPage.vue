@@ -26,9 +26,8 @@
 </template>
 
 <script setup>
-import { useAsyncState } from "@vueuse/core";
 import { saveAs } from "file-saver/src/FileSaver";
-import { onActivated } from "vue";
+import { onActivated, ref } from "vue";
 import { toast } from "vue-sonner";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
 import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
@@ -36,10 +35,11 @@ import InfoIcon from "~icons/material-symbols/info-rounded";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "@/components/Presets/PresetCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
-import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePlayerStore } from "@/plugins/store/player";
+import { getErrorMessage } from "@/plugins/store/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 
+const player = usePlayerStore();
 const presets = usePresetsStore();
 
 onActivated(async () => {
@@ -64,18 +64,19 @@ const exportPresets = () => {
   toast.success(`Downloaded ${presets.presets.length} presets.`, { icon: BackupIcon });
 };
 
-const { isLoading } = useAsyncState(
-  async () => {
-    await usePlayerStore().initSounds();
-    await usePresetsStore().migrate();
-  },
-  undefined,
-  {
-    onError(e) {
-      toast.error(`Failed to load: ${e}`);
-    },
-  },
-);
+const isLoading = ref(true);
+
+(async () => {
+  try {
+    await player.loadSounds();
+    await presets.migrate();
+  } catch (err) {
+    console.error(err);
+    toast.error(`Failed to load:\n${getErrorMessage(err)}`);
+  } finally {
+    isLoading.value = false;
+  }
+})();
 
 const removeAll = () => {
   const count = presets.presets.length;

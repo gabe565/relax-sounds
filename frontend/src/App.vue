@@ -71,21 +71,21 @@ import { Toaster } from "vue-sonner";
 import { useDisplay, useTheme } from "vuetify";
 import AppIcon from "~icons/relax-sounds/icon";
 import PlayerBar from "@/components/NavButtons/PlayerBar.vue";
-import { useAuth } from "@/composables/useAuth";
 import { registerSW } from "@/plugins/pwa";
+import { usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Theme, usePreferencesStore } from "@/plugins/store/preferences";
 
 const { smAndDown: isMobile } = useDisplay();
 const preferences = usePreferencesStore();
 const theme = useTheme();
-const { isAuthenticated } = useAuth();
+const pb = usePocketBase();
 const route = useRoute();
 
 const routes = computed(() => {
   return useRouter().options.routes.filter((route) => {
     if (!route.meta?.showInNav) return false;
-    if (route.meta.guestOnly && isAuthenticated.value) return false;
-    if (route.meta.authOnly && !isAuthenticated.value) return false;
+    if (route.meta.guestOnly && pb.isAuthenticated) return false;
+    if (route.meta.authOnly && !pb.isAuthenticated) return false;
     return true;
   });
 });
