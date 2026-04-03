@@ -49,10 +49,11 @@ import { toast } from "vue-sonner";
 import DropdownIcon from "~icons/material-symbols/arrow-drop-down-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
 import SearchIcon from "~icons/material-symbols/search-rounded";
-import { getTags } from "@/data/tags";
 import { useFiltersStore } from "@/plugins/store/filters";
+import { usePocketBase } from "@/plugins/store/pocketbase.js";
 
 const combobox = ref();
+const pb = usePocketBase();
 const filters = useFiltersStore();
 
 const { Cmd_K, Ctrl_K } = useMagicKeys();
@@ -66,11 +67,19 @@ const {
   state: tags,
   isLoading,
   error,
-} = useAsyncState(getTags, [], {
-  onError(e) {
-    toast.error(`Failed to fetch tags:\n${e}`);
+} = useAsyncState(
+  async () =>
+    await pb.client.collection("tags").getFullList({
+      fields: "icon,name",
+    }),
+  [],
+  {
+    onError(err) {
+      console.error(err);
+      toast.error(`Failed to fetch tags:\n${err}`);
+    },
   },
-});
+);
 </script>
 
 <style scoped>

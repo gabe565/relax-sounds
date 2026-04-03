@@ -131,7 +131,7 @@ const volume = computed({
   get: () => props.sound.volume,
   set(value) {
     player.volume({ sound: props.sound, value });
-    usePlayerStore().updateCast();
+    player.updateCast();
   },
 });
 
@@ -139,7 +139,7 @@ const rate = computed({
   get: () => props.sound.rate,
   set(value) {
     player.rate({ sound: props.sound, value });
-    usePlayerStore().updateCast();
+    player.updateCast();
   },
 });
 
@@ -147,7 +147,7 @@ const pan = computed({
   get: () => props.sound.pan,
   set(value) {
     player.pan({ sound: props.sound, value });
-    usePlayerStore().updateCast();
+    player.updateCast();
   },
 });
 

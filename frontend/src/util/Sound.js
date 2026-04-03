@@ -1,5 +1,5 @@
 import { Howl } from "howler";
-import { pb } from "@/plugins/pocketbase";
+import { usePocketBase } from "@/plugins/store/pocketbase.js";
 
 export const SoundState = {
   PLAYING: "playing",
@@ -25,9 +25,10 @@ export class Sound {
   }
 
   get src() {
+    const pb = usePocketBase();
     return this.file
       .filter((f) => !f.endsWith(".flac") && !f.endsWith(".wav"))
-      .map((f) => pb.files.getURL(this, f));
+      .map((f) => pb.client.files.getURL(this, f));
   }
 
   load() {

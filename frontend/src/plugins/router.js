@@ -5,9 +5,8 @@ import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
 import LogoutIcon from "~icons/material-symbols/logout-rounded";
 import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
 import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
-import { useAuth } from "@/composables/useAuth.js";
 import { ApiPath } from "@/config/api";
-import { getErrorMessage } from "@/plugins/pocketbase.js";
+import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
 import { wait } from "@/util/helpers";
@@ -80,7 +79,7 @@ const router = createRouter({
       path: "/logout",
       name: "Logout",
       redirect: () => {
-        useAuth().logout();
+        usePocketBase().logout();
         return { name: "Sounds" };
       },
       meta: {

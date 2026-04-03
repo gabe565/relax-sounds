@@ -42,7 +42,7 @@ import AttachmentIcon from "~icons/material-symbols/attach-file-rounded";
 import RestoreIcon from "~icons/material-symbols/backup";
 import CheckIcon from "~icons/material-symbols/check-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
-import { getErrorMessage } from "@/plugins/pocketbase.js";
+import { getErrorMessage } from "@/plugins/store/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
 

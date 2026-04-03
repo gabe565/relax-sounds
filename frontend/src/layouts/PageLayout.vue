@@ -32,7 +32,7 @@
     </v-menu>
 
     <v-btn
-      v-if="authEnabled && !isAuthenticated && !route.meta.hideLogin"
+      v-if="pb.authEnabled && !pb.isAuthenticated && !route.meta.hideLogin"
       to="/login"
       icon
       aria-label="Login"
@@ -40,11 +40,11 @@
       <v-icon :icon="LoginIcon" />
     </v-btn>
 
-    <v-menu v-if="isAuthenticated" location="bottom right" transition="slide-y-transition">
+    <v-menu v-if="pb.isAuthenticated" location="bottom right" transition="slide-y-transition">
       <template #activator="{ props: menuProps }">
         <v-btn icon v-bind="menuProps" :loading="isLoading">
           <v-avatar size="32">
-            <v-img v-if="avatarURL" :src="avatarURL" :alt="user.name || user.email" />
+            <v-img v-if="pb.avatarURL" :src="pb.avatarURL" :alt="pb.user.name || pb.user.email" />
             <v-icon v-else :icon="PersonIcon" />
           </v-avatar>
         </v-btn>
@@ -52,23 +52,23 @@
 
       <v-list width="250">
         <v-list-item
-          :title="user.name || user.username"
-          :subtitle="user.email"
-          :prepend-avatar="avatarURL"
+          :title="pb.user.name || pb.user.username"
+          :subtitle="pb.user.email"
+          :prepend-avatar="pb.avatarURL"
           class="pb-2"
         >
-          <template v-if="!avatarURL" #prepend>
+          <template v-if="!pb.avatarURL" #prepend>
             <v-icon :icon="PersonIcon" />
           </template>
         </v-list-item>
         <v-divider class="mt-2" />
-        <profile-dialog :user="user" />
+        <profile-dialog :user="pb.user" />
         <v-list-item
           to="/logout"
           title="Logout"
           :prepend-icon="LogoutIcon"
           class="text-error"
-          @click.prevent="logout"
+          @click.prevent="pb.logout"
         />
       </v-list>
     </v-menu>
@@ -91,14 +91,14 @@ import AppIcon from "~icons/relax-sounds/icon";
 import ThemeBtn from "@/components/NavButtons/ThemeBtn.vue";
 import DebugButton from "@/components/Presets/Buttons/DebugButton.vue";
 import ProfileDialog from "@/components/Profile/ProfileDialog.vue";
-import { useAuth } from "@/composables/useAuth";
 import { DebugEnabled } from "@/config/debug";
+import { usePocketBase } from "@/plugins/store/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 
 const { smAndDown: isMobile } = useDisplay();
 const route = useRoute();
+const pb = usePocketBase();
 const presets = usePresetsStore();
-const { authEnabled, user, isAuthenticated, logout, avatarURL } = useAuth();
 
-const isLoading = computed(() => presets.isSyncing || !user.value?.id);
+const isLoading = computed(() => presets.isSyncing || !pb.user?.id);
 </script>
