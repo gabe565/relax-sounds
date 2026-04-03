@@ -1,9 +1,8 @@
-import base64 from "base64-url";
 import { nanoid } from "nanoid";
 import { ApiPath } from "@/config/api";
 import { getSounds } from "@/data/sounds";
 import { Filetype } from "@/util/filetype";
-import { compress, decompress } from "@/util/helpers";
+import { compress, decompress, fromUrlSafeBase64 } from "@/util/helpers";
 
 export const legacyFromShorthand = (shorthand) =>
   shorthand.map((song) => {
@@ -62,7 +61,7 @@ export class Preset {
       raw = await decompress(val);
       this.shorthand = JSON.parse(raw);
     } catch {
-      this.shorthand = legacyFromShorthand(JSON.parse(base64.decode(val)));
+      this.shorthand = legacyFromShorthand(JSON.parse(atob(fromUrlSafeBase64(val))));
     }
   }
 

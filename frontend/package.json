@@ -19,7 +19,6 @@
     "@vitejs/plugin-vue": "6.0.5",
     "@vue/compiler-sfc": "3.5.31",
     "@vueuse/core": "14.2.1",
-    "base64-url": "2.3.3",
     "file-saver": "2.0.5",
     "fuse.js": "7.1.0",
     "howler": "2.2.4",
