@@ -35,12 +35,12 @@ import InfoIcon from "~icons/material-symbols/info-rounded";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "@/components/Presets/PresetCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 import { getErrorMessage } from "@/plugins/store/pocketbase.js";
-import { usePresetsStore } from "@/plugins/store/presets";
+import { usePresets } from "@/plugins/store/presets";
 
-const player = usePlayerStore();
-const presets = usePresetsStore();
+const player = usePlayer();
+const presets = usePresets();
 
 onActivated(async () => {
   try {

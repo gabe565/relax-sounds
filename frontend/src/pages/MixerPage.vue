@@ -32,10 +32,10 @@ import { toast } from "vue-sonner";
 import InfoIcon from "~icons/material-symbols/info-rounded";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 import { getErrorMessage } from "@/plugins/store/pocketbase.js";
 
-const player = usePlayerStore();
+const player = usePlayer();
 const isLoading = ref(true);
 
 (async () => {

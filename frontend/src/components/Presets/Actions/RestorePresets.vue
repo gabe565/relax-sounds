@@ -43,7 +43,7 @@ import RestoreIcon from "~icons/material-symbols/backup";
 import CheckIcon from "~icons/material-symbols/check-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
 import { getErrorMessage } from "@/plugins/store/pocketbase.js";
-import { usePresetsStore } from "@/plugins/store/presets";
+import { usePresets } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
 
 const props = defineProps({
@@ -52,7 +52,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const presets = usePresetsStore();
+const presets = usePresets();
 const show = ref(false);
 const file = ref(null);
 const error = ref(false);

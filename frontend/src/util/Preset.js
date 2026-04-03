@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { ApiPath } from "@/config/api";
-import { usePlayerStore } from "@/plugins/store/player.js";
+import { usePlayer } from "@/plugins/store/player.js";
 import { Filetype } from "@/util/filetype";
 import { compress, decompress, fromUrlSafeBase64 } from "@/util/helpers";
 
@@ -86,7 +86,7 @@ export class Preset {
   }
 
   async migrate() {
-    const player = usePlayerStore();
+    const player = usePlayer();
     await player.loadSounds();
     await Promise.all(
       this.sounds.map(async (sound) => {

@@ -73,10 +73,10 @@ import AppIcon from "~icons/relax-sounds/icon";
 import PlayerBar from "@/components/NavButtons/PlayerBar.vue";
 import { registerSW } from "@/plugins/pwa";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
-import { Theme, usePreferencesStore } from "@/plugins/store/preferences";
+import { Theme, usePreferences } from "@/plugins/store/preferences";
 
 const { smAndDown: isMobile } = useDisplay();
-const preferences = usePreferencesStore();
+const preferences = usePreferences();
 const theme = useTheme();
 const pb = usePocketBase();
 const route = useRoute();

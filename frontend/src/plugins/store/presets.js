@@ -1,18 +1,18 @@
 import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 import { toast } from "vue-sonner";
-import { usePlayerStore } from "@/plugins/store/player";
+import { usePlayer } from "@/plugins/store/player";
 import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Preset } from "@/util/Preset";
 import { SoundState } from "@/util/Sound";
 
 const Version = 3;
 
-export const usePresetsStore = defineStore(
+export const usePresets = defineStore(
   "presets",
   () => {
     const pb = usePocketBase();
-    const player = usePlayerStore();
+    const player = usePlayer();
     const version = ref(Version);
     const presets = ref([]);
     const isSyncing = ref(false);

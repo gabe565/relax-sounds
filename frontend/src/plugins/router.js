@@ -7,7 +7,7 @@ import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
 import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
 import { ApiPath } from "@/config/api";
 import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
-import { usePresetsStore } from "@/plugins/store/presets";
+import { usePresets } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
 import { wait } from "@/util/helpers";
 
@@ -97,7 +97,7 @@ const router = createRouter({
             const preset = new Preset();
             preset.encodedName = params.name;
             await preset.setEncodedShorthand(params.songs);
-            await usePresetsStore().add({ preset });
+            await usePresets().add({ preset });
             toast.success(`Imported ${preset.name}.`);
           } catch (err) {
             console.error(err);

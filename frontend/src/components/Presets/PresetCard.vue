@@ -25,8 +25,8 @@ import { ref } from "vue";
 import { toast } from "vue-sonner";
 import DeleteButton from "@/components/Presets/Buttons/DeleteButton.vue";
 import ShareButton from "@/components/Presets/Buttons/ShareButton.vue";
-import { usePlayerStore } from "@/plugins/store/player";
-import { usePresetsStore } from "@/plugins/store/presets";
+import { usePlayer } from "@/plugins/store/player";
+import { usePresets } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
 
 const props = defineProps({
@@ -36,8 +36,8 @@ const props = defineProps({
   },
 });
 
-const presets = usePresetsStore();
-const player = usePlayerStore();
+const presets = usePresets();
+const player = usePlayer();
 const loading = ref(false);
 
 const play = async () => {
