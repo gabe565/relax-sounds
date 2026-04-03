@@ -6,6 +6,8 @@
 @custom-variant light (&:where(.v-theme--light, .v-theme--light *));
 @custom-variant dark  (&:where(.v-theme--dark,  .v-theme--dark  *));
 
+@custom-variant v-active (&[class*="--active"]);
+
 @theme {
   --font-heading:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans",
