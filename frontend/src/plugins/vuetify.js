@@ -33,7 +33,7 @@ export default createVuetify({
           "card-background": "#FFF",
           primary: "#7C4DFF",
           secondary: "#FB8C00",
-          accent: "#9C27B0",
+          accent: "#7C4DFF",
         },
       },
     },
