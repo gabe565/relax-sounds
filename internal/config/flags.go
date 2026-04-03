@@ -1,8 +1,6 @@
 package config
 
 const (
-	FlagPublic = "public"
-
 	FlagMaxPresetLen    = "max-preset-length"
 	FlagResampleQuality = "resample-quality"
 	FlagLAMEQuality     = "lame-quality"
@@ -26,8 +24,6 @@ const (
 
 func (c *Config) RegisterFlags() *Config {
 	fs := c.App.RootCmd.PersistentFlags()
-
-	fs.StringVar(&c.Public, FlagPublic, c.Public, "Public directory")
 
 	fs.IntVar(&c.MaxPresetLen, FlagMaxPresetLen, c.MaxPresetLen, "Maximum number of sounds that a preset can contain")
 	fs.IntVar(&c.ResampleQuality, FlagResampleQuality, c.ResampleQuality,

@@ -56,7 +56,12 @@ func main() {
 		}
 		m.RegisterRoutes(e)
 
-		e.Router.GET("/{path...}", handlers.StaticHandler(conf))
+		static, err := handlers.Static()
+		if err != nil {
+			return err
+		}
+
+		e.Router.GET("/{path...}", static)
 		metrics.Serve(conf)
 		debug.Serve(conf)
 
