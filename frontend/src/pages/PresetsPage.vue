@@ -29,11 +29,10 @@
 import { useAsyncState } from "@vueuse/core";
 import { saveAs } from "file-saver/src/FileSaver";
 import { onActivated } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
 import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
 import InfoIcon from "~icons/material-symbols/info-rounded";
-import RemoveAllToast from "@/components/Presets/Actions/RemoveAllToast.vue";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "@/components/Presets/PresetCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
@@ -41,7 +40,6 @@ import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePlayerStore } from "@/plugins/store/player";
 import { usePresetsStore } from "@/plugins/store/presets";
 
-const toast = useToast();
 const presets = usePresetsStore();
 
 onActivated(async () => {
@@ -49,7 +47,7 @@ onActivated(async () => {
     await presets.sync();
   } catch (err) {
     console.error("Failed to sync presets:", err);
-    useToast().error(`Failed to sync presets:\n${getErrorMessage(err)}`);
+    toast.error(`Failed to sync presets:\n${getErrorMessage(err)}`);
   }
 });
 
@@ -80,19 +78,25 @@ const { isLoading } = useAsyncState(
 );
 
 const removeAll = () => {
+  const count = presets.presets.length;
   presets.hideAll();
-  toast.success(RemoveAllToast, {
+  const closeHandler = async () => {
+    try {
+      await presets.removeHidden();
+    } catch (err) {
+      console.error("Failed to remove hidden presets:", err);
+      toast.error(`Failed to remove all presets:\n${getErrorMessage(err)}`);
+    }
+  };
+  toast.success(`Removed ${count} presets.`, {
     icon: RemoveAllIcon,
-    timeout: 10000,
-    closeOnClick: false,
-    onClose: async () => {
-      try {
-        await presets.removeHidden();
-      } catch (err) {
-        console.error("Failed to remove hidden presets:", err);
-        toast.error(`Failed to remove all presets:\n${getErrorMessage(err)}`);
-      }
+    duration: 10000,
+    action: {
+      label: "Undo",
+      onClick: () => presets.unhideAll(),
     },
+    onDismiss: closeHandler,
+    onAutoClose: closeHandler,
   });
 };
 </script>

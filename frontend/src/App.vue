@@ -1,5 +1,11 @@
 <template>
   <v-app>
+    <toaster
+      position="bottom-right"
+      rich-colors
+      :offset="{ bottom: 90 }"
+      :mobile-offset="{ bottom: 65 }"
+    />
     <v-navigation-drawer
       v-if="!isMobile"
       :rail="preferences.shrinkLeftPanel"
@@ -61,6 +67,7 @@
 <script setup>
 import { computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { Toaster } from "vue-sonner";
 import { useDisplay, useTheme } from "vuetify";
 import AppIcon from "~icons/relax-sounds/icon";
 import PlayerBar from "@/components/NavButtons/PlayerBar.vue";

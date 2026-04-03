@@ -125,7 +125,7 @@
 <script setup>
 import { useAsyncState } from "@vueuse/core";
 import { ref, useTemplateRef } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import EditIcon from "~icons/material-symbols/edit-rounded";
 import LockResetIcon from "~icons/material-symbols/lock-reset-rounded";
 import PersonIcon from "~icons/material-symbols/person-rounded";
@@ -140,7 +140,6 @@ const props = defineProps({
 });
 
 const fileInput = useTemplateRef("fileInput");
-const toast = useToast();
 const { authMethods, avatarURL } = useAuth();
 
 const dialog = ref(false);

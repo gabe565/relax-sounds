@@ -1,6 +1,6 @@
 import { nextTick } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import MixerIcon from "~icons/material-symbols/instant-mix-rounded";
 import LogoutIcon from "~icons/material-symbols/logout-rounded";
 import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
@@ -93,7 +93,6 @@ const router = createRouter({
       path: "/import/:name/:songs",
       redirect: ({ params }) => {
         (async () => {
-          const toast = useToast();
           try {
             await wait(500);
             const preset = new Preset();

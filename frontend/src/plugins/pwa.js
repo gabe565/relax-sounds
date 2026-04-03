@@ -1,8 +1,6 @@
 import { ref } from "vue";
-import { useToast } from "vue-toastification";
-import UpdateToast from "@/components/UpdateToast.vue";
+import { toast } from "vue-sonner";
 
-const toast = useToast();
 const updateSW = ref(undefined);
 const intervalMS = 60 * 60 * 1000;
 
@@ -12,16 +10,16 @@ export const registerSW = async () => {
     updateSW.value = registerSW({
       immediate: true,
       onOfflineReady() {
-        toast.info("App ready to work offline.", { timeout: 3000 });
+        toast.info("App ready to work offline.", { duration: 3000 });
       },
       onNeedRefresh() {
-        toast.info(
-          {
-            component: UpdateToast,
-            listeners: { refresh: () => updateSW.value(true) },
+        toast.info("New content available, click on reload button to update.", {
+          duration: Infinity,
+          action: {
+            label: "Reload",
+            onClick: () => updateSW.value(true),
           },
-          { timeout: false, closeOnClick: false },
-        );
+        });
       },
       onRegistered(swRegistration) {
         if (swRegistration) {

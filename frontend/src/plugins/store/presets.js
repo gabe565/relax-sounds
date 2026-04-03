@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import { useAuth } from "@/composables/useAuth.js";
 import { getErrorMessage, pb } from "@/plugins/pocketbase";
 import { usePlayerStore } from "@/plugins/store/player";
@@ -237,7 +237,7 @@ export const usePresetsStore = defineStore(
         await performSync();
       } catch (err) {
         console.error("Failed to sync presets:", err);
-        useToast().error(`Failed to sync presets:\n${getErrorMessage(err)}`);
+        toast.error(`Failed to sync presets:\n${getErrorMessage(err)}`);
       }
     }, true);
 

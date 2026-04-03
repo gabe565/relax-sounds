@@ -28,14 +28,13 @@
 
 <script setup>
 import { useAsyncState } from "@vueuse/core";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import InfoIcon from "~icons/material-symbols/info-rounded";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { usePlayerStore } from "@/plugins/store/player";
 
 const player = usePlayerStore();
-const toast = useToast();
 
 const { isLoading } = useAsyncState(player.initSounds, undefined, {
   onError(e) {

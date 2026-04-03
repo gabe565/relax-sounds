@@ -16,9 +16,8 @@
 </template>
 
 <script setup>
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import TrashIcon from "~icons/material-symbols/delete-rounded";
-import DeleteToast from "@/components/Presets/Buttons/DeleteToast.vue";
 import { getErrorMessage } from "@/plugins/pocketbase.js";
 import { usePresetsStore } from "@/plugins/store/presets";
 
@@ -30,32 +29,28 @@ const props = defineProps({
 });
 
 const presets = usePresetsStore();
-const toast = useToast();
 
 const remove = async () => {
   presets.hide({ preset: props.preset });
-  toast.success(
-    {
-      component: DeleteToast,
-      props: {
-        preset: props.preset,
-      },
+  const closeHandler = async () => {
+    if (props.preset.hidden) {
+      try {
+        presets.remove({ preset: props.preset });
+      } catch (err) {
+        console.error("Failed to delete remote preset:", err);
+        toast.error(`Failed to remove preset from server.\n${getErrorMessage(err)}`);
+      }
+    }
+  };
+  toast.success(`Removed "${props.preset.name}".`, {
+    icon: TrashIcon,
+    duration: 10000,
+    action: {
+      label: "Undo",
+      onClick: () => presets.unhide({ preset: props.preset }),
     },
-    {
-      icon: TrashIcon,
-      timeout: 10000,
-      closeOnClick: false,
-      onClose: async () => {
-        if (props.preset.hidden) {
-          try {
-            presets.remove({ preset: props.preset });
-          } catch (err) {
-            console.error("Failed to delete remote preset:", err);
-            toast.error(`Failed to remove preset from server.\n${getErrorMessage(err)}`);
-          }
-        }
-      },
-    },
-  );
+    onDismiss: closeHandler,
+    onAutoClose: closeHandler,
+  });
 };
 </script>

@@ -37,7 +37,7 @@
 <script setup>
 import { nanoid } from "nanoid";
 import { ref, watch } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import AttachmentIcon from "~icons/material-symbols/attach-file-rounded";
 import RestoreIcon from "~icons/material-symbols/backup";
 import CheckIcon from "~icons/material-symbols/check-rounded";
@@ -53,7 +53,6 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 const presets = usePresetsStore();
-const toast = useToast();
 const show = ref(false);
 const file = ref(null);
 const error = ref(false);

@@ -49,7 +49,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import AddIcon from "~icons/material-symbols/add-sharp";
 import SaveIcon from "~icons/material-symbols/save-sharp";
 import { getErrorMessage } from "@/plugins/pocketbase.js";
@@ -64,7 +64,6 @@ defineProps({
   },
 });
 
-const toast = useToast();
 const showDialog = ref(false);
 const name = ref("");
 const player = usePlayerStore();

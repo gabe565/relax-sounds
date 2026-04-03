@@ -2,7 +2,7 @@ import * as _ from "lodash-es";
 import pLimit from "p-limit";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { TYPE, useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import { ApiPath } from "@/config/api";
 import { getSounds } from "@/data/sounds";
 import { Preset } from "@/util/Preset";
@@ -10,8 +10,6 @@ import { SoundState } from "@/util/Sound";
 import { Filetype } from "@/util/filetype";
 import { formatError, getCastSession } from "@/util/googleCast";
 import { wait } from "@/util/helpers";
-
-const toast = useToast();
 
 export const usePlayerStore = defineStore("player", () => {
   const sounds = ref([]);
@@ -309,7 +307,7 @@ export const usePlayerStore = defineStore("player", () => {
   };
 
   const prefetch = async () => {
-    const id = toast.info("Preloading sounds...", { timeout: false });
+    const id = toast.loading("Preloading sounds...");
     const limit = pLimit(8);
     try {
       await Promise.all(
@@ -322,24 +320,10 @@ export const usePlayerStore = defineStore("player", () => {
           }),
         ),
       );
-      toast.update(
-        id,
-        {
-          content: "Preloaded all sounds.",
-          options: { type: TYPE.SUCCESS, timeout: undefined },
-        },
-        true,
-      );
+      toast.success("Preloaded all sounds.", { id });
     } catch (err) {
       console.error(err);
-      toast.update(
-        id,
-        {
-          content: `Failed to preload sounds.\n${err}`,
-          options: { type: TYPE.ERROR, timeout: undefined },
-        },
-        true,
-      );
+      toast.error(`Failed to preload sounds.\n${err}`, { id });
     }
   };
 

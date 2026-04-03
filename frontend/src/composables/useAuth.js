@@ -1,6 +1,6 @@
 import { computedAsync } from "@vueuse/core";
 import { computed, ref } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import AuthentikIcon from "@/assets/authentik.svg";
 import { ApiPath } from "@/config/api.js";
 import { pb } from "@/plugins/pocketbase";
@@ -49,7 +49,7 @@ const authEnabled = computed(() => {
 
 const logout = () => {
   pb.authStore.clear();
-  useToast().success("Logged out.");
+  toast.success("Logged out.");
 };
 
 const avatarURL = computed(() => {

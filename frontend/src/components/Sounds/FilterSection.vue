@@ -45,7 +45,7 @@
 import { Icon } from "@iconify/vue";
 import { useAsyncState, useMagicKeys } from "@vueuse/core";
 import { ref, watch } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import DropdownIcon from "~icons/material-symbols/arrow-drop-down-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";
 import SearchIcon from "~icons/material-symbols/search-rounded";
@@ -53,7 +53,6 @@ import { getTags } from "@/data/tags";
 import { useFiltersStore } from "@/plugins/store/filters";
 
 const combobox = ref();
-const toast = useToast();
 const filters = useFiltersStore();
 
 const { Cmd_K, Ctrl_K } = useMagicKeys();

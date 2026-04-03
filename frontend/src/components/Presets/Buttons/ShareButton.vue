@@ -39,7 +39,7 @@
 
 <script setup>
 import { computed, nextTick, ref, watch } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import CopyIcon from "~icons/material-symbols/content-copy-rounded";
 import ShareIcon from "~icons/material-symbols/share";
 import { Preset } from "@/util/Preset";
@@ -51,7 +51,6 @@ const props = defineProps({
   },
 });
 
-const toast = useToast();
 const show = ref(false);
 
 const shareData = computed(() => {

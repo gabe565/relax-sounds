@@ -29,7 +29,7 @@
 
 <script setup>
 import { useAsyncState } from "@vueuse/core";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import PreloadAllIcon from "~icons/material-symbols/cloud-sync-rounded";
 import FilterSection from "@/components/Sounds/FilterSection.vue";
 import SoundCard from "@/components/Sounds/SoundCard.vue";
@@ -38,7 +38,6 @@ import { useFiltersStore } from "@/plugins/store/filters";
 import { usePlayerStore } from "@/plugins/store/player";
 
 const player = usePlayerStore();
-const toast = useToast();
 const filters = useFiltersStore();
 
 const { isLoading } = useAsyncState(player.initSounds, undefined, {

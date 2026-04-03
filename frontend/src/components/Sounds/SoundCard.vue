@@ -39,7 +39,7 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
 import { usePlayerStore } from "@/plugins/store/player";
 
@@ -52,7 +52,6 @@ const props = defineProps({
 
 /* Use secondary (Amber) for playing icons to break up the purple */
 const iconColor = computed(() => (props.sound.isPlaying ? "secondary" : ""));
-const toast = useToast();
 const player = usePlayerStore();
 
 const playStop = async () => {

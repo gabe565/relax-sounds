@@ -22,7 +22,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useToast } from "vue-toastification";
+import { toast } from "vue-sonner";
 import DeleteButton from "@/components/Presets/Buttons/DeleteButton.vue";
 import ShareButton from "@/components/Presets/Buttons/ShareButton.vue";
 import { usePlayerStore } from "@/plugins/store/player";
@@ -36,7 +36,6 @@ const props = defineProps({
   },
 });
 
-const toast = useToast();
 const presets = usePresetsStore();
 const player = usePlayerStore();
 const loading = ref(false);
