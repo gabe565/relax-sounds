@@ -7,22 +7,17 @@
   >
     <template #activator="{ props: dialogProps }">
       <v-btn
-        :color="props.sound.isStopped ? 'card-background' : 'accent'"
+        :active="sound.isPlaying"
         :loading="sound.isLoading"
         size="x-large"
-        class="card-btn w-full justify-start border transition"
-        :class="[
-          props.sound.isStopped
-            ? 'border-transparent'
-            : 'border-secondary/35 shadow-[0_0_12px] shadow-secondary/25',
-        ]"
+        class="group card-btn bg-card-background w-full justify-start border transition border-transparent v-active:bg-accent v-active:border-secondary/35 v-active:shadow-[0_0_12px] v-active:shadow-secondary/25"
         :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
         variant="flat"
         @click="playStop"
         @contextmenu.prevent="dialogProps.onClick"
       >
         <template #prepend>
-          <v-icon size="x-large" :color="iconColor">
+          <v-icon size="x-large" class="group-v-active:text-secondary">
             <icon :icon="sound.icon" />
           </v-icon>
         </template>
@@ -38,7 +33,6 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { computed } from "vue";
 import { toast } from "vue-sonner";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
 import { usePlayer } from "@/plugins/store/player";
@@ -50,8 +44,6 @@ const props = defineProps({
   },
 });
 
-/* Use secondary (Amber) for playing icons to break up the purple */
-const iconColor = computed(() => (props.sound.isPlaying ? "secondary" : ""));
 const player = usePlayer();
 
 const playStop = async () => {

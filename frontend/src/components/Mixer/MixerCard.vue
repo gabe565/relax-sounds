@@ -1,7 +1,12 @@
 <template>
-  <v-card variant="flat" color="card-background">
+  <v-card
+    variant="flat"
+    color="card-background"
+    class="group"
+    :class="{ 'v-card--active': props.sound.isPlaying }"
+  >
     <v-card-title class="flex py-4">
-      <v-icon class="mr-4" size="small" :color="iconColor">
+      <v-icon size="small" class="mr-4 group-v-active:text-secondary">
         <icon :icon="sound.icon" />
       </v-icon>
       <span class="grow">
@@ -125,7 +130,6 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const player = usePlayer();
-const iconColor = computed(() => (props.sound.isPlaying ? "secondary" : ""));
 
 const volume = computed({
   get: () => props.sound.volume,
