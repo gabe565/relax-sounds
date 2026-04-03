@@ -113,8 +113,8 @@ const router = createRouter({
     },
     {
       path: "/_",
-      redirect() {
-        window.location.href = ApiPath("/_");
+      redirect(to) {
+        window.location.href = ApiPath(to.fullPath);
       },
     },
     {
