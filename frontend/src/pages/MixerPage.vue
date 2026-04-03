@@ -1,6 +1,6 @@
 <template>
   <page-layout>
-    <v-overlay v-model="isLoading" class="align-center justify-center" persistent>
+    <v-overlay v-model="isLoading" class="self-center justify-center" persistent>
       <v-progress-circular color="primary" indeterminate size="64" />
     </v-overlay>
 

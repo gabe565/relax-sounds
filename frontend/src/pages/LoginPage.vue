@@ -94,7 +94,7 @@
           <!-- Divider -->
           <div
             v-if="pb.authMethods.password?.enabled && pb.authMethods.oauth2?.providers?.length"
-            class="flex align-center my-6"
+            class="flex items-center my-6"
           >
             <v-divider />
             <span class="mx-4 text-caption text-medium-emphasis">OR</span>
