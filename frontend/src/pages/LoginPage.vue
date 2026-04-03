@@ -1,6 +1,6 @@
 <template>
   <page-layout>
-    <v-card max-width="400" class="mx-auto mt-8" color="cardBackground" variant="flat">
+    <v-card max-width="400" class="mx-auto mt-8" color="card-background" variant="flat">
       <v-card-title class="text-center py-6">
         {{ route.name }}
       </v-card-title>

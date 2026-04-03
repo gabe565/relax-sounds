@@ -10,7 +10,7 @@
     </template>
 
     <v-form @submit.prevent="saveProfile">
-      <v-card color="cardBackground" variant="flat">
+      <v-card color="card-background" variant="flat">
         <v-card-title class="pt-6 px-6">Edit Profile</v-card-title>
         <v-card-text>
           <div class="flex justify-center mb-6">
