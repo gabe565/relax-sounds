@@ -49,19 +49,37 @@
 /* safelist classes used dynamically via color="..." prop */
 @source inline('{bg,text}-{background,surface,on-surface,card-background,primary,secondary,accent,success,error,info,warning}');
 
-@utility rounded-pill   { border-radius: 9999px }
-@utility rounded-circle { border-radius: 50%    }
-@utility rounded-shaped { border-radius: 24px 0 }
+@utility rounded-pill {
+  border-radius: 9999px;
+}
+@utility rounded-circle {
+  border-radius: 50%;
+}
+@utility rounded-shaped {
+  border-radius: 24px 0;
+}
 
 @source inline('rounded'); /* .25rem */
 @source inline('rounded-{none,sm,md,lg,xl,2xl,3xl,full,pill,circle,shaped}');
 
-@utility elevation-0 { box-shadow: none }
-@utility elevation-1 { box-shadow: var(--shadow-xs) }
-@utility elevation-2 { box-shadow: var(--shadow-sm) }
-@utility elevation-3 { box-shadow: var(--shadow-md) }
-@utility elevation-4 { box-shadow: var(--shadow-xl) }
-@utility elevation-5 { box-shadow: var(--shadow-2xl) }
+@utility elevation-0 {
+  box-shadow: none;
+}
+@utility elevation-1 {
+  box-shadow: var(--shadow-xs);
+}
+@utility elevation-2 {
+  box-shadow: var(--shadow-sm);
+}
+@utility elevation-3 {
+  box-shadow: var(--shadow-md);
+}
+@utility elevation-4 {
+  box-shadow: var(--shadow-xl);
+}
+@utility elevation-5 {
+  box-shadow: var(--shadow-2xl);
+}
 
 @source inline('elevation-{0..5}');
 
