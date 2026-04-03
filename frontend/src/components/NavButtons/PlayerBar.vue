@@ -5,6 +5,7 @@
     height="64"
     class="px-3 border-t! border-on-surface/15"
     elevation="10"
+    theme="dark"
     color="surface"
     order="-1"
     flat
