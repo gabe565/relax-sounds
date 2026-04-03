@@ -1,5 +1,5 @@
 <template>
-  <v-card variant="flat" color="cardBackground">
+  <v-card variant="flat" color="card-background">
     <v-card-title class="flex py-4">
       <v-icon class="mr-4" size="small" :color="iconColor">
         <icon :icon="sound.icon" />
