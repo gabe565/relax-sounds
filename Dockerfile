@@ -43,7 +43,7 @@ FROM alpine:3.23.3
 LABEL org.opencontainers.image.source="https://github.com/gabe565/relax-sounds"
 WORKDIR /app
 
-RUN apk add --no-cache ffmpeg lame-libs tzdata
+RUN apk add --no-cache ffmpeg tzdata
 
 ARG USERNAME=relax-sounds
 ARG UID=1000
