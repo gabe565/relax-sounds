@@ -1,7 +1,7 @@
 <template>
   <v-card variant="flat" color="cardBackground">
-    <v-card-title class="flex align-center py-4">
-      <v-icon class="mr-4" size="x-small" :color="iconColor">
+    <v-card-title class="flex py-4">
+      <v-icon class="mr-4" size="small" :color="iconColor">
         <icon :icon="sound.icon" />
       </v-icon>
       <span class="grow">
