@@ -39,7 +39,7 @@ RUN --mount=type=cache,target=/root/.cache \
   CGO_ENABLED=1 xx-go build -ldflags='-w -s' -trimpath -tags grpcnotrace
 
 
-FROM alpine:3.23.3
+FROM alpine:3.23.4
 LABEL org.opencontainers.image.source="https://github.com/gabe565/relax-sounds"
 WORKDIR /app
 
