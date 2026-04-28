@@ -14,7 +14,7 @@ window.__onGCastApiAvailable = async (isAvailable) => {
       waitMs *= 2;
     }
 
-    castEnabled.value = true;
     await usePlayer().initializeCastApi();
+    castEnabled.value = true;
   }
 };

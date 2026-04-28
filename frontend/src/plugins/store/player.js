@@ -10,7 +10,7 @@ import { SoundState } from "@/util/Sound";
 import { Sound } from "@/util/Sound";
 import { Filetype } from "@/util/filetype";
 import { formatError, getCastSession } from "@/util/googleCast";
-import { wait } from "@/util/helpers";
+import { once } from "@/util/helpers";
 
 export const usePlayer = defineStore("player", () => {
   const pb = usePocketBase();
@@ -20,11 +20,7 @@ export const usePlayer = defineStore("player", () => {
   let remotePlayerController;
   const castConnected = ref(false);
 
-  const loadSounds = async (force = false) => {
-    if (!force && sounds.value.length > 0) {
-      return;
-    }
-
+  const loadSounds = once(async () => {
     const data = await pb.client.collection("sounds").getFullList({
       fields: "collectionId,id,old_id,name,icon,file,expand.tags.name",
       expand: "tags",
@@ -36,7 +32,7 @@ export const usePlayer = defineStore("player", () => {
       delete sound.expand;
       return new Sound(sound);
     });
-  };
+  });
 
   const soundsPlaying = computed(() => {
     return sounds.value.filter((sound) => sound.isPlaying);
@@ -111,6 +107,26 @@ export const usePlayer = defineStore("player", () => {
     castConnected.value = value;
   };
 
+  const syncFromCast = async (mediaInfo) => {
+    await loadSounds();
+    const preset = new Preset();
+    await preset.setMixUrl(mediaInfo.contentId);
+    await Promise.all(
+      preset.sounds.map((savedSound) => {
+        const sound = soundById(savedSound.id);
+        sound.volume = savedSound.volume || 1;
+        sound.rate = savedSound.rate || 1;
+        sound.pan = savedSound.pan || 0;
+        const fade = state.value === SoundState.STOPPED ? 250 : false;
+        return playStop({
+          sound,
+          fade,
+          local: true,
+        });
+      }),
+    );
+  };
+
   const updateCast = _.debounce(
     async () => {
       if (isPlaying.value) {
@@ -120,7 +136,7 @@ export const usePlayer = defineStore("player", () => {
           const preset = new Preset({ sounds: soundsPlaying.value });
 
           const mixUrl = await preset.mixUrlAs(Filetype.Mp3);
-          const mediaInfo = new cast.media.MediaInfo(mixUrl, "music");
+          const mediaInfo = new cast.media.MediaInfo(mixUrl, "audio/mpeg");
           mediaInfo.streamType = cast.media.StreamType.LIVE;
           mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
           mediaInfo.metadata.title = currentName.value;
@@ -170,16 +186,17 @@ export const usePlayer = defineStore("player", () => {
   };
 
   const deleteStream = async () => {
-    let uuid = sessionStorage.getItem("uuid");
+    const uuid = sessionStorage.getItem("uuid");
     if (uuid) {
-      let resp;
       try {
-        resp = await fetch(ApiPath(`/api/mix/${uuid}`), { method: "DELETE" });
-      } catch (error) {
-        if (resp.status !== 404) {
-          console.error(`Remote media stop error: ${formatError(error)}`);
-          toast.error(`Failed to stop cast:\n${error}`);
+        const resp = await fetch(ApiPath(`/api/mix/${uuid}`), { method: "DELETE" });
+        if (!resp.ok && resp.status !== 404) {
+          console.error(`Remote media stop error: ${resp.statusText}`);
+          toast.error(`Failed to stop cast:\n${resp.statusText}`);
         }
+      } catch (error) {
+        console.error(`Remote media stop error: ${formatError(error)}`);
+        toast.error(`Failed to stop cast:\n${error}`);
       }
     }
   };
@@ -212,7 +229,7 @@ export const usePlayer = defineStore("player", () => {
     soundsPlaying.value.forEach((sound) => {
       pause({ sound });
     });
-    if (!local && castConnected.value && remotePlayerController) {
+    if (!local && castConnected.value && remotePlayer && !remotePlayer.isPaused) {
       remotePlayerController.playOrPause();
     }
   };
@@ -248,25 +265,19 @@ export const usePlayer = defineStore("player", () => {
     const { framework: castFramework } = window.cast;
     const { cast } = window.chrome;
 
-    castFramework.CastContext.getInstance().setOptions({
-      receiverApplicationId: cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
-      autoJoinPolicy: cast.AutoJoinPolicy.ORIGIN_SCOPED,
-    });
-
     remotePlayer = new castFramework.RemotePlayer();
     remotePlayerController = new castFramework.RemotePlayerController(remotePlayer);
 
     remotePlayerController.addEventListener(
       castFramework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
       async ({ value }) => {
-        let shouldPlay;
-        if (state.value !== SoundState.STOPPED) {
+        const wasPlaying = state.value !== SoundState.STOPPED;
+        if (wasPlaying) {
           pauseAll();
-          shouldPlay = true;
         }
         castConnectedChanged({ value });
-        if (shouldPlay) {
-          await playPauseAll();
+        if (wasPlaying) {
+          await playPauseAll({ local: true });
           updateCast();
           if (!value) {
             await deleteStream();
@@ -293,31 +304,33 @@ export const usePlayer = defineStore("player", () => {
       castFramework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
       async ({ value }) => {
         if (value && isStopped.value) {
-          let waitMs = 100;
-          while (sounds.value.length === 0) {
-            console.warn(`Sounds not loaded. Waiting ${waitMs}ms.`);
-            await wait(waitMs);
-            waitMs *= 2;
-          }
-          const preset = new Preset();
-          await preset.setMixUrl(value.contentId);
-          await Promise.all(
-            preset.sounds.map((savedSound) => {
-              const sound = soundById(savedSound.id);
-              sound.volume = savedSound.volume || 1;
-              sound.rate = savedSound.rate || 1;
-              sound.pan = savedSound.pan || 0;
-              const fade = state.value === SoundState.STOPPED ? 250 : false;
-              return playStop({
-                sound,
-                fade,
-                local: true,
-              });
-            }),
-          );
+          await syncFromCast(value);
         }
       },
     );
+
+    // Handle session resume (e.g. page refresh while casting).
+    castFramework.CastContext.getInstance().addEventListener(
+      castFramework.CastContextEventType.SESSION_STATE_CHANGED,
+      async ({ sessionState }) => {
+        if (sessionState === castFramework.SessionState.SESSION_RESUMED && isStopped.value) {
+          // The SDK doesn't request media status on session resume,
+          // so MEDIA_INFO_CHANGED never fires. Send an explicit
+          // GET_STATUS to the receiver to trigger it.
+          getCastSession()?.getSessionObj().sendMessage("urn:x-cast:com.google.cast.media", {
+            type: "GET_STATUS",
+            requestId: 1,
+          });
+        }
+      },
+    );
+
+    // setOptions triggers auto-join, so it must come after all listeners
+    // are registered. Otherwise RemotePlayer misses the media session.
+    castFramework.CastContext.getInstance().setOptions({
+      receiverApplicationId: cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+      autoJoinPolicy: cast.AutoJoinPolicy.ORIGIN_SCOPED,
+    });
   };
 
   const prefetch = async () => {

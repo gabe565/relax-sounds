@@ -1,9 +1,9 @@
 <template>
   <v-tooltip v-if="castEnabled" text="Cast" :location="tooltipLocation">
     <template #activator="{ props }">
-      <v-btn v-bind="props" icon title="Cast" aria-label="Cast" @click.stop="castLauncher.click()">
+      <v-btn v-bind="props" icon title="Cast" aria-label="Cast">
         <v-icon>
-          <google-cast-launcher ref="castLauncher" class="relative transition-colors" />
+          <google-cast-launcher class="absolute inset-0 transition-colors" />
         </v-icon>
       </v-btn>
     </template>
@@ -11,10 +11,7 @@
 </template>
 
 <script setup>
-import { useTemplateRef } from "vue";
 import { castEnabled } from "@/cast";
-
-const castLauncher = useTemplateRef("castLauncher");
 
 defineProps({
   tooltipLocation: {

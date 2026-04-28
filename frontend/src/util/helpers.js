@@ -1,5 +1,10 @@
 export const wait = (timeout) => new Promise((resolve) => setTimeout(resolve, timeout));
 
+export const once = (fn) => {
+  let promise;
+  return () => (promise ??= fn());
+};
+
 export const toUrlSafeBase64 = (b64) =>
   b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 
