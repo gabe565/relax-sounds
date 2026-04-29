@@ -15,7 +15,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.cache \
 
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.9.0 AS xx
-FROM --platform=$BUILDPLATFORM golang:1.26.1-alpine AS backend-build
+FROM --platform=$BUILDPLATFORM golang:1.26.2-alpine AS backend-build
 WORKDIR /app
 
 RUN apk add --no-cache clang
