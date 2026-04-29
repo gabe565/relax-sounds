@@ -2,7 +2,8 @@
 node_modules
 .pnpm-store
 dev-dist
-dist
+dist/*
+!dist/.gitkeep
 
 # local env files
 .env

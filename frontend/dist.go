@@ -8,7 +8,7 @@ import (
 //go:generate pnpm install
 //go:generate pnpm run build
 
-//go:embed dist
+//go:embed all:dist
 var dist embed.FS
 
 func FS() (fs.FS, error) {
