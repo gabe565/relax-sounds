@@ -13,7 +13,7 @@
     "format": "prettier . --write"
   },
   "dependencies": {
-    "@iconify-json/material-symbols": "1.2.64",
+    "@iconify-json/material-symbols": "1.2.69",
     "@iconify/vue": "5.0.0",
     "@types/chromecast-caf-sender": "1.0.11",
     "@vitejs/plugin-vue": "6.0.5",
