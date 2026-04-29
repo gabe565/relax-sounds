@@ -1,4 +1,4 @@
-import * as _ from "lodash-es";
+import { debounce } from "lodash-es";
 import pLimit from "p-limit";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
@@ -115,7 +115,7 @@ export const usePlayer = defineStore("player", () => {
     );
   };
 
-  const updateCast = _.debounce(
+  const updateCast = debounce(
     async () => {
       if (isPlaying.value) {
         const castSession = getCastSession();
