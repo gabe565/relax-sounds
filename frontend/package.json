@@ -51,7 +51,7 @@
     "eslint-plugin-vue": "10.8.0",
     "eslint-plugin-vuetify": "2.7.2",
     "globals": "17.4.0",
-    "prettier": "3.8.1",
+    "prettier": "3.8.3",
     "tailwindcss": "4.2.2",
     "vue-eslint-parser": "10.4.0"
   }
