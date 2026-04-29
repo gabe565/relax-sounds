@@ -35,11 +35,10 @@ import InfoIcon from "~icons/material-symbols/info-rounded";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "@/components/Presets/PresetCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
-import { usePlayer } from "@/plugins/store/player";
-import { getErrorMessage } from "@/plugins/store/pocketbase.js";
+import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 import { usePresets } from "@/plugins/store/presets";
 
-const player = usePlayer();
+const pb = usePocketBase();
 const presets = usePresets();
 
 onActivated(async () => {
@@ -68,7 +67,7 @@ const isLoading = ref(true);
 
 (async () => {
   try {
-    await player.loadSounds();
+    await pb.loadSounds();
     await presets.migrate();
   } catch (err) {
     console.error(err);

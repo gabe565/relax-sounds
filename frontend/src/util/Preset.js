@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { ApiPath } from "@/config/api";
 import { usePlayer } from "@/plugins/store/player.js";
+import { usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Filetype } from "@/util/filetype";
 import { compress, decompress, fromUrlSafeBase64 } from "@/util/helpers";
 
@@ -86,8 +87,9 @@ export class Preset {
   }
 
   async migrate() {
+    const pb = usePocketBase();
     const player = usePlayer();
-    await player.loadSounds();
+    await pb.loadSounds();
     await Promise.all(
       this.sounds.map(async (sound) => {
         if (sound.id.length <= 3) {

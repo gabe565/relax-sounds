@@ -67,19 +67,12 @@ const {
   state: tags,
   isLoading,
   error,
-} = useAsyncState(
-  async () =>
-    await pb.client.collection("tags").getFullList({
-      fields: "icon,name",
-    }),
-  [],
-  {
-    onError(err) {
-      console.error(err);
-      toast.error(`Failed to fetch tags:\n${err}`);
-    },
+} = useAsyncState(() => pb.loadTags(), [], {
+  onError(err) {
+    console.error(err);
+    toast.error(`Failed to fetch tags:\n${err}`);
   },
-);
+});
 </script>
 
 <style scoped>

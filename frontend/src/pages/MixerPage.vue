@@ -33,14 +33,15 @@ import InfoIcon from "~icons/material-symbols/info-rounded";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { usePlayer } from "@/plugins/store/player";
-import { getErrorMessage } from "@/plugins/store/pocketbase.js";
+import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
+const pb = usePocketBase();
 const player = usePlayer();
 const isLoading = ref(true);
 
 (async () => {
   try {
-    await player.loadSounds();
+    await pb.loadSounds();
   } catch (err) {
     console.error(err);
     toast.error(`Failed to load:\n${getErrorMessage(err)}`);

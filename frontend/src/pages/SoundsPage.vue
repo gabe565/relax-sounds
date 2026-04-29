@@ -36,15 +36,16 @@ import SoundCard from "@/components/Sounds/SoundCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { useFilters } from "@/plugins/store/filters";
 import { usePlayer } from "@/plugins/store/player";
-import { getErrorMessage } from "@/plugins/store/pocketbase.js";
+import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
+const pb = usePocketBase();
 const player = usePlayer();
 const filters = useFilters();
 const isLoading = ref(true);
 
 (async () => {
   try {
-    await player.loadSounds();
+    await pb.loadSounds();
   } catch (err) {
     console.error(err);
     toast.error(`Failed to fetch sounds:\n${getErrorMessage(err)}`);

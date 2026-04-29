@@ -5,6 +5,8 @@ import { computed, onScopeDispose, ref } from "vue";
 import { toast } from "vue-sonner";
 import AuthentikIcon from "@/assets/authentik.svg";
 import { ApiPath } from "@/config/api.js";
+import { Sound } from "@/util/Sound";
+import { once } from "@/util/helpers";
 
 export function getErrorMessage(error) {
   const response = error.response;
@@ -76,6 +78,25 @@ export const usePocketBase = defineStore("pocketbase", () => {
     return null;
   });
 
+  const loadSounds = once(async () => {
+    const data = await client.collection("sounds").getFullList({
+      fields: "collectionId,id,old_id,name,icon,file,expand.tags.name",
+      expand: "tags",
+      sort: "name",
+    });
+    return data.map((sound) => {
+      sound.tags = sound.expand?.tags?.map((tag) => tag.name);
+      delete sound.expand;
+      return new Sound(sound);
+    });
+  });
+
+  const loadTags = once(() =>
+    client.collection("tags").getFullList({
+      fields: "icon,name",
+    }),
+  );
+
   const logout = () => {
     client.authStore.clear();
     toast.success("Logged out.");
@@ -89,6 +110,8 @@ export const usePocketBase = defineStore("pocketbase", () => {
     authEnabled,
     authMethods,
     avatarURL,
+    loadSounds,
+    loadTags,
     logout,
   };
 });

@@ -7,10 +7,8 @@ import { ApiPath } from "@/config/api";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Preset } from "@/util/Preset";
 import { SoundState } from "@/util/Sound";
-import { Sound } from "@/util/Sound";
 import { Filetype } from "@/util/filetype";
 import { formatError, getCastSession } from "@/util/googleCast";
-import { once } from "@/util/helpers";
 
 export const usePlayer = defineStore("player", () => {
   const pb = usePocketBase();
@@ -20,18 +18,8 @@ export const usePlayer = defineStore("player", () => {
   let remotePlayerController;
   const castConnected = ref(false);
 
-  const loadSounds = once(async () => {
-    const data = await pb.client.collection("sounds").getFullList({
-      fields: "collectionId,id,old_id,name,icon,file,expand.tags.name",
-      expand: "tags",
-      sort: "name",
-    });
-
-    sounds.value = data.map((sound) => {
-      sound.tags = sound.expand?.tags?.map((tag) => tag.name);
-      delete sound.expand;
-      return new Sound(sound);
-    });
+  const soundsReady = pb.loadSounds().then((data) => {
+    sounds.value = data;
   });
 
   const soundsPlaying = computed(() => {
@@ -108,7 +96,7 @@ export const usePlayer = defineStore("player", () => {
   };
 
   const syncFromCast = async (mediaInfo) => {
-    await loadSounds();
+    await soundsReady;
     const preset = new Preset();
     await preset.setMixUrl(mediaInfo.contentId);
     await Promise.all(
@@ -379,7 +367,6 @@ export const usePlayer = defineStore("player", () => {
     stopAll,
     initializeCastApi,
     updateCast,
-    loadSounds,
     prefetch,
   };
 });
