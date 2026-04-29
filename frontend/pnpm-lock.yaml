@@ -79,8 +79,8 @@ importers:
         specifier: 3.5.31
         version: 3.5.31
       vue-router:
-        specifier: 5.0.4
-        version: 5.0.4(@vue/compiler-sfc@3.5.31)(pinia@3.0.4(vue@3.5.31))(vue@3.5.31)
+        specifier: 5.0.6
+        version: 5.0.6(@vue/compiler-sfc@3.5.31)(pinia@3.0.4(vue@3.5.31))(vue@3.5.31)
       vue-sonner:
         specifier: 2.0.9
         version: 2.0.9
@@ -2978,8 +2978,8 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
 
-  vue-router@5.0.4:
-    resolution: {integrity: sha512-lCqDLCI2+fKVRl2OzXuzdSWmxXFLQRxQbmHugnRpTMyYiT+hNaycV0faqG5FBHDXoYrZ6MQcX87BvbY8mQ20Bg==}
+  vue-router@5.0.6:
+    resolution: {integrity: sha512-9+kmUTGbKMyW9Asoy98IXXYIzrTMT7JDAdpDDeEkorHvybpUvBI2wsrSM5jFOXrFydpzRFJ9vAh+80DN2PGu9w==}
     peerDependencies:
       '@pinia/colada': '>=0.21.2'
       '@vue/compiler-sfc': ^3.5.17
@@ -6008,7 +6008,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-router@5.0.4(@vue/compiler-sfc@3.5.31)(pinia@3.0.4(vue@3.5.31))(vue@3.5.31):
+  vue-router@5.0.6(@vue/compiler-sfc@3.5.31)(pinia@3.0.4(vue@3.5.31))(vue@3.5.31):
     dependencies:
       '@babel/generator': 7.29.1
       '@vue-macros/common': 3.1.2(vue@3.5.31)
