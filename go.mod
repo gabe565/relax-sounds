@@ -9,7 +9,7 @@ require (
 	github.com/gopxl/beep/v2 v2.1.1
 	github.com/jellydator/ttlcache/v3 v3.4.0
 	github.com/lmittmann/tint v1.1.3
-	github.com/mattn/go-isatty v0.0.20
+	github.com/mattn/go-isatty v0.0.22
 	github.com/pocketbase/pocketbase v0.36.8
 	github.com/prometheus/client_golang v1.23.2
 	github.com/samber/slog-multi v1.8.0
