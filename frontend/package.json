@@ -38,7 +38,7 @@
     "vue-router": "5.0.4",
     "vue-sonner": "2.0.9",
     "vuetify": "4.0.4",
-    "workbox-window": "7.4.0"
+    "workbox-window": "7.4.1"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
