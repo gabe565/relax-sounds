@@ -53,6 +53,6 @@
     "globals": "17.4.0",
     "prettier": "3.8.1",
     "tailwindcss": "4.2.2",
-    "vue-eslint-parser": "10.4.0"
+    "vue-eslint-parser": "10.4.1"
   }
 }
