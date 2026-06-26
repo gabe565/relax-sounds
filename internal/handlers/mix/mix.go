@@ -50,7 +50,7 @@ func NewMix(conf *config.Config) (*Mix, error) {
 
 type Mix struct {
 	conf   *config.Config
-	cache  *ttlcache.Cache[string, *cache.Entry]
+	cache  *cache.Cache
 	valkey valkey.Client
 }
 

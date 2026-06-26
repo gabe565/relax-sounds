@@ -124,6 +124,8 @@ linters:
     funlen:
       lines: 100
       statements: 50
+    goconst:
+      ignore-tests: true
     gocritic:
       settings:
         captLocal:

@@ -8,7 +8,7 @@ import (
 	"github.com/jellydator/ttlcache/v3"
 )
 
-func New(conf *config.Config) *ttlcache.Cache[string, *Entry] {
+func New(conf *config.Config) *Cache {
 	cache := ttlcache.New[string, *Entry](
 		ttlcache.WithTTL[string, *Entry](conf.CacheCleanAfter),
 	)
@@ -40,5 +40,14 @@ func New(conf *config.Config) *ttlcache.Cache[string, *Entry] {
 
 	go cache.Start()
 
-	return cache
+	return &Cache{Cache: cache}
+}
+
+type Cache struct {
+	*ttlcache.Cache[string, *Entry]
+}
+
+func (c *Cache) Set(key string, value *Entry, ttl time.Duration) {
+	c.Delete(key)
+	c.Cache.Set(key, value, ttl)
 }
