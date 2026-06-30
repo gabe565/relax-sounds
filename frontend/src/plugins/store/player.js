@@ -7,7 +7,6 @@ import { ApiPath } from "@/config/api";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Preset } from "@/util/Preset";
 import { SoundState } from "@/util/Sound";
-import { Filetype } from "@/util/filetype";
 import { formatError, getCastSession } from "@/util/googleCast";
 
 export const usePlayer = defineStore("player", () => {
@@ -123,9 +122,10 @@ export const usePlayer = defineStore("player", () => {
           const { cast } = window.chrome;
           const preset = new Preset({ sounds: soundsPlaying.value });
 
-          const mixUrl = await preset.mixUrlAs(Filetype.Mp3);
-          const mediaInfo = new cast.media.MediaInfo(mixUrl, "audio/mpeg");
+          const mixUrl = await preset.hlsUrl();
+          const mediaInfo = new cast.media.MediaInfo(mixUrl, "application/vnd.apple.mpegurl");
           mediaInfo.streamType = cast.media.StreamType.LIVE;
+          mediaInfo.hlsSegmentFormat = cast.media.HlsSegmentFormat.MP3;
           mediaInfo.metadata = new cast.media.MusicTrackMediaMetadata();
           mediaInfo.metadata.title = currentName.value;
           if (!mediaInfo.metadata.title) {

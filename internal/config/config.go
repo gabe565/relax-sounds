@@ -3,7 +3,6 @@ package config
 import (
 	"time"
 
-	"gabe565.com/utils/bytefmt"
 	"github.com/pocketbase/pocketbase"
 )
 
@@ -13,16 +12,8 @@ type Config struct {
 	MaxPresetLen    int
 	ResampleQuality int
 	LAMEQuality     float64
-	MixTotalSize    Bytes
-	MixChunkSize    Bytes
 
 	CacheCleanAfter time.Duration
-
-	ValkeyEnabled  bool
-	ValkeyHost     string
-	ValkeyPort     uint16
-	ValkeyPassword string
-	ValkeyDB       int
 
 	MetricsEnabled bool
 	MetricsAddress string
@@ -38,13 +29,8 @@ func New(app *pocketbase.PocketBase) *Config {
 		MaxPresetLen:    20,
 		ResampleQuality: 3,
 		LAMEQuality:     2,
-		MixTotalSize:    1.5 * bytefmt.GiB,
-		MixChunkSize:    2 * bytefmt.MiB,
 
-		CacheCleanAfter: 15 * time.Minute,
-
-		ValkeyHost: "localhost",
-		ValkeyPort: 6379,
+		CacheCleanAfter: 2 * time.Minute,
 
 		MetricsEnabled: true,
 		MetricsAddress: ":9090",

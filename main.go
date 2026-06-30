@@ -8,7 +8,7 @@ import (
 	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/debug"
 	"gabe565.com/relax-sounds/internal/handlers"
-	"gabe565.com/relax-sounds/internal/handlers/mix"
+	"gabe565.com/relax-sounds/internal/handlers/mix/hls"
 	"gabe565.com/relax-sounds/internal/hooks"
 	"gabe565.com/relax-sounds/internal/metrics"
 	_ "gabe565.com/relax-sounds/migrations"
@@ -51,11 +51,7 @@ func main() {
 			return e.Next()
 		})
 
-		m, err := mix.NewMix(conf)
-		if err != nil {
-			return err
-		}
-		m.RegisterRoutes(e)
+		hls.New(conf).RegisterRoutes(e)
 
 		static, err := handlers.Static()
 		if err != nil {

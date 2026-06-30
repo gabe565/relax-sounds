@@ -1,4 +1,4 @@
-package cache
+package hls
 
 import (
 	"github.com/prometheus/client_golang/prometheus"

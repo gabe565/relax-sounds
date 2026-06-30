@@ -81,6 +81,16 @@ export class Preset {
     return ApiPath(`/api/mix/${uuid}/${encoded}.${filetype}`);
   }
 
+  async hlsUrl() {
+    let uuid = sessionStorage.getItem("uuid");
+    if (!uuid) {
+      uuid = nanoid();
+      sessionStorage.setItem("uuid", uuid);
+    }
+    const encoded = await this.getEncodedShorthand();
+    return ApiPath(`/api/mix/${uuid}/${encoded}.m3u8`);
+  }
+
   async setMixUrl(val) {
     const [, encoded] = val.match(/\/api\/mix\/.+?\/(.+?)(\..+)?$/);
     await this.setEncodedShorthand(encoded);
