@@ -58,6 +58,7 @@ type Segment struct {
 
 func NewEntry(e *core.RequestEvent, uuid, preset string) *Entry {
 	ctx, cancel := context.WithCancel(context.Background())
+	now := time.Now()
 	return &Entry{
 		Log: slog.With(
 			"userIP", e.RealIP(),
@@ -68,11 +69,22 @@ func NewEntry(e *core.RequestEvent, uuid, preset string) *Entry {
 		UUID:    uuid,
 		Preset:  preset,
 		buf:     ring.New[*Segment](MaxSegments),
+		nextSeq: initialSeq(now),
 		ready:   make(chan struct{}),
 		ctx:     ctx,
 		cancel:  cancel,
-		Created: time.Now(),
+		Created: now,
 	}
+}
+
+// initialSeq derives the first sequence number for a new entry from wall
+// clock so sequences are monotonic across server restarts, cache evictions,
+// and instance failovers.
+//
+// Each 6s of wall-clock advances the sequence by 1.
+func initialSeq(now time.Time) uint64 {
+	//nolint:gosec // Unix() is positive for any post-1970 time
+	return uint64(now.Unix() / int64(SegmentDuration().Round(time.Second).Seconds()))
 }
 
 // Context returns a context that is canceled when the entry is closed.
