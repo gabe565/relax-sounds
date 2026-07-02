@@ -15,7 +15,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.cache \
 
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.9.0 AS xx
-FROM --platform=$BUILDPLATFORM golang:1.26.1-alpine AS backend-build
+FROM --platform=$BUILDPLATFORM golang:1.26.4-alpine AS backend-build
 WORKDIR /app
 
 RUN apk add --no-cache clang
@@ -39,7 +39,7 @@ RUN --mount=type=cache,target=/root/.cache \
   CGO_ENABLED=1 xx-go build -ldflags='-w -s' -trimpath -tags grpcnotrace
 
 
-FROM alpine:3.23.3
+FROM alpine:3.24.1
 LABEL org.opencontainers.image.source="https://github.com/gabe565/relax-sounds"
 WORKDIR /app
 
