@@ -19,7 +19,7 @@
               class="elevation-2 cursor-pointer text-center"
               @click="fileInput.click()"
             >
-              <v-img v-if="avatarPreview || avatarURL" :src="avatarPreview || avatarURL" />
+              <v-img v-if="avatarPreview || pb.avatarURL" :src="avatarPreview || pb.avatarURL" />
               <v-icon v-else :icon="PersonIcon" size="64" />
               <v-overlay
                 activator="parent"
@@ -59,7 +59,7 @@
           />
 
           <v-btn
-            v-if="authMethods.password?.enabled"
+            v-if="pb.authMethods.password?.enabled"
             variant="outlined"
             block
             class="mb-6"
@@ -69,7 +69,7 @@
             Reset Password
           </v-btn>
 
-          <template v-if="authMethods.oauth2?.providers?.length">
+          <template v-if="pb.authMethods.oauth2?.providers?.length">
             <div class="text-title-medium mb-2">Linked Accounts</div>
             <v-alert
               v-if="externalAuthsError"
@@ -81,7 +81,10 @@
               {{ getErrorMessage(externalAuthsError) }}
             </v-alert>
             <v-list v-else class="bg-transparent">
-              <v-list-item v-for="provider in authMethods.oauth2?.providers" :key="provider.name">
+              <v-list-item
+                v-for="provider in pb.authMethods.oauth2?.providers"
+                :key="provider.name"
+              >
                 <template #prepend>
                   <v-avatar size="24" rounded="0" class="mr-3" variant="text">
                     <v-img :src="provider.icon" :cover="false" />

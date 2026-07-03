@@ -83,7 +83,7 @@ export const usePresets = defineStore(
       if (sync && pb.isAuthenticated) {
         const syncedToRemove = toRemove.filter((p) => p.synced);
         if (syncedToRemove.length > 0) {
-          const batch = pb.createBatch();
+          const batch = pb.client.createBatch();
           for (const preset of syncedToRemove) {
             batch.collection("presets").delete(preset.id);
           }
