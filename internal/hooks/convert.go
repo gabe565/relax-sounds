@@ -1,6 +1,7 @@
 package hooks
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -52,38 +53,9 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 			if slices.Contains(exts, altExt) {
 				continue
 			}
-
-			path := filepath.Join(dataDir, record.BaseFilesPath(), files[0])
-			dstPath := filepath.Join(tmpDir, strings.TrimSuffix(files[0], exts[0])+altExt)
-			slog.Info("Creating alt audio file",
-				"src", filepath.Base(path),
-				"dst", filepath.Base(dstPath),
-			)
-
-			args := []string{
-				"-hide_banner",
-				"-loglevel", "error",
-				"-i", path,
-			}
-			if altExt == ".mp3" {
-				args = append(args, "-qscale:a", "2")
-			}
-			args = append(args, dstPath)
-
-			cmd := exec.CommandContext(e.Context, "ffmpeg", args...)
-			b, err := cmd.CombinedOutput()
-			if err != nil {
-				err := fmt.Errorf("%w: %s", err, b)
-				slog.Error("Failed to convert audio file", "error", err)
+			if err := convertToAlt(e.Context, record, dataDir, tmpDir, files[0], exts[0], altExt); err != nil {
 				return err
 			}
-
-			file, err := filesystem.NewFileFromPath(dstPath)
-			if err != nil {
-				return err
-			}
-			file.Name = filepath.Base(dstPath)
-			record.Set("file+", file)
 			changed = true
 		}
 
@@ -95,6 +67,41 @@ func Convert(app *pocketbase.PocketBase) func(e *core.ModelEvent) error {
 
 		return e.Next()
 	}
+}
+
+func convertToAlt(ctx context.Context, record *core.Record, dataDir, tmpDir, srcFile, srcExt, altExt string) error {
+	path := filepath.Join(dataDir, record.BaseFilesPath(), srcFile)
+	dstPath := filepath.Join(tmpDir, strings.TrimSuffix(srcFile, srcExt)+altExt)
+	slog.Info("Creating alt audio file",
+		"src", filepath.Base(path),
+		"dst", filepath.Base(dstPath),
+	)
+
+	args := []string{
+		"-hide_banner",
+		"-loglevel", "error",
+		"-i", path,
+	}
+	if altExt == ".mp3" {
+		args = append(args, "-qscale:a", "2")
+	}
+	args = append(args, dstPath)
+
+	cmd := exec.CommandContext(ctx, "ffmpeg", args...)
+	b, err := cmd.CombinedOutput()
+	if err != nil {
+		err := fmt.Errorf("%w: %s", err, b)
+		slog.Error("Failed to convert audio file", "error", err)
+		return err
+	}
+
+	file, err := filesystem.NewFileFromPath(dstPath)
+	if err != nil {
+		return err
+	}
+	file.Name = filepath.Base(dstPath)
+	record.Set("file+", file)
+	return nil
 }
 
 func ConvertAll(app core.App) error {

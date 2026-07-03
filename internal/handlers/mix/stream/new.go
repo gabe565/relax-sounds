@@ -26,34 +26,20 @@ func New(conf *config.Config, p preset.Preset) (Streams, error) {
 		return s, err
 	}
 
+	recordByID := make(map[string]*core.Record, len(records))
+	for _, r := range records {
+		recordByID[r.Id] = r
+	}
+
 	storageDir := filepath.Join(conf.App.DataDir(), "storage")
 	for _, entry := range p {
-		var record *core.Record
-		for _, v := range records {
-			if v.Id == entry.ID {
-				record = v
-				break
-			}
-		}
-		if record == nil {
+		record, ok := recordByID[entry.ID]
+		if !ok {
 			return s, fmt.Errorf("%w: %s", ErrInvalidRecordID, entry.ID)
 		}
 
 		files := record.GetStringSlice("file")
-		var preferredFile string
-		for _, preferredExt := range preferredExts() {
-			i := slices.IndexFunc(files, func(s string) bool {
-				return filepath.Ext(s) == preferredExt
-			})
-			if i != -1 {
-				preferredFile = files[i]
-				break
-			}
-		}
-		if preferredFile == "" {
-			preferredFile = files[0]
-		}
-		path := filepath.Join(storageDir, record.BaseFilesPath(), preferredFile)
+		path := filepath.Join(storageDir, record.BaseFilesPath(), preferredFile(files))
 
 		f, err := os.Open(path)
 		if err != nil {
@@ -69,4 +55,16 @@ func New(conf *config.Config, p preset.Preset) (Streams, error) {
 
 func preferredExts() []string {
 	return []string{".wav", ".ogg"}
+}
+
+func preferredFile(files []string) string {
+	for _, ext := range preferredExts() {
+		i := slices.IndexFunc(files, func(s string) bool {
+			return filepath.Ext(s) == ext
+		})
+		if i != -1 {
+			return files[i]
+		}
+	}
+	return files[0]
 }

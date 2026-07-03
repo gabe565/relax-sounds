@@ -156,10 +156,9 @@ const pan = computed({
 });
 
 const iconProps = computed(() => {
-  if (!props.sound.isPlaying) {
-    return { icon: PlayIcon, size: "x-large" };
-  } else {
+  if (props.sound.isPlaying) {
     return { icon: PauseIcon, size: "large" };
   }
+  return { icon: PlayIcon, size: "x-large" };
 });
 </script>

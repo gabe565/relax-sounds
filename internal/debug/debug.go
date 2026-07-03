@@ -1,10 +1,9 @@
 package debug
 
-//nolint:revive,gosec
 import (
 	"log/slog"
 	"net/http"
-	_ "net/http/pprof"
+	_ "net/http/pprof" //nolint:gosec
 	"time"
 
 	"gabe565.com/relax-sounds/internal/config"

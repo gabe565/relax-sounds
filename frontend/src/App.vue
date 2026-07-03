@@ -97,7 +97,7 @@ const showPlayerBar = computed(() => {
 });
 
 const autoTheme = (e) => (theme.name.value = e.matches ? "dark" : "light");
-const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
 watch(
   () => preferences.theme,
   (val) => {
@@ -111,7 +111,10 @@ watch(
         break;
       default:
         // check for browser support
-        if (window.matchMedia && window.matchMedia("(prefers-color-scheme)").media !== "not all") {
+        if (
+          globalThis.matchMedia &&
+          globalThis.matchMedia("(prefers-color-scheme)").media !== "not all"
+        ) {
           // set to preferred scheme
           autoTheme(mediaQuery);
           // react to changes

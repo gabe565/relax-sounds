@@ -81,7 +81,7 @@ const restore = async () => {
       );
       await presets.sync();
       toast.success(
-        `Imported ${presetsData.length} preset${presetsData.length !== 1 ? "s" : ""}.`,
+        `Imported ${presetsData.length} preset${presetsData.length === 1 ? "" : "s"}.`,
         {
           icon: RestoreIcon,
         },

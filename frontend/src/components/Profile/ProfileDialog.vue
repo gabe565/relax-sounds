@@ -31,7 +31,9 @@
                 <v-icon :icon="EditIcon" color="white" />
               </v-overlay>
             </v-avatar>
+            <label for="avatar-file-input" class="sr-only">Avatar image</label>
             <input
+              id="avatar-file-input"
               ref="fileInput"
               type="file"
               accept="image/*"

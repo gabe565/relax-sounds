@@ -27,6 +27,17 @@ func SegmentDuration() time.Duration {
 // quickly), then this gate makes the producer self-pace.
 const bufferAhead = 30 * time.Second
 
+// produceState tracks byte/frame progress within a single Produce call.
+//
+// scanPos tracks bytes of the current (not-yet-emitted) segment that have
+// already been parsed, measured from raw's read offset.
+type produceState struct {
+	scanPos   int
+	segFrames int
+	encoded   time.Duration
+	start     time.Time
+}
+
 // Produce runs a single continuous LAME encoder and slices its byte stream at
 // MP3 frame boundaries. This avoids the per-segment Xing-tag encoder-delay
 // gap (~350ms) that a fresh-encoder-per-segment approach would introduce at
@@ -49,15 +60,7 @@ func (e *Entry) Produce(conf *config.Config) {
 
 	samples := make([][2]float64, pcmChunkSamples)
 	pcm := make([]byte, len(samples)*format.Width())
-
-	var (
-		segFrames int
-		start     = time.Now()
-		encoded   time.Duration
-		// scanPos tracks bytes of the current (not-yet-emitted) segment that
-		// have already been parsed, measured from raw's read offset.
-		scanPos int
-	)
+	state := produceState{start: time.Now()}
 
 	for {
 		if err := e.ctx.Err(); err != nil {
@@ -82,27 +85,35 @@ func (e *Entry) Produce(conf *config.Config) {
 			return
 		}
 
-		// Drain complete MP3 frames from raw.
-		for {
-			frameLen, ok := parseFrameLen(raw.Bytes(), scanPos)
-			if !ok {
-				break
-			}
-			scanPos += frameLen
-			segFrames++
+		if e.drainFrames(&raw, &state) {
+			return
+		}
+	}
+}
 
-			if segFrames < framesPerSegment {
-				continue
-			}
+// drainFrames extracts complete MP3 frames from raw, emitting a segment each
+// time framesPerSegment accumulate. Returns true if the caller should stop
+// (context canceled during throttle wait).
+func (e *Entry) drainFrames(raw *bytes.Buffer, s *produceState) bool {
+	for {
+		frameLen, ok := parseFrameLen(raw.Bytes(), s.scanPos)
+		if !ok {
+			return false
+		}
+		s.scanPos += frameLen
+		s.segFrames++
 
-			dur := e.emitSegment(raw.Next(scanPos), segFrames)
-			encoded += dur
-			scanPos = 0
-			segFrames = 0
+		if s.segFrames < framesPerSegment {
+			continue
+		}
 
-			if e.throttleAhead(encoded - time.Since(start)) {
-				return
-			}
+		dur := e.emitSegment(raw.Next(s.scanPos), s.segFrames)
+		s.encoded += dur
+		s.scanPos = 0
+		s.segFrames = 0
+
+		if e.throttleAhead(s.encoded - time.Since(s.start)) {
+			return true
 		}
 	}
 }

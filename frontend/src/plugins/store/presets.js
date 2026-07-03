@@ -135,6 +135,69 @@ export const usePresets = defineStore(
       }
     };
 
+    const mergeRemoteIntoLocal = (remote, localPresets) => {
+      const remoteMetadata = remote.metadata || {};
+      const remoteSounds = (remote.sounds || []).map((id) => ({
+        id,
+        volume: remoteMetadata[id]?.volume ?? 1,
+        pan: remoteMetadata[id]?.pan ?? 0,
+        rate: remoteMetadata[id]?.rate ?? 1,
+      }));
+
+      const local = localPresets.find((p) => p.id === remote.id);
+      if (!local) {
+        localPresets.push(
+          new Preset({
+            id: remote.id,
+            name: remote.name,
+            sounds: remoteSounds,
+            synced: true,
+          }),
+        );
+        return;
+      }
+      local.synced = true;
+      if (
+        local.name !== remote.name ||
+        JSON.stringify(local.sounds) !== JSON.stringify(remoteSounds)
+      ) {
+        local.name = remote.name;
+        local.sounds = remoteSounds;
+      }
+    };
+
+    const queueLocalCreate = (batch, local) => {
+      const metadata = {};
+      for (const sound of local.sounds) {
+        metadata[sound.id] = {
+          volume: sound.volume,
+          pan: sound.pan,
+          rate: sound.rate,
+        };
+      }
+      batch.collection("presets").create({
+        name: local.name,
+        user: pb.user.id,
+        sounds: local.sounds.map((s) => s.id),
+        metadata,
+      });
+    };
+
+    const collectLocalChanges = (localPresets, remotePresets, batch) => {
+      const idsToUpdate = [];
+      const idsToRemove = [];
+      for (const local of localPresets) {
+        if (remotePresets.some((p) => p.id === local.id)) continue;
+        if (local.synced) {
+          idsToRemove.push(local.id);
+          continue;
+        }
+        queueLocalCreate(batch, local);
+        idsToUpdate.push(local.id);
+      }
+      return { idsToUpdate, idsToRemove };
+    };
+
     const performSync = async () => {
       if (!pb.isAuthenticated) {
         return;
@@ -148,66 +211,15 @@ export const usePresets = defineStore(
           const remotePresets = await pb.client.collection("presets").getFullList();
           const localPresets = presets.value;
 
-          // Resolve remote to local
           for (const remote of remotePresets) {
-            const remoteMetadata = remote.metadata || {};
-            const remoteSounds = (remote.sounds || []).map((id) => ({
-              id,
-              volume: remoteMetadata[id]?.volume ?? 1,
-              pan: remoteMetadata[id]?.pan ?? 0,
-              rate: remoteMetadata[id]?.rate ?? 1,
-            }));
-
-            let local = localPresets.find((p) => p.id === remote.id);
-            if (!local) {
-              localPresets.push(
-                new Preset({
-                  id: remote.id,
-                  name: remote.name,
-                  sounds: remoteSounds,
-                  synced: true,
-                }),
-              );
-            } else {
-              local.synced = true;
-              if (
-                local.name !== remote.name ||
-                JSON.stringify(local.sounds) !== JSON.stringify(remoteSounds)
-              ) {
-                local.name = remote.name;
-                local.sounds = remoteSounds;
-              }
-            }
+            mergeRemoteIntoLocal(remote, localPresets);
           }
 
-          // Resolve local to remote
-          const idsToUpdate = [];
-          const idsToRemove = [];
-          for (const local of localPresets) {
-            const remote = remotePresets.find((p) => p.id === local.id);
-            if (!remote) {
-              if (local.synced) {
-                idsToRemove.push(local.id);
-              } else {
-                const metadata = {};
-                for (const sound of local.sounds) {
-                  metadata[sound.id] = {
-                    volume: sound.volume,
-                    pan: sound.pan,
-                    rate: sound.rate,
-                  };
-                }
-
-                batch.collection("presets").create({
-                  name: local.name,
-                  user: pb.user.id,
-                  sounds: local.sounds.map((s) => s.id),
-                  metadata: metadata,
-                });
-                idsToUpdate.push(local.id);
-              }
-            }
-          }
+          const { idsToUpdate, idsToRemove } = collectLocalChanges(
+            localPresets,
+            remotePresets,
+            batch,
+          );
 
           if (idsToRemove.length > 0) {
             presets.value = presets.value.filter((p) => !idsToRemove.includes(p.id));
@@ -215,7 +227,6 @@ export const usePresets = defineStore(
 
           if (idsToUpdate.length > 0) {
             const response = await batch.send();
-
             for (const [key, entry] of response.entries()) {
               const localEntry = localPresets.find((p) => p.id === idsToUpdate[key]);
               localEntry.id = entry.body.id;

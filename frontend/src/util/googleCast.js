@@ -1,12 +1,12 @@
 export function getCastSession() {
-  if (!window.cast) {
+  if (!globalThis.cast) {
     return undefined;
   }
-  return window.cast.framework.CastContext.getInstance().getCurrentSession();
+  return globalThis.cast.framework.CastContext.getInstance().getCurrentSession();
 }
 
 export function formatError(error) {
-  const { ErrorCode } = window.chrome.cast;
+  const { ErrorCode } = globalThis.chrome.cast;
   switch (error) {
     case ErrorCode.API_NOT_INITIALIZED:
       return `The API is not initialized. ${error.description || ""}`;

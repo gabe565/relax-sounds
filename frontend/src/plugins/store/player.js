@@ -119,7 +119,7 @@ export const usePlayer = defineStore("player", () => {
       if (isPlaying.value) {
         const castSession = getCastSession();
         if (castSession) {
-          const { cast } = window.chrome;
+          const { cast } = globalThis.chrome;
           const preset = new Preset({ sounds: soundsPlaying.value });
 
           const mixUrl = await preset.hlsUrl();
@@ -137,7 +137,7 @@ export const usePlayer = defineStore("player", () => {
           mediaInfo.metadata.artist = "Relax Sounds";
           mediaInfo.metadata.images = [
             new cast.Image(
-              `${window.location.origin}/img/icons/android-chrome-maskable-512x512.png`,
+              `${globalThis.location.origin}/img/icons/android-chrome-maskable-512x512.png`,
             ),
           ];
 
@@ -250,8 +250,8 @@ export const usePlayer = defineStore("player", () => {
   };
 
   const initializeCastApi = () => {
-    const { framework: castFramework } = window.cast;
-    const { cast } = window.chrome;
+    const { framework: castFramework } = globalThis.cast;
+    const { cast } = globalThis.chrome;
 
     remotePlayer = new castFramework.RemotePlayer();
     remotePlayerController = new castFramework.RemotePlayerController(remotePlayer);

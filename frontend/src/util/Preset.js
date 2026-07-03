@@ -45,11 +45,11 @@ export class Preset {
   }
 
   get encodedName() {
-    return encodeURIComponent(this.name).replace(/%20/g, "+");
+    return encodeURIComponent(this.name).replaceAll("%20", "+");
   }
 
   set encodedName(val) {
-    this.name = val.replace(/\+/g, " ");
+    this.name = val.replaceAll("+", " ");
   }
 
   async getEncodedShorthand() {
@@ -68,7 +68,7 @@ export class Preset {
 
   async getShareUrl() {
     const shorthand = await this.getEncodedShorthand();
-    return `${window.location.origin}/import/${this.encodedName}/${shorthand}`;
+    return `${globalThis.location.origin}/import/${this.encodedName}/${shorthand}`;
   }
 
   async mixUrlAs(filetype = Filetype.Mp3) {
@@ -92,7 +92,7 @@ export class Preset {
   }
 
   async setMixUrl(val) {
-    const [, encoded] = val.match(/\/api\/mix\/.+?\/(.+?)(\..+)?$/);
+    const [, encoded] = val.match(/\/api\/mix\/[^/]+\/([^./]+)/);
     await this.setEncodedShorthand(encoded);
   }
 

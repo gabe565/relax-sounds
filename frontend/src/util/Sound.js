@@ -31,22 +31,22 @@ export class Sound {
       .map((f) => pb.client.files.getURL(this, f));
   }
 
-  load() {
-    if (this.isUnloaded) {
-      this.isLoading = true;
-      return new Promise((resolve, reject) => {
-        this.howl.once("load", () => {
-          this.isLoading = false;
-          resolve();
-        });
-        this.howl.once("loaderror", (_, err) => {
-          this.isLoading = false;
-          reject(err);
-        });
-        this.howl.load();
-      });
+  async load() {
+    if (!this.isUnloaded) {
+      return;
     }
-    return true;
+    this.isLoading = true;
+    return new Promise((resolve, reject) => {
+      this.howl.once("load", () => {
+        this.isLoading = false;
+        resolve();
+      });
+      this.howl.once("loaderror", (_, err) => {
+        this.isLoading = false;
+        reject(err);
+      });
+      this.howl.load();
+    });
   }
 
   play(local = true, fade = 250) {
