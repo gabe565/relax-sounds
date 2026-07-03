@@ -15,6 +15,7 @@ export const usePlayer = defineStore("player", () => {
   const currentName = ref();
   let remotePlayer;
   let remotePlayerController;
+  const castEnabled = ref(false);
   const castConnected = ref(false);
 
   const soundsReady = pb.loadSounds().then((data) => {
@@ -319,6 +320,8 @@ export const usePlayer = defineStore("player", () => {
       receiverApplicationId: cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
       autoJoinPolicy: cast.AutoJoinPolicy.ORIGIN_SCOPED,
     });
+
+    castEnabled.value = true;
   };
 
   const prefetch = async () => {
@@ -345,6 +348,7 @@ export const usePlayer = defineStore("player", () => {
   return {
     sounds,
     currentName,
+    castEnabled,
     castConnected,
     soundsPlaying,
     soundsNotStopped,

@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip v-if="castEnabled" text="Cast" :location="tooltipLocation">
+  <v-tooltip v-if="player.castEnabled" text="Cast" :location="tooltipLocation">
     <template #activator="{ props }">
       <v-btn v-bind="props" icon title="Cast" aria-label="Cast">
         <v-icon>
@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { castEnabled } from "@/cast";
+import { usePlayer } from "@/plugins/store/player";
 
 defineProps({
   tooltipLocation: {
@@ -19,6 +19,8 @@ defineProps({
     default: "top",
   },
 });
+
+const player = usePlayer();
 </script>
 
 <style>

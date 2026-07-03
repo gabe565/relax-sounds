@@ -1,8 +1,5 @@
-import { ref } from "vue";
 import { usePlayer } from "@/plugins/store/player";
 import { wait } from "@/util/helpers";
-
-export const castEnabled = ref(false);
 
 globalThis.__onGCastApiAvailable = async (isAvailable) => {
   if (isAvailable) {
@@ -14,7 +11,6 @@ globalThis.__onGCastApiAvailable = async (isAvailable) => {
       waitMs *= 2;
     }
 
-    await usePlayer().initializeCastApi();
-    castEnabled.value = true;
+    usePlayer().initializeCastApi();
   }
 };
