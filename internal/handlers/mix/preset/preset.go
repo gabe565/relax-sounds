@@ -23,7 +23,7 @@ func (t Track) GetVolume() float64 {
 	if t.Volume == nil {
 		return 1
 	}
-	return *t.Volume
+	return max(0, min(*t.Volume, 1))
 }
 
 func (t Track) GetRate() float64 {
