@@ -3,7 +3,8 @@ import { ApiPath } from "@/config/api";
 import { usePlayer } from "@/plugins/store/player.js";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Filetype } from "@/util/filetype";
-import { compress, decompress, fromUrlSafeBase64 } from "@/util/helpers";
+import { compress, decompress, fromBase64, fromUrlSafeBase64, toBase64 } from "@/util/helpers";
+import { SHORTHAND_VERSION, decodeShorthand, encodeShorthand } from "@/util/shorthand";
 
 export const legacyFromShorthand = (shorthand) =>
   shorthand.map((song) => {
@@ -13,6 +14,18 @@ export const legacyFromShorthand = (shorthand) =>
     }
     return entry;
   });
+
+const soundIndex = async () => {
+  const sounds = await usePocketBase().loadSounds();
+  const indexById = new Map();
+  const idByIndex = new Map();
+  for (const sound of sounds) {
+    if (!Number.isInteger(sound.short_id)) continue;
+    indexById.set(sound.id, sound.short_id);
+    idByIndex.set(sound.short_id, sound.id);
+  }
+  return { indexById, idByIndex };
+};
 
 export class Preset {
   constructor(obj) {
@@ -53,14 +66,25 @@ export class Preset {
   }
 
   async getEncodedShorthand() {
-    return await compress(JSON.stringify(this.shorthand));
+    try {
+      const { indexById } = await soundIndex();
+      return toBase64(encodeShorthand(this.shorthand, indexById));
+    } catch (err) {
+      console.warn("Falling back to compressed JSON preset encoding.", err);
+      return await compress(JSON.stringify(this.shorthand));
+    }
   }
 
   async setEncodedShorthand(val) {
-    let raw;
+    const bytes = fromBase64(val);
+    if (bytes[0] === SHORTHAND_VERSION) {
+      const { idByIndex } = await soundIndex();
+      this.shorthand = decodeShorthand(bytes, idByIndex);
+      return;
+    }
+
     try {
-      raw = await decompress(val);
-      this.shorthand = JSON.parse(raw);
+      this.shorthand = JSON.parse(await decompress(val));
     } catch {
       this.shorthand = legacyFromShorthand(JSON.parse(atob(fromUrlSafeBase64(val))));
     }
@@ -103,7 +127,7 @@ export class Preset {
     await Promise.all(
       this.sounds.map(async (sound) => {
         if (sound.id.length <= 3) {
-          const found = player.sounds.find((e) => `${e.old_id}` === sound.id);
+          const found = player.sounds.find((e) => `${e.short_id}` === sound.id);
           if (found) {
             sound.id = found.id;
           }

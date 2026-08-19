@@ -80,7 +80,7 @@ export const usePocketBase = defineStore("pocketbase", () => {
 
   const loadSounds = once(async () => {
     const data = await client.collection("sounds").getFullList({
-      fields: "collectionId,id,old_id,name,icon,file,expand.tags.name",
+      fields: "collectionId,id,short_id,name,icon,file,expand.tags.name",
       expand: "tags",
       sort: "name",
     });

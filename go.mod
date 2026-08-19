@@ -10,6 +10,7 @@ require (
 	github.com/jellydator/ttlcache/v3 v3.4.1
 	github.com/lmittmann/tint v1.1.3
 	github.com/mattn/go-isatty v0.0.22
+	github.com/pocketbase/dbx v1.12.0
 	github.com/pocketbase/pocketbase v0.39.5
 	github.com/prometheus/client_golang v1.23.2
 	github.com/samber/slog-multi v1.8.0
@@ -17,6 +18,7 @@ require (
 	github.com/spf13/pflag v1.0.10
 	github.com/stretchr/testify v1.11.1
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
+	github.com/vmihailenco/msgpack/v5 v5.4.1
 )
 
 require (
@@ -50,7 +52,6 @@ require (
 	github.com/pascaldekloe/name v1.0.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/pocketbase/dbx v1.12.0 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.69.0 // indirect
 	github.com/prometheus/procfs v0.21.1 // indirect
@@ -58,6 +59,7 @@ require (
 	github.com/samber/lo v1.53.0 // indirect
 	github.com/samber/slog-common v0.22.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
+	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
 	golang.org/x/image v0.43.0 // indirect
 	golang.org/x/mod v0.37.0 // indirect

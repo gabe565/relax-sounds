@@ -16,6 +16,15 @@ export const fromUrlSafeBase64 = (str) => {
   return str + "==".slice(0, (4 - (str.length % 4)) % 4);
 };
 
+export const toBase64 = (bytes) => {
+  let binary = "";
+  for (const b of bytes) binary += String.fromCodePoint(b);
+  return toUrlSafeBase64(btoa(binary));
+};
+
+export const fromBase64 = (data) =>
+  Uint8Array.from(atob(fromUrlSafeBase64(data)), (c) => c.codePointAt(0));
+
 export const streamToArrayBuffer = async (stream) => {
   const blob = await new Response(stream).blob();
   return blob.arrayBuffer();
@@ -27,15 +36,11 @@ export const detectEncoding = (bytes) =>
 export const compress = async (data, encoding = "deflate") => {
   const stream = new Blob([data]).stream().pipeThrough(new CompressionStream(encoding));
   const buffer = await streamToArrayBuffer(stream);
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  for (const b of bytes) binary += String.fromCodePoint(b);
-  return toUrlSafeBase64(btoa(binary));
+  return toBase64(new Uint8Array(buffer));
 };
 
 export const decompress = async (data, encoding = "") => {
-  const binary = atob(fromUrlSafeBase64(data));
-  const bytes = Uint8Array.from(binary, (c) => c.codePointAt(0));
+  const bytes = fromBase64(data);
   if (!encoding) {
     encoding = detectEncoding(bytes);
   }

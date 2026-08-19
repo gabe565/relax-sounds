@@ -17,6 +17,8 @@ func FromParam(encoded string) (Preset, error) {
 
 	var r io.ReadCloser
 	switch {
+	case len(data) != 0 && data[0] == shorthandVersion:
+		return fromShorthand(data)
 	case bytes.HasPrefix(data, []byte{0x78, 0x9C}):
 		r, err = zlib.NewReader(bytes.NewReader(data))
 	case bytes.HasPrefix(data, []byte{0x1F, 0x8B}):

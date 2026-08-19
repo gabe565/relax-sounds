@@ -76,6 +76,8 @@ func main() {
 		return e.Next()
 	})
 
+	app.OnRecordCreate("sounds").BindFunc(hooks.AssignShortID)
+
 	convertHook := hooks.Convert(app)
 	app.OnModelAfterCreateSuccess("sounds").BindFunc(convertHook)
 	app.OnModelAfterUpdateSuccess("sounds").BindFunc(convertHook)
