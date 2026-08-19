@@ -27,29 +27,17 @@ func (t Track) GetVolume() float64 {
 }
 
 func (t Track) GetRate() float64 {
-	switch {
-	case t.Rate == nil:
+	if t.Rate == nil {
 		return 1
-	case *t.Rate < 0.5:
-		return 0.5
-	case *t.Rate > 1.5:
-		return 1.5
-	default:
-		return *t.Rate
 	}
+	return max(0.5, min(*t.Rate, 1.5))
 }
 
 func (t Track) GetPan() float64 {
-	switch {
-	case t.Pan == nil:
+	if t.Pan == nil {
 		return 0
-	case *t.Pan < -1:
-		return -1
-	case *t.Pan > 1:
-		return 1
-	default:
-		return *t.Pan
 	}
+	return max(-1, min(*t.Pan, 1))
 }
 
 type Preset []Track
