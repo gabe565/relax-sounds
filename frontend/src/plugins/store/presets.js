@@ -199,6 +199,7 @@ export const usePresets = defineStore(
     };
 
     const performSync = async () => {
+      await pb.authReady;
       if (!pb.isAuthenticated) {
         return;
       }
@@ -221,7 +222,7 @@ export const usePresets = defineStore(
             batch,
           );
 
-          if (idsToRemove.length > 0) {
+          if (idsToRemove.length > 0 && pb.client.authStore.isValid) {
             presets.value = presets.value.filter((p) => !idsToRemove.includes(p.id));
           }
 

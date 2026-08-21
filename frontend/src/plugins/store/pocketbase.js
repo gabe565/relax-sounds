@@ -34,19 +34,32 @@ export function getProviderIconURL(provider) {
 export const usePocketBase = defineStore("pocketbase", () => {
   const client = new PocketBase(ApiPath());
   const user = ref(client.authStore.record);
-  const isAuthenticated = computed(() => !!user.value?.verified);
+  const hasValidToken = ref(client.authStore.isValid);
+  const isAuthenticated = computed(() => hasValidToken.value && !!user.value?.verified);
 
   const unsubscribeAuth = client.authStore.onChange((token, record) => {
     user.value = record;
+    hasValidToken.value = client.authStore.isValid;
   });
   onScopeDispose(unsubscribeAuth);
 
   const refreshAuth = async () => {
-    if (client.authStore.isValid) {
+    if (!client.authStore.isValid) {
+      client.authStore.clear();
+      return;
+    }
+    try {
       await client.collection("users").authRefresh();
+    } catch (err) {
+      if (err.status === 401 || err.status === 403 || err.status === 404) {
+        client.authStore.clear();
+      } else {
+        console.error("Failed to refresh auth:", err);
+      }
     }
   };
-  refreshAuth().catch(console.error);
+
+  const authReady = refreshAuth();
 
   const authMethods = computedAsync(
     async () => {
@@ -107,6 +120,7 @@ export const usePocketBase = defineStore("pocketbase", () => {
     user,
     isAuthenticated,
     refreshAuth,
+    authReady,
     authEnabled,
     authMethods,
     avatarURL,
