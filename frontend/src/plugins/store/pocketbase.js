@@ -1,7 +1,8 @@
 import { computedAsync, useEventListener } from "@vueuse/core";
 import { defineStore } from "pinia";
 import PocketBase from "pocketbase";
-import { computed, onScopeDispose, ref } from "vue";
+import { computed, nextTick, onScopeDispose, ref } from "vue";
+import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import AuthentikIcon from "@/assets/authentik.svg";
 import { ApiPath } from "@/config/api.js";
@@ -33,6 +34,8 @@ export function getProviderIconURL(provider) {
 
 const AuthRefreshInterval = 60 * 60 * 1000;
 
+export const SessionExpiredToast = "session-expired";
+
 export const usePocketBase = defineStore("pocketbase", () => {
   const client = new PocketBase(ApiPath());
   const user = ref(client.authStore.record);
@@ -47,17 +50,36 @@ export const usePocketBase = defineStore("pocketbase", () => {
 
   let lastRefresh = 0;
 
+  const router = useRouter();
+
+  const expireSession = async () => {
+    const hadSession = !!client.authStore.token;
+    client.authStore.clear();
+    if (!hadSession) {
+      return;
+    }
+    await nextTick();
+    toast.info("Your session has expired.", {
+      id: SessionExpiredToast,
+      duration: Infinity,
+      action: {
+        label: "Log in",
+        onClick: () => router.push({ name: "Login" }),
+      },
+    });
+  };
+
   const refreshAuth = async () => {
     lastRefresh = Date.now();
     if (!client.authStore.isValid) {
-      client.authStore.clear();
+      await expireSession();
       return;
     }
     try {
       await client.collection("users").authRefresh();
     } catch (err) {
       if (err.status === 401 || err.status === 403 || err.status === 404) {
-        client.authStore.clear();
+        await expireSession();
       } else {
         console.error("Failed to refresh auth:", err);
       }

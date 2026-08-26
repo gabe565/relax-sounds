@@ -128,10 +128,11 @@
 </template>
 
 <script setup>
-import { reactive, ref, watchEffect } from "vue";
+import { onMounted, reactive, ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { toast } from "vue-sonner";
 import PageLayout from "@/layouts/PageLayout.vue";
-import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
+import { SessionExpiredToast, getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
 const props = defineProps({
   register: {
@@ -142,6 +143,8 @@ const props = defineProps({
 
 const router = useRouter();
 const pb = usePocketBase();
+
+onMounted(() => toast.dismiss(SessionExpiredToast));
 
 watchEffect(async () => {
   if (pb.isAuthenticated || (!pb.authMethods.loading && !pb.authEnabled)) {
