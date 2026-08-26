@@ -1,4 +1,4 @@
-import { computedAsync } from "@vueuse/core";
+import { computedAsync, useEventListener } from "@vueuse/core";
 import { defineStore } from "pinia";
 import PocketBase from "pocketbase";
 import { computed, onScopeDispose, ref } from "vue";
@@ -31,6 +31,8 @@ export function getProviderIconURL(provider) {
   return ApiPath(`/_/images/oauth2/${provider.name.toLowerCase()}.svg`);
 }
 
+const AuthRefreshInterval = 60 * 60 * 1000;
+
 export const usePocketBase = defineStore("pocketbase", () => {
   const client = new PocketBase(ApiPath());
   const user = ref(client.authStore.record);
@@ -43,7 +45,10 @@ export const usePocketBase = defineStore("pocketbase", () => {
   });
   onScopeDispose(unsubscribeAuth);
 
+  let lastRefresh = 0;
+
   const refreshAuth = async () => {
+    lastRefresh = Date.now();
     if (!client.authStore.isValid) {
       client.authStore.clear();
       return;
@@ -60,6 +65,12 @@ export const usePocketBase = defineStore("pocketbase", () => {
   };
 
   const authReady = refreshAuth();
+
+  useEventListener(window, "focus", () => {
+    if (client.authStore.token && Date.now() - lastRefresh > AuthRefreshInterval) {
+      refreshAuth();
+    }
+  });
 
   const authMethods = computedAsync(
     async () => {
