@@ -23,7 +23,7 @@ import (
 )
 
 func main() {
-	slog.SetDefault(slog.New(tint.NewHandler(os.Stderr, &tint.Options{
+	slog.SetDefault(slog.New(tint.NewTextHandler(os.Stderr, &tint.Options{
 		Level:      slog.LevelInfo,
 		TimeFormat: time.DateTime,
 		NoColor:    !isatty.IsTerminal(os.Stderr.Fd()) && !isatty.IsCygwinTerminal(os.Stderr.Fd()),
