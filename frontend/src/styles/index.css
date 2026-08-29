@@ -1,6 +1,7 @@
 @import "tailwindcss/theme" layer(tailwind-theme);
 @import "tailwindcss/preflight" layer(tailwind-reset);
 @import "tailwindcss/utilities" layer(tailwind-utilities);
+@import "vue-sonner/style.css" layer(vue-sonner);
 
 /* dark/light mode — Vuetify uses .v-theme--dark/.v-theme--light instead of .dark */
 @custom-variant light (&:where(.v-theme--light, .v-theme--light *));

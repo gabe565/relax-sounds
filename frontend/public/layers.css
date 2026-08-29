@@ -1,2 +1,2 @@
 @layer tailwind-theme, tailwind-reset, vuetify-core, vuetify-components,
-  vuetify-overrides, vuetify-utilities, tailwind-utilities, vuetify-final;
+  vue-sonner, vuetify-overrides, vuetify-utilities, tailwind-utilities, vuetify-final;
