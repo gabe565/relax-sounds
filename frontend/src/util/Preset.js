@@ -27,6 +27,16 @@ const soundIndex = async () => {
   return { indexById, idByIndex };
 };
 
+const streamId = ({ fresh = false } = {}) => {
+  if (fresh) return nanoid();
+  let uuid = sessionStorage.getItem("uuid");
+  if (!uuid) {
+    uuid = nanoid();
+    sessionStorage.setItem("uuid", uuid);
+  }
+  return uuid;
+};
+
 export class Preset {
   constructor(obj) {
     this.id = nanoid();
@@ -95,24 +105,14 @@ export class Preset {
     return `${globalThis.location.origin}/import/${this.encodedName}/${shorthand}`;
   }
 
-  async mixUrlAs(filetype = Filetype.Mp3) {
-    let uuid = sessionStorage.getItem("uuid");
-    if (!uuid) {
-      uuid = nanoid();
-      sessionStorage.setItem("uuid", uuid);
-    }
+  async mixUrlAs(filetype = Filetype.Mp3, { fresh = false } = {}) {
     const encoded = await this.getEncodedShorthand();
-    return ApiPath(`/api/mix/${uuid}/${encoded}.${filetype}`);
+    return ApiPath(`/api/mix/${streamId({ fresh })}/${encoded}.${filetype}`);
   }
 
-  async hlsUrl() {
-    let uuid = sessionStorage.getItem("uuid");
-    if (!uuid) {
-      uuid = nanoid();
-      sessionStorage.setItem("uuid", uuid);
-    }
+  async hlsUrl({ fresh = false } = {}) {
     const encoded = await this.getEncodedShorthand();
-    return ApiPath(`/api/mix/${uuid}/${encoded}.m3u8`);
+    return ApiPath(`/api/mix/${streamId({ fresh })}/${encoded}.m3u8`);
   }
 
   async setMixUrl(val) {
