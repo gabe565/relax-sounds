@@ -6,6 +6,12 @@ import LogoutIcon from "~icons/material-symbols/logout-rounded";
 import PresetsIcon from "~icons/material-symbols/playlist-play-rounded";
 import SoundsIcon from "~icons/material-symbols/sound-detection-loud-sound-rounded";
 import { ApiPath } from "@/config/api";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage.vue";
+import LoginPage from "@/pages/LoginPage.vue";
+import MixerPage from "@/pages/MixerPage.vue";
+import NotFoundPage from "@/pages/NotFoundPage.vue";
+import PresetsPage from "@/pages/PresetsPage.vue";
+import SoundsPage from "@/pages/SoundsPage.vue";
 import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 import { usePresets } from "@/plugins/store/presets";
 import { Preset } from "@/util/Preset";
@@ -17,7 +23,7 @@ const router = createRouter({
     {
       path: "/sounds",
       name: "Sounds",
-      component: () => import("@/pages/SoundsPage.vue"),
+      component: SoundsPage,
       props: true,
       meta: {
         icon: SoundsIcon,
@@ -27,7 +33,7 @@ const router = createRouter({
     {
       path: "/mixer",
       name: "Mixer",
-      component: () => import("@/pages/MixerPage.vue"),
+      component: MixerPage,
       props: true,
       meta: {
         icon: MixerIcon,
@@ -37,7 +43,7 @@ const router = createRouter({
     {
       path: "/presets",
       name: "Presets",
-      component: () => import("@/pages/PresetsPage.vue"),
+      component: PresetsPage,
       props: true,
       meta: {
         icon: PresetsIcon,
@@ -47,7 +53,7 @@ const router = createRouter({
     {
       path: "/login",
       name: "Login",
-      component: () => import("@/pages/LoginPage.vue"),
+      component: LoginPage,
       meta: {
         showInNav: false,
         guestOnly: true,
@@ -57,7 +63,7 @@ const router = createRouter({
     {
       path: "/register",
       name: "Register",
-      component: () => import("@/pages/LoginPage.vue"),
+      component: LoginPage,
       props: { register: true },
       meta: {
         showInNav: false,
@@ -68,7 +74,7 @@ const router = createRouter({
     {
       path: "/forgot-password",
       name: "Forgot Password",
-      component: () => import("@/pages/ForgotPasswordPage.vue"),
+      component: ForgotPasswordPage,
       meta: {
         showInNav: false,
         guestOnly: true,
@@ -120,7 +126,7 @@ const router = createRouter({
     {
       path: "/:catchAll(.*)",
       name: "404 Not Found",
-      component: () => import("@/pages/NotFoundPage.vue"),
+      component: NotFoundPage,
     },
   ],
 });
