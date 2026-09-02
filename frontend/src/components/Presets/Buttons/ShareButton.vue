@@ -1,22 +1,20 @@
 <template>
-  <v-dialog v-model="show" width="400">
-    <template #activator="{ props: dialogProps }">
-      <v-tooltip text="Share" location="bottom">
-        <template #activator="{ props: tooltipProps }">
-          <v-btn
-            v-bind="{ ...tooltipProps, ...dialogProps }"
-            elevation="0"
-            icon
-            color="transparent"
-            aria-label="Share"
-            @click.stop="shareOrShow"
-          >
-            <v-icon :icon="ShareIcon" />
-          </v-btn>
-        </template>
-      </v-tooltip>
+  <v-tooltip text="Share" location="bottom">
+    <template #activator="{ props: tooltipProps }">
+      <v-btn
+        v-bind="tooltipProps"
+        elevation="0"
+        icon
+        color="transparent"
+        aria-label="Share"
+        @click.stop="shareOrShow"
+      >
+        <v-icon :icon="ShareIcon" />
+      </v-btn>
     </template>
+  </v-tooltip>
 
+  <v-dialog v-model="show" width="400">
     <v-card color="surface-container-high" variant="flat">
       <v-card-title class="pt-6 px-6">Share</v-card-title>
       <v-card-text>
