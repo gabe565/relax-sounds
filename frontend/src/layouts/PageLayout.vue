@@ -1,8 +1,8 @@
 <template>
-  <v-app-bar theme="dark" color="surface" flat :title="route.name">
+  <v-app-bar color="surface" flat :title="route.name">
     <template #prepend>
       <v-btn v-if="isMobile" to="/" icon size="small">
-        <v-icon :icon="AppIcon" size="28" color="secondary" aria-label="Relax Sounds" />
+        <v-icon :icon="AppIcon" size="28" color="primary" aria-label="Relax Sounds" />
       </v-btn>
     </template>
 
@@ -50,28 +50,39 @@
         </v-btn>
       </template>
 
-      <v-list width="250">
-        <v-list-item
-          :title="pb.user.name || pb.user.username"
-          :subtitle="pb.user.email"
-          :prepend-avatar="pb.avatarURL"
-          class="pb-2"
-        >
-          <template v-if="!pb.avatarURL" #prepend>
-            <v-icon :icon="PersonIcon" />
-          </template>
-        </v-list-item>
-        <v-divider class="mt-2" />
-        <profile-dialog :user="pb.user" />
-        <v-list-item
-          to="/logout"
-          title="Logout"
-          :prepend-icon="LogoutIcon"
-          class="text-error"
-          @click.prevent="pb.logout"
-        />
-      </v-list>
+      <template #default="{ isActive }">
+        <v-list width="250">
+          <v-list-item
+            :title="pb.user.name || pb.user.username"
+            :subtitle="pb.user.email"
+            :prepend-avatar="pb.avatarURL"
+            class="pb-2"
+          >
+            <template v-if="!pb.avatarURL" #prepend>
+              <v-icon :icon="PersonIcon" />
+            </template>
+          </v-list-item>
+          <v-divider class="mt-2" />
+          <v-list-item
+            title="Edit Profile"
+            :prepend-icon="EditIcon"
+            @click="
+              isActive.value = false;
+              profileOpen = true;
+            "
+          />
+          <v-list-item
+            to="/logout"
+            title="Logout"
+            :prepend-icon="LogoutIcon"
+            class="text-error"
+            @click.prevent="pb.logout"
+          />
+        </v-list>
+      </template>
     </v-menu>
+
+    <profile-dialog v-if="pb.isAuthenticated" v-model="profileOpen" :user="pb.user" />
   </v-app-bar>
 
   <v-container class="pt-6">
@@ -80,9 +91,10 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
+import EditIcon from "~icons/material-symbols/edit-rounded";
 import LoginIcon from "~icons/material-symbols/login-rounded";
 import LogoutIcon from "~icons/material-symbols/logout-rounded";
 import MenuIcon from "~icons/material-symbols/more-horiz";
@@ -99,6 +111,7 @@ const { smAndDown: isMobile } = useDisplay();
 const route = useRoute();
 const pb = usePocketBase();
 const presets = usePresets();
+const profileOpen = ref(false);
 
 const isLoading = computed(() => presets.isSyncing || !pb.user?.id);
 </script>

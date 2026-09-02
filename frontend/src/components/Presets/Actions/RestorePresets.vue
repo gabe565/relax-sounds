@@ -15,7 +15,6 @@
             accept="application/json"
             :error="error"
             label="Preset File"
-            :prepend-icon="AttachmentIcon"
           />
         </v-card-text>
         <template #actions>
@@ -38,7 +37,6 @@
 import { nanoid } from "nanoid";
 import { ref, watch } from "vue";
 import { toast } from "vue-sonner";
-import AttachmentIcon from "~icons/material-symbols/attach-file-rounded";
 import RestoreIcon from "~icons/material-symbols/backup";
 import CheckIcon from "~icons/material-symbols/check-rounded";
 import CloseIcon from "~icons/material-symbols/close-rounded";

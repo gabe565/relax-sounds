@@ -3,10 +3,8 @@
     v-if="!isMobile"
     location="bottom"
     height="64"
-    class="px-3 border-t! border-on-surface/15"
-    elevation="10"
-    theme="dark"
-    color="surface"
+    class="px-3 border-t! border-outline-variant"
+    color="surface-container"
     order="-1"
     flat
   >
@@ -18,7 +16,7 @@
     </template>
 
     <div
-      class="absolute left-1/2 -translate-x-1/2 whitespace-nowrap flex items-center justify-center"
+      class="absolute left-1/2 flex -translate-x-1/2 items-center justify-center gap-2 whitespace-nowrap"
     >
       <save-preset button />
       <play-pause-all />
@@ -35,14 +33,14 @@
   <div v-else class="fixed bottom-14 left-0 z-1000 pointer-events-none px-2 pb-2 w-full">
     <v-toolbar
       height="56"
-      class="px-2 rounded-lg border border-on-surface/20 bg-surface/40 backdrop-blur-[10px] backdrop-saturate-200 transition-colors duration-300 pointer-events-auto"
+      class="px-2 rounded-lg border border-outline-variant bg-surface-container/70 backdrop-blur-[10px] backdrop-saturate-200 transition-colors duration-300 pointer-events-auto"
       elevation="6"
     >
       <div
-        class="absolute left-1/2 -translate-x-1/2 whitespace-nowrap flex items-center justify-center size-full"
+        class="absolute left-1/2 flex size-full -translate-x-1/2 items-center justify-center gap-2 whitespace-nowrap"
       >
         <save-preset button />
-        <play-pause-all />
+        <play-pause-all size="default" />
         <stop-all />
       </div>
 

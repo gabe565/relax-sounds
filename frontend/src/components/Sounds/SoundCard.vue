@@ -7,19 +7,18 @@
   >
     <template #activator="{ props: dialogProps }">
       <v-btn
-        :active="sound.isPlaying"
+        :active="!sound.isStopped"
         :loading="sound.isLoading"
         size="x-large"
-        class="group card-btn bg-card-background w-full justify-start border transition border-transparent v-active:bg-accent v-active:light:text-white v-active:border-secondary/35 v-active:shadow-[0_0_12px] v-active:shadow-secondary/25"
+        class="card-btn card-group-item w-full justify-start transition-colors"
+        :color="stateColor"
         :aria-label="sound.isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`"
         variant="flat"
         @click="playStop"
         @contextmenu.prevent="dialogProps.onClick"
       >
         <template #prepend>
-          <v-icon size="x-large" class="group-v-active:text-white">
-            <icon :icon="sound.icon" />
-          </v-icon>
+          <sound-icon :icon="sound.icon" :size="36" />
         </template>
         <span class="truncate">{{ sound.name }}</span>
       </v-btn>
@@ -32,9 +31,10 @@
 </template>
 
 <script setup>
-import { Icon } from "@iconify/vue";
+import { computed } from "vue";
 import { toast } from "vue-sonner";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
+import SoundIcon from "@/components/Sounds/SoundIcon.vue";
 import { usePlayer } from "@/plugins/store/player";
 
 const props = defineProps({
@@ -45,6 +45,12 @@ const props = defineProps({
 });
 
 const player = usePlayer();
+
+const stateColor = computed(() => {
+  if (props.sound.isPlaying) return "primary-container";
+  if (props.sound.isPaused) return "secondary-container";
+  return "surface-container-high";
+});
 
 const playStop = async () => {
   try {

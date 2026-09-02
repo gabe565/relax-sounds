@@ -10,20 +10,15 @@
       <v-progress-circular color="primary" indeterminate size="64" />
     </v-overlay>
 
-    <v-row>
+    <div
+      class="card-group card-cols-4 mt-6 grid grid-cols-1 gap-0.5 sm:gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+    >
       <v-fade-transition group leave-absolute hide-on-leave>
-        <v-col
-          v-for="sound of filters.filteredSounds"
-          :key="sound.id"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-        >
+        <div v-for="sound of filters.filteredSounds" :key="sound.id">
           <sound-card :sound="sound" />
-        </v-col>
+        </div>
       </v-fade-transition>
-    </v-row>
+    </div>
   </page-layout>
 </template>
 

@@ -10,15 +10,28 @@
       <v-progress-circular color="primary" indeterminate size="64" />
     </v-overlay>
 
-    <v-row>
+    <div
+      v-if="presets.active.length !== 0"
+      class="card-group card-cols-3 grid grid-cols-1 gap-0.5 sm:gap-2 sm:grid-cols-2 lg:grid-cols-3"
+    >
       <v-fade-transition group leave-absolute>
-        <template v-if="presets.active.length !== 0">
-          <v-col v-for="preset of presets.active" :key="preset.id" cols="12" md="6" lg="4" xl="3">
-            <preset-card :preset="preset" />
-          </v-col>
-        </template>
-        <v-col v-else>
-          <v-alert prominent type="info" :icon="InfoIcon">No presets saved yet</v-alert>
+        <div v-for="preset of presets.active" :key="preset.id">
+          <preset-card :preset="preset" />
+        </div>
+      </v-fade-transition>
+    </div>
+
+    <v-row v-else>
+      <v-fade-transition group leave-absolute>
+        <v-col>
+          <div class="text-on-surface-variant flex flex-col items-center gap-3 py-16 text-center">
+            <v-icon :icon="EmptyIcon" size="48" class="opacity-60" />
+            <span>No presets saved yet</span>
+            <span class="text-sm opacity-70">
+              Start some sounds, then save the mix from the player bar.
+            </span>
+            <v-btn to="/sounds" variant="tonal" rounded="pill">Browse sounds</v-btn>
+          </div>
         </v-col>
       </v-fade-transition>
     </v-row>
@@ -31,7 +44,7 @@ import { onActivated, ref } from "vue";
 import { toast } from "vue-sonner";
 import BackupIcon from "~icons/material-symbols/cloud-download-rounded";
 import RemoveAllIcon from "~icons/material-symbols/delete-rounded";
-import InfoIcon from "~icons/material-symbols/info-rounded";
+import EmptyIcon from "~icons/material-symbols/playlist-play-rounded";
 import RestorePresets from "@/components/Presets/Actions/RestorePresets.vue";
 import PresetCard from "@/components/Presets/PresetCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";

@@ -4,22 +4,30 @@
       <v-btn
         v-bind="props"
         icon
-        size="large"
+        :size="size"
         :disabled="player.isStopped"
         :aria-label="player.isPlaying ? 'Pause All' : 'Play All'"
-        variant="text"
+        variant="flat"
+        color="tertiary"
         @click="player.playPauseAll"
       >
-        <v-icon :icon="player.isPlaying ? PauseIcon : PlayIcon" size="36" />
+        <v-icon :icon="player.isPlaying ? PauseIcon : PlayIcon" size="28" />
       </v-btn>
     </template>
   </v-tooltip>
 </template>
 
 <script setup>
-import PauseIcon from "~icons/material-symbols/pause-circle-sharp";
-import PlayIcon from "~icons/material-symbols/play-circle-sharp";
+import PauseIcon from "~icons/material-symbols/pause-rounded";
+import PlayIcon from "~icons/material-symbols/play-arrow-rounded";
 import { usePlayer } from "@/plugins/store/player";
+
+defineProps({
+  size: {
+    type: String,
+    default: "large",
+  },
+});
 
 const player = usePlayer();
 </script>

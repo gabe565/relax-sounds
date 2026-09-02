@@ -33,17 +33,52 @@
 }
 
 @theme inline {
+  --color-primary: rgb(var(--v-theme-primary));
+  --color-on-primary: rgb(var(--v-theme-on-primary));
+  --color-primary-container: rgb(var(--v-theme-primary-container));
+  --color-on-primary-container: rgb(var(--v-theme-on-primary-container));
+  --color-secondary: rgb(var(--v-theme-secondary));
+  --color-on-secondary: rgb(var(--v-theme-on-secondary));
+  --color-secondary-container: rgb(var(--v-theme-secondary-container));
+  --color-on-secondary-container: rgb(var(--v-theme-on-secondary-container));
+  --color-tertiary: rgb(var(--v-theme-tertiary));
+  --color-on-tertiary: rgb(var(--v-theme-on-tertiary));
+  --color-tertiary-container: rgb(var(--v-theme-tertiary-container));
+  --color-on-tertiary-container: rgb(var(--v-theme-on-tertiary-container));
+  --color-error: rgb(var(--v-theme-error));
+  --color-on-error: rgb(var(--v-theme-on-error));
+  --color-error-container: rgb(var(--v-theme-error-container));
+  --color-on-error-container: rgb(var(--v-theme-on-error-container));
   --color-background: rgb(var(--v-theme-background));
+  --color-on-background: rgb(var(--v-theme-on-background));
   --color-surface: rgb(var(--v-theme-surface));
   --color-on-surface: rgb(var(--v-theme-on-surface));
-  --color-card-background: rgb(var(--v-theme-card-background));
-  --color-primary: rgb(var(--v-theme-primary));
-  --color-secondary: rgb(var(--v-theme-secondary));
-  --color-accent: rgb(var(--v-theme-accent));
+  --color-surface-variant: rgb(var(--v-theme-surface-variant));
+  --color-on-surface-variant: rgb(var(--v-theme-on-surface-variant));
+  --color-surface-tint: rgb(var(--v-theme-surface-tint));
+  --color-surface-dim: rgb(var(--v-theme-surface-dim));
+  --color-surface-bright: rgb(var(--v-theme-surface-bright));
+  --color-surface-container-lowest: rgb(var(--v-theme-surface-container-lowest));
+  --color-surface-container-low: rgb(var(--v-theme-surface-container-low));
+  --color-surface-container: rgb(var(--v-theme-surface-container));
+  --color-surface-container-high: rgb(var(--v-theme-surface-container-high));
+  --color-surface-container-highest: rgb(var(--v-theme-surface-container-highest));
+  --color-outline: rgb(var(--v-theme-outline));
+  --color-outline-variant: rgb(var(--v-theme-outline-variant));
+  --color-inverse-surface: rgb(var(--v-theme-inverse-surface));
+  --color-inverse-on-surface: rgb(var(--v-theme-inverse-on-surface));
+  --color-inverse-primary: rgb(var(--v-theme-inverse-primary));
+  --color-shadow: rgb(var(--v-theme-shadow));
+  --color-scrim: rgb(var(--v-theme-scrim));
   --color-success: rgb(var(--v-theme-success));
-  --color-error: rgb(var(--v-theme-error));
+  --color-on-success: rgb(var(--v-theme-on-success));
   --color-info: rgb(var(--v-theme-info));
+  --color-on-info: rgb(var(--v-theme-on-info));
   --color-warning: rgb(var(--v-theme-warning));
+  --color-on-warning: rgb(var(--v-theme-on-warning));
+  --color-surface-light: rgb(var(--v-theme-surface-light));
+  --color-primary-darken-1: rgb(var(--v-theme-primary-darken-1));
+  --color-secondary-darken-1: rgb(var(--v-theme-secondary-darken-1));
 }
 
 /* safelist to ensure variables are always available */
@@ -52,7 +87,7 @@
 @source inline('font-mono');
 
 /* safelist classes used dynamically via color="..." prop */
-@source inline('{bg,text}-{background,surface,on-surface,card-background,primary,secondary,accent,success,error,info,warning}');
+@source inline('{bg,text,border}-{primary,on-primary,primary-container,on-primary-container,secondary,on-secondary,secondary-container,on-secondary-container,tertiary,on-tertiary,tertiary-container,on-tertiary-container,error,on-error,error-container,on-error-container,background,on-background,surface,on-surface,surface-variant,on-surface-variant,surface-tint,surface-dim,surface-bright,surface-container-lowest,surface-container-low,surface-container,surface-container-high,surface-container-highest,outline,outline-variant,inverse-surface,inverse-on-surface,inverse-primary,shadow,scrim,success,on-success,info,on-info,warning,on-warning,surface-light,primary-darken-1,secondary-darken-1}');
 
 @utility rounded-pill {
   border-radius: 9999px;
@@ -88,7 +123,96 @@
 
 @source inline('elevation-{0..5}');
 
+@layer vue-sonner-overrides {
+  [data-sonner-toaster] {
+    --normal-bg: rgb(var(--v-theme-surface-container-highest));
+    --normal-border: rgb(var(--v-theme-outline-variant));
+    --normal-text: rgb(var(--v-theme-on-surface));
+    --success-bg: rgb(var(--v-theme-success));
+    --success-border: rgb(var(--v-theme-success));
+    --success-text: rgb(var(--v-theme-on-success));
+    --info-bg: rgb(var(--v-theme-info));
+    --info-border: rgb(var(--v-theme-info));
+    --info-text: rgb(var(--v-theme-on-info));
+    --warning-bg: rgb(var(--v-theme-warning));
+    --warning-border: rgb(var(--v-theme-warning));
+    --warning-text: rgb(var(--v-theme-on-warning));
+    --error-bg: rgb(var(--v-theme-error));
+    --error-border: rgb(var(--v-theme-error));
+    --error-text: rgb(var(--v-theme-on-error));
+  }
+}
+
 @layer vuetify-overrides {
+  /* Pairs each bg-* with its on-* foreground. Must precede tailwind-utilities
+     (see public/layers.css) so an explicit text-* still wins. */
+  .bg-primary {
+    color: rgb(var(--v-theme-on-primary));
+  }
+  .bg-primary-container {
+    color: rgb(var(--v-theme-on-primary-container));
+  }
+  .bg-secondary {
+    color: rgb(var(--v-theme-on-secondary));
+  }
+  .bg-secondary-container {
+    color: rgb(var(--v-theme-on-secondary-container));
+  }
+  .bg-tertiary {
+    color: rgb(var(--v-theme-on-tertiary));
+  }
+  .bg-tertiary-container {
+    color: rgb(var(--v-theme-on-tertiary-container));
+  }
+  .bg-error {
+    color: rgb(var(--v-theme-on-error));
+  }
+  .bg-error-container {
+    color: rgb(var(--v-theme-on-error-container));
+  }
+  .bg-background {
+    color: rgb(var(--v-theme-on-background));
+  }
+  .bg-surface {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .bg-surface-variant {
+    color: rgb(var(--v-theme-on-surface-variant));
+  }
+  .bg-surface-dim {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .bg-surface-bright {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .bg-surface-container-lowest {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .bg-surface-container-low {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .bg-surface-container {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .bg-surface-container-high {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .bg-surface-container-highest {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .bg-inverse-surface {
+    color: rgb(var(--v-theme-inverse-on-surface));
+  }
+  .bg-success {
+    color: rgb(var(--v-theme-on-success));
+  }
+  .bg-info {
+    color: rgb(var(--v-theme-on-info));
+  }
+  .bg-warning {
+    color: rgb(var(--v-theme-on-warning));
+  }
+
   html {
     scrollbar-gutter: stable;
   }
@@ -103,11 +227,183 @@
     @apply transition-none;
   }
 
+  /* VDivider paints with currentColor, not --v-border-color. */
+  .v-divider {
+    border-color: rgb(var(--v-theme-outline-variant));
+  }
+
+  .v-menu > .v-overlay__content > .v-card,
+  .v-menu > .v-overlay__content > .v-sheet,
+  .v-menu > .v-overlay__content .v-list {
+    background: rgb(var(--v-theme-surface-container-highest));
+  }
+
+  .v-menu > .v-overlay__content > .v-card,
+  .v-menu > .v-overlay__content > .v-sheet,
+  .v-menu > .v-overlay__content > .v-list {
+    border: thin solid rgb(var(--v-theme-outline-variant));
+  }
+
+  .v-field--variant-solo {
+    border: thin solid rgb(var(--v-theme-outline-variant));
+  }
+
+  .v-navigation-drawer .v-list-item--active {
+    background-color: rgb(var(--v-theme-secondary-container));
+    color: rgb(var(--v-theme-on-secondary-container));
+  }
+  .v-navigation-drawer .v-list-item--active .v-list-item__overlay,
+  .v-bottom-navigation .v-btn--active .v-btn__overlay {
+    opacity: 0;
+  }
+
+  .v-bottom-navigation .v-btn--active {
+    color: rgb(var(--v-theme-on-surface));
+  }
+  .v-bottom-navigation .v-btn--active .v-icon {
+    box-sizing: content-box;
+    padding: 0.25rem 1.25rem;
+    border-radius: 9999px;
+    background-color: rgb(var(--v-theme-secondary-container));
+    color: rgb(var(--v-theme-on-secondary-container));
+  }
+
   .card-btn {
     @apply tracking-normal font-normal text-base;
   }
 
   .card-btn .v-btn__content {
     @apply truncate;
+  }
+}
+
+/* In vuetify-final because the md3 blueprint's VBtn rounded="xl" lands in
+   tailwind-utilities, which outranks vuetify-overrides. */
+@layer vuetify-final {
+  .card-group {
+    --card-corner: 0.375rem;
+    --card-corner-outer: 1.5rem;
+  }
+
+  .v-btn.card-group-item {
+    --v-btn-height: 4rem;
+  }
+
+  .card-group > * .card-group-item {
+    border-radius: var(--card-corner);
+  }
+
+  /* Ranges are exclusive on purpose: overlapping width>= queries each round
+     their own Nth card. Keep in step with the grid-cols-* classes. */
+  @media (width < 600px) {
+    .card-cols-4 > *:first-child .card-group-item {
+      border-start-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:nth-child(1) .card-group-item,
+    .card-cols-4 > *:nth-last-child(1):nth-child(-n + 1) .card-group-item {
+      border-start-end-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:nth-last-child(-n + 1):nth-child(1n + 1) .card-group-item {
+      border-end-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:last-child .card-group-item {
+      border-end-end-radius: var(--card-corner-outer);
+    }
+  }
+
+  @media (600px <= width < 840px) {
+    .card-cols-4 > *:first-child .card-group-item {
+      border-start-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:nth-child(2) .card-group-item,
+    .card-cols-4 > *:nth-last-child(1):nth-child(-n + 2) .card-group-item {
+      border-start-end-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:nth-last-child(-n + 2):nth-child(2n + 1) .card-group-item {
+      border-end-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:last-child .card-group-item {
+      border-end-end-radius: var(--card-corner-outer);
+    }
+  }
+
+  @media (840px <= width < 1145px) {
+    .card-cols-4 > *:first-child .card-group-item {
+      border-start-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:nth-child(3) .card-group-item,
+    .card-cols-4 > *:nth-last-child(1):nth-child(-n + 3) .card-group-item {
+      border-start-end-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:nth-last-child(-n + 3):nth-child(3n + 1) .card-group-item {
+      border-end-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:last-child .card-group-item {
+      border-end-end-radius: var(--card-corner-outer);
+    }
+  }
+
+  @media (width >= 1145px) {
+    .card-cols-4 > *:first-child .card-group-item {
+      border-start-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:nth-child(4) .card-group-item,
+    .card-cols-4 > *:nth-last-child(1):nth-child(-n + 4) .card-group-item {
+      border-start-end-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:nth-last-child(-n + 4):nth-child(4n + 1) .card-group-item {
+      border-end-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-4 > *:last-child .card-group-item {
+      border-end-end-radius: var(--card-corner-outer);
+    }
+  }
+
+  @media (width < 600px) {
+    .card-cols-3 > *:first-child .card-group-item {
+      border-start-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:nth-child(1) .card-group-item,
+    .card-cols-3 > *:nth-last-child(1):nth-child(-n + 1) .card-group-item {
+      border-start-end-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:nth-last-child(-n + 1):nth-child(1n + 1) .card-group-item {
+      border-end-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:last-child .card-group-item {
+      border-end-end-radius: var(--card-corner-outer);
+    }
+  }
+
+  @media (600px <= width < 1145px) {
+    .card-cols-3 > *:first-child .card-group-item {
+      border-start-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:nth-child(2) .card-group-item,
+    .card-cols-3 > *:nth-last-child(1):nth-child(-n + 2) .card-group-item {
+      border-start-end-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:nth-last-child(-n + 2):nth-child(2n + 1) .card-group-item {
+      border-end-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:last-child .card-group-item {
+      border-end-end-radius: var(--card-corner-outer);
+    }
+  }
+
+  @media (width >= 1145px) {
+    .card-cols-3 > *:first-child .card-group-item {
+      border-start-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:nth-child(3) .card-group-item,
+    .card-cols-3 > *:nth-last-child(1):nth-child(-n + 3) .card-group-item {
+      border-start-end-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:nth-last-child(-n + 3):nth-child(3n + 1) .card-group-item {
+      border-end-start-radius: var(--card-corner-outer);
+    }
+    .card-cols-3 > *:last-child .card-group-item {
+      border-end-end-radius: var(--card-corner-outer);
+    }
   }
 }

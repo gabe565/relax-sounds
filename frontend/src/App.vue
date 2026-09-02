@@ -10,8 +10,7 @@
     <v-navigation-drawer
       v-if="!isMobile"
       :rail="preferences.shrinkLeftPanel"
-      theme="dark"
-      color="surface"
+      color="surface-container-low"
       width="200"
       class="border-e-0"
     >
@@ -19,7 +18,7 @@
         <v-list v-if="!isMobile">
           <v-list-item to="/" title="Relax Sounds">
             <template #prepend>
-              <v-icon :icon="AppIcon" color="secondary" />
+              <v-icon :icon="AppIcon" color="primary" />
             </template>
           </v-list-item>
         </v-list>
@@ -52,9 +51,7 @@
 
     <v-bottom-navigation
       v-if="isMobile && showPlayerBar"
-      v-model="botnav"
-      theme="dark"
-      bg-color="surface"
+      bg-color="surface-container"
       color="primary"
       grow
       :model-value="null"

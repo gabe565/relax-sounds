@@ -1,12 +1,17 @@
 <template>
   <page-layout>
-    <v-card max-width="400" class="mx-auto mt-8" color="card-background" variant="flat">
-      <v-card-title class="text-center pt-6">Reset Password</v-card-title>
-      <v-card-text>
+    <v-card
+      max-width="400"
+      class="border-outline-variant mx-auto mt-8 border"
+      color="surface-container-high"
+      variant="flat"
+      rounded="xl"
+    >
+      <v-card-text class="pt-6">
         <v-form @submit.prevent="requestReset">
-          <v-alert v-if="alert.text" v-bind="alert" class="my-6" />
+          <v-alert v-if="alert.text" v-bind="alert" variant="tonal" class="my-6" />
 
-          <p class="mb-4 text-medium-emphasis">
+          <p class="text-on-surface-variant mb-4">
             Enter your email address and we'll send you a link to reset your password.
           </p>
 
@@ -16,6 +21,9 @@
             type="email"
             variant="outlined"
             density="comfortable"
+            rounded="lg"
+            :prepend-inner-icon="MailIcon"
+            autocomplete="email"
             class="mb-4"
             :rules="[(v) => !!v || 'Email is required']"
             required
@@ -34,7 +42,7 @@
         </v-form>
 
         <div class="text-center mt-4">
-          <v-btn variant="text" size="small" to="/login">Back to Login</v-btn>
+          <v-btn variant="text" size="small" to="/login">Back to sign in</v-btn>
         </div>
       </v-card-text>
     </v-card>
@@ -44,6 +52,7 @@
 <script setup>
 import { reactive, ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+import MailIcon from "~icons/material-symbols/mail-rounded";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
@@ -66,11 +75,11 @@ const requestReset = async () => {
   try {
     await pb.client.collection("users").requestPasswordReset(email.value);
     alert.text = "Password reset link sent. Please check your email.";
-    alert.color = "success";
+    alert.type = "success";
   } catch (error) {
     console.error(error);
     alert.text = getErrorMessage(error);
-    alert.color = "error";
+    alert.type = "error";
   } finally {
     isLoading.value = false;
   }

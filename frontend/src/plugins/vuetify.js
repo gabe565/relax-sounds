@@ -1,4 +1,5 @@
 import { createVuetify } from "vuetify";
+import { md3 } from "vuetify/blueprints";
 import "vuetify/styles";
 import AddIcon from "~icons/material-symbols/add-rounded";
 import SortDescIcon from "~icons/material-symbols/arrow-downward-rounded";
@@ -24,8 +25,10 @@ import RadioOnIcon from "~icons/material-symbols/radio-button-checked-rounded";
 import RadioOffIcon from "~icons/material-symbols/radio-button-unchecked-rounded";
 import MinusIcon from "~icons/material-symbols/remove-rounded";
 import WarningIcon from "~icons/material-symbols/warning-rounded";
+import { themes } from "@/plugins/theme";
 
 export default createVuetify({
+  blueprint: md3,
   icons: {
     aliases: {
       collapse: CollapseIcon,
@@ -71,27 +74,6 @@ export default createVuetify({
   theme: {
     defaultTheme: "dark",
     utilities: false,
-    themes: {
-      dark: {
-        dark: true,
-        colors: {
-          background: "#160E27",
-          surface: "#251842",
-          "card-background": "#332457",
-          primary: "#BB86FC",
-          secondary: "#FFB74D",
-          accent: "#7C4DFF",
-        },
-      },
-      light: {
-        colors: {
-          background: "#F5F1FA",
-          "card-background": "#FFF",
-          primary: "#7C4DFF",
-          secondary: "#FB8C00",
-          accent: "#7C4DFF",
-        },
-      },
-    },
+    themes,
   },
 });

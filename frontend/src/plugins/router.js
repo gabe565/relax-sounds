@@ -72,8 +72,8 @@ const router = createRouter({
       },
     },
     {
-      path: "/forgot-password",
-      name: "Forgot Password",
+      path: "/reset-password",
+      name: "Reset Password",
       component: ForgotPasswordPage,
       meta: {
         showInNav: false,

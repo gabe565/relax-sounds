@@ -19,7 +19,11 @@
           </v-col>
         </template>
         <v-col v-else>
-          <v-alert prominent type="info" :icon="InfoIcon">No sounds are playing</v-alert>
+          <div class="text-on-surface-variant flex flex-col items-center gap-3 py-16 text-center">
+            <v-icon :icon="EmptyIcon" size="48" class="opacity-60" />
+            <span>No sounds are playing</span>
+            <v-btn to="/sounds" variant="tonal" rounded="pill">Browse sounds</v-btn>
+          </div>
         </v-col>
       </v-fade-transition>
     </v-row>
@@ -29,7 +33,7 @@
 <script setup>
 import { ref } from "vue";
 import { toast } from "vue-sonner";
-import InfoIcon from "~icons/material-symbols/info-rounded";
+import EmptyIcon from "~icons/material-symbols/instant-mix-rounded";
 import MixerCard from "@/components/Mixer/MixerCard.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { usePlayer } from "@/plugins/store/player";

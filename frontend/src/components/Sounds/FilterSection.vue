@@ -9,7 +9,10 @@
         :loading="isLoading"
         clearable
         persistent-clear
-        rounded
+        variant="solo"
+        flat
+        bg-color="surface-container-highest"
+        rounded="pill"
         density="comfortable"
         hide-details
         hide-no-data
@@ -18,9 +21,7 @@
         item-title="name"
         item-value="name"
         :return-object="false"
-        :menu-icon="DropdownIcon"
-        :clear-icon="CloseIcon"
-        color="secondary"
+        color="primary"
         @keydown.esc="
           filters.filters.word = '';
           combobox.blur();
@@ -46,8 +47,6 @@ import { Icon } from "@iconify/vue";
 import { useAsyncState, useMagicKeys } from "@vueuse/core";
 import { useTemplateRef, watch } from "vue";
 import { toast } from "vue-sonner";
-import DropdownIcon from "~icons/material-symbols/arrow-drop-down-rounded";
-import CloseIcon from "~icons/material-symbols/close-rounded";
 import SearchIcon from "~icons/material-symbols/search-rounded";
 import { useFilters } from "@/plugins/store/filters";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";

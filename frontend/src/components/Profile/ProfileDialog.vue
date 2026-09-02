@@ -1,36 +1,38 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
-    <template #activator="{ props: dialogProps }">
-      <v-list-item
-        title="Edit Profile"
-        :prepend-icon="EditIcon"
-        v-bind="dialogProps"
-        @click="openDialog"
-      />
-    </template>
-
     <v-form @submit.prevent="saveProfile">
-      <v-card color="card-background" variant="flat">
+      <v-card
+        color="surface-container-high"
+        variant="flat"
+        rounded="xl"
+        class="border-outline-variant border"
+      >
         <v-card-title class="pt-6 px-6">Edit Profile</v-card-title>
         <v-card-text>
           <div class="flex justify-center mb-6">
-            <v-avatar
-              size="96"
-              class="elevation-2 cursor-pointer text-center"
-              @click="fileInput.click()"
-            >
-              <v-img v-if="avatarPreview || pb.avatarURL" :src="avatarPreview || pb.avatarURL" />
-              <v-icon v-else :icon="PersonIcon" size="64" />
-              <v-overlay
-                activator="parent"
-                class="self-center justify-center"
-                scrim="black"
-                contained
-                open-on-hover
+            <div class="relative">
+              <v-avatar
+                size="96"
+                class="group elevation-2 cursor-pointer text-center"
+                @click="fileInput.click()"
               >
-                <v-icon :icon="EditIcon" color="white" />
-              </v-overlay>
-            </v-avatar>
+                <v-img v-if="avatarPreview || pb.avatarURL" :src="avatarPreview || pb.avatarURL" />
+                <v-icon v-else :icon="PersonIcon" size="64" />
+                <div
+                  class="bg-scrim/0 group-hover:bg-scrim/40 pointer-events-none absolute inset-0 transition-colors"
+                />
+              </v-avatar>
+              <v-btn
+                :icon="CameraIcon"
+                color="primary-container"
+                size="small"
+                variant="flat"
+                rounded="circle"
+                class="pointer-events-none absolute right-0 bottom-0"
+                tabindex="-1"
+                aria-hidden="true"
+              />
+            </div>
             <label for="avatar-file-input" class="sr-only">Avatar image</label>
             <input
               id="avatar-file-input"
@@ -47,6 +49,9 @@
             label="Name"
             variant="outlined"
             density="comfortable"
+            rounded="lg"
+            :prepend-inner-icon="PersonIcon"
+            autocomplete="name"
             class="mb-2"
           />
 
@@ -55,6 +60,9 @@
             label="Username"
             variant="outlined"
             density="comfortable"
+            rounded="lg"
+            :prepend-inner-icon="UsernameIcon"
+            autocomplete="username"
             class="mb-2"
           />
 
@@ -70,7 +78,7 @@
           </v-btn>
 
           <template v-if="pb.authMethods.oauth2?.providers?.length">
-            <div class="text-title-medium mb-2">Linked Accounts</div>
+            <div class="mb-2 text-base font-medium">Linked Accounts</div>
             <v-alert
               v-if="externalAuthsError"
               type="error"
@@ -90,7 +98,7 @@
                     <v-img :src="provider.icon" :cover="false" />
                   </v-avatar>
                 </template>
-                <v-list-item-title class="text-body-2">
+                <v-list-item-title class="text-sm">
                   {{ provider.displayName }}
                 </v-list-item-title>
                 <template #append>
@@ -98,6 +106,7 @@
                     v-if="isLinked(provider)"
                     size="small"
                     color="error"
+                    variant="text"
                     :loading="linkingProvider === provider"
                     @click="unlinkProvider(provider)"
                   >
@@ -129,11 +138,12 @@
 
 <script setup>
 import { useAsyncState } from "@vueuse/core";
-import { ref, useTemplateRef } from "vue";
+import { ref, useTemplateRef, watch } from "vue";
 import { toast } from "vue-sonner";
-import EditIcon from "~icons/material-symbols/edit-rounded";
+import UsernameIcon from "~icons/material-symbols/alternate-email-rounded";
 import LockResetIcon from "~icons/material-symbols/lock-reset-rounded";
 import PersonIcon from "~icons/material-symbols/person-rounded";
+import CameraIcon from "~icons/material-symbols/photo-camera-rounded";
 import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
 const props = defineProps({
@@ -146,7 +156,7 @@ const props = defineProps({
 const fileInput = useTemplateRef("fileInput");
 const pb = usePocketBase();
 
-const dialog = ref(false);
+const dialog = defineModel({ type: Boolean, default: false });
 const isLoading = ref(false);
 const name = ref(props.user?.name ?? "");
 const username = ref(props.user?.username ?? "");
@@ -170,6 +180,10 @@ const {
   [],
   { immediate: false },
 );
+
+watch(dialog, (open) => {
+  if (open) openDialog();
+});
 
 const openDialog = async () => {
   name.value = props.user?.name ?? "";

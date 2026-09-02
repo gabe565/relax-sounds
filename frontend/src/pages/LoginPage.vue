@@ -1,28 +1,33 @@
 <template>
   <page-layout>
-    <v-card max-width="400" class="mx-auto mt-8" color="card-background" variant="flat">
-      <v-card-title class="text-center py-6">
-        {{ route.name }}
-      </v-card-title>
-      <v-card-text>
+    <v-card
+      max-width="400"
+      class="border-outline-variant mx-auto mt-8 border"
+      color="surface-container-high"
+      variant="flat"
+      rounded="xl"
+    >
+      <v-card-text class="pt-6">
         <template v-if="pb.authMethods.loading">
           <div class="flex justify-center py-8">
             <v-progress-circular indeterminate color="primary" />
           </div>
         </template>
         <template v-else>
-          <!-- Password Form -->
           <v-form
             v-if="pb.authMethods.password?.enabled"
             @submit.prevent="props.register ? registerWithPassword() : loginWithPassword()"
           >
-            <v-alert v-if="alert.text" v-bind="alert" class="mb-6" />
+            <v-alert v-if="alert.text" v-bind="alert" variant="tonal" class="mb-6" />
             <v-text-field
               v-model="email"
               label="Email"
               type="email"
               variant="outlined"
               density="comfortable"
+              rounded="lg"
+              :prepend-inner-icon="MailIcon"
+              autocomplete="email"
               class="mb-2"
               :rules="[(v) => !!v || 'Email is required']"
               required
@@ -30,20 +35,28 @@
             <v-text-field
               v-model="password"
               label="Password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               variant="outlined"
               density="comfortable"
+              rounded="lg"
+              :prepend-inner-icon="LockIcon"
+              :append-inner-icon="showPassword ? VisibilityOffIcon : VisibilityIcon"
+              :autocomplete="props.register ? 'new-password' : 'current-password'"
               class="mb-2"
               :rules="[(v) => !!v || 'Password is required']"
               required
+              @click:append-inner="showPassword = !showPassword"
             />
             <v-text-field
               v-if="props.register"
               v-model="passwordConfirm"
               label="Confirm Password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               variant="outlined"
               density="comfortable"
+              rounded="lg"
+              :prepend-inner-icon="LockIcon"
+              autocomplete="new-password"
               class="mb-4"
               :rules="[
                 (v) => !!v || 'Password confirmation is required',
@@ -52,13 +65,8 @@
               required
             />
             <div v-else class="text-right mb-4">
-              <v-btn
-                variant="text"
-                size="x-small"
-                to="/forgot-password"
-                class="text-caption text-none pa-0"
-              >
-                Forgot Password?
+              <v-btn variant="text" size="small" to="/reset-password" class="text-none">
+                Reset password
               </v-btn>
             </div>
             <v-btn
@@ -75,7 +83,7 @@
 
           <div v-if="pb.authMethods.password?.enabled" class="text-center mt-4">
             <v-btn variant="text" size="small" :to="props.register ? '/login' : '/register'">
-              {{ props.register ? "Already have an account?" : "Don't have an account?" }}
+              {{ props.register ? "Sign in" : "Create account" }}
             </v-btn>
           </div>
 
@@ -91,17 +99,15 @@
             </v-btn>
           </div>
 
-          <!-- Divider -->
           <div
             v-if="pb.authMethods.password?.enabled && pb.authMethods.oauth2?.providers?.length"
             class="flex items-center my-6"
           >
             <v-divider />
-            <span class="mx-4 text-caption text-medium-emphasis">OR</span>
+            <span class="text-on-surface-variant mx-4 text-xs">OR</span>
             <v-divider />
           </div>
 
-          <!-- OAuth2 Providers -->
           <template v-if="pb.authMethods.oauth2?.providers?.length">
             <v-btn
               v-for="provider in pb.authMethods.oauth2.providers"
@@ -131,6 +137,10 @@
 import { onMounted, reactive, ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { toast } from "vue-sonner";
+import LockIcon from "~icons/material-symbols/lock-rounded";
+import MailIcon from "~icons/material-symbols/mail-rounded";
+import VisibilityOffIcon from "~icons/material-symbols/visibility-off-rounded";
+import VisibilityIcon from "~icons/material-symbols/visibility-rounded";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { SessionExpiredToast, getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
@@ -160,6 +170,7 @@ const passwordConfirm = ref("");
 const isLoading = ref(false);
 const providerLoading = ref(null);
 const alert = reactive({});
+const showPassword = ref(false);
 const showResend = ref(false);
 const isResending = ref(false);
 
@@ -172,10 +183,10 @@ const handleAuthError = (error) => {
   ) {
     showResend.value = true;
     alert.text = "Please verify your email address before logging in.";
-    alert.color = "error";
+    alert.type = "error";
   } else {
     alert.text = getErrorMessage(error);
-    alert.color = "error";
+    alert.type = "error";
   }
 };
 
@@ -185,7 +196,7 @@ const resendVerification = async () => {
   try {
     await pb.client.collection("users").requestVerification(email.value);
     alert.text = "Verification email sent.";
-    alert.color = "success";
+    alert.type = "success";
     showResend.value = false;
   } catch (error) {
     handleAuthError(error);
@@ -220,7 +231,7 @@ const registerWithPassword = async () => {
     });
     await pb.client.collection("users").requestVerification(email.value);
     alert.text = "Account created. Please check your email for verification.";
-    alert.color = "success";
+    alert.type = "success";
     await router.push("/login");
   } catch (error) {
     handleAuthError(error);
