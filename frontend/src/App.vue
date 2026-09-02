@@ -3,6 +3,7 @@
     <toaster
       position="bottom-right"
       rich-colors
+      :theme="toastTheme"
       :offset="{ bottom: 90 }"
       :mobile-offset="{ bottom: 65 }"
     />
@@ -95,6 +96,8 @@ const routes = computed(() => {
 const showPlayerBar = computed(() => {
   return route.meta?.showInNav !== false;
 });
+
+const toastTheme = computed(() => (theme.current.value.dark ? "dark" : "light"));
 
 const autoTheme = (e) => (theme.name.value = e.matches ? "dark" : "light");
 const mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
