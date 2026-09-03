@@ -36,6 +36,18 @@
           :prepend-icon="route.meta.icon"
         />
       </v-list>
+
+      <template v-if="showAccount" #append>
+        <v-divider />
+        <v-list nav>
+          <account-menu
+            v-if="pb.isAuthenticated"
+            list-item
+            :collapsible="!preferences.shrinkLeftPanel"
+          />
+          <v-list-item v-else to="/login" title="Log in" :prepend-icon="LoginIcon" />
+        </v-list>
+      </template>
     </v-navigation-drawer>
 
     <v-main>
@@ -69,8 +81,10 @@ import { computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Toaster } from "vue-sonner";
 import { useDisplay, useTheme } from "vuetify";
+import LoginIcon from "~icons/material-symbols/login-rounded";
 import AppIcon from "~icons/relax-sounds/icon";
 import PlayerBar from "@/components/NavButtons/PlayerBar.vue";
+import AccountMenu from "@/components/Profile/AccountMenu.vue";
 import { registerSW } from "@/plugins/pwa";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
 import { Theme, usePreferences } from "@/plugins/store/preferences";
@@ -89,6 +103,8 @@ const routes = computed(() => {
     return true;
   });
 });
+
+const showAccount = computed(() => pb.isAuthenticated || (pb.authEnabled && !route.meta.hideLogin));
 
 const showPlayerBar = computed(() => {
   return route.meta?.showInNav !== false;

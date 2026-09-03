@@ -42,7 +42,7 @@
         </v-form>
 
         <div class="text-center mt-4">
-          <v-btn variant="text" size="small" to="/login">Back to sign in</v-btn>
+          <v-btn variant="text" size="small" to="/login">Back to log in</v-btn>
         </div>
       </v-card-text>
     </v-card>

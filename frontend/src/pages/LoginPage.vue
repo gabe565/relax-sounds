@@ -83,7 +83,7 @@
 
           <div v-if="pb.authMethods.password?.enabled" class="text-center mt-4">
             <v-btn variant="text" size="small" :to="props.register ? '/login' : '/register'">
-              {{ props.register ? "Sign in" : "Create account" }}
+              {{ props.register ? "Log in" : "Create account" }}
             </v-btn>
           </div>
 

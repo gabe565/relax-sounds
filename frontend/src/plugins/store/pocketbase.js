@@ -64,7 +64,7 @@ export const usePocketBase = defineStore("pocketbase", () => {
       duration: Infinity,
       action: {
         label: "Log in",
-        onClick: () => router.push({ name: "Login" }),
+        onClick: () => router.push({ name: "Log in" }),
       },
     });
   };

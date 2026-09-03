@@ -52,7 +52,7 @@ const router = createRouter({
     },
     {
       path: "/login",
-      name: "Login",
+      name: "Log in",
       component: LoginPage,
       meta: {
         showInNav: false,
@@ -83,7 +83,7 @@ const router = createRouter({
     },
     {
       path: "/logout",
-      name: "Logout",
+      name: "Log out",
       redirect: () => {
         usePocketBase().logout();
         return { name: "Sounds" };
