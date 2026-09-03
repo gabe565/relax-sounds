@@ -48,7 +48,7 @@ const presets = usePresets();
 const player = usePlayer();
 const loading = ref(false);
 
-const isActive = computed(() => player.currentName === props.preset.name);
+const isActive = computed(() => !player.isStopped && player.currentName === props.preset.name);
 
 const soundCount = computed(() => {
   const count = props.preset.sounds?.length ?? 0;

@@ -244,9 +244,9 @@ export const usePlayer = defineStore("player", () => {
     soundsNotStopped.value.forEach((sound) => {
       stop({ sound, fade });
     });
+    currentName.value = null;
     if (!local && castConnected.value) {
       updateCast();
-      currentName.value = null;
     }
   };
 
