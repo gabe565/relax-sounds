@@ -28,11 +28,11 @@ const soundIndex = async () => {
 };
 
 const streamId = ({ fresh = false } = {}) => {
-  if (fresh) return nanoid();
-  let uuid = sessionStorage.getItem("uuid");
+  if (fresh) return nanoid(6);
+  let uuid = sessionStorage.getItem("streamId");
   if (!uuid) {
-    uuid = nanoid();
-    sessionStorage.setItem("uuid", uuid);
+    uuid = nanoid(6);
+    sessionStorage.setItem("streamId", uuid);
   }
   return uuid;
 };

@@ -175,7 +175,7 @@ export const usePlayer = defineStore("player", () => {
   };
 
   const deleteStream = async () => {
-    const uuid = sessionStorage.getItem("uuid");
+    const uuid = sessionStorage.getItem("streamId");
     if (uuid) {
       try {
         const resp = await fetch(ApiPath(`/api/mix/${uuid}`), { method: "DELETE" });
