@@ -18,7 +18,7 @@
         <v-list v-if="!isMobile">
           <v-list-item to="/" title="Relax Sounds">
             <template #prepend>
-              <v-icon :icon="AppIcon" color="primary" />
+              <v-icon :icon="AppIcon" color="primary" class="opacity-100" />
             </template>
           </v-list-item>
         </v-list>
