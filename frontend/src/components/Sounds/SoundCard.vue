@@ -18,7 +18,7 @@
         @contextmenu.prevent="dialogProps.onClick"
       >
         <template #prepend>
-          <sound-icon :icon="sound.icon" :size="36" />
+          <sound-icon :icon="sound.icon" :size="36" :color="badgeColor" />
         </template>
         <span class="truncate">{{ sound.name }}</span>
       </v-btn>
@@ -45,6 +45,10 @@ const props = defineProps({
 });
 
 const player = usePlayer();
+
+const badgeColor = computed(() =>
+  props.sound.tagColor ? `tag-${props.sound.tagColor}` : "primary",
+);
 
 const stateColor = computed(() => {
   if (props.sound.isPlaying) return "primary-container";

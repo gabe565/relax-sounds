@@ -126,11 +126,12 @@ export const usePocketBase = defineStore("pocketbase", () => {
 
   const loadSounds = once(async () => {
     const data = await client.collection("sounds").getFullList({
-      fields: "collectionId,id,short_id,name,icon,file,expand.tags.name",
+      fields: "collectionId,id,short_id,name,icon,file,expand.tags.name,expand.tags.color",
       expand: "tags",
       sort: "name",
     });
     return data.map((sound) => {
+      sound.tagColor = sound.expand?.tags?.find((tag) => tag.color)?.color;
       sound.tags = sound.expand?.tags?.map((tag) => tag.name);
       delete sound.expand;
       return new Sound(sound);
@@ -139,7 +140,7 @@ export const usePocketBase = defineStore("pocketbase", () => {
 
   const loadTags = once(() =>
     client.collection("tags").getFullList({
-      fields: "icon,name",
+      fields: "icon,name,color",
     }),
   );
 

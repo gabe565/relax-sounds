@@ -31,9 +31,13 @@
         <template #item="{ props, item }">
           <v-list-item v-bind="props" :title="item?.name ?? item">
             <template #prepend>
-              <v-icon v-if="item?.icon">
-                <icon :icon="item.icon" />
-              </v-icon>
+              <sound-icon
+                v-if="item?.icon"
+                :icon="item.icon"
+                :size="32"
+                :color="item.color ? `tag-${item.color}` : 'primary'"
+                class="mr-3"
+              />
             </template>
           </v-list-item>
         </template>
@@ -43,11 +47,11 @@
 </template>
 
 <script setup>
-import { Icon } from "@iconify/vue";
 import { useAsyncState, useMagicKeys } from "@vueuse/core";
 import { useTemplateRef, watch } from "vue";
 import { toast } from "vue-sonner";
 import SearchIcon from "~icons/material-symbols/search-rounded";
+import SoundIcon from "@/components/Sounds/SoundIcon.vue";
 import { useFilters } from "@/plugins/store/filters";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
 

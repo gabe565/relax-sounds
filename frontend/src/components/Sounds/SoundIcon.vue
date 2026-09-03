@@ -1,12 +1,13 @@
 <template>
   <div
-    class="bg-primary rounded-circle flex shrink-0 items-center justify-center"
+    class="rounded-circle flex shrink-0 items-center justify-center"
+    :class="`bg-${color}`"
     :style="{ width: `${size}px`, height: `${size}px` }"
   >
-    <v-icon v-if="isIconifyName" :size="glyphSize" class="text-on-primary">
+    <v-icon v-if="isIconifyName" :size="glyphSize">
       <icon :icon="icon" />
     </v-icon>
-    <v-icon v-else :icon="icon" :size="glyphSize" class="text-on-primary" />
+    <v-icon v-else :icon="icon" :size="glyphSize" />
   </div>
 </template>
 
@@ -22,6 +23,10 @@ const props = defineProps({
   size: {
     type: Number,
     default: 40,
+  },
+  color: {
+    type: String,
+    default: "primary",
   },
 });
 

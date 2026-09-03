@@ -8,7 +8,7 @@
         :disabled="player.isStopped"
         :aria-label="player.isPlaying ? 'Pause All' : 'Play All'"
         variant="flat"
-        color="tertiary"
+        color="primary"
         @click="player.playPauseAll"
       >
         <v-icon :icon="player.isPlaying ? PauseIcon : PlayIcon" size="28" />

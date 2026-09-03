@@ -107,12 +107,46 @@ const vuetifySurfaceAliases = (scheme) => ({
   "secondary-darken-1": scheme.onSecondaryContainer,
 });
 
+const tagColors = {
+  light: {
+    tagPink: "#894A67",
+    onTagPink: "#FFFFFF",
+    tagOrange: "#8C4F27",
+    onTagOrange: "#FFFFFF",
+    tagGreen: "#286A49",
+    onTagGreen: "#FFFFFF",
+    tagCyan: "#00696D",
+    onTagCyan: "#FFFFFF",
+    tagSlate: "#55606A",
+    onTagSlate: "#FFFFFF",
+    tagBlue: "#475D92",
+    onTagBlue: "#FFFFFF",
+    tagGray: "#5E5E5F",
+    onTagGray: "#FFFFFF",
+  },
+  dark: {
+    tagPink: "#EDB8CD",
+    onTagPink: "#482535",
+    tagOrange: "#F3BA9B",
+    onTagOrange: "#4A2811",
+    tagGreen: "#A8D0B5",
+    onTagGreen: "#133724",
+    tagCyan: "#A0CFD1",
+    onTagCyan: "#003739",
+    tagSlate: "#BDC8D3",
+    onTagSlate: "#27323B",
+    tagBlue: "#BAC6EA",
+    onTagBlue: "#24304D",
+    tagGray: "#C7C6C6",
+    onTagGray: "#2F3131",
+  },
+};
+
 const colors = (name) =>
   Object.fromEntries(
-    Object.entries({ ...schemes[name], ...status[name] }).map(([key, value]) => [
-      kebabCase(key),
-      value,
-    ]),
+    Object.entries({ ...schemes[name], ...status[name], ...tagColors[name] }).map(
+      ([key, value]) => [kebabCase(key), value],
+    ),
   );
 
 const variables = (name) => ({

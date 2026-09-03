@@ -7,7 +7,7 @@
     :class="sound.isPlaying ? 'border-primary/50' : 'border-outline-variant'"
   >
     <div class="flex items-center gap-3 px-4 pt-4 pb-1">
-      <sound-icon :icon="sound.icon" />
+      <sound-icon :icon="sound.icon" :color="badgeColor" />
       <span class="grow truncate">{{ sound.name }}</span>
 
       <v-btn
@@ -92,6 +92,10 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const player = usePlayer();
+
+const badgeColor = computed(() =>
+  props.sound.tagColor ? `tag-${props.sound.tagColor}` : "primary",
+);
 
 const volume = computed({
   get: () => props.sound.volume,

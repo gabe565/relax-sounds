@@ -76,6 +76,20 @@
   --color-on-info: rgb(var(--v-theme-on-info));
   --color-warning: rgb(var(--v-theme-warning));
   --color-on-warning: rgb(var(--v-theme-on-warning));
+  --color-tag-pink: rgb(var(--v-theme-tag-pink));
+  --color-on-tag-pink: rgb(var(--v-theme-on-tag-pink));
+  --color-tag-orange: rgb(var(--v-theme-tag-orange));
+  --color-on-tag-orange: rgb(var(--v-theme-on-tag-orange));
+  --color-tag-green: rgb(var(--v-theme-tag-green));
+  --color-on-tag-green: rgb(var(--v-theme-on-tag-green));
+  --color-tag-cyan: rgb(var(--v-theme-tag-cyan));
+  --color-on-tag-cyan: rgb(var(--v-theme-on-tag-cyan));
+  --color-tag-slate: rgb(var(--v-theme-tag-slate));
+  --color-on-tag-slate: rgb(var(--v-theme-on-tag-slate));
+  --color-tag-blue: rgb(var(--v-theme-tag-blue));
+  --color-on-tag-blue: rgb(var(--v-theme-on-tag-blue));
+  --color-tag-gray: rgb(var(--v-theme-tag-gray));
+  --color-on-tag-gray: rgb(var(--v-theme-on-tag-gray));
   --color-surface-light: rgb(var(--v-theme-surface-light));
   --color-primary-darken-1: rgb(var(--v-theme-primary-darken-1));
   --color-secondary-darken-1: rgb(var(--v-theme-secondary-darken-1));
@@ -87,7 +101,7 @@
 @source inline('font-mono');
 
 /* safelist classes used dynamically via color="..." prop */
-@source inline('{bg,text,border}-{primary,on-primary,primary-container,on-primary-container,secondary,on-secondary,secondary-container,on-secondary-container,tertiary,on-tertiary,tertiary-container,on-tertiary-container,error,on-error,error-container,on-error-container,background,on-background,surface,on-surface,surface-variant,on-surface-variant,surface-tint,surface-dim,surface-bright,surface-container-lowest,surface-container-low,surface-container,surface-container-high,surface-container-highest,outline,outline-variant,inverse-surface,inverse-on-surface,inverse-primary,shadow,scrim,success,on-success,info,on-info,warning,on-warning,surface-light,primary-darken-1,secondary-darken-1}');
+@source inline('{bg,text,border}-{primary,on-primary,primary-container,on-primary-container,secondary,on-secondary,secondary-container,on-secondary-container,tertiary,on-tertiary,tertiary-container,on-tertiary-container,error,on-error,error-container,on-error-container,background,on-background,surface,on-surface,surface-variant,on-surface-variant,surface-tint,surface-dim,surface-bright,surface-container-lowest,surface-container-low,surface-container,surface-container-high,surface-container-highest,outline,outline-variant,inverse-surface,inverse-on-surface,inverse-primary,shadow,scrim,success,on-success,info,on-info,warning,on-warning,tag-pink,on-tag-pink,tag-orange,on-tag-orange,tag-green,on-tag-green,tag-cyan,on-tag-cyan,tag-slate,on-tag-slate,tag-blue,on-tag-blue,tag-gray,on-tag-gray,surface-light,primary-darken-1,secondary-darken-1}');
 
 @utility rounded-pill {
   border-radius: 9999px;
@@ -179,6 +193,9 @@
   .bg-surface-variant {
     color: rgb(var(--v-theme-on-surface-variant));
   }
+  .bg-surface-tint {
+    color: rgb(var(--v-theme-on-surface));
+  }
   .bg-surface-dim {
     color: rgb(var(--v-theme-on-surface));
   }
@@ -211,6 +228,30 @@
   }
   .bg-warning {
     color: rgb(var(--v-theme-on-warning));
+  }
+  .bg-tag-pink {
+    color: rgb(var(--v-theme-on-tag-pink));
+  }
+  .bg-tag-orange {
+    color: rgb(var(--v-theme-on-tag-orange));
+  }
+  .bg-tag-green {
+    color: rgb(var(--v-theme-on-tag-green));
+  }
+  .bg-tag-cyan {
+    color: rgb(var(--v-theme-on-tag-cyan));
+  }
+  .bg-tag-slate {
+    color: rgb(var(--v-theme-on-tag-slate));
+  }
+  .bg-tag-blue {
+    color: rgb(var(--v-theme-on-tag-blue));
+  }
+  .bg-tag-gray {
+    color: rgb(var(--v-theme-on-tag-gray));
+  }
+  .bg-surface-light {
+    color: rgb(var(--v-theme-on-surface));
   }
 
   html {
