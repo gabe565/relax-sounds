@@ -77,7 +77,8 @@
 </template>
 
 <script setup>
-import { computed, watch } from "vue";
+import { usePreferredDark } from "@vueuse/core";
+import { computed, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Toaster } from "vue-sonner";
 import { useDisplay, useTheme } from "vuetify";
@@ -112,34 +113,19 @@ const showPlayerBar = computed(() => {
 
 const toastTheme = computed(() => (theme.current.value.dark ? "dark" : "light"));
 
-const autoTheme = (e) => (theme.name.value = e.matches ? "dark" : "light");
-const mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
-watch(
-  () => preferences.theme,
-  (val) => {
-    mediaQuery.removeEventListener("change", autoTheme);
-    switch (val) {
-      case Theme.dark:
-        theme.name.value = "dark";
-        break;
-      case Theme.light:
-        theme.name.value = "light";
-        break;
-      default:
-        // check for browser support
-        if (
-          globalThis.matchMedia &&
-          globalThis.matchMedia("(prefers-color-scheme)").media !== "not all"
-        ) {
-          // set to preferred scheme
-          autoTheme(mediaQuery);
-          // react to changes
-          mediaQuery.addEventListener("change", autoTheme);
-        }
-    }
-  },
-  { immediate: true },
-);
+const preferredDark = usePreferredDark();
+watchEffect(() => {
+  switch (preferences.theme) {
+    case Theme.dark:
+      theme.name.value = "dark";
+      break;
+    case Theme.light:
+      theme.name.value = "light";
+      break;
+    default:
+      theme.name.value = preferredDark.value ? "dark" : "light";
+  }
+});
 
 registerSW();
 </script>

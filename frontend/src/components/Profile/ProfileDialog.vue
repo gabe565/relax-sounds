@@ -14,7 +14,7 @@
               <v-avatar
                 size="96"
                 class="group elevation-2 cursor-pointer text-center"
-                @click="fileInput.click()"
+                @click="openFileDialog()"
               >
                 <v-img v-if="avatarPreview || pb.avatarURL" :src="avatarPreview || pb.avatarURL" />
                 <v-icon v-else :icon="PersonIcon" size="64" />
@@ -33,15 +33,6 @@
                 aria-hidden="true"
               />
             </div>
-            <label for="avatar-file-input" class="sr-only">Avatar image</label>
-            <input
-              id="avatar-file-input"
-              ref="fileInput"
-              type="file"
-              accept="image/*"
-              class="hidden"
-              @change="onFileChange"
-            />
           </div>
 
           <v-text-field
@@ -137,8 +128,8 @@
 </template>
 
 <script setup>
-import { useAsyncState } from "@vueuse/core";
-import { ref, useTemplateRef, watch } from "vue";
+import { useAsyncState, useFileDialog, useObjectUrl } from "@vueuse/core";
+import { computed, ref, watch } from "vue";
 import { toast } from "vue-sonner";
 import UsernameIcon from "~icons/material-symbols/alternate-email-rounded";
 import LockResetIcon from "~icons/material-symbols/lock-reset-rounded";
@@ -153,15 +144,19 @@ const props = defineProps({
   },
 });
 
-const fileInput = useTemplateRef("fileInput");
 const pb = usePocketBase();
 
 const dialog = defineModel({ type: Boolean, default: false });
 const isLoading = ref(false);
 const name = ref(props.user?.name ?? "");
 const username = ref(props.user?.username ?? "");
-const avatarFile = ref(null);
-const avatarPreview = ref(null);
+const {
+  files: avatarFiles,
+  open: openFileDialog,
+  reset: resetFileDialog,
+} = useFileDialog({ accept: "image/*", multiple: false });
+const avatarFile = computed(() => avatarFiles.value?.[0] ?? null);
+const avatarPreview = useObjectUrl(avatarFile);
 const linkingProvider = ref(null);
 
 const isLinked = (provider) => {
@@ -188,8 +183,7 @@ watch(dialog, (open) => {
 const openDialog = async () => {
   name.value = props.user?.name ?? "";
   username.value = props.user?.username ?? "";
-  avatarFile.value = null;
-  avatarPreview.value = null;
+  resetFileDialog();
   await fetchExternalAuths();
 };
 
@@ -225,14 +219,6 @@ const unlinkProvider = async (provider) => {
     toast.error(getErrorMessage(error));
   } finally {
     linkingProvider.value = null;
-  }
-};
-
-const onFileChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    avatarFile.value = file;
-    avatarPreview.value = URL.createObjectURL(file);
   }
 };
 
