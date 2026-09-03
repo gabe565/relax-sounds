@@ -10,90 +10,121 @@ import (
 func init() {
 	m.Register(func(app core.App) error {
 		jsonData := `{
-			"id": "toxjtrsrx7pgzug",
-			"created": "2023-04-03 22:02:57.302Z",
-			"updated": "2023-04-03 22:02:57.302Z",
-			"name": "sounds",
-			"type": "base",
-			"system": false,
-			"schema": [
+			"createRule": null,
+			"deleteRule": null,
+			"fields": [
 				{
-					"system": false,
+					"autogeneratePattern": "[a-z0-9]{15}",
+					"hidden": false,
+					"id": "text3208210256",
+					"max": 15,
+					"min": 15,
+					"name": "id",
+					"pattern": "^[a-z0-9]+$",
+					"presentable": false,
+					"primaryKey": true,
+					"required": true,
+					"system": true,
+					"type": "text"
+				},
+				{
+					"autogeneratePattern": "",
+					"hidden": false,
 					"id": "f4zrmuol",
+					"max": 0,
+					"min": 0,
 					"name": "name",
-					"type": "text",
+					"pattern": "",
+					"presentable": false,
+					"primaryKey": false,
 					"required": true,
-					"unique": false,
-					"options": {
-						"min": null,
-						"max": null,
-						"pattern": ""
-					}
+					"system": false,
+					"type": "text"
 				},
 				{
-					"system": false,
+					"autogeneratePattern": "",
+					"hidden": false,
 					"id": "49laf206",
+					"max": 0,
+					"min": 0,
 					"name": "icon",
-					"type": "text",
+					"pattern": "^fa-",
+					"presentable": false,
+					"primaryKey": false,
 					"required": true,
-					"unique": false,
-					"options": {
-						"min": null,
-						"max": null,
-						"pattern": "^fa-"
-					}
+					"system": false,
+					"type": "text"
 				},
 				{
-					"system": false,
+					"cascadeDelete": false,
+					"collectionId": "38xjn6fuphfjmu3",
+					"hidden": false,
 					"id": "l0o8fgxf",
+					"maxSelect": 2147483647,
+					"minSelect": 0,
 					"name": "tags",
-					"type": "relation",
+					"presentable": false,
 					"required": false,
-					"unique": false,
-					"options": {
-						"collectionId": "38xjn6fuphfjmu3",
-						"cascadeDelete": false,
-						"minSelect": null,
-						"maxSelect": null,
-						"displayFields": []
-					}
+					"system": false,
+					"type": "relation"
 				},
 				{
-					"system": false,
+					"hidden": false,
 					"id": "otvjmy0h",
+					"maxSelect": 1,
+					"maxSize": 5242880,
+					"mimeTypes": [
+						"audio/ogg"
+					],
 					"name": "file",
-					"type": "file",
+					"presentable": false,
+					"protected": false,
 					"required": true,
-					"unique": false,
-					"options": {
-						"maxSelect": 1,
-						"maxSize": 5242880,
-						"mimeTypes": [
-							"audio/ogg"
-						],
-						"thumbs": []
-					}
+					"system": false,
+					"thumbs": [],
+					"type": "file"
 				},
 				{
-					"system": false,
+					"hidden": false,
 					"id": "f33ff9pv",
+					"max": null,
+					"min": null,
 					"name": "old_id",
-					"type": "number",
+					"onlyInt": false,
+					"presentable": false,
 					"required": false,
-					"unique": false,
-					"options": {
-						"min": null,
-						"max": null
-					}
+					"system": false,
+					"type": "number"
+				},
+				{
+					"hidden": false,
+					"id": "autodate2990389176",
+					"name": "created",
+					"onCreate": true,
+					"onUpdate": false,
+					"presentable": false,
+					"system": false,
+					"type": "autodate"
+				},
+				{
+					"hidden": false,
+					"id": "autodate3332085495",
+					"name": "updated",
+					"onCreate": true,
+					"onUpdate": true,
+					"presentable": false,
+					"system": false,
+					"type": "autodate"
 				}
 			],
+			"id": "toxjtrsrx7pgzug",
 			"indexes": [],
 			"listRule": "",
-			"viewRule": "",
-			"createRule": null,
+			"name": "sounds",
+			"system": false,
+			"type": "base",
 			"updateRule": null,
-			"deleteRule": null,
-			"options": {}
+			"viewRule": ""
 		}`
 
 		collection := &core.Collection{}

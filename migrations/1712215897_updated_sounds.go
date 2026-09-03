@@ -1,8 +1,6 @@
 package migrations
 
 import (
-	"encoding/json"
-
 	"github.com/pocketbase/pocketbase/core"
 	m "github.com/pocketbase/pocketbase/migrations"
 )
@@ -14,30 +12,26 @@ func init() {
 			return err
 		}
 
-		// update
-		edit_file := &core.FileField{}
-		if err := json.Unmarshal([]byte(`{
-			"system": false,
+		// update field
+		if err := collection.Fields.AddMarshaledJSONAt(4, []byte(`{
+			"hidden": false,
 			"id": "otvjmy0h",
+			"maxSelect": 2,
+			"maxSize": 5242880,
+			"mimeTypes": [
+				"audio/ogg",
+				"audio/mpeg"
+			],
 			"name": "file",
-			"type": "file",
-			"required": true,
 			"presentable": false,
-			"unique": false,
-			"options": {
-				"mimeTypes": [
-					"audio/ogg",
-					"audio/mpeg"
-				],
-				"thumbs": [],
-				"maxSelect": 2,
-				"maxSize": 5242880,
-				"protected": false
-			}
-		}`), edit_file); err != nil {
+			"protected": false,
+			"required": true,
+			"system": false,
+			"thumbs": [],
+			"type": "file"
+		}`)); err != nil {
 			return err
 		}
-		collection.Fields.Add(edit_file)
 
 		return app.Save(collection)
 	}, func(app core.App) error {
@@ -46,30 +40,26 @@ func init() {
 			return err
 		}
 
-		// update
-		edit_file := &core.FileField{}
-		if err := json.Unmarshal([]byte(`{
-			"system": false,
+		// update field
+		if err := collection.Fields.AddMarshaledJSONAt(4, []byte(`{
+			"hidden": false,
 			"id": "otvjmy0h",
+			"maxSelect": 1,
+			"maxSize": 5242880,
+			"mimeTypes": [
+				"audio/ogg",
+				"audio/mpeg"
+			],
 			"name": "file",
-			"type": "file",
-			"required": true,
 			"presentable": false,
-			"unique": false,
-			"options": {
-				"mimeTypes": [
-					"audio/ogg",
-					"audio/mpeg"
-				],
-				"thumbs": [],
-				"maxSelect": 1,
-				"maxSize": 5242880,
-				"protected": false
-			}
-		}`), edit_file); err != nil {
+			"protected": false,
+			"required": true,
+			"system": false,
+			"thumbs": [],
+			"type": "file"
+		}`)); err != nil {
 			return err
 		}
-		collection.Fields.Add(edit_file)
 
 		return app.Save(collection)
 	})

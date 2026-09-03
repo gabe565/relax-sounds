@@ -1,8 +1,6 @@
 package migrations
 
 import (
-	"encoding/json"
-
 	"github.com/pocketbase/pocketbase/core"
 	m "github.com/pocketbase/pocketbase/migrations"
 )
@@ -14,22 +12,23 @@ func init() {
 			return err
 		}
 
-		// update
-		edit_icon := &core.TextField{}
-		json.Unmarshal([]byte(`{
-			"system": false,
+		// update field
+		if err := collection.Fields.AddMarshaledJSONAt(2, []byte(`{
+			"autogeneratePattern": "",
+			"hidden": false,
 			"id": "e2ctp1go",
+			"max": 0,
+			"min": 0,
 			"name": "icon",
-			"type": "text",
+			"pattern": "",
+			"presentable": false,
+			"primaryKey": false,
 			"required": true,
-			"unique": false,
-			"options": {
-				"min": null,
-				"max": null,
-				"pattern": ""
-			}
-		}`), edit_icon)
-		collection.Fields.Add(edit_icon)
+			"system": false,
+			"type": "text"
+		}`)); err != nil {
+			return err
+		}
 
 		return app.Save(collection)
 	}, func(app core.App) error {
@@ -38,22 +37,23 @@ func init() {
 			return err
 		}
 
-		// update
-		edit_icon := &core.TextField{}
-		json.Unmarshal([]byte(`{
-			"system": false,
+		// update field
+		if err := collection.Fields.AddMarshaledJSONAt(2, []byte(`{
+			"autogeneratePattern": "",
+			"hidden": false,
 			"id": "e2ctp1go",
+			"max": 0,
+			"min": 0,
 			"name": "icon",
-			"type": "text",
+			"pattern": "^fa-",
+			"presentable": false,
+			"primaryKey": false,
 			"required": true,
-			"unique": false,
-			"options": {
-				"min": null,
-				"max": null,
-				"pattern": "^fa-"
-			}
-		}`), edit_icon)
-		collection.Fields.Add(edit_icon)
+			"system": false,
+			"type": "text"
+		}`)); err != nil {
+			return err
+		}
 
 		return app.Save(collection)
 	})

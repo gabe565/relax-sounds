@@ -1,8 +1,6 @@
 package migrations
 
 import (
-	"encoding/json"
-
 	"github.com/pocketbase/pocketbase/core"
 	m "github.com/pocketbase/pocketbase/migrations"
 )
@@ -14,28 +12,26 @@ func init() {
 			return err
 		}
 
-		// update
-		edit_file := &core.FileField{}
-		json.Unmarshal([]byte(`{
-			"system": false,
+		// update field
+		if err := collection.Fields.AddMarshaledJSONAt(4, []byte(`{
+			"hidden": false,
 			"id": "otvjmy0h",
+			"maxSelect": 1,
+			"maxSize": 5242880,
+			"mimeTypes": [
+				"audio/ogg",
+				"audio/mpeg"
+			],
 			"name": "file",
-			"type": "file",
-			"required": true,
 			"presentable": false,
-			"unique": false,
-			"options": {
-				"maxSelect": 1,
-				"maxSize": 5242880,
-				"mimeTypes": [
-					"audio/ogg",
-					"audio/mpeg"
-				],
-				"thumbs": [],
-				"protected": false
-			}
-		}`), edit_file)
-		collection.Fields.Add(edit_file)
+			"protected": false,
+			"required": true,
+			"system": false,
+			"thumbs": [],
+			"type": "file"
+		}`)); err != nil {
+			return err
+		}
 
 		return app.Save(collection)
 	}, func(app core.App) error {
@@ -44,27 +40,25 @@ func init() {
 			return err
 		}
 
-		// update
-		edit_file := &core.FileField{}
-		json.Unmarshal([]byte(`{
-			"system": false,
+		// update field
+		if err := collection.Fields.AddMarshaledJSONAt(4, []byte(`{
+			"hidden": false,
 			"id": "otvjmy0h",
+			"maxSelect": 1,
+			"maxSize": 5242880,
+			"mimeTypes": [
+				"audio/ogg"
+			],
 			"name": "file",
-			"type": "file",
-			"required": true,
 			"presentable": false,
-			"unique": false,
-			"options": {
-				"maxSelect": 1,
-				"maxSize": 5242880,
-				"mimeTypes": [
-					"audio/ogg"
-				],
-				"thumbs": [],
-				"protected": false
-			}
-		}`), edit_file)
-		collection.Fields.Add(edit_file)
+			"protected": false,
+			"required": true,
+			"system": false,
+			"thumbs": [],
+			"type": "file"
+		}`)); err != nil {
+			return err
+		}
 
 		return app.Save(collection)
 	})

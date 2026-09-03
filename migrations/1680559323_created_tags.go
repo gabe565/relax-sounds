@@ -10,47 +10,80 @@ import (
 func init() {
 	m.Register(func(app core.App) error {
 		jsonData := `{
-			"id": "38xjn6fuphfjmu3",
-			"created": "2023-04-03 22:02:03.532Z",
-			"updated": "2023-04-03 22:02:03.532Z",
-			"name": "tags",
-			"type": "base",
-			"system": false,
-			"schema": [
+			"createRule": null,
+			"deleteRule": null,
+			"fields": [
 				{
-					"system": false,
-					"id": "hi8im0gn",
-					"name": "name",
-					"type": "text",
+					"autogeneratePattern": "[a-z0-9]{15}",
+					"hidden": false,
+					"id": "text3208210256",
+					"max": 15,
+					"min": 15,
+					"name": "id",
+					"pattern": "^[a-z0-9]+$",
+					"presentable": false,
+					"primaryKey": true,
 					"required": true,
-					"unique": false,
-					"options": {
-						"min": null,
-						"max": null,
-						"pattern": ""
-					}
+					"system": true,
+					"type": "text"
 				},
 				{
-					"system": false,
-					"id": "e2ctp1go",
-					"name": "icon",
-					"type": "text",
+					"autogeneratePattern": "",
+					"hidden": false,
+					"id": "hi8im0gn",
+					"max": 0,
+					"min": 0,
+					"name": "name",
+					"pattern": "",
+					"presentable": false,
+					"primaryKey": false,
 					"required": true,
-					"unique": false,
-					"options": {
-						"min": null,
-						"max": null,
-						"pattern": "^fa-"
-					}
+					"system": false,
+					"type": "text"
+				},
+				{
+					"autogeneratePattern": "",
+					"hidden": false,
+					"id": "e2ctp1go",
+					"max": 0,
+					"min": 0,
+					"name": "icon",
+					"pattern": "^fa-",
+					"presentable": false,
+					"primaryKey": false,
+					"required": true,
+					"system": false,
+					"type": "text"
+				},
+				{
+					"hidden": false,
+					"id": "autodate2990389176",
+					"name": "created",
+					"onCreate": true,
+					"onUpdate": false,
+					"presentable": false,
+					"system": false,
+					"type": "autodate"
+				},
+				{
+					"hidden": false,
+					"id": "autodate3332085495",
+					"name": "updated",
+					"onCreate": true,
+					"onUpdate": true,
+					"presentable": false,
+					"system": false,
+					"type": "autodate"
 				}
 			],
+			"id": "38xjn6fuphfjmu3",
 			"indexes": [],
 			"listRule": "",
-			"viewRule": "",
-			"createRule": null,
+			"name": "tags",
+			"system": false,
+			"type": "base",
 			"updateRule": null,
-			"deleteRule": null,
-			"options": {}
+			"viewRule": ""
 		}`
 
 		collection := &core.Collection{}
