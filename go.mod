@@ -11,7 +11,7 @@ require (
 	github.com/lmittmann/tint v1.2.0
 	github.com/mattn/go-isatty v0.0.24
 	github.com/pocketbase/dbx v1.12.0
-	github.com/pocketbase/pocketbase v0.40.1
+	github.com/pocketbase/pocketbase v0.40.2
 	github.com/prometheus/client_golang v1.24.1
 	github.com/samber/slog-multi v1.8.0
 	github.com/spf13/cobra v1.10.2
