@@ -34,8 +34,11 @@ const bufferAhead = 30 * time.Second
 type produceState struct {
 	scanPos   int
 	segFrames int
-	encoded   time.Duration
-	start     time.Time
+	// totalFrames counts frames emitted in prior segments, giving each new
+	// segment the presentation time of its first sample.
+	totalFrames uint64
+	encoded     time.Duration
+	start       time.Time
 }
 
 // Produce runs a single continuous LAME encoder and slices its byte stream at
@@ -107,8 +110,9 @@ func (e *Entry) drainFrames(raw *bytes.Buffer, s *produceState) bool {
 			continue
 		}
 
-		dur := e.emitSegment(raw.Next(s.scanPos), s.segFrames)
+		dur := e.emitSegment(raw.Next(s.scanPos), s.segFrames, s.totalFrames)
 		s.encoded += dur
+		s.totalFrames += uint64(s.segFrames)
 		s.scanPos = 0
 		s.segFrames = 0
 
@@ -118,13 +122,19 @@ func (e *Entry) drainFrames(raw *bytes.Buffer, s *produceState) bool {
 	}
 }
 
-// emitSegment clones the given byte range as a finalized segment and pushes
-// it into the ring buffer.
-func (e *Entry) emitSegment(b []byte, segFrames int) time.Duration {
+// emitSegment prefixes the given byte range with an ID3 timestamp tag and
+// pushes it into the ring buffer as a finalized segment.
+func (e *Entry) emitSegment(b []byte, segFrames int, startFrame uint64) time.Duration {
 	dur := time.Duration(segFrames) * mp3SamplesPerFrame * time.Second / segmentSampleRate
+
+	tag := id3TimestampTag(timestampFor(startFrame * mp3SamplesPerFrame))
+	segment := make([]byte, 0, len(tag)+len(b))
+	segment = append(segment, tag...)
+	segment = append(segment, b...)
+
 	e.PushSegment(&Segment{
 		Duration: dur,
-		Bytes:    bytes.Clone(b),
+		Bytes:    segment,
 		Created:  time.Now(),
 	})
 	return dur
