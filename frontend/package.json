@@ -46,7 +46,7 @@
     "@tailwindcss/vite": "4.3.3",
     "@trivago/prettier-plugin-sort-imports": "6.0.2",
     "@vue/eslint-config-prettier": "10.2.0",
-    "eslint": "10.9.1",
+    "eslint": "10.10.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.6",
     "eslint-plugin-vue": "10.10.0",
