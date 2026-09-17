@@ -25,8 +25,8 @@ importers:
         specifier: 1.0.11
         version: 1.0.11
       '@vitejs/plugin-vue':
-        specifier: 6.0.8
-        version: 6.0.8(vite@8.2.2(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(terser@5.51.2))(vue@3.5.42)
+        specifier: 6.0.9
+        version: 6.0.9(vite@8.2.2(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(terser@5.51.2))(vue@3.5.42)
       '@vue/compiler-sfc':
         specifier: 3.5.42
         version: 3.5.42
@@ -1281,8 +1281,8 @@ packages:
   '@types/web-bluetooth@0.0.21':
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
 
-  '@vitejs/plugin-vue@6.0.8':
-    resolution: {integrity: sha512-0ZjgOg7oO6farnNGup7yvoM/YXZV84OZxHAwtflItNa/6zzQyVb5LNxyea3FEKEX2XlagIKzrlH7wwxkKgtiew==}
+  '@vitejs/plugin-vue@6.0.9':
+    resolution: {integrity: sha512-rD/MORlhaZMlXWW0rEn4FB4wMinWC0z/D7Ye160S5+Rs1mC8ZDAdcDp4SjKfUhG5t8q1ktcPVw4xuTkPRlzrSA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
@@ -4294,7 +4294,7 @@ snapshots:
 
   '@types/web-bluetooth@0.0.21': {}
 
-  '@vitejs/plugin-vue@6.0.8(vite@8.2.2(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(terser@5.51.2))(vue@3.5.42)':
+  '@vitejs/plugin-vue@6.0.9(vite@8.2.2(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(terser@5.51.2))(vue@3.5.42)':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       vite: 8.2.2(jiti@2.7.0)(sass-embedded@1.103.1)(sass@1.103.1)(terser@5.51.2)
