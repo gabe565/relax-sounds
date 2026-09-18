@@ -9,7 +9,7 @@ concurrency:
 jobs:
   backend-lint:
     name: Backend Lint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -28,7 +28,7 @@ jobs:
 
   backend-test:
     name: Backend Test
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -46,7 +46,7 @@ jobs:
 
   frontend-lint:
     name: Frontend Lint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -68,7 +68,7 @@ jobs:
 
   build:
     name: Build Image
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       packages: write
@@ -112,7 +112,7 @@ jobs:
 
   release:
     name: Release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [backend-lint, backend-test, frontend-lint, build]
     if: startsWith(github.ref, 'refs/tags/v')
     permissions:
