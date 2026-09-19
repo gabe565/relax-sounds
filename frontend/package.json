@@ -19,7 +19,7 @@
     "@types/chromecast-caf-sender": "1.0.11",
     "@vitejs/plugin-vue": "6.0.8",
     "@vue/compiler-sfc": "3.5.42",
-    "@vueuse/core": "14.4.0",
+    "@vueuse/core": "15.0.0",
     "file-saver": "2.0.5",
     "fuse.js": "7.5.0",
     "howler": "2.2.4",
