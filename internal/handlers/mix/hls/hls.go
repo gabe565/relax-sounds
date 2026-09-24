@@ -173,14 +173,19 @@ func (h *HLS) Stop() func(*core.RequestEvent) error {
 	}
 }
 
+// startOffset is how far behind the live edge players are asked to begin,
+// which sets the size of their buffer.
+const startOffset = 60 * time.Second
+
 // renderPlaylist builds a live HLS playlist for the given entry.
 func renderPlaylist(entry *Entry, presetStr string) string {
 	var b strings.Builder
-	b.Grow(84 + ManifestWindow*(30+len(presetStr)))
+	b.Grow(128 + ManifestWindow*(30+len(presetStr)))
 	b.WriteString("#EXTM3U\n")
 	b.WriteString("#EXT-X-VERSION:3\n")
 	targetSecs := int(SegmentDuration().Round(time.Second).Seconds())
 	fmt.Fprintf(&b, "#EXT-X-TARGETDURATION:%d\n", targetSecs)
+	fmt.Fprintf(&b, "#EXT-X-START:TIME-OFFSET=-%d,PRECISE=NO\n", int(startOffset.Seconds()))
 
 	for i, s := range entry.buf.Last(ManifestWindow) {
 		if i == 0 {

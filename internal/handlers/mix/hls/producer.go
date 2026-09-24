@@ -26,7 +26,7 @@ func SegmentDuration() time.Duration {
 // entry bursts until it reaches this lead, then each segment waits until
 // bufferAhead before its seqStart. Because the schedule is absolute, an entry
 // recreated for the same UUID resumes at the sequence its predecessor reached.
-const bufferAhead = 30 * time.Second
+const bufferAhead = 90 * time.Second
 
 // produceState tracks byte/frame progress within a single Produce call.
 //

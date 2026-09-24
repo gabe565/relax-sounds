@@ -21,3 +21,11 @@ func TestInitialSeqMonotonic(t *testing.T) {
 	assert.Equal(t, initialSeq(now)+1, initialSeq(now.Add(SegmentDuration())))
 	assert.LessOrEqual(t, initialSeq(now), initialSeq(now.Add(time.Nanosecond)))
 }
+
+func TestBufferSizing(t *testing.T) {
+	window := ManifestWindow * SegmentDuration()
+	assert.GreaterOrEqual(t, bufferAhead, startOffset, "first playlist must already reach startOffset")
+	assert.GreaterOrEqual(t, window, startOffset, "playlist must list startOffset of audio")
+	assert.GreaterOrEqual(t, MaxSegments, ManifestWindow, "ring must hold every listed segment")
+	assert.Greater(t, MaxSegments*SegmentDuration(), bufferAhead, "ring must hold the startup burst")
+}
