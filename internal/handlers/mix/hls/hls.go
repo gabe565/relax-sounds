@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"gabe565.com/relax-sounds/internal/config"
@@ -27,6 +28,7 @@ func New(conf *config.Config) *HLS {
 type HLS struct {
 	conf  *config.Config
 	cache *Cache
+	mu    sync.Mutex
 }
 
 func (h *HLS) RegisterRoutes(e *core.ServeEvent) {
@@ -38,10 +40,20 @@ func (h *HLS) RegisterRoutes(e *core.ServeEvent) {
 }
 
 // getOrCreateEntry returns the cached entry for (uuid, preset), creating and
-// starting a new producer if none exists or the preset changed.
-func (h *HLS) getOrCreateEntry(e *core.RequestEvent, uuid, presetStr string) (*Entry, error) {
-	if cacheEntry := h.cache.Get(uuid); cacheEntry != nil && cacheEntry.Value().Preset == presetStr {
-		return cacheEntry.Value(), nil
+// starting a new producer if none exists. If an entry exists for a different
+// preset, it is replaced when replace is set and reported as not found
+// otherwise.
+func (h *HLS) getOrCreateEntry(e *core.RequestEvent, uuid, presetStr string, replace bool) (*Entry, error) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
+	if cacheEntry := h.cache.Get(uuid); cacheEntry != nil {
+		switch {
+		case cacheEntry.Value().Preset == presetStr:
+			return cacheEntry.Value(), nil
+		case !replace:
+			return nil, apis.NewNotFoundError("Stream not found", nil)
+		}
 	}
 
 	pre, err := preset.FromParam(presetStr)
@@ -85,7 +97,7 @@ func (h *HLS) Manifest() func(*core.RequestEvent) error {
 			return apis.NewNotFoundError("Invalid manifest path", nil)
 		}
 
-		entry, err := h.getOrCreateEntry(e, uuid, presetStr)
+		entry, err := h.getOrCreateEntry(e, uuid, presetStr, true)
 		if err != nil {
 			return err
 		}
@@ -126,11 +138,17 @@ func (h *HLS) Segment() func(*core.RequestEvent) error {
 			return apis.NewBadRequestError("Invalid segment sequence", nil)
 		}
 
-		cacheEntry := h.cache.Get(uuid)
-		if cacheEntry == nil || cacheEntry.Value().Preset != presetStr {
-			return apis.NewNotFoundError("Stream not found", nil)
+		entry, err := h.getOrCreateEntry(e, uuid, presetStr, false)
+		if err != nil {
+			return err
 		}
-		seg := cacheEntry.Value().GetSegment(seq)
+		if err := entry.WaitReady(e.Request.Context()); err != nil {
+			if errors.Is(err, ErrClosed) {
+				return apis.NewNotFoundError("Stream not found", nil)
+			}
+			return err
+		}
+		seg := entry.GetSegment(seq)
 		if seg == nil {
 			return apis.NewNotFoundError("Segment not available", nil)
 		}
@@ -140,7 +158,7 @@ func (h *HLS) Segment() func(*core.RequestEvent) error {
 		e.Response.Header().Set("Cache-Control", "no-store")
 		e.Response.WriteHeader(http.StatusOK)
 		n, _ := e.Response.Write(seg.Bytes)
-		cacheEntry.Value().AddTransferred(int64(n))
+		entry.AddTransferred(int64(n))
 		return nil
 	}
 }
