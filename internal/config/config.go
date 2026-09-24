@@ -30,7 +30,7 @@ func New(app *pocketbase.PocketBase) *Config {
 		ResampleQuality: 3,
 		LAMEQuality:     2,
 
-		CacheCleanAfter: 2 * time.Minute,
+		CacheCleanAfter: 10 * time.Minute,
 
 		MetricsEnabled: true,
 		MetricsAddress: ":9090",

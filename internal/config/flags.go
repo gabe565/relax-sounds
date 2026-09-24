@@ -24,7 +24,7 @@ func (c *Config) RegisterFlags() *Config {
 	fs.Float64Var(&c.LAMEQuality, FlagLAMEQuality, c.LAMEQuality, "LAME VBR quality")
 
 	fs.DurationVar(&c.CacheCleanAfter, FlagCacheCleanAfter, c.CacheCleanAfter,
-		"How old a cache entry must be before it is cleaned",
+		"How long a stream can go without requests before it is cleaned up",
 	)
 
 	fs.BoolVar(&c.MetricsEnabled, FlagMetricsEnabled, c.MetricsEnabled, "Enables Prometheus metrics API")
