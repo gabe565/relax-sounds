@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	framesPerSegment   = 230
+	framesPerSegment   = 460
 	mp3SamplesPerFrame = 1152
 	segmentSampleRate  = 44100
 	pcmChunkSamples    = 1152
