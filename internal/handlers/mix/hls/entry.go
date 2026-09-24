@@ -16,10 +16,10 @@ import (
 // MaxSegments is the in-memory ring buffer depth. Older segments are dropped
 // as new ones are pushed. Sized comfortably larger than ManifestWindow so the
 // client always finds the segments it sees in the manifest.
-const MaxSegments = 10
+const MaxSegments = 20
 
 // ManifestWindow is how many segments appear in any single manifest response.
-const ManifestWindow = 5
+const ManifestWindow = 10
 
 type Entry struct {
 	Log     *slog.Logger
