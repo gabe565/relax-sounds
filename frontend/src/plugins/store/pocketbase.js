@@ -113,7 +113,8 @@ export const usePocketBase = defineStore("pocketbase", () => {
     return (
       isAuthenticated.value ||
       authMethods.value.password?.enabled ||
-      authMethods.value.oauth2?.enabled
+      authMethods.value.oauth2?.enabled ||
+      authMethods.value.otp?.enabled
     );
   });
 

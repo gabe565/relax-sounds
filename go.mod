@@ -11,6 +11,7 @@ require (
 	github.com/lmittmann/tint v1.2.0
 	github.com/mattn/go-isatty v0.0.24
 	github.com/pocketbase/dbx v1.12.0
+	github.com/pocketbase/ozzo-validation/v4 v4.3.0
 	github.com/pocketbase/pocketbase v0.40.2
 	github.com/prometheus/client_golang v1.24.1
 	github.com/samber/slog-multi v1.8.0
@@ -49,7 +50,6 @@ require (
 	github.com/ncruces/go-strftime v1.0.0 // indirect
 	github.com/pascaldekloe/name v1.0.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/pocketbase/ozzo-validation/v4 v4.3.0 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.70.1 // indirect
 	github.com/prometheus/procfs v0.21.1 // indirect

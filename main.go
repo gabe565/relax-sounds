@@ -8,6 +8,7 @@ import (
 	"gabe565.com/relax-sounds/internal/config"
 	"gabe565.com/relax-sounds/internal/debug"
 	"gabe565.com/relax-sounds/internal/handlers"
+	"gabe565.com/relax-sounds/internal/handlers/mfa"
 	"gabe565.com/relax-sounds/internal/handlers/mix/hls"
 	"gabe565.com/relax-sounds/internal/hooks"
 	"gabe565.com/relax-sounds/internal/metrics"
@@ -52,6 +53,7 @@ func main() {
 		})
 
 		hls.New(conf).RegisterRoutes(e)
+		mfa.RegisterRoutes(e)
 
 		static, err := handlers.Static()
 		if err != nil {
