@@ -21,11 +21,6 @@ const MaxSegments = 10
 // ManifestWindow is how many segments appear in any single manifest response.
 const ManifestWindow = 5
 
-// StartupSegments is the minimum number of segments produced before the first
-// manifest request resolves. Smaller values reduce time-to-first-audio but
-// players may stutter while their buffer fills.
-const StartupSegments = 3
-
 type Entry struct {
 	Log     *slog.Logger
 	UUID    string
@@ -38,9 +33,9 @@ type Entry struct {
 	closed      bool
 	transferred atomic.Uint64
 
-	ready chan struct{} // closed once the entry has at least StartupSegments segments
+	ready chan struct{} // closed once the producer has buffered bufferAhead of audio
 
-	startupOnce sync.Once
+	readyOnce sync.Once
 
 	ctx     context.Context
 	cancel  context.CancelFunc
@@ -79,29 +74,36 @@ func NewEntry(e *core.RequestEvent, uuid, preset string) *Entry {
 
 // initialSeq derives the first sequence number for a new entry from wall
 // clock so sequences are monotonic across server restarts, cache evictions,
-// and instance failovers.
-//
-// Each 6s of wall-clock advances the sequence by 1.
+// and instance failovers. Paired with the producer's absolute pacing, the
+// newest sequence at any moment depends only on the time, not on the entry.
 func initialSeq(now time.Time) uint64 {
-	//nolint:gosec // Unix() is positive for any post-1970 time
-	return uint64(now.Unix() / int64(SegmentDuration().Round(time.Second).Seconds()))
+	//nolint:gosec // UnixNano() is positive for any post-1970 time
+	return uint64(now.UnixNano() / int64(SegmentDuration()))
+}
+
+// seqStart is the wall-clock time at which seq's audio begins.
+func seqStart(seq uint64) time.Time {
+	//nolint:gosec // seq is derived from a post-1970 UnixNano
+	return time.Unix(0, int64(seq)*int64(SegmentDuration()))
 }
 
 // Context returns a context that is canceled when the entry is closed.
 func (e *Entry) Context() context.Context { return e.ctx }
 
 // PushSegment writes a freshly encoded segment to the ring buffer, assigning
-// the next sequence number. Once StartupSegments have accumulated, the ready
-// channel closes so any blocked manifest request can unblock.
-func (e *Entry) PushSegment(seg *Segment) {
+// the next sequence number. It returns the sequence the following segment
+// will receive.
+func (e *Entry) PushSegment(seg *Segment) uint64 {
 	e.mu.Lock()
 	defer e.mu.Unlock()
 	seg.Seq = e.nextSeq
 	e.nextSeq++
 	e.buf.Push(seg)
-	if e.buf.Len() >= StartupSegments {
-		e.startupOnce.Do(func() { close(e.ready) })
-	}
+	return e.nextSeq
+}
+
+func (e *Entry) markReady() {
+	e.readyOnce.Do(func() { close(e.ready) })
 }
 
 // GetSegment returns the segment with the given sequence number, or nil if
@@ -121,7 +123,7 @@ func (e *Entry) GetSegment(seq uint64) *Segment {
 	return e.buf.At(int(seq - oldest))
 }
 
-// WaitReady blocks until the producer has accumulated StartupSegments,
+// WaitReady blocks until the producer has caught up to bufferAhead,
 // the caller's context is canceled, or the entry shuts down.
 func (e *Entry) WaitReady(ctx context.Context) error {
 	select {

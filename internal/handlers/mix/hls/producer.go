@@ -22,9 +22,10 @@ func SegmentDuration() time.Duration {
 	return time.Duration(framesPerSegment) * mp3SamplesPerFrame * time.Second / segmentSampleRate
 }
 
-// bufferAhead caps how far the encoder gets ahead of wall-clock. The initial
-// burst fills the ring buffer fast (so the first manifest request resolves
-// quickly), then this gate makes the producer self-pace.
+// bufferAhead is how far ahead of wall clock segments are published. A new
+// entry bursts until it reaches this lead, then each segment waits until
+// bufferAhead before its seqStart. Because the schedule is absolute, an entry
+// recreated for the same UUID resumes at the sequence its predecessor reached.
 const bufferAhead = 30 * time.Second
 
 // produceState tracks byte/frame progress within a single Produce call.
@@ -37,8 +38,6 @@ type produceState struct {
 	// totalFrames counts frames emitted in prior segments, giving each new
 	// segment the presentation time of its first sample.
 	totalFrames uint64
-	encoded     time.Duration
-	start       time.Time
 }
 
 // Produce runs a single continuous LAME encoder and slices its byte stream at
@@ -63,7 +62,7 @@ func (e *Entry) Produce(conf *config.Config) {
 
 	samples := make([][2]float64, pcmChunkSamples)
 	pcm := make([]byte, len(samples)*format.Width())
-	state := produceState{start: time.Now()}
+	var state produceState
 
 	for {
 		if err := e.ctx.Err(); err != nil {
@@ -110,21 +109,21 @@ func (e *Entry) drainFrames(raw *bytes.Buffer, s *produceState) bool {
 			continue
 		}
 
-		dur := e.emitSegment(raw.Next(s.scanPos), s.segFrames, s.totalFrames)
-		s.encoded += dur
+		next := e.emitSegment(raw.Next(s.scanPos), s.segFrames, s.totalFrames)
 		s.totalFrames += uint64(s.segFrames)
 		s.scanPos = 0
 		s.segFrames = 0
 
-		if e.throttleAhead(s.encoded - time.Since(s.start)) {
+		if e.throttle(next) {
 			return true
 		}
 	}
 }
 
 // emitSegment prefixes the given byte range with an ID3 timestamp tag and
-// pushes it into the ring buffer as a finalized segment.
-func (e *Entry) emitSegment(b []byte, segFrames int, startFrame uint64) time.Duration {
+// pushes it into the ring buffer as a finalized segment. It returns the
+// sequence the following segment will receive.
+func (e *Entry) emitSegment(b []byte, segFrames int, startFrame uint64) uint64 {
 	dur := time.Duration(segFrames) * mp3SamplesPerFrame * time.Second / segmentSampleRate
 
 	tag := id3TimestampTag(timestampFor(startFrame * mp3SamplesPerFrame))
@@ -132,24 +131,26 @@ func (e *Entry) emitSegment(b []byte, segFrames int, startFrame uint64) time.Dur
 	segment = append(segment, tag...)
 	segment = append(segment, b...)
 
-	e.PushSegment(&Segment{
+	return e.PushSegment(&Segment{
 		Duration: dur,
 		Bytes:    segment,
 		Created:  time.Now(),
 	})
-	return dur
 }
 
-// throttleAhead sleeps when the encoder has run too far ahead of wall-clock,
-// returning true if the context was canceled during the sleep.
-func (e *Entry) throttleAhead(ahead time.Duration) bool {
-	if ahead <= bufferAhead {
+// throttle holds the producer until bufferAhead before next's seqStart. The
+// first time it has to wait, the startup burst is complete and the entry is
+// marked ready. Returns true if the context was canceled during the sleep.
+func (e *Entry) throttle(next uint64) bool {
+	wait := time.Until(seqStart(next).Add(-bufferAhead))
+	if wait <= 0 {
 		return false
 	}
+	e.markReady()
 	select {
 	case <-e.ctx.Done():
 		return true
-	case <-time.After(ahead - bufferAhead):
+	case <-time.After(wait):
 		return false
 	}
 }
