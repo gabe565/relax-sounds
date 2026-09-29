@@ -102,6 +102,12 @@ func (e *Entry) PushSegment(seg *Segment) uint64 {
 	return e.nextSeq
 }
 
+func (e *Entry) NextSeq() uint64 {
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+	return e.nextSeq
+}
+
 func (e *Entry) markReady() {
 	e.readyOnce.Do(func() { close(e.ready) })
 }

@@ -3,6 +3,7 @@ package hls
 import (
 	"encoding/binary"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -53,4 +54,15 @@ func syncsafeDecode(t *testing.T, b []byte) int {
 		require.Zero(t, v&0x80, "byte %d not synchsafe", i)
 	}
 	return int(b[0])<<21 | int(b[1])<<14 | int(b[2])<<7 | int(b[3])
+}
+
+func TestSegmentTimestampContinuous(t *testing.T) {
+	perSegment := float64(SegmentDuration()) * timestampHz / float64(time.Second)
+	wrapped := false
+	for seq := range uint64(10_000) {
+		cur, next := segmentTimestamp(seq), segmentTimestamp(seq+1)
+		wrapped = wrapped || next < cur
+		assert.InDelta(t, perSegment, float64((next-cur)&timestampMask), 1, "seq %d", seq)
+	}
+	assert.True(t, wrapped, "range should cross a 33-bit wrap")
 }

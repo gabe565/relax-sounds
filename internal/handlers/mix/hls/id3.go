@@ -6,6 +6,7 @@ const (
 	id3Owner      = "com.apple.streaming.transportStreamTimestamp"
 	timestampHz   = 90000
 	timestampMask = 1<<33 - 1
+	timestampGCD  = 900
 
 	id3HeaderLen   = 10
 	id3FrameHdrLen = 10
@@ -14,7 +15,11 @@ const (
 )
 
 func timestampFor(samples uint64) uint64 {
-	return (samples * timestampHz / segmentSampleRate) & timestampMask
+	return (samples * (timestampHz / timestampGCD) / (segmentSampleRate / timestampGCD)) & timestampMask
+}
+
+func segmentTimestamp(seq uint64) uint64 {
+	return timestampFor(seq * framesPerSegment * mp3SamplesPerFrame)
 }
 
 func syncsafe(b []byte, n int) {
