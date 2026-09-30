@@ -2,6 +2,7 @@
 node_modules
 .pnpm-store
 dev-dist
+dist-receiver
 dist/*
 !dist/.gitkeep
 

@@ -1,0 +1,14 @@
+"$schema" = "./node_modules/wrangler/config-schema.json"
+name = "relax-sounds-receiver"
+compatibility_date = "2026-09-29"
+workers_dev = false
+
+[build]
+command = "pnpm --dir=frontend run build:receiver"
+
+[assets]
+directory = "./frontend/dist-receiver"
+
+[[routes]]
+pattern = "cast.relaxti.me"
+custom_domain = true

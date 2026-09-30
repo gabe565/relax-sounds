@@ -7,6 +7,8 @@ const (
 
 	FlagCacheCleanAfter = "cache-clean-after"
 
+	FlagCastAppID = "cast-app-id"
+
 	FlagMetricsEnabled = "metrics-enabled"
 	FlagMetricsAddress = "metrics-address"
 
@@ -25,6 +27,10 @@ func (c *Config) RegisterFlags() *Config {
 
 	fs.DurationVar(&c.CacheCleanAfter, FlagCacheCleanAfter, c.CacheCleanAfter,
 		"How long a stream can go without requests before it is cleaned up",
+	)
+
+	fs.StringVar(&c.CastAppID, FlagCastAppID, c.CastAppID,
+		"Google Cast receiver app ID (use CC1AD845 for the Default Media Receiver)",
 	)
 
 	fs.BoolVar(&c.MetricsEnabled, FlagMetricsEnabled, c.MetricsEnabled, "Enables Prometheus metrics API")

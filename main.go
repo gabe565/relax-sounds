@@ -54,6 +54,7 @@ func main() {
 
 		hls.New(conf).RegisterRoutes(e)
 		mfa.RegisterRoutes(e)
+		e.Router.GET("/api/config", handlers.Config(conf))
 
 		static, err := handlers.Static()
 		if err != nil {

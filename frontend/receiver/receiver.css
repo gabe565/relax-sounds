@@ -1,0 +1,15 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #151218;
+}
+
+cast-media-player {
+  --background-color: #151218;
+  --theme-hue: 270;
+  --progress-color: #d8bafa;
+  --logo-color: #151218;
+  --logo-size: 25vmin;
+  --logo-image: url("../src/assets/icon-purple.svg");
+}

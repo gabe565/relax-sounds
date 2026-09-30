@@ -10,7 +10,7 @@ export default [
       globals: { ...globals.node, ...globals.browser },
     },
   },
-  { ignores: ["dist", "dev-dist"] },
+  { ignores: ["dist", "dev-dist", "dist-receiver"] },
   pluginJs.configs.recommended,
   ...pluginVue.configs["flat/recommended"],
   ...pluginVuetify.configs["flat/recommended"],

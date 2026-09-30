@@ -15,6 +15,8 @@ type Config struct {
 
 	CacheCleanAfter time.Duration
 
+	CastAppID string
+
 	MetricsEnabled bool
 	MetricsAddress string
 
@@ -31,6 +33,8 @@ func New(app *pocketbase.PocketBase) *Config {
 		LAMEQuality:     2,
 
 		CacheCleanAfter: 10 * time.Minute,
+
+		CastAppID: "D7AAD9CA",
 
 		MetricsEnabled: true,
 		MetricsAddress: ":9090",

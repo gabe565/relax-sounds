@@ -12,3 +12,4 @@ frontend/dist/
 frontend/node_modules/
 relax-sounds
 vendor/
+frontend/dist-receiver/

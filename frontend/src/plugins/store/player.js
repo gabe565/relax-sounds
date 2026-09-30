@@ -250,7 +250,7 @@ export const usePlayer = defineStore("player", () => {
     }
   };
 
-  const initializeCastApi = () => {
+  const initializeCastApi = (appId) => {
     const { framework: castFramework } = globalThis.cast;
     const { cast } = globalThis.chrome;
 
@@ -317,7 +317,7 @@ export const usePlayer = defineStore("player", () => {
     // setOptions triggers auto-join, so it must come after all listeners
     // are registered. Otherwise RemotePlayer misses the media session.
     castFramework.CastContext.getInstance().setOptions({
-      receiverApplicationId: cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+      receiverApplicationId: appId || cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
       autoJoinPolicy: cast.AutoJoinPolicy.ORIGIN_SCOPED,
     });
 

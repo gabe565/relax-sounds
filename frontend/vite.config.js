@@ -81,7 +81,7 @@ export default defineConfig(({ mode }) => {
         workbox: {
           clientsClaim: true,
           globPatterns: ["**/*{js,css,html,woff2,svg}"],
-          navigateFallbackDenylist: [/^\/api\//, /^\/_\/?/],
+          navigateFallbackDenylist: [/^\/api\//, /^\/_\/?/, /^\/receiver\//],
           runtimeCaching: [
             {
               urlPattern: new RegExp(`${apiBase}/api/files/`),
@@ -109,6 +109,17 @@ export default defineConfig(({ mode }) => {
               handler: "NetworkFirst",
               options: {
                 cacheName: "api-cache",
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              },
+            },
+            {
+              urlPattern: new RegExp(`${apiBase}/api/config$`),
+              handler: "NetworkFirst",
+              options: {
+                cacheName: "config-cache",
+                networkTimeoutSeconds: 3,
                 cacheableResponse: {
                   statuses: [0, 200],
                 },
