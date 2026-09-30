@@ -94,6 +94,17 @@ export default defineConfig(({ mode }) => {
               },
             },
             {
+              urlPattern: new RegExp(`${apiBase}/api/collections/(?:sounds|tags)/`),
+              handler: "NetworkFirst",
+              options: {
+                cacheName: "catalog-cache",
+                networkTimeoutSeconds: 3,
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              },
+            },
+            {
               urlPattern: new RegExp(`${apiBase}/api/collections/`),
               handler: "NetworkFirst",
               options: {
