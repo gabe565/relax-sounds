@@ -19,13 +19,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       tailwindcss(),
-      vue({
-        template: {
-          compilerOptions: {
-            isCustomElement: (tag) => tag === "google-cast-launcher",
-          },
-        },
-      }),
+      vue(),
       vuetify({
         styles: {
           configFile: "src/scss/settings.scss",
