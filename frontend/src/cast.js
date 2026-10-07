@@ -17,7 +17,7 @@ const fetchCastAppId = async () => {
 
 const castAppId = fetchCastAppId();
 
-globalThis.__onGCastApiAvailable = async (isAvailable) => {
+globalThis.castApiAvailable.then(async (isAvailable) => {
   if (isAvailable) {
     // Workaround for __onGCastApiAvailable called before globalThis.cast is set
     let waitMs = 100;
@@ -29,4 +29,4 @@ globalThis.__onGCastApiAvailable = async (isAvailable) => {
 
     usePlayer().initializeCastApi(await castAppId);
   }
-};
+});

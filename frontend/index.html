@@ -30,6 +30,11 @@
     </noscript>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <script>
+      globalThis.castApiAvailable = new Promise((resolve) => {
+        globalThis.__onGCastApiAvailable = resolve;
+      });
+    </script>
     <script
       async
       src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"
