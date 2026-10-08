@@ -35,7 +35,13 @@ const requestSession = async () => {
     await globalThis.cast.framework.CastContext.getInstance().requestSession();
   } catch (error) {
     if (error !== globalThis.chrome.cast.ErrorCode.CANCEL) {
-      toast.error(`Failed to cast:\n${error}`);
+      toast.error(`Failed to cast:\n${error}`, {
+        duration: 10000,
+        action: {
+          label: "Reload",
+          onClick: () => globalThis.location.reload(),
+        },
+      });
     }
   }
 };
