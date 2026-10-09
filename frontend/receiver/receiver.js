@@ -5,6 +5,8 @@ const MIN_RETRY_MS = 2000;
 const MAX_RETRY_MS = 30000;
 const STALL_MS = 30000;
 const HEALTHY_MS = 60000;
+const BUFFERING_GOAL_S = 45;
+const BUFFER_BEHIND_S = 10;
 
 const { EventType, EndedReason } = cast.framework.events;
 const { MessageType, RepeatMode } = cast.framework.messages;
@@ -95,4 +97,8 @@ playerManager.addEventListener(EventType.MEDIA_FINISHED, ({ endedReason }) => {
 
 const options = new cast.framework.CastReceiverOptions();
 options.supportedCommands = cast.framework.messages.Command.PAUSE;
+options.playbackConfig = new cast.framework.PlaybackConfig();
+options.playbackConfig.shakaConfig = {
+  streaming: { bufferingGoal: BUFFERING_GOAL_S, bufferBehind: BUFFER_BEHIND_S },
+};
 context.start(options);
