@@ -142,15 +142,14 @@ func (h *HLS) Segment() func(*core.RequestEvent) error {
 		if err != nil {
 			return err
 		}
-		if err := entry.WaitReady(e.Request.Context()); err != nil {
-			if errors.Is(err, ErrClosed) {
-				return apis.NewNotFoundError("Stream not found", nil)
-			}
-			return err
-		}
-		seg := entry.GetSegment(seq)
-		if seg == nil {
+		seg, err := entry.WaitSegment(e.Request.Context(), seq)
+		switch {
+		case errors.Is(err, ErrClosed):
+			return apis.NewNotFoundError("Stream not found", nil)
+		case errors.Is(err, ErrSegmentUnavailable):
 			return apis.NewNotFoundError("Segment not available", nil)
+		case err != nil:
+			return err
 		}
 
 		e.Response.Header().Set("Content-Type", "audio/mpeg")

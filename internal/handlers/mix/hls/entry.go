@@ -21,6 +21,10 @@ const MaxSegments = 20
 // ManifestWindow is how many segments appear in any single manifest response.
 const ManifestWindow = 10
 
+// startupSegments is how many segments must exist before a new entry is ready.
+// The producer keeps bursting toward bufferAhead after that.
+const startupSegments = 3
+
 type Entry struct {
 	Log     *slog.Logger
 	UUID    string
@@ -33,7 +37,8 @@ type Entry struct {
 	closed      bool
 	transferred atomic.Uint64
 
-	ready chan struct{} // closed once the producer has buffered bufferAhead of audio
+	ready  chan struct{} // closed once startupSegments have been produced
+	pushed chan struct{} // closed and replaced each time a segment is pushed
 
 	readyOnce sync.Once
 
@@ -66,6 +71,7 @@ func NewEntry(e *core.RequestEvent, uuid, preset string) *Entry {
 		buf:     ring.New[*Segment](MaxSegments),
 		nextSeq: initialSeq(now),
 		ready:   make(chan struct{}),
+		pushed:  make(chan struct{}),
 		ctx:     ctx,
 		cancel:  cancel,
 		Created: now,
@@ -99,6 +105,11 @@ func (e *Entry) PushSegment(seg *Segment) uint64 {
 	seg.Seq = e.nextSeq
 	e.nextSeq++
 	e.buf.Push(seg)
+	close(e.pushed)
+	e.pushed = make(chan struct{})
+	if e.buf.Len() >= startupSegments {
+		e.markReady()
+	}
 	return e.nextSeq
 }
 
@@ -117,6 +128,36 @@ func (e *Entry) markReady() {
 func (e *Entry) GetSegment(seq uint64) *Segment {
 	e.mu.RLock()
 	defer e.mu.RUnlock()
+	return e.getSegmentLocked(seq)
+}
+
+// WaitSegment returns the segment with the given sequence number, waiting for
+// the producer if it hasn't been encoded yet.
+func (e *Entry) WaitSegment(ctx context.Context, seq uint64) (*Segment, error) {
+	if time.Until(seqStart(seq)) > bufferAhead+SegmentDuration() {
+		return nil, ErrSegmentUnavailable
+	}
+	for {
+		e.mu.RLock()
+		seg, next, pushed := e.getSegmentLocked(seq), e.nextSeq, e.pushed
+		e.mu.RUnlock()
+		switch {
+		case seg != nil:
+			return seg, nil
+		case seq < next:
+			return nil, ErrSegmentUnavailable
+		}
+		select {
+		case <-pushed:
+		case <-e.ctx.Done():
+			return nil, ErrClosed
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		}
+	}
+}
+
+func (e *Entry) getSegmentLocked(seq uint64) *Segment {
 	if e.buf.Len() == 0 {
 		return nil
 	}
@@ -129,8 +170,8 @@ func (e *Entry) GetSegment(seq uint64) *Segment {
 	return e.buf.At(int(seq - oldest))
 }
 
-// WaitReady blocks until the producer has caught up to bufferAhead,
-// the caller's context is canceled, or the entry shuts down.
+// WaitReady blocks until startupSegments have been produced, the caller's
+// context is canceled, or the entry shuts down.
 func (e *Entry) WaitReady(ctx context.Context) error {
 	select {
 	case <-e.ready:
@@ -171,3 +212,7 @@ func (e *Entry) TransferredBytes() uint64 {
 // ErrClosed is returned by operations that fail because the entry is shutting
 // down. Producers use this to exit cleanly.
 var ErrClosed = errors.New("hls: entry closed")
+
+// ErrSegmentUnavailable is returned for segments that were evicted or are too
+// far ahead to be produced.
+var ErrSegmentUnavailable = errors.New("hls: segment unavailable")
