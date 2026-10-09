@@ -17,6 +17,11 @@ export const usePlayer = defineStore("player", () => {
   let remotePlayerController;
   const castEnabled = ref(false);
   const castConnected = ref(false);
+  const castLoadPending = ref(false);
+  const castBuffering = ref(false);
+  const isCastLoading = computed(
+    () => castConnected.value && (castLoadPending.value || castBuffering.value),
+  );
 
   const soundsReady = pb.loadSounds().then((data) => {
     sounds.value = data;
@@ -93,6 +98,10 @@ export const usePlayer = defineStore("player", () => {
 
   const castConnectedChanged = ({ value }) => {
     castConnected.value = value;
+    if (!value) {
+      castLoadPending.value = false;
+      castBuffering.value = false;
+    }
   };
 
   const syncFromCast = async (mediaInfo) => {
@@ -148,12 +157,15 @@ export const usePlayer = defineStore("player", () => {
           const request = new cast.media.LoadRequest(mediaInfo);
           request.queueData = queue;
 
+          castLoadPending.value = true;
           try {
             await castSession.loadMedia(request);
           } catch (error) {
             console.error(`Remote media load error: ${formatError(error)}`);
             toast.error(`Failed to cast:\n${error}`);
             return;
+          } finally {
+            castLoadPending.value = false;
           }
         }
       } else {
@@ -290,6 +302,13 @@ export const usePlayer = defineStore("player", () => {
     );
 
     remotePlayerController.addEventListener(
+      castFramework.RemotePlayerEventType.PLAYER_STATE_CHANGED,
+      ({ value }) => {
+        castBuffering.value = value === cast.media.PlayerState.BUFFERING;
+      },
+    );
+
+    remotePlayerController.addEventListener(
       castFramework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
       async ({ value }) => {
         if (value && isStopped.value) {
@@ -350,6 +369,7 @@ export const usePlayer = defineStore("player", () => {
     currentName,
     castEnabled,
     castConnected,
+    isCastLoading,
     soundsPlaying,
     soundsNotStopped,
     state,

@@ -11,7 +11,14 @@
         color="primary"
         @click="player.playPauseAll"
       >
-        <v-icon :icon="player.isPlaying ? PauseIcon : PlayIcon" size="28" />
+        <v-progress-circular
+          v-if="player.isCastLoading"
+          indeterminate
+          size="24"
+          width="3"
+          bg-color="transparent"
+        />
+        <v-icon v-else :icon="player.isPlaying ? PauseIcon : PlayIcon" size="28" />
       </v-btn>
     </template>
   </v-tooltip>
