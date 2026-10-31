@@ -5,6 +5,8 @@ import { computed, nextTick, onScopeDispose, ref } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import AuthentikIcon from "@/assets/authentik.svg";
+import PocketIDDarkIcon from "@/assets/pocket-id-dark.svg";
+import PocketIDLightIcon from "@/assets/pocket-id-light.svg";
 import { ApiPath } from "@/config/api.js";
 import { Sound } from "@/util/Sound";
 import { once } from "@/util/helpers";
@@ -26,8 +28,11 @@ export function getErrorMessage(error) {
 }
 
 export function getProviderIconURL(provider) {
-  if (provider.displayName?.toLowerCase() === "authentik") {
-    return AuthentikIcon;
+  switch (provider.displayName?.toLowerCase()) {
+    case "authentik":
+      return AuthentikIcon;
+    case "pocket id":
+      return { light: PocketIDLightIcon, dark: PocketIDDarkIcon };
   }
   return ApiPath(`/_/images/oauth2/${provider.name.toLowerCase()}.svg`);
 }

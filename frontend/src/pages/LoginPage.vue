@@ -257,7 +257,7 @@
             >
               <template #prepend>
                 <v-avatar size="24" rounded="0" variant="text">
-                  <v-img :src="provider.icon" :cover="false" />
+                  <provider-icon :icon="provider.icon" />
                 </v-avatar>
               </template>
               Continue with {{ provider.displayName }}
@@ -291,6 +291,7 @@ import PinIcon from "~icons/material-symbols/pin-rounded";
 import ShieldLockIcon from "~icons/material-symbols/shield-lock-rounded";
 import VisibilityOffIcon from "~icons/material-symbols/visibility-off-rounded";
 import VisibilityIcon from "~icons/material-symbols/visibility-rounded";
+import ProviderIcon from "@/components/ProviderIcon.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { SessionExpiredToast, getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 

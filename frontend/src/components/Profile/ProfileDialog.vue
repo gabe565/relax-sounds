@@ -86,7 +86,7 @@
               >
                 <template #prepend>
                   <v-avatar size="24" rounded="0" class="mr-3" variant="text">
-                    <v-img :src="provider.icon" :cover="false" />
+                    <provider-icon :icon="provider.icon" />
                   </v-avatar>
                 </template>
                 <v-list-item-title class="text-sm">
@@ -135,6 +135,7 @@ import UsernameIcon from "~icons/material-symbols/alternate-email-rounded";
 import LockResetIcon from "~icons/material-symbols/lock-reset-rounded";
 import PersonIcon from "~icons/material-symbols/person-rounded";
 import CameraIcon from "~icons/material-symbols/photo-camera-rounded";
+import ProviderIcon from "@/components/ProviderIcon.vue";
 import { getErrorMessage, usePocketBase } from "@/plugins/store/pocketbase.js";
 
 const props = defineProps({
