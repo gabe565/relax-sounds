@@ -85,7 +85,7 @@
                 :key="provider.name"
               >
                 <template #prepend>
-                  <v-avatar size="24" rounded="0" class="mr-3" variant="text">
+                  <v-avatar size="24" rounded="none" class="mr-3" variant="text">
                     <provider-icon :icon="provider.icon" />
                   </v-avatar>
                 </template>
