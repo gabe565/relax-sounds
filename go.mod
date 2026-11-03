@@ -8,7 +8,7 @@ require (
 	gabe565.com/utils v0.0.0-20260511235214-4059440fa83b
 	github.com/gopxl/beep/v2 v2.1.1
 	github.com/jellydator/ttlcache/v3 v3.4.1
-	github.com/lmittmann/tint v1.2.0
+	github.com/lmittmann/tint v1.2.1
 	github.com/mattn/go-isatty v0.0.24
 	github.com/pocketbase/dbx v1.12.0
 	github.com/pocketbase/ozzo-validation/v4 v4.3.0
