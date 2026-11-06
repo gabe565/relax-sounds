@@ -16,7 +16,7 @@ require (
 	github.com/prometheus/client_golang v1.24.1
 	github.com/samber/slog-multi v1.8.0
 	github.com/spf13/cobra v1.10.2
-	github.com/spf13/pflag v1.0.10
+	github.com/spf13/pflag v1.1.0
 	github.com/stretchr/testify v1.12.1
 	github.com/viert/go-lame v0.0.0-20201108052322-bb552596b11d
 	github.com/vmihailenco/msgpack/v5 v5.4.1
