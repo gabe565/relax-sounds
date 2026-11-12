@@ -41,11 +41,11 @@ func New(conf *config.Config, p preset.Preset) (Streams, error) {
 
 		f, err := os.Open(path)
 		if err != nil {
-			return nil, err
+			return s, err
 		}
 
 		if err := s.Add(conf, f, entry); err != nil {
-			return nil, err
+			return s, err
 		}
 	}
 	return s, nil

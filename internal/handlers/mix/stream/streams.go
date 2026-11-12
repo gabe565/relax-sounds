@@ -22,12 +22,12 @@ func (stream Streams) Close() error {
 
 func (stream *Streams) Add(conf *config.Config, f fs.File, entry preset.Track) error {
 	if entry.GetVolume() == 0 {
-		return nil
+		return f.Close()
 	}
 
 	streamer, err := NewStreamer(conf, f, entry)
 	if err != nil {
-		return err
+		return errors.Join(err, f.Close())
 	}
 
 	*stream = append(*stream, streamer)
