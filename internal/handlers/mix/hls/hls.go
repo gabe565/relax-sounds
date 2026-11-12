@@ -70,6 +70,10 @@ func (h *HLS) getOrCreateEntry(e *core.RequestEvent, uuid, presetStr string, rep
 		return entry, err
 	}
 
+	if h.conf.MaxStreamsPerIP > 0 && h.countByIP(e.RealIP(), uuid) >= h.conf.MaxStreamsPerIP {
+		return nil, apis.NewTooManyRequestsError("Too many active streams", nil)
+	}
+
 	entry = NewEntry(e, uuid, presetStr)
 	entry.Streams, err = stream.New(h.conf, pre)
 	if err != nil {
@@ -99,6 +103,17 @@ func (h *HLS) lookup(uuid, presetStr string, replace bool) (*Entry, bool, error)
 		}
 	}
 	return nil, false, nil
+}
+
+func (h *HLS) countByIP(ip, exceptUUID string) int {
+	var n int
+	h.cache.Range(func(item *ttlcache.Item[string, *Entry]) bool {
+		if item.Key() != exceptUUID && item.Value().IP == ip {
+			n++
+		}
+		return true
+	})
+	return n
 }
 
 // Manifest serves the HLS live playlist for a UUID/preset.

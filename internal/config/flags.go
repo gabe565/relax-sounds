@@ -2,6 +2,7 @@ package config
 
 const (
 	FlagMaxPresetLen    = "max-preset-length"
+	FlagMaxStreamsPerIP = "max-streams-per-ip"
 	FlagResampleQuality = "resample-quality"
 	FlagLAMEQuality     = "lame-quality"
 
@@ -20,6 +21,9 @@ func (c *Config) RegisterFlags() *Config {
 	fs := c.App.RootCmd.PersistentFlags()
 
 	fs.IntVar(&c.MaxPresetLen, FlagMaxPresetLen, c.MaxPresetLen, "Maximum number of sounds that a preset can contain")
+	fs.IntVar(&c.MaxStreamsPerIP, FlagMaxStreamsPerIP, c.MaxStreamsPerIP,
+		"Maximum number of concurrent streams per client IP (0 for unlimited)",
+	)
 	fs.IntVar(&c.ResampleQuality, FlagResampleQuality, c.ResampleQuality,
 		"Resample quality. Recommend values between 1-4.",
 	)

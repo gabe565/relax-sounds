@@ -28,6 +28,7 @@ const startupSegments = 3
 type Entry struct {
 	Log     *slog.Logger
 	UUID    string
+	IP      string
 	Preset  string
 	Streams stream.Streams
 
@@ -59,14 +60,16 @@ type Segment struct {
 func NewEntry(e *core.RequestEvent, uuid, preset string) *Entry {
 	ctx, cancel := context.WithCancel(context.Background())
 	now := time.Now()
+	ip := e.RealIP()
 	return &Entry{
 		Log: slog.With(
-			"userIP", e.RealIP(),
+			"userIP", ip,
 			"userAgent", e.Request.UserAgent(),
 			"url", e.Request.URL.String(),
 			"id", uuid,
 		),
 		UUID:    uuid,
+		IP:      ip,
 		Preset:  preset,
 		buf:     ring.New[*Segment](MaxSegments),
 		nextSeq: initialSeq(now),

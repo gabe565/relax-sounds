@@ -10,6 +10,7 @@ type Config struct {
 	App *pocketbase.PocketBase
 
 	MaxPresetLen    int
+	MaxStreamsPerIP int
 	ResampleQuality int
 	LAMEQuality     float64
 
@@ -29,6 +30,7 @@ func New(app *pocketbase.PocketBase) *Config {
 		App: app,
 
 		MaxPresetLen:    20,
+		MaxStreamsPerIP: 5,
 		ResampleQuality: 3,
 		LAMEQuality:     2,
 
