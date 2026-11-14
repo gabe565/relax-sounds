@@ -14,7 +14,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.cache \
   pnpm run build
 
 
-FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.9.0 AS xx
+FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.10.0 AS xx
 FROM --platform=$BUILDPLATFORM golang:1.27.1-alpine AS backend-build
 WORKDIR /app
 
