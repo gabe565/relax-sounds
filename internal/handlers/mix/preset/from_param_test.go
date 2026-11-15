@@ -1,6 +1,9 @@
 package preset
 
 import (
+	"bytes"
+	"compress/zlib"
+	"encoding/base64"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -44,4 +47,27 @@ func TestFromParam(t *testing.T) {
 			assert.Equal(t, tt.want, got)
 		})
 	}
+}
+
+func TestFromParamTooLarge(t *testing.T) {
+	t.Run("encoded", func(t *testing.T) {
+		encoded := base64.RawURLEncoding.EncodeToString(bytes.Repeat([]byte{' '}, maxDecodedSize+1))
+		_, err := FromParam(encoded)
+		require.ErrorIs(t, err, ErrTooLarge)
+	})
+
+	t.Run("decompressed", func(t *testing.T) {
+		var buf bytes.Buffer
+		w := zlib.NewWriter(&buf)
+		_, err := w.Write([]byte("["))
+		require.NoError(t, err)
+		_, err = w.Write(bytes.Repeat([]byte("{},"), maxDecodedSize))
+		require.NoError(t, err)
+		_, err = w.Write([]byte("{}]"))
+		require.NoError(t, err)
+		require.NoError(t, w.Close())
+
+		_, err = FromParam(base64.RawURLEncoding.EncodeToString(buf.Bytes()))
+		require.ErrorIs(t, err, ErrTooLarge)
+	})
 }

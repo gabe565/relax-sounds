@@ -6,10 +6,19 @@ import (
 	"compress/zlib"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"io"
 )
 
+const maxDecodedSize = 64 << 10
+
+var ErrTooLarge = errors.New("preset is too large")
+
 func FromParam(encoded string) (Preset, error) {
+	if base64.RawURLEncoding.DecodedLen(len(encoded)) > maxDecodedSize {
+		return Preset{}, ErrTooLarge
+	}
+
 	data, err := base64.RawURLEncoding.DecodeString(encoded)
 	if err != nil {
 		return Preset{}, err
@@ -33,8 +42,12 @@ func FromParam(encoded string) (Preset, error) {
 		_ = r.Close()
 	}()
 
+	lr := &io.LimitedReader{R: r, N: maxDecodedSize + 1}
 	var preset Preset
-	if err = json.NewDecoder(r).Decode(&preset); err != nil {
+	if err = json.NewDecoder(lr).Decode(&preset); err != nil {
+		if lr.N == 0 {
+			return Preset{}, ErrTooLarge
+		}
 		return Preset{}, err
 	}
 
