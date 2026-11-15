@@ -45,15 +45,10 @@ func (h *HLS) RegisterRoutes(e *core.ServeEvent) {
 // otherwise.
 func (h *HLS) getOrCreateEntry(e *core.RequestEvent, uuid, presetStr string, replace bool) (*Entry, error) {
 	h.mu.Lock()
-	defer h.mu.Unlock()
-
-	if cacheEntry := h.cache.Get(uuid); cacheEntry != nil {
-		switch {
-		case cacheEntry.Value().Preset == presetStr:
-			return cacheEntry.Value(), nil
-		case !replace:
-			return nil, apis.NewNotFoundError("Stream not found", nil)
-		}
+	entry, found, err := h.lookup(uuid, presetStr, replace)
+	h.mu.Unlock()
+	if found || err != nil {
+		return entry, err
 	}
 
 	pre, err := preset.FromParam(presetStr)
@@ -68,7 +63,14 @@ func (h *HLS) getOrCreateEntry(e *core.RequestEvent, uuid, presetStr string, rep
 		)
 	}
 
-	entry := NewEntry(e, uuid, presetStr)
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
+	if entry, found, err := h.lookup(uuid, presetStr, replace); found || err != nil {
+		return entry, err
+	}
+
+	entry = NewEntry(e, uuid, presetStr)
 	entry.Streams, err = stream.New(h.conf, pre)
 	if err != nil {
 		_ = entry.Close()
@@ -85,6 +87,18 @@ func (h *HLS) getOrCreateEntry(e *core.RequestEvent, uuid, presetStr string, rep
 	h.cache.Set(uuid, entry, ttlcache.DefaultTTL)
 	go entry.Produce(h.conf)
 	return entry, nil
+}
+
+func (h *HLS) lookup(uuid, presetStr string, replace bool) (*Entry, bool, error) {
+	if cacheEntry := h.cache.Get(uuid); cacheEntry != nil {
+		switch {
+		case cacheEntry.Value().Preset == presetStr:
+			return cacheEntry.Value(), true, nil
+		case !replace:
+			return nil, false, apis.NewNotFoundError("Stream not found", nil)
+		}
+	}
+	return nil, false, nil
 }
 
 // Manifest serves the HLS live playlist for a UUID/preset.
