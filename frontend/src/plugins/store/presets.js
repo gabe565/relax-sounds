@@ -16,6 +16,7 @@ export const usePresets = defineStore(
     const version = ref(Version);
     const presets = ref([]);
     const isSyncing = ref(false);
+    const pendingImport = ref(null);
     let syncPromise = null;
 
     const add = async ({ preset, playing = true, sync = true }) => {
@@ -259,6 +260,7 @@ export const usePresets = defineStore(
     return {
       presets,
       isSyncing,
+      pendingImport,
       add,
       active,
       hide,

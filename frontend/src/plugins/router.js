@@ -103,8 +103,7 @@ const router = createRouter({
             const preset = new Preset();
             preset.encodedName = params.name;
             await preset.setEncodedShorthand(params.songs);
-            await usePresets().add({ preset });
-            toast.success(`Imported ${preset.name}.`);
+            usePresets().pendingImport = preset;
           } catch (err) {
             console.error(err);
             toast.error(`Failed to import preset:\n${getErrorMessage(err)}`);

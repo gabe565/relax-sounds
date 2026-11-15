@@ -60,6 +60,7 @@
     </v-main>
 
     <player-bar v-if="showPlayerBar" />
+    <import-preset-dialog />
 
     <v-bottom-navigation
       v-if="isMobile && showPlayerBar"
@@ -85,6 +86,7 @@ import { useDisplay, useTheme } from "vuetify";
 import LoginIcon from "~icons/material-symbols/login-rounded";
 import AppIcon from "~icons/relax-sounds/icon";
 import PlayerBar from "@/components/NavButtons/PlayerBar.vue";
+import ImportPresetDialog from "@/components/Presets/ImportPresetDialog.vue";
 import AccountMenu from "@/components/Profile/AccountMenu.vue";
 import { registerSW } from "@/plugins/pwa";
 import { usePocketBase } from "@/plugins/store/pocketbase.js";
