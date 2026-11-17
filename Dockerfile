@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:24-alpine AS frontend-deps
+FROM --platform=$BUILDPLATFORM node:26-alpine AS frontend-deps
 WORKDIR /app
 
 RUN corepack enable
